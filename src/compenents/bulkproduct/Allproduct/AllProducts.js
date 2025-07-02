@@ -9,7 +9,7 @@ const AllProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/getallbulk');
+        const response = await axios.get('http://localhost:5000/api/getallbulk');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);

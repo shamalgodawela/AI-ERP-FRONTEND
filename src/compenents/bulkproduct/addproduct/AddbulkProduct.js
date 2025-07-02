@@ -51,7 +51,7 @@ const AddbulkProduct = () => {
     e.preventDefault();
     try {
       // Send a POST request to the backend to add the product
-      await axios.post('https://nihon-inventory.onrender.com/api/addbulkproduct', productData);
+      await axios.post('http://localhost:5000/api/addbulkproduct', productData);
       toast.success('Product added successfully!');
       // Clear the form fields after successful submission
       setProductData({
