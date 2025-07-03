@@ -38,7 +38,7 @@ const EditInvoice = () => {
   useEffect(() => {
     // Fetch the invoice details to populate the form
     axios
-      .get(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`)
+              .get(`http://localhost:5000/api/invoices/${invoiceNumber}`)
       .then((response) => {
         setInvoiceData(response.data);
       })
@@ -68,7 +68,7 @@ const EditInvoice = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`, invoiceData)
+              .put(`http://localhost:5000/api/invoices/${invoiceNumber}`, invoiceData)
       .then((response) => {
         alert('Invoice updated successfully!');
       })

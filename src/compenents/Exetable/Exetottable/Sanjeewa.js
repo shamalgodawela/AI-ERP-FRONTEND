@@ -10,7 +10,7 @@ const Sanjeewa = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://nihon-inventory.onrender.com/api/getproductssanjeewa'); // Replace with your API endpoint
+              const response = await fetch('http://localhost:5000/api/getproductssanjeewa'); // Replace with your API endpoint
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }

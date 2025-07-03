@@ -15,7 +15,7 @@ const MonthlyCollection = () => {
   useEffect(() => {
     const fetchMonthlySales = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/monthlysales');
+        const response = await axios.get('http://localhost:5000/api/monthlysales');
         setMonthlySales(response.data);
       } catch (error) {
         console.error('Failed to fetch monthly sales', error);
@@ -27,7 +27,7 @@ const MonthlyCollection = () => {
 
     const fetchMonthlyCollection = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/monthly-collection');
+        const response = await axios.get('http://localhost:5000/api/monthly-collection');
         setMonthlyCollection(response.data);
       } catch (error) {
         console.error('Failed to fetch monthly collection', error);

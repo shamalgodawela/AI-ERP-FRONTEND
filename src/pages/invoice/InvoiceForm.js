@@ -52,7 +52,7 @@ const InvoiceForm = () => {
   useEffect(() => {
     const fetchLastInvoiceNumber = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/lastInvoiceNumber');
+        const response = await axios.get('http://localhost:5000/api/lastInvoiceNumber');
         setLastInvoiceNumber(response.data.lastInvoiceNumber);
       } catch (error) {
         console.error('Failed to fetch last invoice number:', error.message);
@@ -77,7 +77,7 @@ const InvoiceForm = () => {
 
       if (productField === 'productCode') {
         try {
-          const response = await axios.get(`https://nihon-inventory.onrender.com/api/products/${value}`);
+          const response = await axios.get(`http://localhost:5000/api/products/${value}`);
           const product = response.data;
 
           setFormData({
@@ -195,7 +195,7 @@ const InvoiceForm = () => {
      
   
     try {
-      const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
+              const orderCheckResponse = await axios.get(`http://localhost:5000/api/check/${formData.orderNumber}`);
       const orderExists = orderCheckResponse.data.exists;
   
       if (orderExists) {
@@ -217,7 +217,7 @@ const InvoiceForm = () => {
         // taxtotal: finalValue.toFixed(2),
       };
   
-      const response = await axios.post(`https://nihon-inventory.onrender.com/api/add-invoice`, updatedFormData);
+              const response = await axios.post(`http://localhost:5000/api/add-invoice`, updatedFormData);
       console.log('Invoice added successfully', response.data);
   
       toast.success('Invoice added successfully', {
@@ -253,7 +253,7 @@ const InvoiceForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.get(`https://nihon-inventory.onrender.com/api/orders/${formData.orderNumber}`);
+              const response = await axios.get(`http://localhost:5000/api/orders/${formData.orderNumber}`);
       const orderData = response.data;
 
       if (orderData.status === "pending") {

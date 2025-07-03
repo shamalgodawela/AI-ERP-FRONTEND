@@ -15,7 +15,7 @@ export default function ViewSingleTax() {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-Taxinvoices/${invoiceNumber}`);
+        const response = await axios.get(`http://localhost:5000/api/get-Taxinvoices/${invoiceNumber}`);
         setInvoice(response.data);
       } catch (error) {
         console.error(`Failed to fetch invoice with id ${invoiceNumber}`, error.message);

@@ -14,7 +14,7 @@ const MonthlySalesChart = () => {
   useEffect(() => {
     const fetchMonthlySales = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/monthlysales');
+        const response = await axios.get('http://localhost:5000/api/monthlysales');
         setMonthlySales(response.data);
         setLoading(false);
       } catch (error) {

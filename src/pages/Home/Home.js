@@ -27,7 +27,7 @@ export const Home = () => {
           </li>
             <li>
           <button className='--btn --btn-primary'>
-             <Link to="/adminlogin">Admin Login</Link>
+             <Link to="/All-in-one-Login">Main Login</Link>
             </button> 
           </li> 
           <li>

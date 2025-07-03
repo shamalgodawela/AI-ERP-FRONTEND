@@ -15,7 +15,7 @@ const ViewAllBulk = () => {
         const fetchdetails= async()=>{
             try {
 
-                const response= await axios.get('https://nihon-inventory.onrender.com/api/get-allbulk-details');
+                const response= await axios.get('http://localhost:5000/api/get-allbulk-details');
                 setbulk(response.data)
                 setloading(false);
 

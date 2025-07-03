@@ -51,7 +51,7 @@ const AddateProduct = () => {
         const productCode = formData.category;
 
         try {
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/products/category/${productCode}`);
+            const response = await axios.get(`http://localhost:5000/api/products/category/${productCode}`);
             const product = response.data;
 
             setFormData((prevFormData) => ({

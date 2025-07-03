@@ -18,7 +18,7 @@ const CustomerList = () => {
     const fetchCustomers = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/customers');
+        const response = await axios.get('http://localhost:5000/api/customers');
         setCustomers(response.data);
       } catch (error) {
         console.error('Error fetching customers:', error);

@@ -12,7 +12,7 @@ const OfficeInventoryTable = () => {
     const fetchInventory = async () => {
       try {
         setIsLoading(true); // Set loading to true when fetching starts
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/alloffice');
+        const response = await axios.get('http://localhost:5000/api/alloffice');
         setInventoryList(response.data);
         setIsLoading(false); // Set loading to false when fetching completes
       } catch (error) {

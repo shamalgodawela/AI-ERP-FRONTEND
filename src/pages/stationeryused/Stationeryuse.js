@@ -19,7 +19,7 @@ const Stationeryuse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://nihon-inventory.onrender.com/api/addstationeryuse', formData);
+              const response = await axios.post('http://localhost:5000/api/addstationeryuse', formData);
       console.log('Stationery added successfully:', response.data);
       toast.success('data added successfully')
       // Reset the form after successful submission

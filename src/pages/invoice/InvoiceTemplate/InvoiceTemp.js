@@ -15,7 +15,7 @@ export default function InvoiceTemp() {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
         setInvoice(response.data);
       } catch (error) {
         console.error(`Failed to fetch invoice with id ${id}`, error.message);

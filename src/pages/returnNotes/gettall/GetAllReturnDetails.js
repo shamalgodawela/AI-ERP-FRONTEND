@@ -10,7 +10,7 @@ const GetAllReturnDetails = () => {
     useEffect(() => {
         const fetchReturnDetails = async () => {
             try {
-                const response = await axios.get('https://nihon-inventory.onrender.com/api/getreturnd');
+                const response = await axios.get('http://localhost:5000/api/getreturnd');
                 setReturnDetails(response.data);
                 setLoading(false);
             } catch (error) {

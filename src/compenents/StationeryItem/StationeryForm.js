@@ -14,7 +14,7 @@ const StationeryForm = () => {
     e.preventDefault();
     if (!code.trim() || !name.trim() || !quantity.trim() || !price.trim()) return;
     try {
-      await axios.post(`https://nihon-inventory.onrender.com/api/add/stationery`, { code, name, quantity, price });
+              await axios.post(`http://localhost:5000/api/add/stationery`, { code, name, quantity, price });
       toast.success('Stationery item added successfully');
       // Clear the form after successful submission
       setCode('');

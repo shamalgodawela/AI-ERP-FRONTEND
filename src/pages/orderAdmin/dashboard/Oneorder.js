@@ -17,7 +17,7 @@ const Oneorder = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await axios.get(`https://nihon-inventory.onrender.com/api/orders/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/orders/${id}`);
         const orderData = response.data;
         
         const updatedOrderData = {
@@ -94,7 +94,7 @@ const Oneorder = () => {
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://nihon-inventory.onrender.com/api/orders/${id}`, updatedOrder);
+              await axios.put(`http://localhost:5000/api/orders/${id}`, updatedOrder);
       // Assuming successful update, setOrder to updatedOrder to reflect changes
       setOrder(updatedOrder);
 

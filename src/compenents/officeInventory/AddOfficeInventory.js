@@ -25,7 +25,7 @@ const AddOfficeInventory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://nihon-inventory.onrender.com/api/addoffice', formData);
+              const response = await axios.post('http://localhost:5000/api/addoffice', formData);
       if (response.status === 201) {
         toast.success('Office Inventory details added successfully');
         setFormData({

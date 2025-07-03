@@ -40,7 +40,7 @@ const DealerPastHistory = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-total-salesby-dealer/${dealerCode}`);
+              const response = await axios.get(`http://localhost:5000/api/get-total-salesby-dealer/${dealerCode}`);
       const { productMovement, totalInvoiceAmount, totalCollectionAmount, customerName } = response.data;
       console.log("Customer Name from API:", response.data.customerName);
 

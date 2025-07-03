@@ -15,7 +15,7 @@ const ProductQuantityChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/totalproduct');
+        const response = await axios.get('http://localhost:5000/api/totalproduct');
         setData(response.data);
       } catch (err) {
         console.error('Failed to fetch data', err);

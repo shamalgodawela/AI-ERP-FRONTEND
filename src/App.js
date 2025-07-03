@@ -82,26 +82,11 @@ import GetExeInvoice from "./compenents/EXEiNVOICE/GetExeInvoice";
 import InvoiceExetemp from "./compenents/EXEiNVOICE/Invoicetempexe/InvoiceExetemp";
 import WithoutMallout from "./compenents/outstandingTable/WithoutMallout";
 import Taxinvoice from "./pages/invoice/TaXinvoiceTemp/Taxinvoice";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import Mlogin from "./pages/MainLogin/Mlogin";
+import AuthError from "./pages/MainLogin/AuthError";
+import ProtectedRoute from "./services/ProtectedRoute";
 
 axios.defaults.withCredentials= true;
-
-
-
 
 function App() {
   const dispatch =useDispatch();
@@ -122,12 +107,42 @@ function App() {
    <ToastContainer />
    <Routes>
 
+{/* ---------------------------------Common Pages-------------------------------- */}
+
     <Route path="/" element={<Home/>}/>
+    <Route path="/All-in-one-Login" element={<Mlogin/>}/>
+    <Route path="/Unotherized" element={<AuthError/>}/>
+
+{/* ----------------------------------------------------------------------------- */}
+
+{/* ---------------------------------Admin Pages--------------------------------- */}
+
+    <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+      <Route path="/alloutstanding" element={<AllOutStanding />} />
+    </Route>
+
+{/* ----------------------------------------------------------------------------- */}
+
+{/* ---------------------------------User Pages--------------------------------- */}
+
+     <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
+      <Route path="/dashboard" element={<Dashboard/>}/>
+     </Route>
+
+
+{/* ----------------------------------------------------------------------------- */}
+
+
+
+
+
+
+
     <Route path="/login" element={<Login/>}/>
     <Route path="/register" element={<Register/>}/>
     <Route path="/forgot" element={<Forgot/>}/>
     <Route path="/resetpassword/:resetToken" element={<Reset/>}/>
-    <Route path="/dashboard" element={<Dashboard/>}/>
+    {/* <Route path="/dashboard" element={<Dashboard/>}/> */}
     <Route path="/reports" element={<Report/>}/>
     <Route path="/add-products" element={<AddProduct/>}/>
     <Route path="/account" element={<Account/>}/>
@@ -141,7 +156,7 @@ function App() {
     <Route path="/getAllCustomer" element={<GetCustomer/>} />
     <Route path="/Mdetails" element={<Mdetails/>} />
     <Route path="/customer/:code" element={<CustomerDetails/>} />
-    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+    {/* <Route path="/AllOutstanding" element={<AllOutStanding/>} /> */}
     <Route path="/AllOutstanding-without-Menu" element={<WithoutMallout/>} />
     <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
     <Route path="/dateproduct" element={<Dateproduct/>} />
@@ -199,6 +214,8 @@ function App() {
 
 
 {/* -------------------------------------Admin Page--------------------------------------------------------- */}
+
+
 
 <Route path="/Add-Cheque" element={<AddCheque/>} />
 
