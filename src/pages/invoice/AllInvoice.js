@@ -6,6 +6,7 @@ import { AiOutlineEye } from 'react-icons/ai';
 import Footer from '../../compenents/footer/Footer';
 import Loader from '../../compenents/loader/Loader';
 import Navbar2 from '../../compenents/sidebar/Navbar2';
+import { useAuth } from '../../services/AuthProvider';
 
 const AllInvoice = () => {
   const [invoices, setInvoices] = useState([]);
@@ -17,6 +18,13 @@ const AllInvoice = () => {
   const [productCode, setProductCode] = useState(''); 
   const { id } = useParams();
   const [sinvoice, setsinvoice] = useState(null);
+  const { user } = useAuth();
+
+  // Debug authentication state
+  useEffect(() => {
+    console.log('AllInvoice - Current user state:', user);
+    console.log('AllInvoice - User role:', user?.role);
+  }, [user]);
 
   const fetchInvoices = async () => {
     setIsLoading(true);

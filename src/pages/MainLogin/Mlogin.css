@@ -1,0 +1,178 @@
+/* Mlogin.css - Beautiful Main Login Page */
+
+.mlogin-bg {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mlogin-container {
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 22px;
+    box-shadow: 0 20px 40px rgba(24, 90, 157, 0.10);
+    padding: 48px 36px 36px 36px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: fadeInUp 0.7s cubic-bezier(.39,.575,.56,1.000);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mlogin-logo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.mlogin-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(67, 206, 162, 0.15);
+    object-fit: cover;
+    background: #fff;
+}
+
+.mlogin-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #185a9d;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.mlogin-subtitle {
+    color: #6c7a89;
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+    font-weight: 500;
+}
+
+.mlogin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.mlogin-input {
+    padding: 13px 16px;
+    border-radius: 8px;
+    border: 1.5px solid #d1e3f0;
+    font-size: 1rem;
+    background: #f7fafc;
+    color: #185a9d;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    font-weight: 500;
+}
+
+.mlogin-input:focus {
+    border: 1.5px solid #43cea2;
+    box-shadow: 0 0 0 2px rgba(67, 206, 162, 0.15);
+}
+
+.mlogin-btn {
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.08rem;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 0;
+    margin-top: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(24, 90, 157, 0.10);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+}
+
+.mlogin-btn:hover, .mlogin-btn:focus {
+    background: linear-gradient(135deg, #185a9d, #43cea2);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(24, 90, 157, 0.13);
+    outline: none;
+}
+
+.mlogin-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.mlogin-loader {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border: 3px solid #43cea2;
+    border-top: 3px solid #185a9d;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .mlogin-container {
+        padding: 32px 10px 24px 10px;
+        max-width: 95vw;
+    }
+    .mlogin-title {
+        font-size: 1.5rem;
+    }
+    .mlogin-logo {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 400px) {
+    .mlogin-container {
+        padding: 18px 2vw 12px 2vw;
+    }
+    .mlogin-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .mlogin-container {
+        background: rgba(30, 30, 30, 0.97);
+        box-shadow: 0 20px 40px rgba(24, 90, 157, 0.18);
+    }
+    .mlogin-title {
+        color: #43cea2;
+    }
+    .mlogin-input {
+        background: #23272f;
+        color: #43cea2;
+        border: 1.5px solid #2c3e50;
+    }
+    .mlogin-input:focus {
+        border: 1.5px solid #43cea2;
+        box-shadow: 0 0 0 2px rgba(67, 206, 162, 0.18);
+    }
+} 

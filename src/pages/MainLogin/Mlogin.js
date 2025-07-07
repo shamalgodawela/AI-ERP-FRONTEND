@@ -3,31 +3,41 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../services/AuthProvider';
 import { toast } from 'react-toastify';
+import './Mlogin.css';
+import logo from '../../assets/ERP-Login.webp';
 
-const Mlogin=()=>{
-    const {setUser}=useAuth();
-    const navigate=useNavigate();
-    const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
-    const [loading,setLoading]=useState(false);
+const Mlogin = () => {
+    const { setUser } = useAuth();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit=async (e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            const response=await axios.post("http://localhost:5000/api/users/login",{email,password});
-            const userdata=response.data
+            const response = await axios.post("http://localhost:5000/api/users/login", { email, password });
+            const userdata = response.data
 
+            console.log('Mlogin - Setting user data:', userdata);
             setUser(userdata);
+            console.log('Mlogin - User data set successfully');
             toast.success("Login successful!");
 
-            if(userdata.role==="admin"){
+            if (userdata.role === "admin") {
                 navigate("/alloutstanding");
-            }else if(userdata.role==="user"){
-                navigate("/dashboard");
+            } else if (userdata.role === "user") {
+                navigate("/Maindashboard");
             }
-            else{
+            else if (userdata.role === "executve") {
+                navigate("/Exedahsboard");
+            }
+            else if (userdata.role === "Operation") {
+                navigate("/inventory-dashboard");
+            }
+            else {
                 navigate("/Unotherized");
             }
         } catch (error) {
@@ -38,40 +48,45 @@ const Mlogin=()=>{
         }
     }
 
-    const handleEmailChange=(e)=>{
-       setEmail(e.target.value);
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
     }
 
-    const handlePasswordChange=(e)=>{
-       setPassword(e.target.value);
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
     }
 
-
-
-
-
-    return(
-        <div>
-            <h1>Main Login</h1>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    value={email} 
-                    onChange={handleEmailChange}
-                    required
-                />
-                <input 
-                    type="password" 
-                    placeholder="Password" 
-                    value={password} 
-                    onChange={handlePasswordChange}
-                    required
-                />
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-            </form>
+    return (
+        <div className="mlogin-bg">
+            <div className="mlogin-container">
+                <div className="mlogin-logo-wrap">
+                    <img src={logo} alt="ERP Login" className="mlogin-logo" />
+                </div>
+                <h1 className="mlogin-title">Welcome Back</h1>
+                <p className="mlogin-subtitle">Sign in to your ERP account</p>
+                <form className="mlogin-form" onSubmit={handleSubmit} autoComplete="off">
+                    <input
+                        className="mlogin-input"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={handleEmailChange}
+                        required
+                        autoFocus
+                    />
+                    <input
+                        className="mlogin-input"
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        required
+                    />
+                    <button className="mlogin-btn" type="submit" disabled={loading}>
+                        {loading ? <span className="mlogin-loader"></span> : "Login"}
+                    </button>
+                </form>
+            </div>
         </div>
     )
 }
