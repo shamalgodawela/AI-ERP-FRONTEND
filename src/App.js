@@ -8,8 +8,6 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getLoginStatus } from "./services/authService";
 import { SET_LOGIN } from "./redux/features/auth/authSlice";
-import AIChatbot from "./compenents/chatbot/AIChatbot";
-import LLMChatbot from "./compenents/chatbot/LLMChatbot";
 import AddProduct from "./pages/addProduct/AddProduct";
 import ProductDetails from "./pages/products/productDetails/ProductDetails";
 import EditProduct from "./pages/editproduct/EditProduct";
@@ -18,7 +16,6 @@ import AllInvoice from "./pages/invoice/AllInvoice";
 import InvoiceTemp from "./pages/invoice/InvoiceTemplate/InvoiceTemp";
 import CustomerReg from "./pages/customer/CustomerReg";
 import GetCustomer from "./pages/customer/getallCus/GetCustomer";
-import Mdetails from "./pages/Packing/Mdetails";
 import CustomerDetails from "./pages/customer/singleCustomer/CustomerDetails";
 import AllOutStanding from "./pages/outstandingPage/AllOutStanding";
 import CalOutstanding from "./pages/outstandingPage/CalOutstanding";
@@ -29,7 +26,6 @@ import Allorder from "./pages/Order/ALLorder/Allorder";
 import ViewallOrder from "./pages/orderAdmin/dashboard/ViewallOrder";
 import Oneorder from "./pages/orderAdmin/dashboard/Oneorder";
 import Sample from "./pages/invoice/InvoiceTemplate/Sample";
-import Additeams from "./pages/officeInvrntory/Additeams";
 import UpdateCustomerForm from "./pages/customer/Updatecus/UpdateCustomerForm";
 import Alldetails from "./pages/rawMaterials/Alldetails";
 import Addbulk from "./pages/rawMaterials/Addbulk";
@@ -57,7 +53,6 @@ import SingleOpOutstanding from "./pages/AdminOperation/outstanding/SingleOpOuts
 import ViewSingleOutstanding from "./pages/AdminOperation/ViewSingleOut/ViewSingleOutstanding";
 import DealerPastHistory from "./pages/ViewDealerHitory/DealerPastHistory";
 import SalesByExe from "./pages/Exeproductdetails/salesEachProduct/SalesByExe";
-import DamangeInventory from "./pages/DamageInventory/DamangeInventory";
 import PackingDashboard from "./pages/PackingMaterials/PackingDashboard";
 import AddCheque from "./pages/Cheque/AddCheque/AddCheque";
 import ViewAllinvoice from "./pages/ViewAllinvoice/ViewAllinvoice";
@@ -71,6 +66,7 @@ import Taxinvoice from "./pages/invoice/TaXinvoiceTemp/Taxinvoice";
 import Mlogin from "./pages/MainLogin/Mlogin";
 import AuthError from "./pages/MainLogin/AuthError";
 import ProtectedRoute from "./services/ProtectedRoute";
+import ProductListExe from "./compenents/product/productList/ProductListExe";
 
 axios.defaults.withCredentials= true;
 
@@ -91,8 +87,7 @@ function App() {
   return (
    <BrowserRouter>
    <ToastContainer />
-   <AIChatbot />
-   <LLMChatbot />
+ 
    <Routes>
 
 {/* ---------------------------------Common Pages-------------------------------- */}
@@ -120,7 +115,6 @@ function App() {
     <Route path="/Dorder" element={<Dorder/>} />
     <Route path="/allorder" element={<Allorder/>} />
     <Route path="/AllOutstanding-without-Menu" element={<WithoutMallout/>} />
-    <Route path="/orders/:id" element={<SingleOrder/>} />
    
     </Route>
 
@@ -141,7 +135,6 @@ function App() {
         <Route path="/getAllCustomer" element={<GetCustomer/>} />
         <Route path="/customer/:code" element={<CustomerDetails/>} />
         <Route path="/Add-Cheque" element={<AddCheque/>} />
-        <Route path="/Damage-Inventory" element={<DamangeInventory/>} />
         <Route path="/Packing-Materials-details" element={<PackingDashboard/>} />
         <Route path="/addreturn" element={<AddReturnDetails/>} />
         <Route path="/Maindashboard" element={<Mdashboard/>} />
@@ -150,8 +143,6 @@ function App() {
     <Route path="/viewAll-TaxInvoices" element={<AllTaxInvoice/>} />
     <Route path="/view-single-Taxinvoice/:invoiceNumber" element={<ViewSingleTax/>} />
     <Route path="/tax-invoice/:id" element={<Taxinvoice/>} />
-    <Route path="/ai-chatbot" element={<AIChatbot/>} />
-    <Route path="/llm-chatbot" element={<LLMChatbot/>} />
     <Route path="allbulkproduct" element={<Alldetails/>} />
     <Route path="/addbulkproduct" element={<Addbulk/>} />
     <Route path="/view-dealer-history" element={<DealerHistory/>} />
@@ -162,26 +153,27 @@ function App() {
     <Route path="/Season-Product-Quantity" element={<ProductQuantityChart/>} />
     <Route path="/sales" element={<Sales/>} />
     <Route path="/gesinglecancelInvoice/:invoiceNumber" element={<SingleCancelinvoice/>} />
-    <Route path="/getallcanceledInvoice" element={<GetAllCanInvoice/>} />
+    <Route path="/getallcanceledInvoice" element={<GetAllReturnDetails/>} />
     <Route path="/Dorder" element={<Dorder/>} />
     <Route path="/getallreturn" element={<GetAllReturnDetails/>} />
     <Route path="/dateproduct" element={<Dateproduct/>} />
     <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
     <Route path="/customer/update/:customerId" element={<UpdateCustomerForm />} />
     <Route path="/allorder" element={<Allorder/>} />
-    <Route path="/orders/:id" element={<SingleOrder/>} />
      </Route>
 
 {/* ----------------------------------------------------------------------------- */}
 
 {/* ---------------------------------Executive Pages--------------------------------- */}
 
-<Route element={<ProtectedRoute allowedRoles={["executve"]} />}>
+<Route element={<ProtectedRoute allowedRoles={["executive"]} />}>
   <Route path="/Exedahsboard" element={<Exedashboard/>} />
   <Route path="/exeinvoices" element={<GetExeInvoice/>} />
 <Route path="/invoice-temp-exe/:id" element={<InvoiceExetemp/>} />
 <Route path="/exetable" element={<Exetable/>} />
 <Route path="/addorder" element={<AddOrderdetails/>} />
+<Route path="/product-list" element={<ProductListExe/>} />
+<Route path="/allorder" element={<Allorder/>} />
 </Route>
 
 
@@ -202,19 +194,6 @@ function App() {
     <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
 <Route path="/view-admin-outstanding/:id" element={<ViewSingleOutstanding/>} />
 <Route path="/view-Delaer-history" element={<DealerPastHistory/>} />
-
-
-    
-    
-    
- 
-   
-
-    
-    
- 
- 
-    
    
 {/* ------------------------------------------------------------------------------------------------ */}
 

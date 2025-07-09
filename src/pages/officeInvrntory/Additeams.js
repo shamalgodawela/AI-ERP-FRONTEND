@@ -1,5 +1,4 @@
 import React from 'react'
-import AddOfficeInventory from '../../compenents/officeInventory/AddOfficeInventory'
 import NavBar from '../../compenents/sidebar/NavBar'
 import Footer from '../../compenents/footer/Footer'
 
@@ -9,7 +8,7 @@ const Additeams = () => {
         <NavBar/>
         <br/><br/>
         
-        <AddOfficeInventory/>
+        
         <br/>
         <Footer/>
         

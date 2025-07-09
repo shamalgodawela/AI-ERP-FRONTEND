@@ -31,7 +31,7 @@ const Mlogin = () => {
             } else if (userdata.role === "user") {
                 navigate("/Maindashboard");
             }
-            else if (userdata.role === "executve") {
+            else if (userdata.role === "executive") {
                 navigate("/Exedahsboard");
             }
             else if (userdata.role === "Operation") {
