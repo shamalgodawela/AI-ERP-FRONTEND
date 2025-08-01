@@ -84,7 +84,6 @@ const EditProduct = () => {
       
       {isLoading && <Loader />}
       <h3 className="--mt">Edit Product</h3>
-      <NavBar/>
       <br/><br/>
       <ProductForm
         product={product}

@@ -1,31 +1,80 @@
-.product-summary {
+.product-summary-container {
   width: 100%;
-  .info-summary {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 20%;
-  }
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: linear-gradient(135deg, #000000 0%, #485149 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
 }
 
-.card {
-  border: 1px solid #ccc;
-  /* // border-bottom: 3px solid var(--light-blue); */
-  padding: 5px;
-  background-color: #f5f6fa;
+/* Glassmorphism overlay */
+.product-summary-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
+  z-index: 0;
+  border-radius: 18px;
+}
+
+.product-summary-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #fff;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.product-summary-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.product-summary-card {
+  min-width: 220px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+  padding: 28px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-summary-card:hover {
+  transform: translateY(-8px) scale(1.05) rotate(-1deg);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.95);
 }
 
 .card1 {
-  background-color: #b624ff;
+  background-color: #b624ff !important;
+  color: #fff;
 }
 .card2 {
-  background-color: #32963d;
+  background-color: #32963d !important;
+  color: #fff;
 }
 .card3 {
-  background-color: #c41849;
+  background-color: #c41849 !important;
+  color: #fff;
 }
 .card4 {
-  background-color: #03a5fc;
-}
-.--mt{
-  margin-left: 20%;
+  background-color: #03a5fc !important;
+  color: #fff;
 }

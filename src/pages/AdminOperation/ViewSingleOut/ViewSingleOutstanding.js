@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Footer from "../../../compenents/footer/Footer";
 import './singleout.css'
-import Menu from "../../../compenents/Menu/Menu";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { FaUser, FaFileInvoice, FaCalendarAlt, FaUserTie, FaMapMarkerAlt, FaMoneyBillWave, FaCheckCircle, FaHistory } from 'react-icons/fa';
 
 const ViewSingleOutstanding = () => {
     const containerRef = useRef(null);
@@ -28,79 +27,51 @@ const ViewSingleOutstanding = () => {
                 setInvoice(response.data);
             } catch (error) {
                 console.error(`Failed to fetch invoice with id ${id}`, error.message);
-                // Handle error
             }
         };
-
         fetchInvoice();
     }, [id]);
 
     const calculateTotal = () => {
         let total = 0;
-    
         if (invoice && invoice.products) {
             total = invoice.products.reduce((acc, product) => {
                 const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
                 return acc + productTotal;
             }, 0);
         }
-    
         return total.toFixed(2);
     };
-    
 
- 
     const handleCalculate = async () => {
         try {
             const parsedAmount = parseFloat(amount);
-            if (isNaN(parsedAmount)) {
-                throw new Error('Invalid amount value');
-            }
-    
+            if (isNaN(parsedAmount)) throw new Error('Invalid amount value');
             const total = calculateTotal();
             const parsedTotal = parseFloat(total.replace(/,/g, ''));
-            if (isNaN(parsedTotal)) {
-                throw new Error('Invalid total value');
-            }
-    
-            console.log('Amount:', parsedAmount);
-            console.log('Total:', parsedTotal);
-    
+            if (isNaN(parsedTotal)) throw new Error('Invalid total value');
             const response = await axios.get(`http://localhost:5000/api/get-last-outstanding/${invoice.invoiceNumber}`);
             const lastOutstanding = parseFloat(response.data.outstanding);
-            
-    
-            console.log('Last Outstanding:', lastOutstanding);
-    
             let newOutstanding;
             if (lastOutstanding === -1) {
                 newOutstanding = parsedTotal - parsedAmount;
-                console.log('New Outstanding (from last outstanding):', newOutstanding);
-            } 
-            else{
+            } else {
                 newOutstanding = lastOutstanding - parsedAmount;
-                console.log('New Outstanding (last outstanding is 0):', newOutstanding);
             }
-
             setOutstanding(newOutstanding.toFixed(2));
         } catch (error) {
             console.error('Failed to calculate outstanding value:', error.message);
-            // Handle error case if needed
         }
     };
-    
-    
+
     const handleSave = async () => {
         try {
             await axios.post(`http://localhost:5000/api/create`, { invoiceNumber: invoice.invoiceNumber,date ,backName,depositedate,CHnumber, amount, outstanding });
-            // Display success message
             toast.success('Data added successfully!');
         } catch (error) {
             toast.error('faild to add details...')
-            // Handle error
         }
     };
-    
 
     const handleFetchAllOutstandingDetails = async () => {
         try {
@@ -109,22 +80,14 @@ const ViewSingleOutstanding = () => {
             if (data.length === 0) {
                 alert('Customer did not pay yet')          
                 toast.error('Customer did not pay yet')
-                
-            }
-            else{
+            } else {
                 setSavedDetails(data);
-
             }
-            
         } catch (error) {
             toast.error('Customer did not pay yet')
             alert('Customer did not pay yet') 
-            console.error('Failed to fetch all outstanding details:', error.message);
-            // Handle error
         }
     };
-    
-    
 
     if (!invoice) {
         return <div>Loading...</div>;
@@ -132,145 +95,107 @@ const ViewSingleOutstanding = () => {
 
     const formatNumbers = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      };
+    };
 
-
-      const backoption =[
-        'BOC',
-        'Commercial',
-        'HNB'
-      ]
-
-      const goback=()=>{
-        navigate(-1);
-      }
+    const backoption = [ 'BOC', 'Commercial', 'HNB' ];
+    const goback = () => { navigate(-1); };
 
     return (
-        <div>
-            <Menu/><br/><br/><br/>
-            <Link to="#" onClick={goback} className="Back-Icon5">
-              Go Back
-              <IoMdArrowRoundBack size={23} />
-            </Link>
-        <div className="cal-outstanding-container">
-        <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
-        <h4 className="h1-out">Customer:{invoice.customer}</h4>
-        <h4 className="h1-out">Address:{invoice.address}</h4>
-        <h4 className="h1-out">Invoice Date:{invoice.invoiceDate}</h4>
-        <h4 className="h1-out">EXE: {invoice.exe}</h4>
-        <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
-              Go Back
-              <IoMdArrowRoundBack size={23} />
-        </Link>
-        
-        
-        <br/><hr/><br/>
-
-        <h2 className="h1-out">Product Details</h2>
-        <table>
-            <thead>
-                <tr>
-                    <td className="text-bold">Product Code</td>
-                    <td className="text-bold">Description</td>
-                    <td className="text-bold">Quantity</td>
-                    <td className="text-bold">Label Price</td>
-                    <td className="text-bold">Discount</td>
-                    <td className="text-bold">Unit Price</td>
-                    <td className="text-bold">Invoice Total</td>
-                </tr>
-            </thead>
-            <tbody>
-                {invoice.products.map((product, index) => (
-                    <tr key={index}>
-                        <td>{product.productCode}</td>
-                        <td>{product.productName}</td>
-                        <td>{product.quantity}</td>
-                        <td>RS/={product.labelPrice}</td>
-                        <td>{product.discount}</td>
-                        <td>RS/={product.unitPrice}</td>
-                        <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-       
-
-        {/* <div className="info-item-td text-end text-bold1" id="second1">SubTotal: RS/={calculateTotal()}</div>
-        <div className="info-item-td text-end text-bold2" id="second2">Tax: %{invoice.Tax}</div> */}
-        <div className="info-item-td text-end text-bold3" id="second3">Total: RS/={calculateTotal()}
-</div>
-        <br/><br/><hr/> <br/><br/>
-        <div className="add-outstanding-container">
-    <h1 className="h1-out">Add Outstanding</h1>
-    <div className="input-container">
-        <label>Deposited Date:</label>
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-    </div>
-    <div className="input-container">
-        <label>Bank Name:</label>
-        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
-            <option value="" disabled>Select a Bank</option>
-            {backoption.map((bank, index) => (
-                    <option key={index} value={bank}>
-                        {bank}
-                    </option>
-            ))}
-
-        </select>
-    </div>
-    <div className="input-container">
-        <label>Date:</label>
-        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e)=>setdepositedate(e.target.value)}/>
-    </div>
-    <div className="input-container">
-        <label>Cheque Number/Reference Number:</label>
-        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e)=>setCHnumber(e.target.value)} required/>
-    </div>
-    <div className="input-container">
-        <label>Amount:</label>
-        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
-    </div>
-    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
-    <div className="outstanding">Outstanding:RS/={outstanding}</div>
-    <button className="save-button" onClick={handleSave}>Save</button>
-    <hr/>
-    <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
-</div>
- <br/><br/><hr/> <br/>
-
-        {/* Display saved details */}
-        {savedDetails && (
-            <div>
-                <h2 className="h1-out">All Outstanding Details:</h2>
+        <div className="singleout-bg">
+            <div className="singleout-header-banner" />
+            <div className="singleout-info-card">
+                <div className="singleout-info-item">
+                    <span className="singleout-info-label"><FaFileInvoice /> Invoice</span>
+                    <span className="singleout-info-invoice">{invoice.invoiceNumber}</span>
+                </div>
+                <div className="singleout-info-item">
+                    <span className="singleout-info-label"><FaUser /> Customer</span>
+                    <span className="singleout-info-customer">{invoice.customer}</span>
+                </div>
+                <div className="singleout-info-item">
+                    <span className="singleout-info-label"><FaMapMarkerAlt /> Address</span>
+                    <span className="singleout-info-value">{invoice.address}</span>
+                </div>
+                <div className="singleout-info-item">
+                    <span className="singleout-info-label"><FaCalendarAlt /> Date</span>
+                    <span className="singleout-info-value">{invoice.invoiceDate}</span>
+                </div>
+                <div className="singleout-info-item">
+                    <span className="singleout-info-label"><FaUserTie /> EXE</span>
+                    <span className="singleout-info-value">{invoice.exe}</span>
+                </div>
+                <div className="singleout-summary-card">
+                    <FaMoneyBillWave style={{marginRight: 6}} />
+                    Total: RS/= {formatNumbers(calculateTotal())}
+                    <br />
+                </div>
+            </div>
+            <div className="cal-outstanding-container">
+                <Link to="#" onClick={goback} className="Back-Icon5">
+                    <IoMdArrowRoundBack size={23} style={{marginRight: 6}} /> Go Back
+                </Link>
+                <h2 className="h1-out"><FaHistory style={{marginRight: 8}} />Product Details</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Bank Name</th>
-                            <th>Outstanding</th>
-                            
+                            <td className="text-bold">Product Code</td>
+                            <td className="text-bold">Description</td>
+                            <td className="text-bold">Quantity</td>
+                            <td className="text-bold">Label Price</td>
+                            <td className="text-bold">Discount</td>
+                            <td className="text-bold">Unit Price</td>
+                            <td className="text-bold">Invoice Total</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {savedDetails.map((detail, index) => (
+                        {invoice.products.map((product, index) => (
                             <tr key={index}>
-                                <td>{detail.date}</td>
-                                <td>RS/={detail.amount}</td>
-                                <td>{detail.backName}</td>
-                                <td>RS/={detail.outstanding}</td>
-                                
-                                
+                                <td>{product.productCode}</td>
+                                <td>{product.productName}</td>
+                                <td>{product.quantity}</td>
+                                <td>RS/={product.labelPrice}</td>
+                                <td>{product.discount}</td>
+                                <td>RS/={product.unitPrice}</td>
+                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                <div className="info-item-td text-end text-bold3" id="second3">
+                    Total: RS/= {formatNumbers(calculateTotal())}
+                </div>
+                <br /><hr /><br />
+                
+                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}><FaHistory style={{marginRight: 6}} />Fetch All Outstanding Details</button>
+                <br /><br /><hr /> <br />
+                {savedDetails && (
+                    <div>
+                        <h2 className="h1-out"><FaHistory style={{marginRight: 8}} />All Outstanding Details:</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Bank Name</th>
+                                    <th>Outstanding</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {savedDetails.map((detail, idx) => (
+                                    <tr key={idx}>
+                                        <td>{detail.date}</td>
+                                        <td>RS/= {formatNumbers(detail.amount)}</td>
+                                        <td>{detail.backName}</td>
+                                        <td>RS/= {formatNumbers(detail.outstanding)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
-        )}
-    </div>
-    <Footer/>
-    </div>
+        </div>
     );
-}
+};
 
 export default ViewSingleOutstanding;

@@ -67,6 +67,20 @@ import Mlogin from "./pages/MainLogin/Mlogin";
 import AuthError from "./pages/MainLogin/AuthError";
 import ProtectedRoute from "./services/ProtectedRoute";
 import ProductListExe from "./compenents/product/productList/ProductListExe";
+import Admin from "./compenents/AdminProfile/Admin";
+import Allcustomers from "./pages/ViewDealerHitory/Allcustomer";
+import ProductSummary from "./compenents/product/productSummary/ProductSummary";
+import AllExeTable from "./compenents/Exetable/AllTableexe/AllExeTable";
+import AllProducts from "./compenents/bulkproduct/Allproduct/AllProducts";
+import BankStatement from "./compenents/BankStatements/BankStatement";
+import UserDashboard from "./pages/UserDashboard/UserDashboard";
+import Admininventory from "./pages/dashboard/AdminDASH/Admininventory";
+import Useroutstanding from "./pages/UserDashboard/UserOutstanding/Useroutstanding";
+import UserBulkProduct from "./pages/NewBulkDetails/UserBulkProduct";
+import UserBulkP from "./compenents/bulkproduct/Allproduct/UserBulkP";
+import UserFinishedProduct from "./pages/products/productDetails/UserFinishedProduct";
+import AddateProduct from "./compenents/dateproduct/AddateProduct";
+
 
 axios.defaults.withCredentials= true;
 
@@ -108,14 +122,25 @@ function App() {
 <Route path="/view-admin-outstanding/:id" element={<ViewSingleOutstanding/>} />
 <Route path="/view-Delaer-history" element={<DealerPastHistory/>} />
     <Route path="/Adminallorder" element={<ViewallOrder/>} />
-    <Route path="/view-dealer-history" element={<DealerHistory/>} />
     <Route path="/Collectioh-dashboard" element={<Collectiondash/>} />
     <Route path="/invoice/:invoiceNumber" element={<EditInvoice/>} />
     <Route path="/AllOutstanding" element={<AllOutStanding/>} />
     <Route path="/Dorder" element={<Dorder/>} />
-    <Route path="/allorder" element={<Allorder/>} />
     <Route path="/AllOutstanding-without-Menu" element={<WithoutMallout/>} />
-   
+    <Route path="/admin-profile" element={<Admin/>} />
+    <Route path="/sales" element={<Sales/>} />
+    <Route path="/AllcustomerWiseHistory" element={<Allcustomers/>}/>
+    <Route path="/productSummery" element={<ProductSummary/>}/>
+    <Route path="/dashboard" element={<Admininventory/>}/>
+    <Route path="/edit-product/:id" element={<EditProduct/>}/>
+    <Route path="/product-list" element={<ProductListExe/>} />
+    <Route path="/Allexetable" element={<AllExeTable/>}/>
+    <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
+    <Route path="/view-current-bulk" element={<AllProducts/>}/>
+    <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
+    <Route path="/bankstatement" element={<BankStatement/>}/>
+
+
     </Route>
 
 {/* ----------------------------------------------------------------------------- */}
@@ -123,7 +148,8 @@ function App() {
 {/* ---------------------------------User Pages--------------------------------- */}
 
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/view-all-order" element={<Allorder/>} />
+          <Route path="/User-dashboard" element={<UserDashboard/>}/>
           <Route path="/add-products" element={<AddProduct/>}/>
           <Route path="/product-detail/:id" element={<ProductDetails/>}/>
           <Route path="/edit-product/:id" element={<EditProduct/>}/>
@@ -159,7 +185,17 @@ function App() {
     <Route path="/dateproduct" element={<Dateproduct/>} />
     <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
     <Route path="/customer/update/:customerId" element={<UpdateCustomerForm />} />
-    <Route path="/allorder" element={<Allorder/>} />
+    <Route path="/user-check-outstanding" element={<Useroutstanding/>} />
+    <Route path="/user-Bulk-product" element={<UserBulkProduct/>} />
+    <Route path="/user-Bulk-product-ton" element={<UserBulkP/>} />
+    <Route path="/user-finishedProduct" element={<UserFinishedProduct/>} />
+    <Route path="/add-packing-product" element={<AddateProduct/>} />
+
+   
+   
+  
+  
+
      </Route>
 
 {/* ----------------------------------------------------------------------------- */}

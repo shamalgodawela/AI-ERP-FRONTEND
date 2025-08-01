@@ -49,23 +49,23 @@ const SingleOpOutstanding = () => {
     };
     
 
-    // const calculateTaxtot = () => {
-    //     if (invoice && invoice.products) {
-    //         const taxRate = invoice.Tax || 0;
+    const calculateTaxtot = () => {
+        if (invoice && invoice.products) {
+            const taxRate = invoice.Tax || 0;
 
-    //         const totalTax = invoice.products.reduce((acc, product) => {
-    //             const productTax = parseFloat(product.invoiceTotal) * (taxRate / 100);
-    //             return acc + productTax;
-    //         }, 0);
+            const totalTax = invoice.products.reduce((acc, product) => {
+                const productTax = parseFloat(product.invoiceTotal) * (taxRate / 100);
+                return acc + productTax;
+            }, 0);
 
-    //         const subtotal = calculateTotal();
-    //         const totalWithTax = subtotal + totalTax;
+            const subtotal = calculateTotal();
+            const totalWithTax = subtotal + totalTax;
 
-    //         return totalWithTax.toFixed(2);
-    //     }
+            return totalWithTax.toFixed(2);
+        }
 
-    //     return 0;
-    // };
+        return 0;
+    };
     const handleCalculate = async () => {
         try {
             const parsedAmount = parseFloat(amount);
@@ -163,7 +163,6 @@ const SingleOpOutstanding = () => {
 
     return (
         <div>
-            <MenuOperation/><br/><br/><br/><br/>
             <Link to="#" onClick={goback} className="Back-Icon5">
                 Go Back
                 <IoMdArrowRoundBack size={23} />
@@ -209,13 +208,13 @@ const SingleOpOutstanding = () => {
         </table>
        
 
-        {/* <div className="info-item-td text-end text-bold1" id="second1">SubTotal: RS/={calculateTotal()}</div>
-        <div className="info-item-td text-end text-bold2" id="second2">Tax: %{invoice.Tax}</div> */}
+        <div className="info-item-td text-end text-bold1" id="second1">SubTotal: RS/={calculateTotal()}</div>
+        <div className="info-item-td text-end text-bold2" id="second2">Tax: %{invoice.Tax}</div>
         <div className="info-item-td text-end text-bold3" id="second3">Total: RS/={calculateTotal()}
 </div>
         <br/><br/><hr/> <br/><br/>
         <div className="add-outstanding-container">
-    {/* <h1 className="h1-out">Add Outstanding</h1>
+    <h1 className="h1-out">Add Outstanding</h1>
     <div className="input-container">
         <label>Deposited Date:</label>
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
@@ -247,12 +246,12 @@ const SingleOpOutstanding = () => {
     <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
     <div className="outstanding">Outstanding:RS/={outstanding}</div>
     <button className="save-button" onClick={handleSave}>Save</button>
-    <hr/> */}
+    <hr/>
     <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
 </div>
  <br/><br/><hr/> <br/>
 
-        {/* Display saved details */}
+      
         {savedDetails && (
             <div>
                 <h2 className="h1-out">All Outstanding Details:</h2>

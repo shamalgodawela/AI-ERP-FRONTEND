@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTable } from 'react-table';
-import { SpinnerImg } from '../../loader/Loader'; // Import loading spinner
+import { SpinnerImg } from '../../loader/Loader'; 
 import "./productdate.css"
 
 const ProductdateList = () => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // State for loading indicator
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchDate, setSearchDate] = useState("");
+  const [searchProductCode, setSearchProductCode] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true); // Set loading to true when fetching starts
+        setIsLoading(true); 
         const response = await axios.get('http://localhost:5000/api/dateProducts');
         setData(response.data);
-        setIsLoading(false); // Set loading to false when fetching completes
+        setIsLoading(false); 
       } catch (error) {
         console.error('Error fetching data:', error);
-        setIsLoading(false); // Set loading to false in case of error
+        setIsLoading(false);
       }
     };
     fetchData();
   }, []);
+
+  // Filter data by date and product code
+  const filteredData = data.filter(item => {
+    const matchesDate = searchDate ? item.GpnDate === searchDate : true;
+    const matchesProductCode = searchProductCode ? 
+      item.category.toLowerCase().includes(searchProductCode.toLowerCase()) : true;
+    return matchesDate && matchesProductCode;
+  });
 
   const columns = React.useMemo(
     () => [
@@ -57,7 +67,7 @@ const ProductdateList = () => {
     []
   );
 
-  const tableInstance = useTable({ columns, data });
+  const tableInstance = useTable({ columns, data: filteredData });
 
   const {
     getTableProps,
@@ -69,45 +79,59 @@ const ProductdateList = () => {
 
   return (
     <div className="product-management">
-    <button type="button" className="add-product-btn" disabled>
-      <a href="/dateproduct" className="add-product-link">Add Product</a>
-    </button>
-    {isLoading ? (
-      <SpinnerImg />
-    ) : (
-      <table {...getTableProps()} className="product-table">
-        <thead className="table-header">
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()} className="header-row">
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()} className="header-cell">
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()} className="table-body">
-          {rows.map(row => {
-            prepareRow(row);
-            return (
-              <tr
-                {...row.getRowProps()}
-                className={`body-row ${row.index % 2 === 0 ? 'even-row' : 'odd-row'}`}
-              >
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()} className="body-cell">
-                    {cell.render('Cell')}
-                  </td>
+      
+      <div className="product-search-bar">
+        <input
+          type="date"
+          placeholder="Search by Date"
+          value={searchDate}
+          onChange={e => setSearchDate(e.target.value)}
+          className="search-input"
+        />
+        <input
+          type="text"
+          placeholder="Search by Product Code"
+          value={searchProductCode}
+          onChange={e => setSearchProductCode(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      {isLoading ? (
+        <SpinnerImg />
+      ) : (
+        <table {...getTableProps()} className="product-table">
+          <thead className="table-header">
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()} className="header-row">
+                {headerGroup.headers.map(column => (
+                  <th {...column.getHeaderProps()} className="header-cell">
+                    {column.render('Header')}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    )}
-  </div>
-  
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()} className="table-body">
+            {rows.map(row => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className={`body-row ${row.index % 2 === 0 ? 'even-row' : 'odd-row'}`}
+                >
+                  {row.cells.map(cell => (
+                    <td {...cell.getCellProps()} className="body-cell">
+                      {cell.render('Cell')}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 };
 

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './dateproduct.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import UserNavbar from '../sidebar/UserNavbar/UserNavbar';
+import Footer from '../footer/Footer';
 
 const AddateProduct = () => {
     const [formData, setFormData] = useState({
@@ -40,7 +42,7 @@ const AddateProduct = () => {
             const data = await response.json();
             console.log('Product added successfully:', data);
             toast.success('Product added successfully!');
-            // You can redirect or perform any other action here
+            
         } catch (error) {
             console.error('Error adding product:', error.message);
             toast.error('Failed to add product. Please try again.');
@@ -84,6 +86,8 @@ const AddateProduct = () => {
     };
 
     return (
+        <div>
+            <UserNavbar/>
         <div className="add-product-container">
             <h1 className='h1add'>Add daily packing details</h1>
             <form className="add-product-form" onSubmit={handleSubmit}>
@@ -125,6 +129,8 @@ const AddateProduct = () => {
 
                 <button className="submit-button" type="submit">Add Product</button>
             </form>
+        </div>
+        <Footer/>
         </div>
     );
 };

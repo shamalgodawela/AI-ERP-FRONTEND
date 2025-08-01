@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AllProducts.css';
+import AdminnavBar from '../../AdminNavbar/AdminnavBar';
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
@@ -25,6 +26,8 @@ const AllProducts = () => {
 
   return (
     <div>
+      <AdminnavBar/>
+      <br/><br/>
     <h2 className='bulk-heading'>Bulk Products</h2>
     {isLoading ? (
       <p>Loading...</p>

@@ -1,0 +1,33 @@
+.bank-statement-container {
+    padding: 20px;
+    background-color: #f7f7f7;
+  }
+  
+  .bank-statement-container h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .bank-statement-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+  .bank-statement-table th,
+  .bank-statement-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  .bank-statement-table th {
+    background-color: #eee;
+  }
+  
+  .error-text {
+    color: red;
+    text-align: center;
+  }
+  

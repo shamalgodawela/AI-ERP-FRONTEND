@@ -1,18 +1,98 @@
-.h2-dealer-history{
-    color:black;
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-}
-.dealer-history-p{
-    color:black;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 25px;
-
+.dealer-history-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
+  padding: 0;
+  margin: 0;
 }
 
-.Back-Icon{
-    color: black;
-    font-size: 30px;
-    margin-left: 10px;
-    margin-top: 10px;
+.dealer-history-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+  max-width: 900px;
+  margin: 32px auto 40px auto;
+}
+
+.h2-dealer-history {
+  color: #4f8cff;
+  text-align: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}
+
+.dealer-history-p {
+  color: #222;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.Back-Icon {
+  color: #4f8cff;
+  font-size: 2rem;
+  margin-left: 10px;
+  margin-top: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.Back-Icon:hover {
+  color: #1a5edb;
+}
+
+.dealer-history-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.dealer-history-search input[type="text"] {
+  padding: 10px 14px;
+  border-radius: 7px;
+  border: 1.5px solid #bfc9d9;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7faff;
+  transition: border 0.2s;
+}
+.dealer-history-search input[type="text"]:focus {
+  border: 1.5px solid #4f8cff;
+  outline: none;
+}
+
+.dealer-history-search button {
+  background: linear-gradient(90deg, #4f8cff 0%, #1a5edb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.dealer-history-search button:disabled {
+  background: #bfc9d9;
+  cursor: not-allowed;
+}
+.dealer-history-search button:hover:not(:disabled) {
+  background: #1a5edb;
+  box-shadow: 0 4px 16px rgba(79,140,255,0.18);
+}
+
+@media (max-width: 900px) {
+  .dealer-history-card {
+    padding: 12px 2px;
+    max-width: 99vw;
+  }
+  .h2-dealer-history {
+    font-size: 1.2rem;
+  }
 }

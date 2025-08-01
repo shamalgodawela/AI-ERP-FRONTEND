@@ -1,88 +1,175 @@
-/* .all-invoice {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
+.outstanding-fullscreen-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
-h2 {
-  color: #333;
+.outstanding-header-bar {
+  width: 100vw;
+  background: linear-gradient(90deg, #005704 0%, #43e97b 100%);
+  padding: 1.2rem 2.5vw 1.2rem 2.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  min-height: 64px;
 }
 
-.table-container {
-  max-height: 500px; 
-  overflow-y: auto;
-  border: 1px solid #ccc;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-thead {
-  background-color: #645959;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-
-
-th {
-  font-weight: bold;
-}
-
-tbody tr:hover {
-  background-color: #f5f5f5;
-}
-
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 8px 16px;
+.go-admin-btn {
+  background: #fff;
+  color: #005704;
   border: none;
-  border-radius: 4px;
+  border-radius: 22px;
+  padding: 0.7rem 1.7rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-left: 1rem;
+}
+.go-admin-btn:hover {
+  background: #005704;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,87,4,0.18);
 }
 
-button:hover {
-  background-color: #45a049;
+.invoice-body {
+  max-width: 1400px;
+  width: 98vw;
+  margin: 32px auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  flex: 1 1 auto;
+  min-height: 70vh;
+}
+
+.all-invoice {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .h2-invoice {
   text-align: center;
-  color: black;
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: bold;
+  color: #1b5e20;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.01em;
 }
 
-.canceled {
-  background-color: rgba(255, 0, 0, 0.355);
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 18px;
+  background: #f8fafc;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(76,175,80,0.07);
+}
+
+thead {
+  background: linear-gradient(90deg, #005704 0%, #43e97b 100%);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+th, td {
+  padding: 14px 10px;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+th {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+tbody tr {
+  background: #fff;
+  transition: background 0.2s;
+}
+tbody tr:nth-child(even) {
+  background: #f1f8e9;
+}
+tbody tr:hover {
+  background: #e0f2f1;
 }
 
 .canceled-row {
-  background-color: rgb(79, 77, 77);
-  color: white; 
+  background: #b71c1c !important;
+  color: #fff;
 }
 
 .not-paid {
-  background-color: rgb(141, 31, 0);
-  font-weight: bold; 
+  background: #ff7043 !important;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 6px 10px;
 }
 
 .paid {
-  background-color: green;
+  background: #43a047 !important;
+  color: #fff;
   font-weight: bold;
+  border-radius: 6px;
+  padding: 6px 10px;
 }
 
-.td-invoice {
-  color: black;
-} */
+select, input[type='text'] {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #bdbdbd;
+  margin: 0 10px 18px 0;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+select:focus, input[type='text']:focus {
+  border: 1.5px solid #43e97b;
+}
 
-th, td {
-  padding: 12px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: bolder;
+.action-icon, .td-invoice a svg {
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+.action-icon:hover, .td-invoice a svg:hover {
+  color: #005704;
+  transform: scale(1.2);
+}
+
+@media (max-width: 900px) {
+  .invoice-body {
+    padding: 12px 2px;
+    max-width: 99vw;
+  }
+  th, td {
+    font-size: 0.92rem;
+    padding: 8px 4px;
+  }
+  .h2-invoice {
+    font-size: 1.2rem;
+  }
+  .outstanding-header-bar {
+    padding: 0.7rem 1vw 0.7rem 1vw;
+    min-height: 44px;
+  }
+  .go-admin-btn {
+    font-size: 0.95rem;
+    padding: 0.5rem 1.1rem;
+  }
 }

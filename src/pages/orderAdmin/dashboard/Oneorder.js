@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './oneorder.css';
-import Menu from '../../../compenents/Menu/Menu';
 import Footer from '../../../compenents/footer/Footer';
 
 
@@ -148,9 +147,7 @@ const Oneorder = () => {
 
   return (
     <div className='bodAdmin'>
-      <Menu/><br/><br/>
-     
-      <div className="container">
+        <div className="container">
         <div className="order-details-container">
           <h2 className="order-details-header">Order Details</h2>
           {isLoading ? (

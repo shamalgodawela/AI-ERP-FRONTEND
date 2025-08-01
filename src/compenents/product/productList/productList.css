@@ -70,3 +70,63 @@
   font-family: 'Times New Roman', Times, serif;
   font-weight: 900;
 }
+
+/* Revert to a normal, full-width table style */
+.product-table-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 12px;
+  margin: 32px auto;
+  max-width: 1800px;
+}
+
+.modern-product-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modern-table-header th {
+  background: #4f3cc9;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 14px 8px;
+  border: none;
+  text-align: left;
+}
+
+.modern-table-body tr:nth-child(even) td {
+  background: #f7f7fa;
+}
+
+.modern-table-body td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.modern-table-body tr:hover td {
+  background: #e6eaff;
+  transition: background 0.2s;
+}
+
+.icons span {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .product-table-container {
+    padding: 8px 2px;
+  }
+  .modern-table-header th, .modern-table-body td {
+    padding: 7px 2px;
+    font-size: 0.95rem;
+  }
+}

@@ -1,32 +1,63 @@
 .product-table-container {
-    margin-top: 20px;
-  }
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 12px;
+  max-width: 100%;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.product-table th {
+  background: #222;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 14px 8px;
+  border: none;
+  text-align: center;
+
+}
+
+.product-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1rem;
+  color: #333;
   
-  .product-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .product-table th,
-  .product-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  .product-table th {
-    background-color: #4f4f4f;
-    font-weight: bold;
-  }
-  
-  .product-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .product-table tbody tr:hover {
-    background-color: #ddd;
-  }
-  .ahamed-h2{
-    color:black;
-    font-family: 'Times New Roman', Times, serif;
-    text-align: center;
-  }
+}
+
+.product-table tbody tr:nth-child(even) td {
+  background: #f7f7fa;
+}
+
+.product-table tbody tr:hover td {
+  background: #e6eaff;
+  transition: background 0.2s;
+}
+
+.ahamed-h2 {
+  color: #222;
+  font-family: 'Segoe UI', 'Times New Roman', Times, serif;
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.h1-allexe-table-h1{
+  color: black;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 900;
+}

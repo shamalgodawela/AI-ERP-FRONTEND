@@ -163,12 +163,7 @@ const CalOutstanding = () => {
 
     return (
         <div>
-            <Menu/><br/>
 
-            <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
-  Go Back
-  <IoMdArrowRoundBack size={23} />
-</Link>
 
             <br/><br/>
 

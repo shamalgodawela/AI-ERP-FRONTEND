@@ -1,12 +1,14 @@
 import React from 'react'
 import ProductdateList from '../../../compenents/product/productList/ProductdateList'
-import NavBar from '../../../compenents/sidebar/NavBar'
+
 import Footer from '../../../compenents/footer/Footer'
+import AdminnavBar from '../../../compenents/AdminNavbar/AdminnavBar'
 
 const ProductdateDetails = () => {
   return (
     <div>
-        <NavBar/>
+        <AdminnavBar/>
+        
         <br/><br/><br/>
         <ProductdateList/>
         <br/><br/>

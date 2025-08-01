@@ -8,6 +8,22 @@
     background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('../../assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.mlogin-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(34, 70, 34, 0.3); /* greenish overlay for readability */
+    z-index: 1;
 }
 
 .mlogin-container {
@@ -19,6 +35,7 @@
     width: 100%;
     text-align: center;
     position: relative;
+    z-index: 2;
     animation: fadeInUp 0.7s cubic-bezier(.39,.575,.56,1.000);
 }
 

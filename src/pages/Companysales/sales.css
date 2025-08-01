@@ -1,83 +1,106 @@
-.sales-Heading{
-    font-family:'Times New Roman', Times, serif;
-    color:black;
-    font-weight:bolder;
-    margin-left:10%
+body, .sales-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
+  margin: 0;
+  padding: 0;
 }
+
 .sales-Heading {
-  font-family: 'Times New Roman', Times, serif;
-  color: black;
-  font-weight: bolder;
-  margin-left: 10%;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #4f8cff;
+  font-weight: 700;
+  text-align: center;
+  margin: 32px 0 18px 0;
+}
+
+.h4-season-update-heading {
+  color: #1a5edb;
+  font-weight: 700;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-style: italic;
+  margin-top: 8px;
 }
 
 .cards-container {
   display: flex;
-  justify-content: space-around;
-  margin-left: 5%;
-  margin-right: 5%;
-  gap: 10px;
+  justify-content: center;
+  gap: 32px;
+  margin: 32px 0 32px 0;
+  flex-wrap: wrap;
 }
 
 .card {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: #333;
-  max-width: 300px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  color: #222;
+  min-width: 260px;
+  max-width: 340px;
+  flex: 1 1 260px;
   overflow: hidden;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 0 8px;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 8px 32px rgba(79,140,255,0.18);
 }
 
 .card-header {
-  background: #6b6868;
-  background: -webkit-linear-gradient(to right, #8f94fb, #4e54c8);
-  background: linear-gradient(to right, #8f94fb, #ababab);
-  border-radius: 8px 8px 0 0;
-  color: rgb(242, 242, 242);
-  padding: 10px;
+  background: linear-gradient(90deg, #4f8cff 0%, #1a5edb 100%);
+  color: #fff;
+  padding: 18px 0 10px 0;
+  font-size: 1.3rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  border-radius: 18px 18px 0 0;
 }
 
 .card-body {
-  font-size: 24px;
-  padding: 20px;
+  font-size: 2rem;
+  padding: 28px 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  color: #222;
 }
 
 .card-body p {
   margin: 0;
 }
-.h4-season-update-heading{
-  color:black;
-  font-weight: 900;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-style: italic;
-}
-.chart-container {
-  width: 80%;
-  margin: 20px auto;
-}
-.pie-container{
-  text-align:center;
-  font-family:'Times New Roman', Times, serif;
 
+.chart-container {
+  width: 90vw;
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 32px 18px;
 }
+
+.pie-container {
+  text-align: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #4f8cff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 32px 0 18px 0;
+}
+
 .sales-by-exe-container {
   padding: 20px;
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .sales-by-exe-container h2 {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
+  font-size: 1.5rem;
+  color: #4f8cff;
 }
 
 .sales-by-exe-table {
@@ -93,7 +116,7 @@
 }
 
 .sales-by-exe-table th {
-  background-color: #4CAF50;
+  background-color: #4f8cff;
   color: white;
   text-transform: uppercase;
 }
@@ -107,5 +130,33 @@
 }
 
 .sales-by-exe-table tr:hover {
-  background-color: #f1f1f1;
+  background-color: #e0e7ff;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  color: #4f8cff;
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 18px;
+  margin-left: 8px;
+  transition: color 0.2s;
+}
+.back-link:hover {
+  color: #1a5edb;
+}
+
+@media (max-width: 900px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .chart-container {
+    padding: 12px 2px;
+    width: 98vw;
+  }
 }

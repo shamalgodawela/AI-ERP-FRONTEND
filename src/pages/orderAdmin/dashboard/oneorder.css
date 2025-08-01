@@ -1,26 +1,33 @@
-.bodAdmin{
-  background-image: url('../../../assets/order-back.jpg');
+.bodAdmin {
+  background-image: url('../../../assets/order.avif');
   background-attachment: fixed;
   background-size: cover;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
+
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 32px 0 48px 0;
 }
 
 .order-details-container {
-  background-color: #ffffff76;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: rgba(255,255,255,0.92);
+  padding: 32px 28px;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  margin-top: 32px;
 }
 
 .order-details-header {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #000000;
-  font-family: 'Times New Roman', Times, serif;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #4f8cff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .form-group {
@@ -28,33 +35,53 @@
 }
 
 .order-details-label {
-  font-weight: bold;
-  color: #000000;
-  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  color: #222;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin-bottom: 6px;
+  display: block;
 }
 
 .order-details-product-header {
-  font-size: 20px;
+  font-size: 1.3rem;
   margin-top: 30px;
   margin-bottom: 10px;
-  color: #333333;
+  color: #1a5edb;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
 }
 
 .order-details-product-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  background: #f7faff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .order-details-product-table th,
 .order-details-product-table td {
   padding: 12px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eaeaea;
   text-align: left;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+}
+
+.order-details-product-table th {
+  background: #4f8cff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.order-details-product-table tr:hover {
+  background: #e0e7ff;
 }
 
 .order-details-product-item {
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .order-details-product-item:last-child {
@@ -62,47 +89,64 @@
 }
 
 input[type="text"],
-select {
+select, input[type="date"] {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  font-size: 14px;
+  padding: 10px 12px;
+  border: 1.5px solid #bfc9d9;
+  border-radius: 7px;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7faff;
+  transition: border 0.2s;
+  margin-top: 4px;
+}
+input[type="text"]:focus,
+select:focus,
+input[type="date"]:focus {
+  border: 1.5px solid #4f8cff;
+  outline: none;
 }
 
-input[type="date"] {
-  width: calc(100% - 16px);
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: #ffffff;
+button[type="submit"], .btn-dealer-history {
+  background: linear-gradient(90deg, #4f8cff 0%, #1a5edb 100%);
+  color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
+  border-radius: 7px;
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
   cursor: pointer;
+  margin-top: 18px;
+  box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+button[type="submit"]:hover, .btn-dealer-history:hover {
+  background: #1a5edb;
+  box-shadow: 0 4px 16px rgba(79,140,255,0.18);
 }
 
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-.h3-order-admin{
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: bold;
+.h3-order-admin {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  color: #4f8cff;
 }
 
-.btn-dealer-history{
-  background-color: #000000;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
+.a-dealer-history {
+  color: #4f8cff;
+  font-weight: 700;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  text-decoration: underline;
 }
-.a-dealer-history{
-  color: white;
-  font-weight: 900;
-  font-family: 'Times New Roman', Times, serif;
+
+@media (max-width: 700px) {
+  .container {
+    padding: 8px 0 24px 0;
+  }
+  .order-details-container {
+    padding: 12px 2px;
+  }
+  .order-details-header {
+    font-size: 1.2rem;
+  }
 }

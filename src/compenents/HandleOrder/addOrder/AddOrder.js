@@ -21,6 +21,7 @@ const AddOrder = ({ onAddOrder }) => {
         CreditPeriod:'',
         Paymentmethod:'',
         CusVatNo:'',
+        IncentiveDueDate: '',
         products: [{ productCode: '', productName: '', quantity: '', labelPrice: '', discount: '', unitPrice: '', invoiceTotal: '' }]
     });
     const [lastOrderNumber, setLastOrderNumber] = useState('');
@@ -317,21 +318,14 @@ const fetchLastOrderNumberEA2 = async () => {
   <label className="form-label">Customer Vat No</label>
   <input type="text" className="form-input" name="CusVatNo" value={orderData.CusVatNo} onChange={(e) => setOrderData({ ...orderData, CusVatNo: e.target.value })} />
 </div>
-{/* <div className="form-row">
-  <label className="form-label">Vat reg no:</label>
-  <input type="text" className="form-input" name="VatRegNo" value={orderData.VatRegNo} onChange={(e) => setOrderData({ ...orderData, VatRegNo: e.target.value })} />
-</div>
 <div className="form-row">
-  <label className="form-label">vat no:</label>
-  <input type="text" className="form-input" name="VatNO" value={orderData.VatNO} onChange={(e) => setOrderData({ ...orderData, VatNO: e.target.value })} />
+  <label className="form-label">Executive Incentive Due Date</label>
+  <input type="date" className="form-input" name="IncentiveDueDate" value={orderData.IncentiveDueDate} onChange={(e) => setOrderData({ ...orderData, CusVatNo: e.target.value })} />
 </div>
-<div className="form-row">
-  <label className="form-label">Tax No:</label>
-  <input type="text" className="form-input" name="TaxNo" value={orderData.TaxNo} onChange={(e) => setOrderData({ ...orderData, TaxNo: e.target.value })} />
-</div> */}
+
 
 <h1 className='h1order'>Product details</h1>
-            {/* Render product input fields */}
+          
             <div className="product-container">
   {orderData.products.map((product, index) => (
     <div key={index}>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../services/AuthProvider';
 import { toast } from 'react-toastify';
 import './Mlogin.css';
-import logo from '../../assets/ERP-Login.webp';
+import logo from '../../assets/nihon.png';
 
 const Mlogin = () => {
     const { setUser } = useAuth();
@@ -27,9 +27,9 @@ const Mlogin = () => {
             toast.success("Login successful!");
 
             if (userdata.role === "admin") {
-                navigate("/alloutstanding");
+                navigate("/admin-profile");
             } else if (userdata.role === "user") {
-                navigate("/Maindashboard");
+                navigate("/User-dashboard");
             }
             else if (userdata.role === "executive") {
                 navigate("/Exedahsboard");
@@ -83,7 +83,7 @@ const Mlogin = () => {
                         required
                     />
                     <button className="mlogin-btn" type="submit" disabled={loading}>
-                        {loading ? <span className="mlogin-loader"></span> : "Login"}
+                        {loading ? <span className="mlogin-loader"></span> : "Agri Login"}
                     </button>
                 </form>
             </div>

@@ -7,8 +7,6 @@ import InfoBox from '../../infoBox/InfoBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { CALC_OUTOFSTOCK, CALC_STORE_VALUE, selectOutOfStock, selectTotalStoreValue } from '../../../redux/features/product/productSlice';
 
-
-
 // Icons
 const earningIcon = <AiFillDollarCircle size={25} color="#fff" />;
 const productIcon = <BsCart4 size={40} color="#fff" />;
@@ -20,8 +18,6 @@ export const formatNumbers = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-
-
 const ProductSummary = ({products}) => {
   const dispatch=useDispatch();
   const totalStockValue=useSelector(selectTotalStoreValue)
@@ -32,21 +28,21 @@ const ProductSummary = ({products}) => {
     dispatch(CALC_OUTOFSTOCK(products))
   }, [dispatch, products])
 
-
-
   return (
-    <div className='product-summary'>
-      <h3 className='--mt'>Inventory summary</h3>
-      <div className='info-summary'>
-        <InfoBox icon={productIcon} title={"Total Products"} count={products.length} bgColor="card1"/>
-        <InfoBox  title={"Total Value"} count={`RS/= ${formatNumbers(totalStockValue.toFixed(2))}`} bgColor="card2"/>
-        <InfoBox icon={outOfStockIcon} title={"Out of stock"} count={outOfStoack} bgColor="card3"/>
-        <a href="/add-products"  tabindex="-1" role="button" aria-disabled="true">Product Registration</a>
-        
-       
-
+    <section className='product-summary-container'>
+      <h2 className='product-summary-title'>Inventory Summary</h2>
+      <div className='product-summary-cards'>
+        <div className='product-summary-card'>
+          <InfoBox icon={productIcon} title={"Total Products"} count={products ? products.length : 0} bgColor="card1"/>
+        </div>
+        <div className='product-summary-card'>
+          <InfoBox  title={"Total Value"} count={`RS/= ${formatNumbers(totalStockValue.toFixed(2))}`} bgColor="card2"/>
+        </div>
+        <div className='product-summary-card'>
+          <InfoBox icon={outOfStockIcon} title={"Out of stock"} count={outOfStoack} bgColor="card3"/>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 

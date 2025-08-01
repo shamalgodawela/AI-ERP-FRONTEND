@@ -16,10 +16,14 @@ const Collectionbyexe = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!startDate || !endDate) {
+            setLoading(false);
+            return;
+        }
         const fetchData = async () => {
             try {
                 setLoading(true); // Set loading state to true before the request
-                const queryParams = startDate && endDate ? `?startDate=${startDate}&endDate=${endDate}` : '';
+                const queryParams = `?startDate=${startDate}&endDate=${endDate}`;
                 const response = await axios.get(`http://localhost:5000/api/collection-exe${queryParams}`);
                 setData(response.data);
                 setLoading(false); // Set loading state to false after data is fetched
@@ -29,17 +33,8 @@ const Collectionbyexe = () => {
                 setLoading(false); // Set loading state to false in case of error
             }
         };
-
         fetchData();
     }, [startDate, endDate]); // Dependency array to refetch when startDate or endDate change
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     const chartData = {
         labels: data.map(item => item.exe),
@@ -64,28 +59,39 @@ const Collectionbyexe = () => {
     };
 
     return (
-        <div>
-            <Link to="#" onClick={goBack}><IoMdArrowRoundBack size={23} /></Link>&nbsp;&nbsp;
-            <h1 className='h1-exe-colelction'>Executives Collection (updated details of 2024 April to present)</h1>
-            
-            <div className="search-container">
-                <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    placeholder="Start Date"
-                />
-                &nbsp; to &nbsp;
-                <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    placeholder="End Date"
-                />
-            </div>
-
-            <div className="chart-container">
-                <Pie data={chartData} />
+        <div className="collectionbyexe-bg">
+            <div className="collectionbyexe-container">
+                <Link to="#" onClick={goBack} className="back-link"><IoMdArrowRoundBack size={23} /> Back</Link>
+                <div className="chart-card">
+                    <h1 className='h1-exe-colelction'>Executives Collection (updated details of 2024 April to present)</h1>
+                    <div className="search-container">
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            placeholder="Start Date"
+                        />
+                        &nbsp; to &nbsp;
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            placeholder="End Date"
+                        />
+                    </div>
+                    {(!startDate || !endDate) && (
+                        <div style={{marginTop: '24px', color: '#6b7a90', fontFamily: 'Segoe UI, Arial, sans-serif', textAlign: 'center'}}>
+                            Please select both a start date and an end date to view the collection data.
+                        </div>
+                    )}
+                    {loading && startDate && endDate && <div style={{marginTop: '24px'}}>Loading...</div>}
+                    {error && <div style={{marginTop: '24px', color: 'red'}}>{error}</div>}
+                    {!loading && !error && startDate && endDate && (
+                        <div className="chart-container">
+                            <Pie data={chartData} />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

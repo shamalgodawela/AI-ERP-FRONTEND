@@ -1,118 +1,172 @@
-.cal-outstanding-container {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.cal-outstanding-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 40px;
 }
 
-.cal-outstanding-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+.cal-outstanding-container {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  max-width: 900px;
+  width: 98vw;
+  margin: 40px auto 0 auto;
+  padding: 36px 32px 32px 32px;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cal-outstanding-container h1, .cal-outstanding-container h2, .cal-outstanding-container h4 {
+  color: #005704;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.01em;
 }
 
 .cal-outstanding-container table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 24px;
+  background: #f8fafc;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(76,175,80,0.07);
 }
 
 .cal-outstanding-container table th,
 .cal-outstanding-container table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+  border: 1px solid #e0e0e0;
+  padding: 12px 8px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.cal-outstanding-container table th {
+  background: linear-gradient(90deg, #005704 0%, #43e97b 100%);
+  color: #fff;
+  font-weight: 700;
 }
 
 .cal-outstanding-container .text-bold {
-    font-weight: bold;
+  font-weight: 700;
 }
 
 .cal-outstanding-container .info-item-td {
-    margin-top: 10px;
+  margin-top: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #005704;
+  text-align: right;
 }
 
-.cal-outstanding-container input[type="date"],
-.cal-outstanding-container input[type="number"] {
-    padding: 8px;
-    margin-right: 10px;
-}
-
-.cal-outstanding-container button {
-    padding: 8px 20px;
-    background-color: #001b39;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-.cal-outstanding-container button:hover {
-    background-color: #0056b3;
-}
-
-.cal-outstanding-container .success-message {
-    color: green;
-    margin-top: 10px;
-}
-
-.cal-outstanding-container .error-message {
-    color: red;
-    margin-top: 10px;
-}
-.h1-out{
-    color: black;
-    font-family: 'Times New Roman', Times, serif;
-    text-align: center;
-}
 .add-outstanding-container {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    max-width: 500px;
-    margin: auto;
+  padding: 32px 24px;
+  border-radius: 14px;
+  background: #f1f8e9;
+  max-width: 600px;
+  margin: 32px auto 0 auto;
+  box-shadow: 0 2px 8px rgba(76,175,80,0.07);
 }
 
 .input-container {
-    margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .input-container label {
-    display: block;
-    margin-bottom: 5px;
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: #005704;
 }
 
-.input-container input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.input-container input,
+.input-container select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #bdbdbd;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.input-container input:focus,
+.input-container select:focus {
+  border: 1.5px solid #43e97b;
 }
 
 .calculate-button,
 .save-button,
 .fetch-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background: linear-gradient(90deg, #005704 0%, #43e97b 100%);
+  color: #fff;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 12px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,87,4,0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
-
 .calculate-button:hover,
 .save-button:hover,
 .fetch-button:hover {
-    background-color: #0056b3;
+  background: #005704;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,87,4,0.18);
 }
 
 .outstanding {
-    margin-top: 10px;
-    font-size: 18px;
+  margin-top: 16px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e65100;
+  text-align: right;
 }
 
 hr {
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 20px 0;
+  border: none;
+  border-top: 1.5px solid #e0e0e0;
+  margin: 28px 0;
+}
+
+.Back-Icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #005704;
+  background: #e8f5e9;
+  border-radius: 8px;
+  padding: 8px 18px;
+  margin: 18px 0 0 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,87,4,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.Back-Icon:hover {
+  background: #005704;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .cal-outstanding-container {
+    padding: 12px 2px;
+    max-width: 99vw;
+  }
+  .add-outstanding-container {
+    padding: 12px 2px;
+    max-width: 99vw;
+  }
 }

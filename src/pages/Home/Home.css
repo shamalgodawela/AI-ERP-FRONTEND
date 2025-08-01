@@ -80,22 +80,38 @@
 
 .welcome-root {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-image: url('../../assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Optional: Add a semi-transparent overlay for better text readability */
+.welcome-root::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(34, 70, 34, 0.4); /* greenish overlay, adjust as needed */
+  z-index: 1;
 }
 
 .welcome-container {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 60px 40px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 90%;
-  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 2;
+  background: #ffffffc0;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .welcome-content {
@@ -108,7 +124,7 @@
 .welcome-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #333;
+  color: #000000;
   margin: 0;
   line-height: 1.2;
 }
@@ -192,6 +208,13 @@
   color: #888;
   font-size: 0.9rem;
   margin: 0;
+}
+
+.welcome-logo {
+  display: block;
+  margin: 0 auto 1.5rem auto;
+  max-width: 120px;
+  height: auto;
 }
 
 /* Responsive Design */

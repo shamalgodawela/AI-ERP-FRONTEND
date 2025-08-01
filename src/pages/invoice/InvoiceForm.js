@@ -4,8 +4,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./invoice.css"
 import { useNavigate } from 'react-router-dom';
-import Navbar2 from '../../compenents/sidebar/Navbar2';
 import Loader from '../../compenents/loader/Loader';
+import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
+import Footer from '../../compenents/footer/Footer';
 
 
 
@@ -44,7 +45,8 @@ const InvoiceForm = () => {
     VatRegNo: '',
     VatNO: '',
     TaxNo: '',
-    CusVatNo:''
+    CusVatNo:'',
+    IncentiveDueDate:''
   });
 
   const [lastInvoiceNumber, setLastInvoiceNumber] = useState('');
@@ -299,6 +301,7 @@ const InvoiceForm = () => {
           VatNO:orderData.VatNO,
           TaxNo:orderData.TaxNo,
           CusVatNo:orderData.CusVatNo,
+          IncentiveDueDate: orderData.IncentiveDueDate,
           products: orderData.products.map((product) => ({
             productCode: product.productCode,
             productName: product.productName,
@@ -354,7 +357,7 @@ const InvoiceForm = () => {
 
   return (
     <div>
-      <Navbar2 />
+      <UserNavbar />
       {isLoading && <Loader />}
       <div className={`invoice-form ${isLoading ? "loading" : ""}`}>
         <h2>Create Invoice</h2>
@@ -520,6 +523,16 @@ const InvoiceForm = () => {
             />
           </div>
           <div className="form-group">
+            <label>Exe Incentive Due Date:</label>
+            <input
+              type="date"
+              name="Duedate"
+              value={formData.IncentiveDueDate}
+              onChange={handleChange}
+              readOnly
+            />
+          </div>
+          <div className="form-group">
             <label>Tax (%):</label>
             <input
               type="text"
@@ -537,15 +550,7 @@ const InvoiceForm = () => {
               readOnly
             />
           </div>
-          {/* <div className="form-group">
-            <label>Vehicle No:</label>
-            <input
-              type="text"
-              name="VehicleNo"
-              value={formData.VehicleNo}
-              onChange={handleChange}
-            />
-          </div> */}
+      
           <h3>Products</h3>
           {formData.products.map((product, index) => (
             <div key={index} className="product-group">
@@ -612,16 +617,15 @@ const InvoiceForm = () => {
                   
                 />
               </div>
-              {/* {index > 0 && (
-                <button type="button" onClick={() => removeProduct(index)}>Remove Product</button>
-              )} */}
+             
             </div>
           ))}
-          {/* <button type="button" onClick={addProduct}>Add Product</button> */}
+         
           <button type="submit">Create Invoice</button>
         </form>
         <ToastContainer />
       </div>
+      <Footer/>
       
     </div>
   );

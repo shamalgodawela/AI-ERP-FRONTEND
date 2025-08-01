@@ -1,62 +1,110 @@
-/* invoice.css */
 .invoice-form {
-    width: 70%;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .invoice-form h2 {
-    color: #333;
-    text-align: center;
-  }
-  
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.invoice-form h2 {
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 25px;
+}
+
+.invoice-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #ffffff;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* Product Section */
+.product-group {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin-top: 10px;
+}
+
+.product-group:not(:first-child) {
+  margin-top: 20px;
+}
+
+.product-group .form-group {
+  margin-bottom: 12px;
+}
+
+/* Button Styles */
+.invoice-form button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s ease;
+}
+
+.invoice-form button:hover {
+  background-color: #2563eb;
+}
+
+/* Toast Container positioning */
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+/* Responsive Grid for Inputs */
+@media (min-width: 768px) {
   .invoice-form form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
   }
-  
-  .invoice-form div {
-    margin-bottom: 15px;
+
+  .invoice-form h3 {
+    grid-column: span 2;
+    margin-top: 30px;
   }
-  
-  .invoice-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
+
+  .product-group {
+    grid-column: span 2;
   }
-  
-  .invoice-form input,
-  .invoice-form span {
-    width: 100%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+
+  .invoice-form button[type="submit"] {
+    grid-column: span 2;
   }
-  
-  .invoice-form button {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .invoice-form button:hover {
-    background-color: #45a049;
-  }
-  
-  .invoice-form span {
-    display: block;
-    padding: 8px;
-    font-size: 16px;
-    color: #333;
-  }
-  
+}

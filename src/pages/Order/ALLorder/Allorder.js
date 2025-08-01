@@ -1,14 +1,14 @@
 import React from 'react'
 import Footer from '../../../compenents/footer/Footer'
 import OrderDetails from '../../../compenents/HandleOrder/allorder/OrderDetails'
-import HeaderExe from '../../../compenents/headerexe/HeaderExe'
-import HeaderE from '../../../compenents/header/HeaderE'
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar'
+
 
 const Allorder = () => {
   return (
     <div>
-      <HeaderExe/>
-      <HeaderE/>
+      <UserNavbar/>
+
         <OrderDetails/>
         <Footer/>
     </div>

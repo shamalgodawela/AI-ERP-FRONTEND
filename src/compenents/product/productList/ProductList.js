@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./productList.css"
 import { SpinnerImg } from '../../loader/Loader'
 import { FaEdit, FaTable, FaTrashAlt } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineEye } from 'react-icons/ai'
 import Search from '../../search/Search'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,6 +20,7 @@ import { deleteProduct, getProducts } from '../../../redux/features/product/prod
 const ProductList = ({ products, isLoading }) => {
   const [search, setSearch] = useState("");
   const filteredProducts = useSelector(selectFilteredProducts);
+ 
 
   const dispatch = useDispatch();
 
@@ -92,101 +93,95 @@ const ProductList = ({ products, isLoading }) => {
       return (
         <div className="product-list">
           <hr />
-          <div className="table">
-            <div className="--flex-between --flex-dir-column">
-              <span>
-                <h3>Finished Product Main Warehouse</h3>
-              </span>
-              <span>
-              <Search
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-              </span>
-             
-            </div>
-    
-            {isLoading && <SpinnerImg />}
-    
+          <div className="product-table-container">
             <div className="table">
-              {!isLoading && products.length === 0 ? (
-                <p>-- No product found, please add a product...</p>
-              ) : (
-                <table>
-                  <thead className='thead-product-list'>
-                    <tr className='tr-product-list'>
-                      <th className='th-product-list'>s/n</th>
-                      <th className='th-product-list'>Name</th>
-                      <th className='th-product-list'>Product Code</th>
-                      <th className='th-product-list'>Label Price</th>
-                      <th className='th-product-list'>Discount</th>
-                      <th className='th-product-list'>sales price</th>
-                      <th className='th-product-list'>Quantity</th>
-                      <th className='th-product-list'>Total weight(Kg/l)</th>
-                      <th className='th-product-list'>Value</th>
-                      {/* <th>Action</th> */}
-                    </tr>
-                  </thead>
+              <div className="--flex-between --flex-dir-column">
+                <span>
+                  <h3>Finished Product Main Warehouse</h3>
+                </span>
+                <span>
+                <Search
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+                </span>
+               
+              </div>
     
-                  <tbody>
-                  {currentItems.map((record, index) => {
-                  const { _id, name, category, price, quantity, description, discount } = record;
-                  const salesPrice = calculateSalesPrice(price, discount);
-                  return (
-                    <tr key={_id}>
-                      <td>{index + 1}</td>
-                      <td>{shortenText(name, 16)}</td>
-                      <td>{category}</td>
-                      <td>
-                        {"Rs:"}
-                        {typeof price === 'string' ? formatNumbers(parseFloat(price).toFixed(2)) : formatNumbers(price.toFixed(2))}
-                      </td>
-                      <td>{discount}%</td>
-                      <td>
-                        {"Rs:"}
-                        {formatNumbers(salesPrice.toFixed(2))}
-                      </td>
-                      <td>{quantity}</td>
-                      <td>{formatNumbers(parseFloat(description * quantity).toFixed(2))}</td>
-                      <td>
-                        {"Rs:"}
-                        {typeof price === 'string' ? formatNumbers(parseFloat(salesPrice * quantity).toFixed(2)) : formatNumbers((price * quantity).toFixed(2))}
-                      </td>
-                      { <td className="icons">
-                        <span>
-                          <Link to={`/edit-product/${_id}`}>
-                            <FaEdit size={20} color={"green"} />
-                          </Link>
-                        </span>
-                        <span>
-                          <FaTrashAlt
-                            size={20}
-                            onClick={() => confirmDelete(_id)}
-                          />
-                        </span>   
-                      </td> }
-                    </tr>
-                  );
-                })}
-                  </tbody>
-                </table>
-              )}
+              {isLoading && <SpinnerImg />}
+    
+              <div className="table">
+                {!isLoading && products.length === 0 ? (
+                  <p>-- No product found, please add a product...</p>
+                ) : (
+                  <table className="modern-product-table">
+                    <thead className="modern-table-header">
+                      <tr>
+                        <th>s/n</th>
+                        <th>Name</th>
+                        <th>Product Code</th>
+                        <th>Price</th>
+                        {/* <th>Discount</th> */}
+                        <th>Sales Price</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Value</th>
+                        {/* <th>Actions</th> */}
+                      </tr>
+                    </thead>
+                    <tbody className="modern-table-body">
+                      {currentItems.map((record, index) => {
+                        const { _id, name, category, price, quantity, description, discount } = record;
+                        const salesPrice = calculateSalesPrice(price, discount);
+                        return (
+                          <tr key={_id}>
+                            <td>{index + 1}</td>
+                            <td>{shortenText(name, 16)}</td>
+                            <td>{category}</td>
+                            <td>{"Rs:"}{typeof price === 'string' ? formatNumbers(parseFloat(price).toFixed(2)) : formatNumbers(price.toFixed(2))}</td>
+                            {/* <td>{discount}%</td> */}
+                            <td>{"Rs:"}{formatNumbers(salesPrice.toFixed(2))}</td>
+                            <td>{quantity}</td>
+                            <td>{formatNumbers(parseFloat(description * quantity).toFixed(2))}</td>
+                            <td>{"Rs:"}{typeof price === 'string' ? formatNumbers(parseFloat(salesPrice * quantity).toFixed(2)) : formatNumbers((price * quantity).toFixed(2))}</td>
+                            {/* <td className="icons">
+                              <span>
+                                <Link to={`/edit-product/${_id}`}>
+                                  <FaEdit size={20} color={"green"} />
+                                </Link>
+                              </span>
+                              <span>
+                                <FaTrashAlt
+                                  size={20}
+                                  onClick={() => confirmDelete(_id)}
+                                />
+                              </span>
+                            </td> */}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
             </div>
+          </div>
+          <div>
             <ReactPaginate
-        breakLabel="..."
-        nextLabel="Next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={4}
-        pageCount={pageCount}
-        previousLabel="< Prev"
-        renderOnZeroPageCount={null}
-        containerClassName="pagination"
-          pageLinkClassName="page-num"
-          previousLinkClassName="page-num"
-          nextLinkClassName="page-num"
-          activeLinkClassName="activePage"
-      />
-            
+              breakLabel="..."
+              nextLabel="Next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={4}
+              pageCount={pageCount}
+              previousLabel="< Prev"
+              renderOnZeroPageCount={null}
+              containerClassName="pagination"
+              pageLinkClassName="page-num"
+              previousLinkClassName="page-num"
+              nextLinkClassName="page-num"
+              activeLinkClassName="activePage"
+            />
+           
           </div>
         </div>
       );

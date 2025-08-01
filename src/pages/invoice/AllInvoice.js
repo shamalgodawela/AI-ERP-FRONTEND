@@ -7,6 +7,7 @@ import Footer from '../../compenents/footer/Footer';
 import Loader from '../../compenents/loader/Loader';
 import Navbar2 from '../../compenents/sidebar/Navbar2';
 import { useAuth } from '../../services/AuthProvider';
+import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
 
 const AllInvoice = () => {
   const [invoices, setInvoices] = useState([]);
@@ -102,9 +103,9 @@ const AllInvoice = () => {
   };
 
   return (
-    <body className='invoice-body'>
+    <body>
+       <UserNavbar/>
       <div>
-        <Navbar2 /><br /><br />
         <div className="search-container" style={{ display: 'flex', marginBottom: '20px' }}>
           <input
             type="text"

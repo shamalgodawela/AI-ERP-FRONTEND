@@ -8,7 +8,7 @@ const AllOutStanding = () => {
   return (
     <div>
       
-      <Menu/><br/><br/><br/><br/>
+    
       
         <OutStandingTable/>
         

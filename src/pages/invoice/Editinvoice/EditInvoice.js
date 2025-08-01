@@ -22,6 +22,7 @@ const EditInvoice = () => {
     Tax: '',
     GatePassNo: '',
     VehicleNo: '',
+    IncentiveDueDate:'',
     products: [
       {
         productCode: '',
@@ -180,6 +181,16 @@ const EditInvoice = () => {
           id="Duedate"
           name="Duedate"
           value={invoiceData.Duedate}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="Duedate">Exe Incentive Due Date</label>
+        <input
+          type="text"
+          id="Duedate"
+          name="Duedate"
+          value={invoiceData.IncentiveDueDate}
           onChange={handleChange}
         />
       </div>

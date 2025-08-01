@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import useLocation
-import Menu from '../../compenents/Menu/Menu';
 import Footer from '../../compenents/footer/Footer';
 import './Delaerh.css';
 import { IoMdArrowRoundBack } from 'react-icons/io';
@@ -17,6 +16,8 @@ const DealerPastHistory = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
 
   const location = useLocation();
@@ -40,7 +41,13 @@ const DealerPastHistory = () => {
     setError(null);
 
     try {
-              const response = await axios.get(`http://localhost:5000/api/get-total-salesby-dealer/${dealerCode}`);
+              const params = {};
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
+      const response = await axios.get(
+        `http://localhost:5000/api/get-total-salesby-dealer/${dealerCode}`,
+        { params }
+      );
       const { productMovement, totalInvoiceAmount, totalCollectionAmount, customerName } = response.data;
       console.log("Customer Name from API:", response.data.customerName);
 
@@ -51,7 +58,7 @@ const DealerPastHistory = () => {
 
     } catch (error) {
       console.error('Error fetching dealer sales data:', error.message);
-      setError('Failed to fetch dealer sales data');
+      setError('Data Not found');
     } finally {
       setLoading(false);
     }
@@ -87,53 +94,63 @@ const DealerPastHistory = () => {
   }
 
   return (
-    <div>
-      <Link to="#" onClick={goback} className="Back-Icon">
-        <IoMdArrowRoundBack size={23} />
-      </Link><br/><br/>
-      <h2 className='h2-dealer-history'>Dealer History Information</h2>
-      
-      <div style={{ marginBottom: '10px' }}>
-        <input
-          type="text"
-          placeholder="Enter Dealer Code"
-          value={dealerCode}
-          onChange={(e) => setDealerCode(e.target.value)}
-          style={{ padding: '5px' }}
-        />
-        <button onClick={fetchData} disabled={!dealerCode.trim()} style={{ marginLeft: '10px' }}>
-          Search
-        </button>
-      </div>
-
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {!loading && !error && (
-        <div>
-          <p className='dealer-history-p'>Total Invoice Amount: Rs/= {formatNumbers(totalInvoiceAmount)}</p>
-          <p className='dealer-history-p'>Total Collection Amount: Rs/= {formatNumbers(totalCollectionAmount)}</p>
-          <p className='dealer-history-p'>Total Outstanding Amount: Rs/= {formatNumbers(totalInvoiceAmount - totalCollectionAmount)}</p>
-          <p className='dealer-history-p'>Customer Name: {customerName || 'N/A'}</p>
-
-          <h3 className='h2-dealer-history'>Product Movement</h3>
-          {Object.keys(productMovement).length === 0 ? (
-            <p>No product movement data available</p>
-          ) : (
-            <Bar
-              data={chartData}
-              options={{
-                responsive: true,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                  },
-                },
-              }}
-            />
-          )}
+    <div className="dealer-history-bg">
+      <div className="dealer-history-card">
+        <Link to="#" onClick={goback} className="Back-Icon">
+          <IoMdArrowRoundBack size={23} />
+        </Link><br/><br/>
+        <h2 className='h2-dealer-history'>Dealer History Information</h2>
+        <div className="dealer-history-search">
+          <input
+            type="text"
+            placeholder="Enter Dealer Code"
+            value={dealerCode}
+            onChange={(e) => setDealerCode(e.target.value)}
+          />
+          <input
+            type="date"
+            value={startDate}
+            onChange={e => setStartDate(e.target.value)}
+            style={{ minWidth: 120 }}
+          />
+          <span>to</span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={e => setEndDate(e.target.value)}
+            style={{ minWidth: 120 }}
+          />
+          <button onClick={fetchData} disabled={!dealerCode.trim() || !startDate || !endDate}>
+            Search
+          </button>
         </div>
-      )}
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {!loading && !error && (
+          <div>
+            <p className='dealer-history-p'>Total Invoice Amount: Rs/= {formatNumbers(totalInvoiceAmount)}</p>
+            <p className='dealer-history-p'>Total Collection Amount: Rs/= {formatNumbers(totalCollectionAmount)}</p>
+            <p className='dealer-history-p'>Total Outstanding Amount: Rs/= {formatNumbers(totalInvoiceAmount - totalCollectionAmount)}</p>
+            <p className='dealer-history-p'>Customer Name: {customerName || 'N/A'}</p>
+            <h3 className='h2-dealer-history'>Product Movement</h3>
+            {Object.keys(productMovement).length === 0 ? (
+              <p>No product movement data available</p>
+            ) : (
+              <Bar
+                data={chartData}
+                options={{
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                    },
+                  },
+                }}
+              />
+            )}
+          </div>
+        )}
+      </div>
       <Footer />
     </div>
   );

@@ -61,7 +61,7 @@ const Sales = () => {
 
   return (
     <div>
-      <Link to="#" onClick={goBack}><IoMdArrowRoundBack size={23} /></Link>&nbsp;&nbsp;
+      
       <div className='sales-Heading'>
         <h3>Hi, Welcome back!</h3>
         <h4>Finance Performance and Monitoring Sales Performance</h4>
@@ -127,6 +127,7 @@ const Sales = () => {
         <h2 className="pie-container">Executive Monthly Sales</h2>
         <Tabelexesales />
       </div>
+      <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
 
       <Footer />
     </div>

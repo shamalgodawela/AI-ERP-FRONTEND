@@ -27,8 +27,8 @@ const Ahamed = () => {
       <table className="product-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Code</th>
+            <th>Product name</th>
+            <th>Product Code</th>
             <th>Quantity</th>
             <th>Price</th>
             
