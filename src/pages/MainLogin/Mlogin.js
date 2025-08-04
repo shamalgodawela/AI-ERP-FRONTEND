@@ -18,7 +18,7 @@ const Mlogin = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/users/login", { email, password });
+            const response = await axios.post("https://nihon-inventory.onrender.com/api/users/login", { email, password });
             const userdata = response.data
 
             console.log('Mlogin - Setting user data:', userdata);

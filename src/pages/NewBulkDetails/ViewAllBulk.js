@@ -15,7 +15,7 @@ const ViewAllBulk = () => {
     useEffect(()=>{
         const fetchdetails= async()=>{
             try {
-                const response= await axios.get('http://localhost:5000/api/get-allbulk-details');
+                const response= await axios.get('https://nihon-inventory.onrender.com/api/get-allbulk-details');
                 setbulk(response.data)
                 setloading(false);
             } catch (error) {
@@ -49,7 +49,7 @@ const ViewAllBulk = () => {
       { value: '12', label: 'December' },
     ];
 
-    // Filter bulk data by year and month only
+   
     const filteredBulk = bulk.filter(bd => {
       const [year, month] = bd.InsertedDate ? bd.InsertedDate.split('-') : [null, null];
       let matchesYear = true;
@@ -60,7 +60,7 @@ const ViewAllBulk = () => {
           matchesMonth = month === searchMonth;
         }
       } else if (searchMonth) {
-        // If year is not selected, ignore month filter
+
         matchesMonth = true;
       }
       return matchesYear && matchesMonth;

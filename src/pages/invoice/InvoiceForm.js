@@ -66,7 +66,7 @@ const InvoiceForm = () => {
 
       if (productField === 'productCode') {
         try {
-          const response = await axios.get(`http://localhost:5000/api/products/${value}`);
+          const response = await axios.get(`https://nihon-inventory.onrender.com/api/products/${value}`);
           const product = response.data;
 
           setFormData({
@@ -184,7 +184,7 @@ const InvoiceForm = () => {
      
   
     try {
-              const orderCheckResponse = await axios.get(`http://localhost:5000/api/check/${formData.orderNumber}`);
+              const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
       const orderExists = orderCheckResponse.data.exists;
   
       if (orderExists) {
@@ -206,7 +206,7 @@ const InvoiceForm = () => {
         // taxtotal: finalValue.toFixed(2),
       };
   
-              const response = await axios.post(`http://localhost:5000/api/add-invoice`, updatedFormData);
+              const response = await axios.post(`https://nihon-inventory.onrender.com/api/add-invoice`, updatedFormData);
       console.log('Invoice added successfully', response.data);
   
       toast.success('Invoice added successfully', {
@@ -242,7 +242,7 @@ const InvoiceForm = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.get(`http://localhost:5000/api/orders/${formData.orderNumber}`);
+      const response = await axios.get(`https://nihon-inventory.onrender.com/api/orders/${formData.orderNumber}`);
       const orderData = response.data;
   
       if (orderData.status === "pending") {
@@ -336,15 +336,15 @@ const InvoiceForm = () => {
       let url = '';
   
       if (formData.exe === 'Mr.Ahamed') {
-        url = 'http://localhost:5000/api/get-last-invoice-number-EA1';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-EA1';
       } else if (formData.exe === 'Mr.Nayum') {
-        url = 'http://localhost:5000/api/get-last-invoice-number-NUM';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-NUM';
       } else if (formData.exe === 'SOUTH') {
-        url = 'http://localhost:5000/api/get-last-invoice-number-south1';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-south1';
       } else if (formData.exe === 'Others') {
-        url = 'http://localhost:5000/api/lastorder/other';
+        url = 'https://nihon-inventory.onrender.com/api/lastorder/other';
       } else if (formData.exe === 'UpCountry') {
-        url = 'http://localhost:5000/api/get-last-invoice-number-other';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-other';
       } else {
         toast.error("Please select a valid Executive before fetching invoice number.");
         return;
@@ -353,20 +353,20 @@ const InvoiceForm = () => {
       const response = await axios.get(url);
       console.log("Invoice API response:", response.data);
   
-      let lastInvoice = response.data.lastinvoice; // e.g., "EA1-001"
+      let lastInvoice = response.data.lastinvoice; 
       if (lastInvoice) {
-        // Split prefix and number using regex
+ 
         const match = lastInvoice.match(/^([a-zA-Z0-9\-]*?)(\d+)$/);
 
   
         if (match) {
-          const prefix = match[1];      // "EA1-"
-          const numberStr = match[2];   // "001"
+          const prefix = match[1];     
+          const numberStr = match[2];
   
-          // Convert to number and increment
+         
           let number = parseInt(numberStr, 10) + 1;
   
-          // Pad with leading zeros same length as original
+       
           const newNumberStr = number.toString().padStart(numberStr.length, '0');
   
           const newInvoiceNumber = prefix + newNumberStr;

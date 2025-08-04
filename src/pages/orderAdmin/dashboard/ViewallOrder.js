@@ -31,7 +31,7 @@ const ViewallOrder = () => {
       if (selectedPeriod) queryParams.append('period', selectedPeriod);
       if (selectedStatus) queryParams.append('status', selectedStatus);
       if (selectedExe) queryParams.append('exe', selectedExe);
-      const response = await fetch(`http://localhost:5000/api/allor?${queryParams}`); // Update the URL with your backend endpoint
+      const response = await fetch(`https://nihon-inventory.onrender.com/api/allor?${queryParams}`); 
       const data = await response.json();
       setOrders(data);
       setIsLoading(false); 

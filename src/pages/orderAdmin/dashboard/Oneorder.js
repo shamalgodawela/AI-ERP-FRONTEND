@@ -16,7 +16,7 @@ const Oneorder = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/orders/${id}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/orders/${id}`);
         const orderData = response.data;
         
         const updatedOrderData = {
@@ -70,8 +70,8 @@ const Oneorder = () => {
           const labelPrice = parseFloat(product.labelPrice);
           const discount = parseFloat(product.discount);
           const quantity = parseFloat(product.quantity);
-          const unitPrice = labelPrice * (1 - discount / 100); // Calculate unit price
-          const invoiceTotal = unitPrice * quantity; // Calculate invoice total
+          const unitPrice = labelPrice * (1 - discount / 100); 
+          const invoiceTotal = unitPrice * quantity; 
           return {
             ...product,
             unitPrice: isNaN(unitPrice) ? '' : unitPrice.toFixed(2),
@@ -89,12 +89,12 @@ const Oneorder = () => {
     setUpdatedOrder(updatedData);
   };
   
-  // Handle form submission to update order details
+  
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
     try {
               await axios.put(`http://localhost:5000/api/orders/${id}`, updatedOrder);
-      // Assuming successful update, setOrder to updatedOrder to reflect changes
+      
       setOrder(updatedOrder);
 
       
@@ -114,7 +114,7 @@ const Oneorder = () => {
     const updatedProducts = [...updatedOrder.products];
     updatedProducts[index] = { ...updatedProducts[index], [name]: value };
   
-    // Recalculate unitPrice and invoiceTotal if quantity or discount is changed
+   
     if (name === 'quantity' || name === 'discount') {
       const labelPrice = parseFloat(updatedProducts[index].labelPrice);
       const discount = parseFloat(updatedProducts[index].discount);
