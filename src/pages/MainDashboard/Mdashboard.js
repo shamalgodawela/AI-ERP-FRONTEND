@@ -86,7 +86,7 @@ const Mdashboard = () => {
 
   const navigate=useNavigate();
   const goBack = () => {
-    // Use navigate(-1) to navigate back
+    
     navigate(-1);
   };
 

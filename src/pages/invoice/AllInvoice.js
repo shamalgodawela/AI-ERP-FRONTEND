@@ -30,7 +30,7 @@ const AllInvoice = () => {
   const fetchInvoices = async () => {
     setIsLoading(true);
     try {
-              const response = await axios.get(`http://localhost:5000/api/get-all-invoices`);
+              const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-invoices`);
       const sortedInvoices = response.data.sort((a, b) => new Date(b.invoiceDate) - new Date(a.invoiceDate));
       setInvoices(sortedInvoices);
     } catch (error) {
@@ -44,7 +44,7 @@ const AllInvoice = () => {
     setIsLoading(true);
     try {
       if (productCode) {
-        const response = await axios.get(`http://localhost:5000/api/search-by-productcode/${productCode}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-by-productcode/${productCode}`);
         const invoicesWithQuantity = response.data.map(invoice => {
           const product = invoice.products.find(p => p.productCode === productCode);
           return {
@@ -57,7 +57,7 @@ const AllInvoice = () => {
         const formattedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : '';
         const formattedEndDate = endDate ? new Date(endDate).toISOString().split('T')[0] : '';
 
-        const response = await axios.get(`http://localhost:5000/api/search-invoices`, {
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoices`, {
           params: {
             searchQuery,
             startDate: formattedStartDate,
@@ -77,7 +77,7 @@ const AllInvoice = () => {
   useEffect(() => {
     const fetchSinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
         setsinvoice(response.data);
       } catch (error) {
         console.log('Error fetching data', error);
