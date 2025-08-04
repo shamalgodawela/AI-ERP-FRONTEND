@@ -1,16 +1,19 @@
 import React from 'react'
 import Footer from '../../compenents/footer/Footer'
 import OutStandingTable from '../../compenents/outstandingTable/OutStandingTable'
-import Menu from '../../compenents/Menu/Menu'
+import { useNavigate } from 'react-router-dom'
 
 
 const AllOutStanding = () => {
+  const navigate = useNavigate();
   return (
     <div>
       
     
       
         <OutStandingTable/>
+
+        <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
         
         <Footer/>
 

@@ -74,6 +74,8 @@ import AddateProduct from "./compenents/dateproduct/AddateProduct";
 import UserAllexetable from "./compenents/Exetable/AllTableexe/UserAllexetable";
 import AddUserOrder from "./compenents/HandleOrder/UserOrder/AddUserOrder";
 import OprationsDashboard from "./pages/AdminOperation/OperationsDashboard/OprationsDashboard";
+import OperationsPayments from "./pages/AdminOperation/OperationsDashboard/OperationsPayments";
+import SingleOutstanding from "./pages/AdminOperation/SingleOutstanding";
 
 
 axios.defaults.withCredentials= true;
@@ -219,18 +221,9 @@ function App() {
 <Route element={<ProtectedRoute allowedRoles={["Operation"]} />}>
     <Route path="/Admin-operations-dashboard" element={<OprationsDashboard/>} />
     {/* <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} /> need to update */}
-    <Route path="/alloutstanding" element={<AllOutStanding />} />
-      <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
-      <Route path="/adminorder/:id" element={<Oneorder/>} />
-      <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
-
-
-    <Route path="/Adminallorder" element={<ViewallOrder/>} />
-    <Route path="/Collectioh-dashboard" element={<Collectiondash/>} />
-    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
-    <Route path="/AllOutstanding-without-Menu" element={<WithoutMallout/>} />
-    <Route path="/sales" element={<Sales/>} />
-    <Route path="/AllcustomerWiseHistory" element={<Allcustomers/>}/>
+    <Route path="/operationsPayment" element={<OperationsPayments />} />
+    <Route path="/single-operations/:id" element={<SingleOutstanding/>} />
+   
  
     
    

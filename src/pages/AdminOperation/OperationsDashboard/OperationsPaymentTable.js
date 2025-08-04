@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './allInvoice.css';
-import Loader from '../loader/Loader';
 
-const OutStandingTable = () => {
+import Loader from '../../../compenents/loader/Loader';
+
+const OperationsPaymentTable = () => {
     const [invoices, setInvoices] = useState([]);
     const [filteredInvoices, setFilteredInvoices] = useState([]);
     const [error, setError] = useState(null);
@@ -186,7 +186,7 @@ const OutStandingTable = () => {
                                     <th className='th-invoice'>Invoice Total</th>
                                     <th className='th-invoice'>Cheque Details</th>
                                     <th className='th-invoice'>Action</th>
-                                    <th className='th-invoice'>Edit</th>
+                                    {/* <th className='th-invoice'>Edit</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -214,15 +214,15 @@ const OutStandingTable = () => {
                                             )}
                                         </td>
                                         <td className='td-invoice'>
-                                            <Link to={`/caloutStanding/${invoice._id}`}>
+                                            <Link to={`/single-operations/${invoice._id}`}>
                                                 <AiOutlineEye size={20} color={"purple"} />
                                             </Link>
                                         </td>
-                                        <td className='td-invoice'>
+                                        {/* <td className='td-invoice'>
                                             <Link to={`/invoice/${invoice.invoiceNumber}`}>
                                                 <FontAwesomeIcon icon={faEye} className="action-icon" />
                                             </Link>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>
@@ -236,4 +236,4 @@ const OutStandingTable = () => {
     );
 };
 
-export default OutStandingTable;
+export default OperationsPaymentTable;

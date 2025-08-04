@@ -11,27 +11,27 @@ const actions = [
   {
     label: 'Payment Details',
     icon: <FaMoneyCheckAlt size={32} />, 
-    route: '/alloutstanding',
+    route: '/operationsPayment',
   },
   {
     label: 'View cheques',
-    icon: <FaMoneyCheckAlt size={32} />, 
-    route: '/alloutstanding',
+    icon: <FaMoneyCheckAlt size={32} />,
+    route: '',
   },
   {
     label: 'Sales & Collection Details',
     icon: <FaChartLine size={32} />, 
-    route: '/sales',
+    route: '',
   },
   {
     label: 'View Dealer History',
     icon: <FaUserTie size={32} />, 
-    route: '/AllcustomerWiseHistory',
+    route: '',
   },
   {
     label: 'Executives Incentive',
     icon: <FaUniversity size={32} />, 
-    route: '/bankstatement',
+    route: '',
   },
 ];
 

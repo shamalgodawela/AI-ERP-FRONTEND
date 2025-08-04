@@ -5,10 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './allInvoice.css';
-import Loader from '../loader/Loader';
+import Loader from '../../compenents/loader/Loader';
 
-const OutStandingTable = () => {
+const SingleOutstanding = () => {
+    const navigate = useNavigate();
+    
     const [invoices, setInvoices] = useState([]);
     const [filteredInvoices, setFilteredInvoices] = useState([]);
     const [error, setError] = useState(null);
@@ -214,7 +215,7 @@ const OutStandingTable = () => {
                                             )}
                                         </td>
                                         <td className='td-invoice'>
-                                            <Link to={`/caloutStanding/${invoice._id}`}>
+                                            <Link to={`/admin-operations-payment/${invoice._id}`}>
                                                 <AiOutlineEye size={20} color={"purple"} />
                                             </Link>
                                         </td>
@@ -230,10 +231,11 @@ const OutStandingTable = () => {
                     )}
                 </div>
             </div>
+            <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>Home</button>
 
            
         </div>
     );
 };
 
-export default OutStandingTable;
+export default SingleOutstanding;
