@@ -1,6 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Home from "./pages/Home/Home";
-import Dashboard from "./pages/dashboard/Dashboard";
 import axios from "axios";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -44,14 +43,6 @@ import NandRproduct from "./pages/AddNewProductAndReturn/NandRproduct";
 import ViewallRAndn from "./pages/AddNewProductAndReturn/ViewallRAndn";
 import AddNewBulk from "./pages/NewBulkDetails/AddNewBulk";
 import ViewAllBulk from "./pages/NewBulkDetails/ViewAllBulk";
-import DealerHistory from "./pages/orderAdmin/CheckdealerHistory/DealerHistory";
-import Operationlogin from "./pages/AdminOperation/adminlogin/Operationlogin";
-import OpearationHome from "./pages/AdminOperation/OpearationHome/OpearationHome";
-import Opertionoutstanding from "./pages/AdminOperation/outstanding/Opertionoutstanding";
-import SummeryDashboard from "./pages/AdminOperation/SalesandCollection/SummeryDashboard";
-import SingleOpOutstanding from "./pages/AdminOperation/outstanding/SingleOpOutstanding";
-import ViewSingleOutstanding from "./pages/AdminOperation/ViewSingleOut/ViewSingleOutstanding";
-import DealerPastHistory from "./pages/ViewDealerHitory/DealerPastHistory";
 import SalesByExe from "./pages/Exeproductdetails/salesEachProduct/SalesByExe";
 import PackingDashboard from "./pages/PackingMaterials/PackingDashboard";
 import AddCheque from "./pages/Cheque/AddCheque/AddCheque";
@@ -82,6 +73,7 @@ import UserFinishedProduct from "./pages/products/productDetails/UserFinishedPro
 import AddateProduct from "./compenents/dateproduct/AddateProduct";
 import UserAllexetable from "./compenents/Exetable/AllTableexe/UserAllexetable";
 import AddUserOrder from "./compenents/HandleOrder/UserOrder/AddUserOrder";
+import OprationsDashboard from "./pages/AdminOperation/OperationsDashboard/OprationsDashboard";
 
 
 axios.defaults.withCredentials= true;
@@ -121,8 +113,8 @@ function App() {
       <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
       <Route path="/adminorder/:id" element={<Oneorder/>} />
       <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
-<Route path="/view-admin-outstanding/:id" element={<ViewSingleOutstanding/>} />
-<Route path="/view-Delaer-history" element={<DealerPastHistory/>} />
+
+
     <Route path="/Adminallorder" element={<ViewallOrder/>} />
     <Route path="/Collectioh-dashboard" element={<Collectiondash/>} />
     <Route path="/invoice/:invoiceNumber" element={<EditInvoice/>} />
@@ -173,7 +165,6 @@ function App() {
     <Route path="/tax-invoice/:id" element={<Taxinvoice/>} />
     <Route path="allbulkproduct" element={<Alldetails/>} />
     <Route path="/addbulkproduct" element={<Addbulk/>} />
-    <Route path="/view-dealer-history" element={<DealerHistory/>} />
     <Route path="/Add-New-bulk-product" element={<AddNewBulk/>} />
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
     <Route path="/Add-newReturn-product" element={<NandRproduct/>} />
@@ -225,15 +216,11 @@ function App() {
 
 
 {/* ---------------------------------Operation Pages--------------------------------- */}
+<Route element={<ProtectedRoute allowedRoles={["Operation"]} />}>
+    <Route path="/Admin-operations-dashboard" element={<OprationsDashboard/>} />
+    {/* <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} /> need to update */}
 
-<Route path="/admin-operation-dashboard" element={<OpearationHome/>} />
-    <Route path="/admin-operation-loginpage" element={<Operationlogin/>} />
-    <Route path="/admin-operation-outstanding" element={<Opertionoutstanding/>} />
-    <Route path="/admin-operation-salesCollection" element={<SummeryDashboard/>} />
-    <Route path="/view-single-operation/:id" element={<SingleOpOutstanding/>} />
-    <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
-<Route path="/view-admin-outstanding/:id" element={<ViewSingleOutstanding/>} />
-<Route path="/view-Delaer-history" element={<DealerPastHistory/>} />
+</Route>
    
 {/* ------------------------------------------------------------------------------------------------ */}
 
