@@ -45,8 +45,6 @@ import ViewallRAndn from "./pages/AddNewProductAndReturn/ViewallRAndn";
 import AddNewBulk from "./pages/NewBulkDetails/AddNewBulk";
 import ViewAllBulk from "./pages/NewBulkDetails/ViewAllBulk";
 import DealerHistory from "./pages/orderAdmin/CheckdealerHistory/DealerHistory";
-import Operationlogin from "./pages/AdminOperation/adminlogin/Operationlogin";
-import OpearationHome from "./pages/AdminOperation/OpearationHome/OpearationHome";
 import Opertionoutstanding from "./pages/AdminOperation/outstanding/Opertionoutstanding";
 import SummeryDashboard from "./pages/AdminOperation/SalesandCollection/SummeryDashboard";
 import SingleOpOutstanding from "./pages/AdminOperation/outstanding/SingleOpOutstanding";
@@ -225,15 +223,15 @@ function App() {
 
 
 {/* ---------------------------------Operation Pages--------------------------------- */}
-
-<Route path="/admin-operation-dashboard" element={<OpearationHome/>} />
-    <Route path="/admin-operation-loginpage" element={<Operationlogin/>} />
+<Route element={<ProtectedRoute allowedRoles={["operation"]} />}>
     <Route path="/admin-operation-outstanding" element={<Opertionoutstanding/>} />
     <Route path="/admin-operation-salesCollection" element={<SummeryDashboard/>} />
     <Route path="/view-single-operation/:id" element={<SingleOpOutstanding/>} />
     <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
 <Route path="/view-admin-outstanding/:id" element={<ViewSingleOutstanding/>} />
 <Route path="/view-Delaer-history" element={<DealerPastHistory/>} />
+
+</Route>
    
 {/* ------------------------------------------------------------------------------------------------ */}
 
