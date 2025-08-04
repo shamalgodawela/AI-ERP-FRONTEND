@@ -21,7 +21,7 @@ const AllTaxInvoice = () => {
   const fetchInvoices = async () => {
     setIsLoading(true);
     try {
-              const response = await axios.get(`http://localhost:5000/api/get-Tax-Invoices`);
+              const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-Tax-Invoices`);
       const sortedInvoices = response.data.sort((a, b) => new Date(b.invoiceDate) - new Date(a.invoiceDate));
       setInvoices(sortedInvoices);
     } catch (error) {
@@ -35,14 +35,14 @@ const AllTaxInvoice = () => {
     setIsLoading(true);
     try {
       if (productCode) {
-        // If product code is provided, use the product code search endpoint
-        const response = await axios.get(`http://localhost:5000/api/search-by-productcode/${productCode}`);
+     
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-by-productcode/${productCode}`);
         setInvoices(response.data);
       } else {
         const formattedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : '';
         const formattedEndDate = endDate ? new Date(endDate).toISOString().split('T')[0] : '';
 
-        const response = await axios.get(`http://localhost:5000/api/searchTaxInvoice`, {
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/searchTaxInvoice`, {
           params: {
             searchQuery,
             startDate: formattedStartDate,
@@ -62,7 +62,7 @@ const AllTaxInvoice = () => {
   useEffect(() => {
     const fetchSinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/get-Taxinvoices/${invoiceNumber}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-Taxinvoices/${invoiceNumber}`);
         setsinvoice(response.data);
       } catch (error) {
         console.log('Error fetching data', error);
@@ -84,7 +84,7 @@ const AllTaxInvoice = () => {
         return acc + productTotal;
       }, 0);
     }
-    return total.toFixed(2); // Return the total with 2 decimal places
+    return total.toFixed(2); 
   };
 
   return (

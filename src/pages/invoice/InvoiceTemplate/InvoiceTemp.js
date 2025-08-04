@@ -15,7 +15,7 @@ export default function InvoiceTemp() {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
         setInvoice(response.data);
       } catch (error) {
         console.error(`Failed to fetch invoice with id ${id}`, error.message);
@@ -36,7 +36,7 @@ export default function InvoiceTemp() {
         }, 0);
     }
 
-    return total.toFixed(2); // Return the total with 2 decimal places
+    return total.toFixed(2); 
 };
 
 const formatNumbers = (x) => {
@@ -45,17 +45,17 @@ const formatNumbers = (x) => {
 
 const calculateTaxtot = () => {
     if (invoice && invoice.products) {
-        const taxRate = invoice.Tax || 0; // Default to 0 if tax rate is not available
+        const taxRate = invoice.Tax || 0; 
 
         const totalTax = invoice.products.reduce((acc, product) => {
             const productTax = parseFloat(product.invoiceTotal) * (taxRate / 100);
             return acc + productTax;
         }, 0);
 
-        const subtotal = parseFloat(calculateTotal()); // Get the subtotal and parse it to float
-        const totalWithTax = subtotal - totalTax; // Add tax amount to subtotal // temp change for discount
+        const subtotal = parseFloat(calculateTotal()); 
+        const totalWithTax = subtotal - totalTax; 
 
-        console.log(typeof totalWithTax, totalWithTax); // Log type and value of totalWithTax
+        console.log(typeof totalWithTax, totalWithTax); 
 
         return totalWithTax.toFixed(2); 
     }

@@ -45,7 +45,7 @@ const DealerPastHistory = () => {
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
       const response = await axios.get(
-        `http://localhost:5000/api/get-total-salesby-dealer/${dealerCode}`,
+        `https://nihon-inventory.onrender.com/api/get-total-salesby-dealer/${dealerCode}`,
         { params }
       );
       const { productMovement, totalInvoiceAmount, totalCollectionAmount, customerName } = response.data;

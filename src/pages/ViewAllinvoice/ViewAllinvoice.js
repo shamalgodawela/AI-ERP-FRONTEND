@@ -14,14 +14,14 @@ const ViewAllinvoice = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [exe, setExe] = useState('');
-  const [productCode, setProductCode] = useState(''); // New state for product code
+  const [productCode, setProductCode] = useState(''); 
   const { id } = useParams();
   const [sinvoice, setsinvoice] = useState(null);
 
   const fetchInvoices = async () => {
     setIsLoading(true);
     try {
-              const response = await axios.get(`http://localhost:5000/api/get-all-invoices`);
+              const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-invoices`);
       const sortedInvoices = response.data.sort((a, b) => new Date(b.invoiceDate) - new Date(a.invoiceDate));
       setInvoices(sortedInvoices);
     } catch (error) {
@@ -36,13 +36,13 @@ const ViewAllinvoice = () => {
     try {
       if (productCode) {
         // If product code is provided, use the product code search endpoint
-        const response = await axios.get(`http://localhost:5000/api/search-by-productcode/${productCode}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-by-productcode/${productCode}`);
         setInvoices(response.data);
       } else {
         const formattedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : '';
         const formattedEndDate = endDate ? new Date(endDate).toISOString().split('T')[0] : '';
 
-        const response = await axios.get(`http://localhost:5000/api/search-invoices`, {
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoices`, {
           params: {
             searchQuery,
             startDate: formattedStartDate,
@@ -62,7 +62,7 @@ const ViewAllinvoice = () => {
   useEffect(() => {
     const fetchSinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
         setsinvoice(response.data);
       } catch (error) {
         console.log('Error fetching data', error);
