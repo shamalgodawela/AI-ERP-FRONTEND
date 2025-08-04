@@ -15,7 +15,7 @@ const SalesByExe = () => {
     }
     setIsLoading(true);
     try {
-              const response = await axios.get(`http://localhost:5000/api/get-executives-sales-eachProduct/${exe}`);
+              const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-executives-sales-eachProduct/${exe}`);
       setSalesData(response.data);
     } catch (error) {
       console.error('Error fetching sales data:', error.message);

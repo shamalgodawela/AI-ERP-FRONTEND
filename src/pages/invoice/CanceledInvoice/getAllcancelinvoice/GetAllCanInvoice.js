@@ -12,7 +12,7 @@ const GetAllCanInvoice = () => {
   useEffect(() => {
     const fetchCancelInvoices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/getallCancelInvoice');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/getallCancelInvoice');
         setCancelInvoices(response.data);
         setIsLoading(false);
       } catch (error) {
