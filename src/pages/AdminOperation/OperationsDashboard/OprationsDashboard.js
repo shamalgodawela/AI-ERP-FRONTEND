@@ -1,10 +1,11 @@
 import React from 'react';
-import { useAuth } from '../../services/AuthProvider';
+
 import { useNavigate } from 'react-router-dom';
 import { FaMoneyCheckAlt, FaClipboardList, FaChartLine, FaUserTie, FaUsers, FaSignOutAlt, FaBoxes, FaUniversity } from 'react-icons/fa';
-import bannerImg from '../../assets/agri.jpeg';
-import './Admin.css';
-import Footer from '../footer/Footer';
+import bannerImg from '../../../assets/agri.jpeg';
+import Footer from '../../../compenents/footer/Footer';
+import { useAuth } from '../../../services/AuthProvider';
+
 
 const actions = [
   {
@@ -13,9 +14,9 @@ const actions = [
     route: '/alloutstanding',
   },
   {
-    label: 'Pending Orders',
-    icon: <FaClipboardList size={32} />, 
-    route: '/Adminallorder',
+    label: 'View cheques',
+    icon: <FaMoneyCheckAlt size={32} />, 
+    route: '/alloutstanding',
   },
   {
     label: 'Sales & Collection Details',
@@ -28,23 +29,13 @@ const actions = [
     route: '/AllcustomerWiseHistory',
   },
   {
-    label: 'Inventory Management',
-    icon: <FaBoxes size={32} />, 
-    route: '/dashboard',
-  },
-  {
-    label: 'Bank Statements',
-    icon: <FaUniversity size={32} />, 
-    route: '/bankstatement',
-  },
-  {
     label: 'Executives Incentive',
     icon: <FaUniversity size={32} />, 
     route: '/bankstatement',
   },
 ];
 
-const Admin = () => {
+const OprationsDashboard = () => {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
@@ -54,7 +45,7 @@ const Admin = () => {
     navigate('/All-in-one-Login');
   };
 
-  if (!user || user.role !== 'admin') {
+  if (!user || user.role !== 'Operation') {
     return <div className="admin-access-denied">Access denied. Admins only.</div>;
 
    
@@ -86,9 +77,9 @@ const Admin = () => {
         </div>
       </div>
     </div>
-    <Footer />
+    <Footer/>
     </div>
   );
 };
 
-export default Admin;
+export default OprationsDashboard;
