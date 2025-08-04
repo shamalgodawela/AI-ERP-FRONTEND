@@ -8,7 +8,6 @@ import Footer from '../footer/Footer';
 const AddateProduct = () => {
     const [formData, setFormData] = useState({
         GpnDate: '',
-        GpnNumber: '',
         productName: '',
         category: '',
         unitPrice: '',
@@ -95,12 +94,6 @@ const AddateProduct = () => {
                     <label htmlFor="GpnDate">GPN Date:</label>
                     <input type="date" id="GpnDate" name="GpnDate" value={formData.GpnDate} onChange={handleChange} required />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="GpnNumber">GPN Number:</label>
-                    <input type="text" id="GpnNumber" name="GpnNumber" value={formData.GpnNumber} onChange={handleChange} required />
-                </div>
-
                 <div className="form-group">
                     <label htmlFor="category">Product Code:</label>
                     <input type="text" id="category" name="category" value={formData.category} onChange={handleChange} required />

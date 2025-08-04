@@ -41,10 +41,6 @@ const UserFinishedProduct = () => {
         accessor: 'GpnDate',
       },
       {
-        Header: 'GPN Number',
-        accessor: 'GpnNumber',
-      },
-      {
         Header: 'Product Name',
         accessor: 'productName',
       },
@@ -81,8 +77,23 @@ const UserFinishedProduct = () => {
   return (
 <div>
     <UserNavbar/>
+    <br/>
 
-    <button ><a href='/add-packing-product'>Add Packing details</a></button>
+    <a href="/add-packing-product" 
+   style={{
+     display: 'inline-block',
+     padding: '10px 20px',
+     backgroundColor: '#1e40af',
+     color: '#ffffff',
+     textDecoration: 'none',
+     borderRadius: '6px',
+     fontSize: '14px',
+     fontWeight: '500'
+   }}
+>
+  Add Packing Details
+</a>
+
     <div className="product-management">
       
       <div className="product-search-bar">

@@ -74,12 +74,7 @@ const ProductListExe = ({ products, isLoading }) => {
               <span>
                 <h3>Inventory Items</h3>
               </span>
-              {/* <span>
-              <Search
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-              </span> */}
+              
              
             </div>
     

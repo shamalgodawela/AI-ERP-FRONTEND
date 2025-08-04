@@ -49,20 +49,7 @@ const InvoiceForm = () => {
     IncentiveDueDate:''
   });
 
-  const [lastInvoiceNumber, setLastInvoiceNumber] = useState('');
 
-  useEffect(() => {
-    const fetchLastInvoiceNumber = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/lastInvoiceNumber');
-        setLastInvoiceNumber(response.data.lastInvoiceNumber);
-      } catch (error) {
-        console.error('Failed to fetch last invoice number:', error.message);
-      }
-    };
-
-    fetchLastInvoiceNumber();
-  }, []);
 
   const [calculatedValues, setCalculatedValues] = useState({
     unitPrice: 0,
@@ -253,35 +240,26 @@ const InvoiceForm = () => {
 
   const handleGetDetails = async (e) => {
     e.preventDefault();
-
+  
     try {
-              const response = await axios.get(`http://localhost:5000/api/orders/${formData.orderNumber}`);
+      const response = await axios.get(`http://localhost:5000/api/orders/${formData.orderNumber}`);
       const orderData = response.data;
-
+  
       if (orderData.status === "pending") {
         toast.warning('Order is pending', {
           position: 'top-right',
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
       } else if (orderData.status === "Canceled") {
         toast.error('Order was canceled by admin', {
           position: 'top-right',
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
       } else if (orderData.status === "Approved") {
-        setFormData({
-          ...formData,
-          invoiceNumber: orderData.orderNumber,
+        // Set all order data, EXCLUDING invoiceNumber initially
+        setFormData((prev) => ({
+          ...prev,
+          invoiceNumber: '', // Clear it first
           customer: orderData.customer,
           code: orderData.code,
           address: orderData.address,
@@ -296,11 +274,11 @@ const InvoiceForm = () => {
           Tax: orderData.Tax,
           GatePassNo: orderData.GatePassNo,
           VehicleNo: orderData.VehicleNo,
-          taxtotal:orderData.taxtotal,
-          VatRegNo:orderData.VatRegNo,
-          VatNO:orderData.VatNO,
-          TaxNo:orderData.TaxNo,
-          CusVatNo:orderData.CusVatNo,
+          taxtotal: orderData.taxtotal,
+          VatRegNo: orderData.VatRegNo,
+          VatNO: orderData.VatNO,
+          TaxNo: orderData.TaxNo,
+          CusVatNo: orderData.CusVatNo,
           IncentiveDueDate: orderData.IncentiveDueDate,
           products: orderData.products.map((product) => ({
             productCode: product.productCode,
@@ -311,25 +289,22 @@ const InvoiceForm = () => {
             unitPrice: product.unitPrice,
             invoiceTotal: product.invoiceTotal,
           })),
-        });
-
+        }));
+  
+        // Set total and tax
         setTotalInvoiceAmount(orderData.totalInvoiceAmount || 0);
         calculateFinalValue(orderData.totalInvoiceAmount || 0, orderData.Tax || '');
       }
     } catch (error) {
       console.error('Failed to fetch order details', error.message);
-
+  
       toast.error('Failed to fetch order details', {
         position: 'top-right',
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
       });
     }
   };
+  
 
   useEffect(() => {
     let totalUnitPrice = 0;
@@ -355,6 +330,77 @@ const InvoiceForm = () => {
     calculateFinalValue(totalInvoiceTotal, formData.Tax);
   }, [formData.products]);
 
+
+  const handleGetInvoiceNumber = async () => {
+    try {
+      let url = '';
+  
+      if (formData.exe === 'Mr.Ahamed') {
+        url = 'http://localhost:5000/api/get-last-invoice-number-EA1';
+      } else if (formData.exe === 'Mr.Nayum') {
+        url = 'http://localhost:5000/api/get-last-invoice-number-NUM';
+      } else if (formData.exe === 'SOUTH') {
+        url = 'http://localhost:5000/api/get-last-invoice-number-south1';
+      } else if (formData.exe === 'Others') {
+        url = 'http://localhost:5000/api/lastorder/other';
+      } else if (formData.exe === 'UpCountry') {
+        url = 'http://localhost:5000/api/get-last-invoice-number-other';
+      } else {
+        toast.error("Please select a valid Executive before fetching invoice number.");
+        return;
+      }
+  
+      const response = await axios.get(url);
+      console.log("Invoice API response:", response.data);
+  
+      let lastInvoice = response.data.lastinvoice; // e.g., "EA1-001"
+      if (lastInvoice) {
+        // Split prefix and number using regex
+        const match = lastInvoice.match(/^([a-zA-Z0-9\-]*?)(\d+)$/);
+
+  
+        if (match) {
+          const prefix = match[1];      // "EA1-"
+          const numberStr = match[2];   // "001"
+  
+          // Convert to number and increment
+          let number = parseInt(numberStr, 10) + 1;
+  
+          // Pad with leading zeros same length as original
+          const newNumberStr = number.toString().padStart(numberStr.length, '0');
+  
+          const newInvoiceNumber = prefix + newNumberStr;
+  
+          setFormData(prev => ({
+            ...prev,
+            invoiceNumber: newInvoiceNumber
+          }));
+  
+          toast.success("Invoice number fetched and incremented: " + newInvoiceNumber);
+        } else {
+      
+          setFormData(prev => ({
+            ...prev,
+            invoiceNumber: lastInvoice
+          }));
+          toast.warning("Invoice number format unexpected. Set as is.");
+        }
+      } else {
+        toast.error("Invoice number not found in response");
+      }
+  
+    } catch (error) {
+      console.error('Failed to fetch invoice number by executive:', error.message);
+      toast.error("Error fetching invoice number");
+    }
+  };
+  
+  
+  
+  
+  
+  
+
   return (
     <div>
       <UserNavbar />
@@ -373,15 +419,21 @@ const InvoiceForm = () => {
             <button onClick={handleGetDetails}>Get Details</button>
           </div>
           <div className="form-group">
-            <label>Invoice Number:</label>
-            <input
-              type="text"
-              name="invoiceNumber"
-              value={formData.invoiceNumber}
-              onChange={handleChange}
-            
-            />
-          </div>
+  <label>Invoice Number:</label>
+  <div style={{ display: 'flex', gap: '8px' }}>
+    <input
+      type="text"
+      name="invoiceNumber"
+      value={formData.invoiceNumber}
+      onChange={handleChange}
+      readOnly
+    />
+    <button type="button" onClick={handleGetInvoiceNumber}>
+      Get Invoice Number
+    </button>
+  </div>
+</div>
+
           <div className="form-group">
             <label>Customer:</label>
             <input
@@ -500,7 +552,6 @@ const InvoiceForm = () => {
                <option value="">Select mode of payment</option>
                <option value="Cash">Cash</option>
                <option value="Cheque">Cheque</option>
-               <option value="Free issued">Free issued</option>
               </select>
           </div>
           <div className="form-group">
@@ -529,7 +580,7 @@ const InvoiceForm = () => {
               name="Duedate"
               value={formData.IncentiveDueDate}
               onChange={handleChange}
-              readOnly
+          
             />
           </div>
           <div className="form-group">

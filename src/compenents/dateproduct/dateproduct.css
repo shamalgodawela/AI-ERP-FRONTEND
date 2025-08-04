@@ -1,54 +1,84 @@
+
 .add-product-container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f3f3f3;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.62);
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 
 .add-product-container h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: #1e293b;
+    font-size: 24px;
+    font-weight: 600;
 }
+
+.h1add {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 
 .add-product-form {
-    display: grid;
-    grid-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
+
 
 .form-group {
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
-label {
-    font-weight: bold;
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #334155;
 }
+
 
 input[type="text"],
 input[type="number"],
 input[type="date"] {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #605e5e;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+}
+
+
+button {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: #1e40af;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2563eb;
 }
 
 .submit-button {
-    padding: 10px 20px;
-    background-color: #00142a;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.submit-button:hover {
-    background-color: #013872;
-}
-.h1add{
-    color: black;
-    font-family: 'Times New Roman', Times, serif;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
 }

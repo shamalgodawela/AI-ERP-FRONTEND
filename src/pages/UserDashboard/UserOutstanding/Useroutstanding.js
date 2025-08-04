@@ -124,6 +124,8 @@ const Useroutstanding = () => {
                     <option value="Mr.Nayum">Mr.Nayum</option>
                     <option value="Mr.Riyas">Mr.Riyas</option>
                     <option value="SOUTH">SOUTH-1</option>
+                    <option value="Other">Other</option>
+                    <option value="UpCountry">UpCountry</option>
                 </select>
 
                 

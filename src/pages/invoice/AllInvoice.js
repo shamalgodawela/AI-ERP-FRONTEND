@@ -151,8 +151,6 @@ const AllInvoice = () => {
             Search
           </button>
         </div>
-
-        <button type="button" className="btn btn-outline-primary" disabled><a href="/add-invoice">Add Invoice</a></button>
         <div className="all-invoice">
           {isLoading ? <Loader /> : (
             <>

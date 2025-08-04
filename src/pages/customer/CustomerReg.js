@@ -4,7 +4,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./customer.css";
 import Footer from '../../compenents/footer/Footer';
-import Navbar3 from '../../compenents/sidebar/Navbar3';
+import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
+
 
 const CustomerReg = () => {
   const [formData, setFormData] = useState({
@@ -60,7 +61,8 @@ const CustomerReg = () => {
 
   return (
     <div>
-      <Navbar3/>
+      <UserNavbar/>
+    
       <div className="form_wrapper">
         <div className="form_container">
           <div className="title_container">
@@ -71,7 +73,6 @@ const CustomerReg = () => {
             <form onSubmit={handleSubmit}>
   <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
   <input type="text" name="code" placeholder="Code" value={formData.code} onChange={handleChange} required />
-  {/* Add input fields for other customer details */}
   <input type="text" name="companyName" placeholder="Company Name" value={formData.companyName} onChange={handleChange} required />
   <input type="text" name="contact" placeholder="Contact" value={formData.contact} onChange={handleChange} required />
   <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
