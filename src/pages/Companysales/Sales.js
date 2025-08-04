@@ -20,7 +20,7 @@ const Sales = () => {
   useEffect(() => {
     const fetchTotalSales = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/invoi/sum');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/invoi/sum');
         setTotalSales(response.data.sum || 0); // Ensure default value
         setLoading(false);
       } catch (error) {

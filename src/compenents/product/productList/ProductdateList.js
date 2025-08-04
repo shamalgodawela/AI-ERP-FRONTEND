@@ -14,7 +14,7 @@ const ProductdateList = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true); 
-        const response = await axios.get('http://localhost:5000/api/dateProducts');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/dateProducts');
         setData(response.data);
         setIsLoading(false); 
       } catch (error) {

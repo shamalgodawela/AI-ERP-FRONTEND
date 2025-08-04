@@ -11,7 +11,7 @@ const Tabelexesales = () => {
   useEffect(() => {
     const fetchSalesByExe = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/monthlysalesbyexe');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/monthlysalesbyexe');
         setSalesData(response.data);
         setLoading(false);
       } catch (error) {

@@ -21,7 +21,7 @@ const SalesByExePieChart = () => {
       setError(null);
 
       try {
-        const response = await axios.get('http://localhost:5000/api/salesbyExe', {
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/salesbyExe', {
           params: {
             startDate,
             endDate

@@ -13,7 +13,7 @@ const ViewallRAndn = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/get-alldetail-return');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/get-alldetail-return');
         setProducts(response.data);
         setLoading(false);
       } catch (error) {

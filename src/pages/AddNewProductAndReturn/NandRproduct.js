@@ -35,7 +35,7 @@ const NandRproduct = () => {
 
     try {
 
-        const addproduct=await axios.post('http://localhost:5000/api/addRAndNProduct', formdata);
+        const addproduct=await axios.post('https://nihon-inventory.onrender.com/api/addRAndNProduct', formdata);
       console.log(addproduct.data)
       toast.success('Customer added successfully');
       

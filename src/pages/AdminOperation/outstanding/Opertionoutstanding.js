@@ -22,7 +22,7 @@ const Opertionoutstanding = () => {
         const fetchAllInvoices = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get('http://localhost:5000/api/get-invoicedetails-admin-outstanding');
+                const response = await axios.get('https://nihon-inventory.onrender.com/api/get-invoicedetails-admin-outstanding');
                 setInvoices(response.data);
                 setFilteredInvoices(response.data);
             } catch (error) {

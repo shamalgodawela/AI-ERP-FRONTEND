@@ -30,7 +30,7 @@ const AddOrder = ({ onAddOrder }) => {
       const fetchLastOrderNumber = async () => {
           if (orderData.exe === 'Mr.Ahamed') {
               try {
-                  const response = await axios.get(`http://localhost:5000/api/lastorder/ea`);
+                  const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/ea`);
                   setLastOrderNumber(response.data.lastOrderNumber);
               } catch (error) {
                   console.error('Error fetching last order number:', error);
@@ -40,7 +40,7 @@ const AddOrder = ({ onAddOrder }) => {
       const fetchLastOrderNumberSU = async () => {
         if (orderData.exe === 'Mr.Dasun') {
             try {
-                const response = await axios.get(`http://localhost:5000/api/lastorder/su`);
+                const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/su`);
                 setLastOrderNumber(response.data.lastOrderNumber);
             } catch (error) {
                 console.error('Error fetching last order number:', error);
@@ -50,7 +50,7 @@ const AddOrder = ({ onAddOrder }) => {
     const fetchLastOrderNumberNCP = async () => {
       if (orderData.exe === 'Mr.Chameera') {
           try {
-              const response = await axios.get(`http://localhost:5000/api/lastorder/ncp`);
+              const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/ncp`);
               setLastOrderNumber(response.data.lastOrderNumber);
           } catch (error) {
               console.error('Error fetching last order number:', error);
@@ -60,7 +60,7 @@ const AddOrder = ({ onAddOrder }) => {
   const fetchLastOrderNumberUPC = async () => {
     if (orderData.exe === 'Mr.Sanjeewa') {
         try {
-            const response = await axios.get(`http://localhost:5000/api/lastorder/upc`);
+            const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/upc`);
             setLastOrderNumber(response.data.lastOrderNumber);
         } catch (error) {
             console.error('Error fetching last order number:', error);
@@ -70,7 +70,7 @@ const AddOrder = ({ onAddOrder }) => {
 const fetchLastOrderNumberUPC2 = async () => {
   if (orderData.exe === 'Mr.Navaneedan') {
       try {
-          const response = await axios.get(`http://localhost:5000/api/lastorder/upc1`);
+          const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/upc1`);
           setLastOrderNumber(response.data.lastOrderNumber);
       } catch (error) {
           console.error('Error fetching last order number:', error);
@@ -80,7 +80,7 @@ const fetchLastOrderNumberUPC2 = async () => {
 const fetchLastOrderNumberNum = async () => {
   if (orderData.exe === 'Mr.Nayum') {
       try {
-          const response = await axios.get(`http://localhost:5000/api/lastorder/NUM`);
+          const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/NUM`);
           setLastOrderNumber(response.data.lastOrderNumber);
       } catch (error) {
           console.error('Error fetching last order number:', error);
@@ -90,7 +90,7 @@ const fetchLastOrderNumberNum = async () => {
 const fetchLastOrderNumberEA2 = async () => {
   if (orderData.exe === 'Mr.Riyas') {
       try {
-          const response = await axios.get(`http://localhost:5000/api/lastorder/EA2`);
+          const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/EA2`);
           setLastOrderNumber(response.data.lastOrderNumber);
       } catch (error) {
           console.error('Error fetching last order number:', error);

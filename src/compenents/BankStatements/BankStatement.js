@@ -19,7 +19,7 @@ const BankStatement = () => {
     const fetchStatements = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/get-alldeposite-details');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/get-alldeposite-details');
         setStatements(response.data);
         setFilteredStatements(response.data);
       } catch (err) {

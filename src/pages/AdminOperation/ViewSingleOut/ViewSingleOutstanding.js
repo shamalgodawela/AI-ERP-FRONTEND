@@ -23,7 +23,7 @@ const ViewSingleOutstanding = () => {
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
+                const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
                 setInvoice(response.data);
             } catch (error) {
                 console.error(`Failed to fetch invoice with id ${id}`, error.message);
@@ -50,7 +50,7 @@ const ViewSingleOutstanding = () => {
             const total = calculateTotal();
             const parsedTotal = parseFloat(total.replace(/,/g, ''));
             if (isNaN(parsedTotal)) throw new Error('Invalid total value');
-            const response = await axios.get(`http://localhost:5000/api/get-last-outstanding/${invoice.invoiceNumber}`);
+            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
             const lastOutstanding = parseFloat(response.data.outstanding);
             let newOutstanding;
             if (lastOutstanding === -1) {
@@ -66,7 +66,7 @@ const ViewSingleOutstanding = () => {
 
     const handleSave = async () => {
         try {
-            await axios.post(`http://localhost:5000/api/create`, { invoiceNumber: invoice.invoiceNumber,date ,backName,depositedate,CHnumber, amount, outstanding });
+            await axios.post(`https://nihon-inventory.onrender.com/api/create`, { invoiceNumber: invoice.invoiceNumber,date ,backName,depositedate,CHnumber, amount, outstanding });
             toast.success('Data added successfully!');
         } catch (error) {
             toast.error('faild to add details...')
@@ -75,7 +75,7 @@ const ViewSingleOutstanding = () => {
 
     const handleFetchAllOutstandingDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/get-all-outstanding/${invoice.invoiceNumber}`);
+            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
             const data = response.data;
             if (data.length === 0) {
                 alert('Customer did not pay yet')          

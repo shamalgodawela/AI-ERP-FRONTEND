@@ -13,7 +13,7 @@ const GetExeInvoice = () => {
 
   const fetchInvoices = async () => {
     try {
-              const response = await axios.get(`http://localhost:5000/api/exe-getinvoice?password=${password}`);
+              const response = await axios.get(`https://nihon-inventory.onrender.com/api/exe-getinvoice?password=${password}`);
       setInvoices(response.data);
       setError("");
     } catch (err) {
@@ -27,7 +27,7 @@ const GetExeInvoice = () => {
     const fetchSingleInvoice = async () => {
       if (id) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
+          const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
           
           console.log(response.data); 
         } catch (error) {

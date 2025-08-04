@@ -22,19 +22,19 @@ const Collectionbyexe = () => {
         }
         const fetchData = async () => {
             try {
-                setLoading(true); // Set loading state to true before the request
+                setLoading(true); 
                 const queryParams = `?startDate=${startDate}&endDate=${endDate}`;
-                const response = await axios.get(`http://localhost:5000/api/collection-exe${queryParams}`);
+                const response = await axios.get(`https://nihon-inventory.onrender.com/api/collection-exe${queryParams}`);
                 setData(response.data);
-                setLoading(false); // Set loading state to false after data is fetched
+                setLoading(false); 
             } catch (error) {
                 console.error('Failed to fetch executive collections', error.message);
                 setError('Failed to fetch executive collections');
-                setLoading(false); // Set loading state to false in case of error
+                setLoading(false); 
             }
         };
         fetchData();
-    }, [startDate, endDate]); // Dependency array to refetch when startDate or endDate change
+    }, [startDate, endDate]); 
 
     const chartData = {
         labels: data.map(item => item.exe),
