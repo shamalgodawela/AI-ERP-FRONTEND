@@ -219,6 +219,21 @@ function App() {
 <Route element={<ProtectedRoute allowedRoles={["Operation"]} />}>
     <Route path="/Admin-operations-dashboard" element={<OprationsDashboard/>} />
     {/* <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} /> need to update */}
+    <Route path="/alloutstanding" element={<AllOutStanding />} />
+      <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
+      <Route path="/adminorder/:id" element={<Oneorder/>} />
+      <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
+
+
+    <Route path="/Adminallorder" element={<ViewallOrder/>} />
+    <Route path="/Collectioh-dashboard" element={<Collectiondash/>} />
+    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+    <Route path="/AllOutstanding-without-Menu" element={<WithoutMallout/>} />
+    <Route path="/sales" element={<Sales/>} />
+    <Route path="/AllcustomerWiseHistory" element={<Allcustomers/>}/>
+ 
+    
+   
 
 </Route>
    
