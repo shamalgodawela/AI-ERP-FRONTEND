@@ -33,7 +33,7 @@ const CustomerReg = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-              const response = await axios.post(`http://localhost:5000/api/customers`, formData);
+              const response = await axios.post(`https://nihon-inventory.onrender.com/api/customers`, formData);
       console.log(response.data);
       toast.success('Customer added successfully');
       setFormData({
