@@ -43,24 +43,27 @@
 }
 
 .product-summary-card {
-  min-width: 220px;
-  background: rgba(255,255,255,0.7);
+  min-width: 160px;
+  padding: 16px 12px;
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 18px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.13);
-  padding: 28px 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
   position: relative;
   overflow: hidden;
+  font-size: 0.9rem;
 }
 
+
 .product-summary-card:hover {
-  transform: translateY(-8px) scale(1.05) rotate(-1deg);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  background: rgba(255,255,255,0.95);
+  transform: translateY(-5px) scale(1.03) rotate(-0.5deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.95);
 }
+
 
 .card1 {
   background-color: #b624ff !important;
