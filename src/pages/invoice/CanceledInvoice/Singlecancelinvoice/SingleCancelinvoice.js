@@ -8,7 +8,7 @@ const SingleCancelinvoice = ({ invoiceNumber }) => {
   useEffect(() => {
     const fetchCancelInvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/getcancelbyid/${invoiceNumber}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/getcancelbyid/${invoiceNumber}`);
         setCancelInvoice(response.data);
         setIsLoading(false);
       } catch (error) {

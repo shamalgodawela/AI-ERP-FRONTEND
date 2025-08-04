@@ -34,7 +34,7 @@ const AddNewBulk = () => {
 
         try {
 
-            const addBulk=await axios.post('http://localhost:5000/api/addNewBulk',formdata)
+            const addBulk=await axios.post('https://nihon-inventory.onrender.com/api/addNewBulk',formdata)
             console.log(addBulk.data);
             toast.success('Bulk Product added successfully');
 
