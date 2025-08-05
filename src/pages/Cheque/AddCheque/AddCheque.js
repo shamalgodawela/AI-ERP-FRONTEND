@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './AddCheque.css'; 
-import Menu from '../../../compenents/Menu/Menu';
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
+import Footer from '../../../compenents/footer/Footer';
+
 
 const AddCheque = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +11,8 @@ const AddCheque = () => {
     ChequeValue: '',
     DepositeDate: '',
     Bankdetails:'',
-    BankBranch:''
+    BankBranch:'',
+
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -34,7 +37,7 @@ const AddCheque = () => {
       const data = await response.json();
       if (response.ok) {
         setMessage(data.message);
-        setFormData({ invoiceNumber: '', ChequeNumber: '', ChequeValue: '', DepositeDate: '',Bankdetails:'',BankBranch:'' });
+        setFormData({ invoiceNumber: '', ChequeNumber: '', ChequeValue: '', DepositeDate: '',Bankdetails:'',BankBranch:'' }); // Reset form fields
       } else {
         setError(data.error || 'An error occurred');
       }
@@ -45,7 +48,8 @@ const AddCheque = () => {
 
   return (
     <div>
-        <Menu/><br/><br/><br/>
+      <UserNavbar/>
+      
     <div className="add-cheque-container">
       <h1>Add Cheque Details</h1>
       <form className="add-cheque-form" onSubmit={handleSubmit}>
@@ -118,13 +122,9 @@ const AddCheque = () => {
     required
   >
     <option value="">Select Bank</option>
-    <option value="Bank of Ceylon">Bank of Ceylon</option>
-    <option value="Commercial Bank">Commercial Bank</option>
-    <option value="Hatton National Bank">Hatton National Bank</option>
-    <option value="People's Bank">People's Bank</option>
-    <option value="Sampath Bank">Sampath Bank</option>
-    <option value="National Savings Bank">National Savings Bank</option>
-    <option value="DFCC Bank">DFCC Bank</option>
+    <option value="Bank of Ceylon">BOC</option>
+    <option value="Commercial Bank">COM-Bank</option>
+    <option value="Hatton National Bank">HNB-Bank</option>
   </select>
 </div>
 
@@ -135,6 +135,7 @@ const AddCheque = () => {
       {message && <div className="success-message">{message}</div>}
       {error && <div className="error-message">{error}</div>}
     </div>
+    <Footer/>
  </div>
   );
 };

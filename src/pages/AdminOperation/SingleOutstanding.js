@@ -1,241 +1,284 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { AiOutlineEye } from 'react-icons/ai';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
-import debounce from 'lodash.debounce';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Loader from '../../compenents/loader/Loader';
+import { toast } from 'react-toastify';
+
+import Footer from "../../compenents/footer/Footer";
+
 
 const SingleOutstanding = () => {
+    const containerRef = useRef(null);
+    const { id } = useParams();
+    const [invoice, setInvoice] = useState(null);
+    const [amount, setAmount] = useState(0);
+    const [outstanding, setOutstanding] = useState(0);
+    const [date, setDate] = useState('');
+    const [backName, setBackname]=useState('');
+    const [depositedate, setdepositedate]=useState('');
+    const [CHnumber, setCHnumber]=useState('');
+    const [savedDetails, setSavedDetails] = useState(null); 
+    const [invoiceNumber, setInvoiceNumber] = useState(''); 
     const navigate = useNavigate();
-    
-    const [invoices, setInvoices] = useState([]);
-    const [filteredInvoices, setFilteredInvoices] = useState([]);
-    const [error, setError] = useState(null);
-    const [selectedExe, setSelectedExe] = useState('');
-    const [selectedCode, setSelectedCode] = useState('');
-    const [searchCode, setSearchCode] = useState('');
-    const [selectedMonth, setSelectedMonth] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const location = useLocation();
-    const { state } = location;
-    
 
     useEffect(() => {
-        if (state && state.code) {
-            setSelectedCode(state.code);
-        }
-    }, [state]);
-
-    useEffect(() => {
-        const fetchAllInvoices = async () => {
-            setIsLoading(true);
+        const fetchInvoice = async () => {
             try {
-                const response = await axios.get('https://nihon-inventory.onrender.com/api/get-invoicedetails-admin-outstanding');
-                setInvoices(response.data);
-                setFilteredInvoices(response.data);
+                const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
+                setInvoice(response.data);
             } catch (error) {
-                console.error('Failed to fetch invoices', error.message);
-                setError('Failed to fetch invoices');
-            } finally {
-                setIsLoading(false);
+                console.error(`Failed to fetch invoice with id ${id}`, error.message);
+                // Handle error
             }
         };
 
-        fetchAllInvoices();
-    }, []);
+        fetchInvoice();
+    }, [id]);
 
-    const debounceFilter = useCallback(
-        debounce(() => {
-            let filtered = invoices;
+    const calculateTotal = () => {
+        let total = 0;
+    
+        if (invoice && invoice.products) {
+            total = invoice.products.reduce((acc, product) => {
+                const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
+                return acc + productTotal;
+            }, 0);
+        }
+    
+        return total.toFixed(2);
+    };
+    
 
-            if (selectedExe) {
-                filtered = filtered.filter(invoice => invoice.exe === selectedExe);
-            }
-            if (selectedCode) {
-                filtered = filtered.filter(invoice => invoice.code === selectedCode);
-            }
-            if (selectedMonth) {
-                filtered = filtered.filter(invoice => {
-                    const date = new Date(invoice.invoiceDate);
-                    return String(date.getMonth() + 1).padStart(2, '0') === selectedMonth;
-                });
-            }
-            if (selectedYear) {
-                filtered = filtered.filter(invoice => {
-                    const date = new Date(invoice.invoiceDate);
-                    return String(date.getFullYear()) === selectedYear;
-                });
-            }
+    // const calculateTaxtot = () => {
+    //     if (invoice && invoice.products) {
+    //         const taxRate = invoice.Tax || 0;
 
-            setFilteredInvoices(filtered);
-        }, 300), [invoices, selectedExe, selectedCode, selectedMonth, selectedYear]
-    );
+    //         const totalTax = invoice.products.reduce((acc, product) => {
+    //             const productTax = parseFloat(product.invoiceTotal) * (taxRate / 100);
+    //             return acc + productTax;
+    //         }, 0);
 
-    useEffect(() => {
-        debounceFilter();
-    }, [selectedExe, selectedCode, selectedMonth, selectedYear, debounceFilter]);
+    //         const subtotal = calculateTotal();
+    //         const totalWithTax = subtotal + totalTax;
 
-    const handleSearch = async () => {
-        setIsLoading(true);
+    //         return totalWithTax.toFixed(2);
+    //     }
+
+    //     return 0;
+    // };
+    const handleCalculate = async () => {
         try {
-            let response;
-            if (searchCode) {
-                response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoice-by-customer-code/${searchCode}`);
-            } else {
-                response = await axios.get('https://nihon-inventory.onrender.com/api/get-invoicedetails-admin-outstanding');
+            const parsedAmount = parseFloat(amount);
+            if (isNaN(parsedAmount)) {
+                throw new Error('Invalid amount value');
             }
-            setInvoices(response.data);
-            setFilteredInvoices(response.data);
+    
+            const total = calculateTotal();
+            const parsedTotal = parseFloat(total.replace(/,/g, ''));
+            if (isNaN(parsedTotal)) {
+                throw new Error('Invalid total value');
+            }
+    
+            console.log('Amount:', parsedAmount);
+            console.log('Total:', parsedTotal);
+    
+            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
+            const lastOutstanding = parseFloat(response.data.outstanding);
+            
+    
+            console.log('Last Outstanding:', lastOutstanding);
+    
+            let newOutstanding;
+            if (lastOutstanding === -1) {
+                newOutstanding = parsedTotal - parsedAmount;
+                console.log('New Outstanding (from last outstanding):', newOutstanding);
+            } 
+            else{
+                newOutstanding = lastOutstanding - parsedAmount;
+                console.log('New Outstanding (last outstanding is 0):', newOutstanding);
+            }
+
+            setOutstanding(newOutstanding.toFixed(2));
         } catch (error) {
-            console.error('Failed to fetch invoices', error.message);
-            setError('Failed to fetch invoices');
-        } finally {
-            setIsLoading(false);
+            console.error('Failed to calculate outstanding value:', error.message);
+            // Handle error case if needed
         }
     };
+    
+    
+    const handleSave = async () => {
+        try {
+            await axios.post(`https://nihon-inventory.onrender.com/api/create`, { invoiceNumber: invoice.invoiceNumber,date ,backName,depositedate,CHnumber, amount, outstanding });
+            // Display success message
+            toast.success('Data added successfully!');
+        } catch (error) {
+            toast.error('faild to add details...')
+            // Handle error
+        }
+    };
+    
+
+    const handleFetchAllOutstandingDetails = async () => {
+        try {
+            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
+            const data = response.data;
+            if (data.length === 0) {
+                alert('Customer did not pay yet')          
+                toast.error('Customer did not pay yet')
+                
+            }
+            else{
+                setSavedDetails(data);
+
+            }
+            
+        } catch (error) {
+            toast.error('Customer did not pay yet')
+            alert('Customer did not pay yet') 
+            console.error('Failed to fetch all outstanding details:', error.message);
+            // Handle error
+        }
+    };
+    
+    
+
+    if (!invoice) {
+        return <div>Loading...</div>;
+    }
 
     const formatNumbers = (x) => {
-        if (typeof x === 'number') {
-            return x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        return x;
-    };
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      };
 
-    const calculateTotal = (invoice) => {
-        if (invoice && Array.isArray(invoice.products)) {
-            const productTotal = invoice.products.reduce((acc, product) => {
-                const productValue = product.labelPrice * (1 - product.discount / 100) * product.quantity;
-                return acc + productValue;
-            }, 0);
 
-            if (invoice.Tax && typeof invoice.Tax === 'number') {
-                return productTotal - (productTotal * invoice.Tax / 100);
-            }
+      const backoption =[
+        'BOC',
+        'Commercial',
+        'HNB'
+      ]
 
-            return productTotal;
-        }
-        return 0;
-    };
+      const goback=()=>{
+        navigate(-1);
+      }
 
     return (
-        <div className="outstanding-fullscreen-bg">
-            <div className='invoice-body'>
-                <div className="filter-section">
-                    <select value={selectedExe} onChange={(e) => setSelectedExe(e.target.value)}>
-                        <option value="">All Executives</option>
-                        <option value="Mr.Ahamed">Mr.Ahamed</option>
-                        <option value="Mr.Dasun">Mr.Dasun</option>
-                        <option value="Mr.Chameera">Mr.Chameera</option>
-                        <option value="Mr.Riyas">Mr.Riyas</option>
-                        <option value="Mr.Navaneedan">Mr.Navaneedan</option>
-                        <option value="Mr.Nayum">Mr.Nayum</option>
-                        <option value="SOUTH">SOUTH-1</option>
-                        <option value="Other">Other</option>
-                        <option value="UpCountry">UpCountry</option>
-                    </select>
+        <div>
 
-                    <input
-                        type='text'
-                        value={selectedCode}
-                        onChange={(e) => setSelectedCode(e.target.value)}
-                        placeholder='Customer code'
-                    />
 
-                    <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
-                        <option value="">All Months</option>
-                        <option value="01">January</option>
-                        <option value="02">February</option>
-                        <option value="03">March</option>
-                        <option value="04">April</option>
-                        <option value="05">May</option>
-                        <option value="06">June</option>
-                        <option value="07">July</option>
-                        <option value="08">August</option>
-                        <option value="09">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
+            <br/><br/>
 
-                    <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
-                        <option value="">All Years</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                       
-                        {/* Add more years as needed */}
-                    </select>
-                </div>
+        <div className="cal-outstanding-container">
+        <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
+        <h4 className="h1-out">Customer:{invoice.customer}</h4>
+        <h4 className="h1-out">Invoice Date:{invoice.invoiceDate}</h4>
+        <h4 className="h1-out">EXE: {invoice.exe}</h4>
+        
+        <br/><hr/><br/>
 
-                <div className="all-invoice">
-                    <h2 className='h2-invoice'>Outstanding Details</h2>
-                    {isLoading ? <Loader /> : (
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th className='th-invoice'>Invoice Number</th>
-                                    <th className='th-invoice'>Customer</th>
-                                    <th className='th-invoice'>Customer Code</th>
-                                    <th className='th-invoice'>Printed or Canceled</th>
-                                    <th className='th-invoice'>Invoice Date</th>
-                                    <th className='th-invoice'>Due Date</th>
-                                    <th className='th-invoice'>Tax Number</th>
-                                    <th className='th-invoice'>Exe</th>
-                                    <th className='th-invoice'>Outstanding</th>
-                                    <th className='th-invoice'>Invoice Total</th>
-                                    <th className='th-invoice'>Cheque Details</th>
-                                    <th className='th-invoice'>Action</th>
-                                    <th className='th-invoice'>Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredInvoices.map((invoice) => (
-                                    <tr key={invoice._id} className={invoice.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
-                                        <td className='td-invoice'>{invoice.invoiceNumber}</td>
-                                        <td className='td-invoice'>{invoice.customer}</td>
-                                        <td className='td-invoice'>{invoice.code}</td>
-                                        <td className='td-invoice'>{invoice.GatePassNo}</td>
-                                        <td className='td-invoice'>{invoice.invoiceDate}</td>
-                                        <td className='td-invoice'>{invoice.Duedate}</td>
-                                        <td className='td-invoice'>{invoice.TaxNo}</td>
-                                        <td className='td-invoice'>{invoice.exe}</td>
-                                        <td className={`td-invoice ${invoice.lastOutstanding === "Not Paid" ? 'not-paid' : invoice.lastOutstanding === "Paid" ? 'paid' : ''}`}>
-                                            {formatNumbers(invoice.lastOutstanding)}
-                                        </td>
-                                        <td className='td-invoice'>{formatNumbers(calculateTotal(invoice))}</td>
-                                        <td className='td-invoice'>
-                                            {Array.isArray(invoice.chequeValues) && invoice.chequeValues.length > 0 ? (
-                                                invoice.chequeValues.map((cheque, index) => (
-                                                    <div key={index}>{formatNumbers(cheque)}</div>
-                                                ))
-                                            ) : (
-                                                "No cheque value"
-                                            )}
-                                        </td>
-                                        <td className='td-invoice'>
-                                            <Link to={`/admin-operations-payment/${invoice._id}`}>
-                                                <AiOutlineEye size={20} color={"purple"} />
-                                            </Link>
-                                        </td>
-                                        <td className='td-invoice'>
-                                            <Link to={`/invoice/${invoice.invoiceNumber}`}>
-                                                <FontAwesomeIcon icon={faEye} className="action-icon" />
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
+        <h2 className="h1-out">Product Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td className="text-bold">Product Code</td>
+                    <td className="text-bold">Description</td>
+                    <td className="text-bold">Quantity</td>
+                    <td className="text-bold">Label Price</td>
+                    <td className="text-bold">Discount</td>
+                    <td className="text-bold">Unit Price</td>
+                    <td className="text-bold">Invoice Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                {invoice.products.map((product, index) => (
+                    <tr key={index}>
+                        <td>{product.productCode}</td>
+                        <td>{product.productName}</td>
+                        <td>{product.quantity}</td>
+                        <td>RS/={product.labelPrice}</td>
+                        <td>{product.discount}</td>
+                        <td>RS/={product.unitPrice}</td>
+                        <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+       
+
+        {/* <div className="info-item-td text-end text-bold1" id="second1">SubTotal: RS/={calculateTotal()}</div>
+        <div className="info-item-td text-end text-bold2" id="second2">Tax: %{invoice.Tax}</div> */}
+        <div className="info-item-td text-end text-bold3" id="second3">Total: RS/={calculateTotal()}
+</div>
+        <br/><br/><hr/> <br/><br/>
+        {/* <div className="add-outstanding-container">
+    <h1 className="h1-out">Add Outstanding</h1>
+    <div className="input-container">
+        <label>Deposited Date:</label>
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+    </div>
+    <div className="input-container">
+        <label>Bank Name:</label>
+        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
+            <option value="" disabled>Select a Bank</option>
+            {backoption.map((bank, index) => (
+                    <option key={index} value={bank}>
+                        {bank}
+                    </option>
+            ))}
+
+        </select>
+    </div>
+    <div className="input-container">
+        <label>Date:</label>
+        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e)=>setdepositedate(e.target.value)}/>
+    </div>
+    <div className="input-container">
+        <label>Cheque Number/Reference Number:</label>
+        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e)=>setCHnumber(e.target.value)} required/>
+    </div>
+    <div className="input-container">
+        <label>Amount:</label>
+        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+    </div>
+    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
+    <div className="outstanding">Outstanding:RS/={outstanding}</div>
+    <button className="save-button" onClick={handleSave}>Save</button>
+    <hr/>
+    <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
+</div> */}
+ <br/><br/><hr/> <br/>
+
+        {/* Display saved details */}
+        {savedDetails && (
+            <div>
+                <h2 className="h1-out">All Outstanding Details:</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Bank Name</th>
+                            <th>Outstanding</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {savedDetails.map((detail, index) => (
+                            <tr key={index}>
+                                <td>{detail.date}</td>
+                                <td>RS/={detail.amount}</td>
+                                <td>{detail.backName}</td>
+                                <td>RS/={detail.outstanding}</td>
+                                
+                                
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-            <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>Home</button>
-
-           
-        </div>
+        )}
+    </div>
+    <Footer/>
+    </div>
     );
-};
+}
 
 export default SingleOutstanding;

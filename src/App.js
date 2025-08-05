@@ -76,6 +76,8 @@ import AddUserOrder from "./compenents/HandleOrder/UserOrder/AddUserOrder";
 import OprationsDashboard from "./pages/AdminOperation/OperationsDashboard/OprationsDashboard";
 import OperationsPayments from "./pages/AdminOperation/OperationsDashboard/OperationsPayments";
 import SingleOutstanding from "./pages/AdminOperation/SingleOutstanding";
+import Allcheque from "./pages/AdminOperation/Cheque/Allcheque";
+import UserAllcheque from "./pages/AdminOperation/Cheque/UserAllcheque";
 
 
 axios.defaults.withCredentials= true;
@@ -187,6 +189,8 @@ function App() {
     <Route path="/add-packing-product" element={<AddateProduct/>} />
     <Route path="/All-exe-product-user-role" element={<UserAllexetable/>}/>
     <Route path="/Add-Order-user-role" element={<AddUserOrder/>}/>
+    <Route path="/user-cheque" element={<UserAllcheque/>}/>
+    
 
    
    
@@ -223,6 +227,9 @@ function App() {
     {/* <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} /> need to update */}
     <Route path="/operationsPayment" element={<OperationsPayments />} />
     <Route path="/single-operations/:id" element={<SingleOutstanding/>} />
+    <Route path="/admin-operation-getallcheque" element={<Allcheque/>} />
+
+
    
  
     
