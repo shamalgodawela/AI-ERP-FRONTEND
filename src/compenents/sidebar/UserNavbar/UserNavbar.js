@@ -49,8 +49,8 @@ const UserNavbar = () => {
           <div className="sm-nav-link sm-dropdown-toggle">Payments▾</div>
           <div className="sm-dropdown-menu">
             <a href="/user-check-outstanding" className="sm-dropdown-item">Outstanding</a>
-            <a href="" className="sm-dropdown-item">add Cheques details</a>
-            <a href="" className="sm-dropdown-item">view Cheques</a>
+            <a href="/Add-Cheque" className="sm-dropdown-item">add Cheques details</a>
+            <a href="/user-cheque" className="sm-dropdown-item">view Cheques</a>
           </div>
         </div>
 

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './AllCheques.css';
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
+import Footer from '../../../compenents/footer/Footer';
 
-const Getallcheque = () => {
+
+const UserAllcheque = () => {
   const [cheques, setCheques] = useState([]);
   const [filteredCheques, setFilteredCheques] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,6 +47,8 @@ const Getallcheque = () => {
   if (loading) return <div className="loader">Loading...</div>;
 
   return (
+    <div>
+        <UserNavbar/>
     <div className="cheques-container">
       <h2>All Cheque Details</h2>
 
@@ -103,7 +107,10 @@ const Getallcheque = () => {
         </tbody>
       </table>
     </div>
+    <Footer/>
+    </div>
+
   );
 };
 
-export default Getallcheque;
+export default UserAllcheque;
