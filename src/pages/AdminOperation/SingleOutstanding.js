@@ -67,22 +67,7 @@ const SingleOutstanding = () => {
         }
     };
 
-    const handleSave = async () => {
-        try {
-            await axios.post(`https://nihon-inventory.onrender.com/api/create`, {
-                invoiceNumber: invoice.invoiceNumber,
-                date,
-                backName,
-                depositedate,
-                CHnumber,
-                amount,
-                outstanding
-            });
-            toast.success('Data added successfully!');
-        } catch (error) {
-            toast.error('Failed to add details');
-        }
-    };
+   
 
     const handleFetchAllOutstandingDetails = async () => {
         try {
