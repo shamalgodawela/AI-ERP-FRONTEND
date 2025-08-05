@@ -19,14 +19,17 @@ const OperationsPaymentTable = () => {
     const [selectedYear, setSelectedYear] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
+    const [selectedCustomer, setSelectedCustomer] = useState('');
+    
     const { state } = location;
     
 
-    useEffect(() => {
-        if (state && state.code) {
-            setSelectedCode(state.code);
+     useEffect(() => {
+        if (state && state.customer) {
+          setSelectedCustomer(state.customer);
         }
-    }, [state]);
+      }, [state]);
+    
 
     useEffect(() => {
         const fetchAllInvoices = async () => {
@@ -49,30 +52,40 @@ const OperationsPaymentTable = () => {
     const debounceFilter = useCallback(
         debounce(() => {
             let filtered = invoices;
-
+    
             if (selectedExe) {
                 filtered = filtered.filter(invoice => invoice.exe === selectedExe);
             }
+    
             if (selectedCode) {
                 filtered = filtered.filter(invoice => invoice.code === selectedCode);
             }
+    
+            if (selectedCustomer) {
+                filtered = filtered.filter(invoice =>
+                    invoice.customer.toLowerCase().includes(selectedCustomer.toLowerCase())
+                );
+            }
+    
             if (selectedMonth) {
                 filtered = filtered.filter(invoice => {
                     const date = new Date(invoice.invoiceDate);
                     return String(date.getMonth() + 1).padStart(2, '0') === selectedMonth;
                 });
             }
+    
             if (selectedYear) {
                 filtered = filtered.filter(invoice => {
                     const date = new Date(invoice.invoiceDate);
                     return String(date.getFullYear()) === selectedYear;
                 });
             }
-
+    
             setFilteredInvoices(filtered);
-        }, 300), [invoices, selectedExe, selectedCode, selectedMonth, selectedYear]
+        }, 300),
+        [invoices, selectedExe, selectedCode, selectedCustomer, selectedMonth, selectedYear]
     );
-
+    
     useEffect(() => {
         debounceFilter();
     }, [selectedExe, selectedCode, selectedMonth, selectedYear, debounceFilter]);
@@ -137,12 +150,11 @@ const OperationsPaymentTable = () => {
                     </select>
 
                     <input
-                        type='text'
-                        value={selectedCode}
-                        onChange={(e) => setSelectedCode(e.target.value)}
-                        placeholder='Customer code'
-                    />
-
+            type='text'
+            value={selectedCustomer}
+            onChange={(e) => setSelectedCustomer(e.target.value)}
+            placeholder='Search by customer name'
+          />
                     <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
                         <option value="">All Months</option>
                         <option value="01">January</option>
