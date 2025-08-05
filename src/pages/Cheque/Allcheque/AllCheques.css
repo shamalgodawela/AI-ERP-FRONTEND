@@ -1,0 +1,30 @@
+.cheques-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .cheques-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .cheques-table th,
+  .cheques-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .cheques-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .loader {
+    text-align: center;
+    font-size: 18px;
+    padding: 40px;
+  }
+  

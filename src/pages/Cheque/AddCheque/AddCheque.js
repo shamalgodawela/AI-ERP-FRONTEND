@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './AddCheque.css'; 
-import Menu from '../../../compenents/Menu/Menu';
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
+import Footer from '../../../compenents/footer/Footer';
+
 
 const AddCheque = () => {
   const [formData, setFormData] = useState({
@@ -45,7 +47,8 @@ const AddCheque = () => {
 
   return (
     <div>
-        <Menu/><br/><br/><br/>
+      <UserNavbar/>
+      
     <div className="add-cheque-container">
       <h1>Add Cheque Details</h1>
       <form className="add-cheque-form" onSubmit={handleSubmit}>
@@ -135,6 +138,7 @@ const AddCheque = () => {
       {message && <div className="success-message">{message}</div>}
       {error && <div className="error-message">{error}</div>}
     </div>
+    <Footer/>
  </div>
   );
 };
