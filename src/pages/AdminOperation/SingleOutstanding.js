@@ -15,7 +15,6 @@ const SingleOutstanding = () => {
     const [depositedate, setdepositedate] = useState('');
     const [CHnumber, setCHnumber] = useState('');
     const [savedDetails, setSavedDetails] = useState(null);
-    const [invoiceNumber, setInvoiceNumber] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -67,8 +66,6 @@ const SingleOutstanding = () => {
         }
     };
 
-   
-
     const handleFetchAllOutstandingDetails = async () => {
         try {
             const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
@@ -86,11 +83,11 @@ const SingleOutstanding = () => {
     };
 
     const formatNumbers = (x) => {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const num = parseFloat(x);
+        if (isNaN(num)) return x;
+        return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
-
-    const bankOptions = ['BOC', 'Commercial', 'HNB'];
-
+    
     const goback = () => {
         navigate(-1);
     };
@@ -148,8 +145,9 @@ const SingleOutstanding = () => {
                 </table>
 
                 <div className="info-item-td text-end text-bold3" id="second3">
-                    Total: RS/={calculateTotal()}
-                </div>
+    Total: RS/= {formatNumbers(calculateTotal())}
+</div>
+
 
                 <br /><br /><hr /> <br /><br />
 
@@ -175,9 +173,9 @@ const SingleOutstanding = () => {
                                 {savedDetails.map((detail, index) => (
                                     <tr key={index}>
                                         <td>{detail.date}</td>
-                                        <td>RS/={detail.amount}</td>
+                                        <td>RS/= {formatNumbers(detail.amount)}</td>
                                         <td>{detail.backName}</td>
-                                        <td>RS/={detail.outstanding}</td>
+                                        <td>RS/= {formatNumbers(detail.outstanding)}</td>
                                     </tr>
                                 ))}
                             </tbody>
