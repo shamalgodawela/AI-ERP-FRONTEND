@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './edit.css'
 import Footer from '../../../compenents/footer/Footer';
-import Menu from '../../../compenents/Menu/Menu';
 
 const EditInvoice = () => {
   const { invoiceNumber } = useParams();
+  const navigate = useNavigate();
   const [invoiceData, setInvoiceData] = useState({
     invoiceNumber: '',
     customer: '',
@@ -83,7 +83,7 @@ const EditInvoice = () => {
 
   return (
     <div>
-        <Menu/>
+        
     <div className="edit-invoice-container">
     <h2>Edit Invoice</h2>
     <form onSubmit={handleSubmit}>
@@ -312,6 +312,7 @@ const EditInvoice = () => {
       <button type="submit">Update Invoice</button>
     </form>
   </div>
+  <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
   <Footer/>
   </div>
   );
