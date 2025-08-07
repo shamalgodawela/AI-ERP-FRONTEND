@@ -31,7 +31,7 @@ const actions = [
   {
     label: 'Executives Incentive',
     icon: <FaUniversity size={32} />, 
-    route: '',
+    route: '/admin-operation-incentive',
   },
 ];
 
