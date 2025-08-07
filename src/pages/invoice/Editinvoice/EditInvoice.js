@@ -24,6 +24,7 @@ const EditInvoice = () => {
     VehicleNo: '',
     IncentiveDueDate:'',
     IncentiveStatus: '',
+    Incentivesettlement: '',
     
 
     products: [
@@ -180,17 +181,31 @@ const EditInvoice = () => {
         
       </div>
       <div className="form-group">
-        <label htmlFor="TermsofPayment">Incentive Status</label>
-        <input
-          type="text"
-          id="TermsofPayment"
-          name="TermsofPayment"
-          value={invoiceData.IncentiveStatus}
-          onChange={handleChange}
-        />
-        
-        
-      </div>
+          <label htmlFor="GatePassNo">Incentive Eligibility</label>
+          <select
+            id="GatePassNo"
+            name="IncentiveStatus"
+            value={invoiceData.IncentiveStatus}
+            onChange={handleChange}
+          >
+            <option value="">Select</option>
+            <option value="Settled">Settled</option>
+            <option value="Not_Eligible">Not_Eligible</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="GatePassNo">Incentive Received or not</label>
+          <select
+            id="GatePassNo"
+            name="Incentivesettlement"
+            value={invoiceData.Incentivesettlement}
+            onChange={handleChange}
+          >
+            <option value="">Select</option>
+            <option value="Received">Received</option>
+            <option value="Not_Received">Not Received</option>
+          </select>
+        </div>
       <div className="form-group">
         <label htmlFor="Duedate">Due Date</label>
         <input
@@ -202,9 +217,9 @@ const EditInvoice = () => {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="Duedate">Exe Incentive Due Date</label>
+        <label htmlFor="Duedate">Exe Incentive date</label>
         <input
-          type="text"
+          type="date"
           id="Duedate"
           name="Duedate"
           value={invoiceData.IncentiveDueDate}
