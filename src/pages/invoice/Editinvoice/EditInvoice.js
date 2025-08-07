@@ -73,7 +73,7 @@ const EditInvoice = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-              .put(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`, invoiceData)
+              .put(`http://localhost:5000/api/invoices/${invoiceNumber}`, invoiceData)
       .then((response) => {
         alert('Invoice updated successfully!');
       })
@@ -210,15 +210,16 @@ const EditInvoice = () => {
         <div className="form-group">
           <label htmlFor="GatePassNo">Incentive Received or not</label>
           <select
-            id="GatePassNo"
-            name="Incentivesettlement"
-            value={invoiceData.Incentivesettlement}
-            onChange={handleChange}
-          >
-            <option value="">Select</option>
-            <option value="Received">Received</option>
-            <option value="Not_Received">Not Received</option>
-          </select>
+  id="Incentivesettlement"
+  name="Incentivesettlement"
+  value={invoiceData.Incentivesettlement}
+  onChange={handleChange}
+>
+  <option value="">Select</option>
+  <option value="Received">Received</option>
+  <option value="Not_Received">Not Received</option>
+</select>
+
         </div>
       <div className="form-group">
         <label htmlFor="Duedate">Due Date</label>
