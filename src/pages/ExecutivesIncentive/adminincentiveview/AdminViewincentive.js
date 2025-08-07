@@ -20,6 +20,14 @@ const AdminViewincentive = () => {
       });
   }, []);
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    if (isNaN(date)) return dateStr; 
+    return date.toISOString().split('T')[0]; 
+  };
+  
+
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -50,14 +58,15 @@ const AdminViewincentive = () => {
               <td>{item.invoiceTotal}</td>
               <td>{item.incentiveAmount}</td>
               <td>{item.IncentiveDueDate}</td>
-              <td>{item.Duedate}</td>
+              <td>{formatDate(item.Duedate)}</td>
+
             </tr>
           ))}
         </tbody>
       </table>
       
     </div>
-    <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>Home</button>
+    <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
     </div>
   );
 };
