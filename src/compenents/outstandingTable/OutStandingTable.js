@@ -4,7 +4,7 @@ import { AiOutlineEye } from 'react-icons/ai';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import './allInvoice.css';
 import Loader from '../loader/Loader';
 
@@ -17,15 +17,25 @@ const OutStandingTable = () => {
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   const location = useLocation();
   const { state } = location;
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  // Initialize filters from URL or navigation state
   useEffect(() => {
-    if (state && state.customer) {
-      setSelectedCustomer(state.customer);
-    }
-  }, [state]);
+    const customerFromState = state?.customer || searchParams.get("customer") || '';
+    const exe = searchParams.get("exe") || '';
+    const month = searchParams.get("month") || '';
+    const year = searchParams.get("year") || '';
 
+    setSelectedCustomer(customerFromState);
+    setSelectedExe(exe);
+    setSelectedMonth(month);
+    setSelectedYear(year);
+  }, []);
+
+  // Fetch data
   useEffect(() => {
     const fetchAllInvoices = async () => {
       setIsLoading(true);
@@ -40,10 +50,10 @@ const OutStandingTable = () => {
         setIsLoading(false);
       }
     };
-
     fetchAllInvoices();
   }, []);
 
+  // Debounced filter logic
   const debounceFilter = useCallback(
     debounce(() => {
       let filtered = invoices;
@@ -51,20 +61,17 @@ const OutStandingTable = () => {
       if (selectedExe) {
         filtered = filtered.filter(invoice => invoice.exe === selectedExe);
       }
-
       if (selectedCustomer) {
         filtered = filtered.filter(invoice =>
           invoice.customer.toLowerCase().includes(selectedCustomer.toLowerCase())
         );
       }
-
       if (selectedMonth) {
         filtered = filtered.filter(invoice => {
           const date = new Date(invoice.invoiceDate);
           return String(date.getMonth() + 1).padStart(2, '0') === selectedMonth;
         });
       }
-
       if (selectedYear) {
         filtered = filtered.filter(invoice => {
           const date = new Date(invoice.invoiceDate);
@@ -80,6 +87,18 @@ const OutStandingTable = () => {
   useEffect(() => {
     debounceFilter();
   }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, debounceFilter]);
+
+  // Handle filter change and update URL
+  const handleFilterChange = (param, value, setter) => {
+    setter(value);
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set(param, value);
+    } else {
+      newParams.delete(param);
+    }
+    setSearchParams(newParams, { replace: true });
+  };
 
   const formatNumbers = (x) => {
     if (typeof x === 'number') {
@@ -108,7 +127,10 @@ const OutStandingTable = () => {
     <div className="outstanding-fullscreen-bg">
       <div className='invoice-body'>
         <div className="filter-section">
-          <select value={selectedExe} onChange={(e) => setSelectedExe(e.target.value)}>
+          <select
+            value={selectedExe}
+            onChange={(e) => handleFilterChange('exe', e.target.value, setSelectedExe)}
+          >
             <option value="">All Executives</option>
             <option value="Mr.Ahamed">Mr.Ahamed</option>
             <option value="Mr.Dasun">Mr.Dasun</option>
@@ -122,13 +144,16 @@ const OutStandingTable = () => {
           </select>
 
           <input
-            type='text'
+            type="text"
             value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
-            placeholder='Search by customer name'
+            onChange={(e) => handleFilterChange('customer', e.target.value, setSelectedCustomer)}
+            placeholder="Search by customer name"
           />
 
-          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+          <select
+            value={selectedMonth}
+            onChange={(e) => handleFilterChange('month', e.target.value, setSelectedMonth)}
+          >
             <option value="">All Months</option>
             <option value="01">January</option>
             <option value="02">February</option>
@@ -144,11 +169,13 @@ const OutStandingTable = () => {
             <option value="12">December</option>
           </select>
 
-          <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+          <select
+            value={selectedYear}
+            onChange={(e) => handleFilterChange('year', e.target.value, setSelectedYear)}
+          >
             <option value="">All Years</option>
             <option value="2025">2025</option>
             <option value="2024">2024</option>
-            {/* Add more years as needed */}
           </select>
         </div>
 

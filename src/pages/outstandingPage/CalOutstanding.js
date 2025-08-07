@@ -166,6 +166,15 @@ const CalOutstanding = () => {
 
 
             <br/><br/>
+            <button onClick={goback} style={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    border: 'none',
+                    padding: '8px 16px',
+                    marginBottom: '20px',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                }}>← Back</button>
 
         <div className="cal-outstanding-container">
         <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>

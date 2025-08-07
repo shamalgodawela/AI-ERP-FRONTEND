@@ -41,7 +41,7 @@ const EditInvoice = () => {
   });
 
   useEffect(() => {
-    // Fetch the invoice details to populate the form
+    
     axios
               .get(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`)
       .then((response) => {
@@ -82,8 +82,22 @@ const EditInvoice = () => {
       });
   };
 
+  const goback = () => {
+    navigate(-1);
+};
+
   return (
     <div>
+
+<button onClick={goback} style={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    border: 'none',
+                    padding: '8px 16px',
+                    marginBottom: '20px',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                }}>← Back</button>
         
     <div className="edit-invoice-container">
     <h2>Edit Invoice</h2>
@@ -196,15 +210,16 @@ const EditInvoice = () => {
         <div className="form-group">
           <label htmlFor="GatePassNo">Incentive Received or not</label>
           <select
-            id="GatePassNo"
-            name="Incentivesettlement"
-            value={invoiceData.Incentivesettlement}
-            onChange={handleChange}
-          >
-            <option value="">Select</option>
-            <option value="Received">Received</option>
-            <option value="Not_Received">Not Received</option>
-          </select>
+  id="Incentivesettlement"
+  name="Incentivesettlement"
+  value={invoiceData.Incentivesettlement}
+  onChange={handleChange}
+>
+  <option value="">Select</option>
+  <option value="Received">Received</option>
+  <option value="Not_Received">Not Received</option>
+</select>
+
         </div>
       <div className="form-group">
         <label htmlFor="Duedate">Due Date</label>
@@ -221,7 +236,7 @@ const EditInvoice = () => {
         <input
           type="date"
           id="Duedate"
-          name="Duedate"
+          name="IncentiveDueDate"
           value={invoiceData.IncentiveDueDate}
           onChange={handleChange}
         />
