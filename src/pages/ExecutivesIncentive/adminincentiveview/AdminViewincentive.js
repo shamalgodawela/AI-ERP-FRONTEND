@@ -9,6 +9,7 @@ const AdminViewincentive = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedExe, setSelectedExe] = useState('All');
+  const [searchMonth, setSearchMonth] = useState('');
 
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
@@ -25,18 +26,37 @@ const AdminViewincentive = () => {
 
   const uniqueExecutives = ['All', ...Array.from(new Set(incentives.map(item => item.exe)))];
 
+  const formatNumberWithCommas = (num) => {
+    return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const applyFilters = (exe, month) => {
+    let filtered = incentives;
+
+    if (exe !== 'All') {
+      filtered = filtered.filter(item => item.exe === exe);
+    }
+
+    if (month) {
+      filtered = filtered.filter(item =>
+        item.IncentiveDueDate &&
+        item.IncentiveDueDate.startsWith(month) // e.g., '2025-08'
+      );
+    }
+
+    setFilteredIncentives(filtered);
+  };
+
   const handleSelectChange = (e) => {
     const exe = e.target.value;
     setSelectedExe(exe);
-    if (exe === 'All') {
-      setFilteredIncentives(incentives);
-    } else {
-      setFilteredIncentives(incentives.filter(item => item.exe === exe));
-    }
+    applyFilters(exe, searchMonth);
   };
 
-  const formatNumberWithCommas = (num) => {
-    return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const handleMonthChange = (e) => {
+    const month = e.target.value;
+    setSearchMonth(month);
+    applyFilters(selectedExe, month);
   };
 
   const totalIncentiveAmount = filteredIncentives.reduce((sum, item) => {
@@ -52,7 +72,6 @@ const AdminViewincentive = () => {
 
   return (
     <>
-      {/* Print-specific styles */}
       <style>{`
         @media print {
           body * {
@@ -67,7 +86,6 @@ const AdminViewincentive = () => {
             top: 0;
             width: 100%;
           }
-          /* Hide buttons and selects */
           .no-print {
             display: none !important;
           }
@@ -78,7 +96,7 @@ const AdminViewincentive = () => {
         <div className="incentive-container">
           <h2>Executive Incentive Report</h2>
 
-          {/* Controls to hide during print */}
+          {/* Filter Controls */}
           <div className="no-print" style={{ marginBottom: '10px' }}>
             <label htmlFor="exe-select" style={{ marginRight: '8px' }}>Filter by Executive:</label>
             <select
@@ -92,16 +110,31 @@ const AdminViewincentive = () => {
               ))}
             </select>
 
+            <label htmlFor="month-filter" style={{ marginRight: '8px' }}>Filter by Month:</label>
+            <input
+              type="month"
+              id="month-filter"
+              value={searchMonth}
+              onChange={handleMonthChange}
+              style={{ padding: '5px', marginRight: '10px' }}
+            />
+
             <button onClick={handlePrint} style={{ padding: '5px 10px' }}>
               Print Report
             </button>
           </div>
 
-          {/* Printable content */}
+          {/* Printable Area */}
           <div id="printableArea">
             <p><strong>Total Incentive Amount : Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
 
-            <table className="incentive-table" border="1" cellPadding="5" cellSpacing="0" style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <table
+              className="incentive-table"
+              border="1"
+              cellPadding="5"
+              cellSpacing="0"
+              style={{ borderCollapse: 'collapse', width: '100%' }}
+            >
               <thead>
                 <tr>
                   <th>Invoice Number</th>
@@ -132,7 +165,11 @@ const AdminViewincentive = () => {
           </div>
         </div>
 
-        <button className="home-btn no-print" onClick={() => navigate('/admin-profile')} style={{ marginTop: '15px' }}>
+        <button
+          className="home-btn no-print"
+          onClick={() => navigate('/admin-profile')}
+          style={{ marginTop: '15px' }}
+        >
           Home
         </button>
       </div>
