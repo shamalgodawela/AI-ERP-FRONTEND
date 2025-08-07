@@ -73,7 +73,7 @@ const EditInvoice = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-              .put(`http://localhost:5000/api/invoices/${invoiceNumber}`, invoiceData)
+              .put(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`, invoiceData)
       .then((response) => {
         alert('Invoice updated successfully!');
       })

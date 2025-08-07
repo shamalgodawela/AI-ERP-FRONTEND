@@ -11,7 +11,7 @@ const AdminViewincentive = () => {
   const [selectedExe, setSelectedExe] = useState('All');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/get-incentive')
+    axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
       .then(response => {
         setIncentives(response.data);
         setFilteredIncentives(response.data);
