@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './AdminViewincentive.css';
+
 
 const AdminViewincentive = () => {
   const navigate = useNavigate();
