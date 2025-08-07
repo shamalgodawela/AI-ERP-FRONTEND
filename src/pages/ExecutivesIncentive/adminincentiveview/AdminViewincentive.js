@@ -9,7 +9,7 @@ const AdminViewincentive = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedExe, setSelectedExe] = useState('All');
-  const [searchDate, setSearchDate] = useState('');
+  const [searchMonth, setSearchMonth] = useState('');
 
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
@@ -30,16 +30,17 @@ const AdminViewincentive = () => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, date) => {
+  const applyFilters = (exe, month) => {
     let filtered = incentives;
 
     if (exe !== 'All') {
       filtered = filtered.filter(item => item.exe === exe);
     }
 
-    if (date) {
+    if (month) {
       filtered = filtered.filter(item =>
-        item.IncentiveDueDate && item.IncentiveDueDate.includes(date)
+        item.IncentiveDueDate &&
+        item.IncentiveDueDate.startsWith(month) // e.g., '2025-08'
       );
     }
 
@@ -49,13 +50,13 @@ const AdminViewincentive = () => {
   const handleSelectChange = (e) => {
     const exe = e.target.value;
     setSelectedExe(exe);
-    applyFilters(exe, searchDate);
+    applyFilters(exe, searchMonth);
   };
 
-  const handleDateChange = (e) => {
-    const date = e.target.value;
-    setSearchDate(date);
-    applyFilters(selectedExe, date);
+  const handleMonthChange = (e) => {
+    const month = e.target.value;
+    setSearchMonth(month);
+    applyFilters(selectedExe, month);
   };
 
   const totalIncentiveAmount = filteredIncentives.reduce((sum, item) => {
@@ -95,7 +96,7 @@ const AdminViewincentive = () => {
         <div className="incentive-container">
           <h2>Executive Incentive Report</h2>
 
-          {/* Controls */}
+          {/* Filter Controls */}
           <div className="no-print" style={{ marginBottom: '10px' }}>
             <label htmlFor="exe-select" style={{ marginRight: '8px' }}>Filter by Executive:</label>
             <select
@@ -109,12 +110,12 @@ const AdminViewincentive = () => {
               ))}
             </select>
 
-            <label htmlFor="date-filter" style={{ marginRight: '8px' }}>Filter by Incentive Due Date:</label>
+            <label htmlFor="month-filter" style={{ marginRight: '8px' }}>Filter by Month:</label>
             <input
-              type="date"
-              id="date-filter"
-              value={searchDate}
-              onChange={handleDateChange}
+              type="month"
+              id="month-filter"
+              value={searchMonth}
+              onChange={handleMonthChange}
               style={{ padding: '5px', marginRight: '10px' }}
             />
 
