@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './AdminViewincentive.css';
 
-
 const AdminViewincentive = () => {
   const navigate = useNavigate();
   const [incentives, setIncentives] = useState([]);
@@ -16,8 +15,14 @@ const AdminViewincentive = () => {
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
       .then(response => {
-        setIncentives(response.data);
-        setFilteredIncentives(response.data);
+        // Filter for IncentiveStatus and Incentivesettlement on load
+        const settledNotReceived = response.data.filter(item =>
+          item.IncentiveStatus === "Settled" &&
+          item.Incentivesettlement === "Not_Received"
+        );
+
+        setIncentives(settledNotReceived);
+        setFilteredIncentives(settledNotReceived);
         setLoading(false);
       })
       .catch(() => {
@@ -35,6 +40,12 @@ const AdminViewincentive = () => {
   const applyFilters = (exe, month) => {
     let filtered = incentives;
 
+    // Fixed filters
+    filtered = filtered.filter(item =>
+      item.IncentiveStatus === "Settled" &&
+      item.Incentivesettlement === "Not_Received"
+    );
+
     if (exe !== 'All') {
       filtered = filtered.filter(item => item.exe === exe);
     }
@@ -42,7 +53,7 @@ const AdminViewincentive = () => {
     if (month) {
       filtered = filtered.filter(item =>
         item.IncentiveDueDate &&
-        item.IncentiveDueDate.startsWith(month) // e.g., '2025-08'
+        item.IncentiveDueDate.startsWith(month)
       );
     }
 
