@@ -9,20 +9,18 @@ const AdminViewincentive = () => {
   const [filteredIncentives, setFilteredIncentives] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Filter states
   const [selectedExe, setSelectedExe] = useState('All');
   const [searchMonth, setSearchMonth] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedSettlement, setSelectedSettlement] = useState('All');
 
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
       .then(response => {
-        // Filter for IncentiveStatus and Incentivesettlement on load
-        const settledNotReceived = response.data.filter(item =>
-          item.IncentiveStatus === "Settled" &&
-          item.Incentivesettlement === "Not_Received"
-        );
-
-        setIncentives(settledNotReceived);
-        setFilteredIncentives(settledNotReceived);
+        setIncentives(response.data);
+        setFilteredIncentives(response.data);
         setLoading(false);
       })
       .catch(() => {
@@ -32,19 +30,15 @@ const AdminViewincentive = () => {
   }, []);
 
   const uniqueExecutives = ['All', ...Array.from(new Set(incentives.map(item => item.exe)))];
+  const uniqueStatuses = ['All', ...Array.from(new Set(incentives.map(item => item.IncentiveStatus)))];
+  const uniqueSettlements = ['All', ...Array.from(new Set(incentives.map(item => item.Incentivesettlement)))];
 
   const formatNumberWithCommas = (num) => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, month) => {
+  const applyFilters = (exe, month, status, settlement) => {
     let filtered = incentives;
-
-    // Fixed filters
-    filtered = filtered.filter(item =>
-      item.IncentiveStatus === "Settled" &&
-      item.Incentivesettlement === "Not_Received"
-    );
 
     if (exe !== 'All') {
       filtered = filtered.filter(item => item.exe === exe);
@@ -57,19 +51,40 @@ const AdminViewincentive = () => {
       );
     }
 
+    if (status !== 'All') {
+      filtered = filtered.filter(item => item.IncentiveStatus === status);
+    }
+
+    if (settlement !== 'All') {
+      filtered = filtered.filter(item => item.Incentivesettlement === settlement);
+    }
+
     setFilteredIncentives(filtered);
   };
 
+  // Handlers for each filter change
   const handleSelectChange = (e) => {
     const exe = e.target.value;
     setSelectedExe(exe);
-    applyFilters(exe, searchMonth);
+    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement);
   };
 
   const handleMonthChange = (e) => {
     const month = e.target.value;
     setSearchMonth(month);
-    applyFilters(selectedExe, month);
+    applyFilters(selectedExe, month, selectedStatus, selectedSettlement);
+  };
+
+  const handleStatusChange = (e) => {
+    const status = e.target.value;
+    setSelectedStatus(status);
+    applyFilters(selectedExe, searchMonth, status, selectedSettlement);
+  };
+
+  const handleSettlementChange = (e) => {
+    const settlement = e.target.value;
+    setSelectedSettlement(settlement);
+    applyFilters(selectedExe, searchMonth, selectedStatus, settlement);
   };
 
   const totalIncentiveAmount = filteredIncentives.reduce((sum, item) => {
@@ -116,7 +131,7 @@ const AdminViewincentive = () => {
               id="exe-select"
               value={selectedExe}
               onChange={handleSelectChange}
-              style={{ padding: '5px', width: '220px', marginRight: '10px' }}
+              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
             >
               {uniqueExecutives.map((exe, idx) => (
                 <option key={idx} value={exe}>{exe}</option>
@@ -131,6 +146,30 @@ const AdminViewincentive = () => {
               onChange={handleMonthChange}
               style={{ padding: '5px', marginRight: '10px' }}
             />
+
+            <label htmlFor="status-select" style={{ marginRight: '8px' }}>Filter by Incentive Status:</label>
+            <select
+              id="status-select"
+              value={selectedStatus}
+              onChange={handleStatusChange}
+              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
+            >
+              {uniqueStatuses.map((status, idx) => (
+                <option key={idx} value={status}>{status}</option>
+              ))}
+            </select>
+
+            <label htmlFor="settlement-select" style={{ marginRight: '8px' }}>Filter by Incentive Settlement:</label>
+            <select
+              id="settlement-select"
+              value={selectedSettlement}
+              onChange={handleSettlementChange}
+              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
+            >
+              {uniqueSettlements.map((settlement, idx) => (
+                <option key={idx} value={settlement}>{settlement}</option>
+              ))}
+            </select>
 
             <button onClick={handlePrint} style={{ padding: '5px 10px' }}>
               Print Report
@@ -158,6 +197,8 @@ const AdminViewincentive = () => {
                   <th>Incentive Amount (Rs)</th>
                   <th>Invoice Settled Date</th>
                   <th>Invoice Due Date</th>
+                  <th>Incentive Status</th>
+                  <th>Incentive Settlement</th>
                 </tr>
               </thead>
               <tbody>
@@ -171,6 +212,8 @@ const AdminViewincentive = () => {
                     <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
                     <td>{item.IncentiveDueDate}</td>
                     <td>{item.Duedate}</td>
+                    <td>{item.IncentiveStatus}</td>
+                    <td>{item.Incentivesettlement}</td>
                   </tr>
                 ))}
               </tbody>
