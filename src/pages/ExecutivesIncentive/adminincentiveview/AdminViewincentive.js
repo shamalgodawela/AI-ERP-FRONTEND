@@ -37,7 +37,7 @@ const AdminViewincentive = () => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, month, status, settlement) => {
+  const applyFilters = (exe, month,IncentiveStatus,Incentivesettlement) => {
     let filtered = incentives;
 
     if (exe !== 'All') {
@@ -51,12 +51,12 @@ const AdminViewincentive = () => {
       );
     }
 
-    if (status !== 'All') {
-      filtered = filtered.filter(item => item.IncentiveStatus === status);
+    if (IncentiveStatus !== 'All') {
+      filtered = filtered.filter(item => item.IncentiveStatus === IncentiveStatus);
     }
 
-    if (settlement !== 'All') {
-      filtered = filtered.filter(item => item.Incentivesettlement === settlement);
+    if (Incentivesettlement !== 'All') {
+      filtered = filtered.filter(item => item.Incentivesettlement === Incentivesettlement);
     }
 
     setFilteredIncentives(filtered);
