@@ -36,7 +36,7 @@ export default function InvoiceTemp() {
         }, 0);
     }
 
-    return total.toFixed(2); 
+    return total.toFixed(2); // Return the total with 2 decimal places
 };
 
 const formatNumbers = (x) => {
@@ -45,17 +45,17 @@ const formatNumbers = (x) => {
 
 const calculateTaxtot = () => {
     if (invoice && invoice.products) {
-        const taxRate = invoice.Tax || 0; 
+        const taxRate = invoice.Tax || 0; // Default to 0 if tax rate is not available
 
         const totalTax = invoice.products.reduce((acc, product) => {
             const productTax = parseFloat(product.invoiceTotal) * (taxRate / 100);
             return acc + productTax;
         }, 0);
 
-        const subtotal = parseFloat(calculateTotal()); 
-        const totalWithTax = subtotal - totalTax; 
+        const subtotal = parseFloat(calculateTotal()); // Get the subtotal and parse it to float
+        const totalWithTax = subtotal - totalTax; // Add tax amount to subtotal // temp change for discount
 
-        console.log(typeof totalWithTax, totalWithTax); 
+        console.log(typeof totalWithTax, totalWithTax); // Log type and value of totalWithTax
 
         return totalWithTax.toFixed(2); 
     }

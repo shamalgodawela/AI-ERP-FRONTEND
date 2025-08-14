@@ -4,7 +4,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import './CalOutstanding.css'; 
 import Footer from "../../compenents/footer/Footer";
-import Menu from "../../compenents/Menu/Menu";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const CalOutstanding = () => {
@@ -24,7 +23,7 @@ const CalOutstanding = () => {
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
-                const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
+                const response = await axios.get(`http://localhost:5000/api/get-invoice/${id}`);
                 setInvoice(response.data);
             } catch (error) {
                 console.error(`Failed to fetch invoice with id ${id}`, error.message);
@@ -82,7 +81,7 @@ const CalOutstanding = () => {
             console.log('Amount:', parsedAmount);
             console.log('Total:', parsedTotal);
     
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
+            const response = await axios.get(`http://localhost:5000/api/get-last-outstanding/${invoice.invoiceNumber}`);
             const lastOutstanding = parseFloat(response.data.outstanding);
             
     
@@ -108,7 +107,7 @@ const CalOutstanding = () => {
     
     const handleSave = async () => {
         try {
-            await axios.post(`https://nihon-inventory.onrender.com/api/create`, { invoiceNumber: invoice.invoiceNumber,date ,backName,depositedate,CHnumber, amount, outstanding });
+            await axios.post(`http://localhost:5000/api/create`, { invoiceNumber: invoice.invoiceNumber,date ,backName,depositedate,CHnumber, amount, outstanding });
             // Display success message
             toast.success('Data added successfully!');
         } catch (error) {
@@ -120,7 +119,7 @@ const CalOutstanding = () => {
 
     const handleFetchAllOutstandingDetails = async () => {
         try {
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
+            const response = await axios.get(`http://localhost:5000/api/get-all-outstanding/${invoice.invoiceNumber}`);
             const data = response.data;
             if (data.length === 0) {
                 alert('Customer did not pay yet')          
@@ -163,18 +162,14 @@ const CalOutstanding = () => {
 
     return (
         <div>
+           
 
+            <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
+  Go Back
+  <IoMdArrowRoundBack size={23} />
+</Link>
 
             <br/><br/>
-            <button onClick={goback} style={{
-                    backgroundColor: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 16px',
-                    marginBottom: '20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>← Back</button>
 
         <div className="cal-outstanding-container">
         <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
