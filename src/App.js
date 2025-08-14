@@ -80,6 +80,7 @@ import Allcheque from "./pages/AdminOperation/Cheque/Allcheque";
 import UserAllcheque from "./pages/AdminOperation/Cheque/UserAllcheque";
 import ViewAllincentive from "./pages/ExecutivesIncentive/viewIncentiveAll/ViewAllincentive";
 import AdminViewincentive from "./pages/ExecutivesIncentive/adminincentiveview/AdminViewincentive";
+import EditCheque from "./pages/AdminOperation/Cheque/EditCheque";
 
 
 axios.defaults.withCredentials= true;
@@ -193,6 +194,7 @@ function App() {
     <Route path="/All-exe-product-user-role" element={<UserAllexetable/>}/>
     <Route path="/Add-Order-user-role" element={<AddUserOrder/>}/>
     <Route path="/user-cheque" element={<UserAllcheque/>}/>
+    <Route path="/get-single-Cheque/:id" element={<EditCheque/>}/>
     
 
    

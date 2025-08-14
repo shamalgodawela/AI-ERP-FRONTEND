@@ -1,25 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
-import Footer from '../../../compenents/footer/Footer';
-
 
 const UserAllcheque = () => {
   const [cheques, setCheques] = useState([]);
   const [filteredCheques, setFilteredCheques] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Search filters
-  const [invoiceSearch, setInvoiceSearch] = useState('');
+  // Filters
+  const [invoicePrefix, setInvoicePrefix] = useState('');
+  const [bankBranch, setBankBranch] = useState('');
   const [chequeNumberSearch, setChequeNumberSearch] = useState('');
   const [dateSearch, setDateSearch] = useState('');
+  const [invoicePrefixes, setInvoicePrefixes] = useState([]);
+  const [bankBranches, setBankBranches] = useState([]);
 
   useEffect(() => {
     const fetchCheques = async () => {
       try {
         const response = await axios.get('https://nihon-inventory.onrender.com/api/getall-cheque');
-        setCheques(response.data.cheques);
-        setFilteredCheques(response.data.cheques); 
+        const allCheques = response.data.cheques;
+
+        setCheques(allCheques);
+        setFilteredCheques(allCheques);
+
+        // Unique invoice prefixes
+        const prefixes = Array.from(
+          new Set(
+            allCheques
+              .map(c => c.invoiceNumber?.split('-')[0])
+              .filter(Boolean)
+          )
+        );
+        setInvoicePrefixes(prefixes);
+
+        // Unique bank branches
+        const branches = Array.from(
+          new Set(
+            allCheques
+              .map(c => c.BankBranch)
+              .filter(Boolean)
+          )
+        );
+        setBankBranches(branches);
+
       } catch (error) {
         console.error('Error fetching cheques:', error);
       } finally {
@@ -32,34 +55,62 @@ const UserAllcheque = () => {
 
   useEffect(() => {
     const filtered = cheques.filter((cheque) => {
-      const invoiceMatch = cheque.invoiceNumber.toLowerCase().includes(invoiceSearch.toLowerCase());
-      const chequeNumberMatch = cheque.ChequeNumber.toLowerCase().includes(chequeNumberSearch.toLowerCase());
-      const dateMatch = cheque.DepositeDate
-        ? cheque.DepositeDate.substring(0, 10).includes(dateSearch)
-        : false;
+      const invoiceMatch = invoicePrefix
+        ? cheque.invoiceNumber?.startsWith(invoicePrefix)
+        : true;
 
-      return invoiceMatch && chequeNumberMatch && dateMatch;
+      const branchMatch = bankBranch
+        ? cheque.BankBranch === bankBranch
+        : true;
+
+      const chequeNumberMatch = chequeNumberSearch
+        ? cheque.ChequeNumber?.toLowerCase().includes(chequeNumberSearch.toLowerCase())
+        : true;
+
+      const dateMatch = dateSearch
+        ? cheque.DepositeDate?.substring(0, 10) === dateSearch
+        : true;
+
+      return invoiceMatch && branchMatch && chequeNumberMatch && dateMatch;
     });
 
     setFilteredCheques(filtered);
-  }, [invoiceSearch, chequeNumberSearch, dateSearch, cheques]);
+  }, [invoicePrefix, bankBranch, chequeNumberSearch, dateSearch, cheques]);
 
   if (loading) return <div className="loader">Loading...</div>;
 
   return (
-    <div>
-        <UserNavbar/>
     <div className="cheques-container">
       <h2>All Cheque Details</h2>
 
-      {/* Search Inputs */}
+      {/* Search Filters */}
       <div className="search-filters">
-        <input
-          type="text"
-          placeholder="Search by Invoice Number"
-          value={invoiceSearch}
-          onChange={(e) => setInvoiceSearch(e.target.value)}
-        />
+        {/* Invoice Prefix Dropdown */}
+        <select
+          value={invoicePrefix}
+          onChange={(e) => setInvoicePrefix(e.target.value)}
+        >
+          <option value="">Search by Area</option>
+          {invoicePrefixes.map((prefix, idx) => (
+            <option key={idx} value={prefix}>
+              {prefix}
+            </option>
+          ))}
+        </select>
+
+        {/* Bank Branch Dropdown */}
+        <select
+          value={bankBranch}
+          onChange={(e) => setBankBranch(e.target.value)}
+        >
+          <option value="">Search by Branch</option>
+          {bankBranches.map((branch, idx) => (
+            <option key={idx} value={branch}>
+              {branch}
+            </option>
+          ))}
+        </select>
+
         <input
           type="text"
           placeholder="Search by Cheque Number"
@@ -68,7 +119,6 @@ const UserAllcheque = () => {
         />
         <input
           type="date"
-          placeholder="Search by Date"
           value={dateSearch}
           onChange={(e) => setDateSearch(e.target.value)}
         />
@@ -107,9 +157,6 @@ const UserAllcheque = () => {
         </tbody>
       </table>
     </div>
-    <Footer/>
-    </div>
-
   );
 };
 

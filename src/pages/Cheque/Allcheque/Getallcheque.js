@@ -7,17 +7,32 @@ const Getallcheque = () => {
   const [filteredCheques, setFilteredCheques] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Search filters
-  const [invoiceSearch, setInvoiceSearch] = useState('');
+  // Filters
+  const [invoicePrefix, setInvoicePrefix] = useState('');
+  const [bankName, setBankName] = useState('');
   const [chequeNumberSearch, setChequeNumberSearch] = useState('');
   const [dateSearch, setDateSearch] = useState('');
+  const [invoicePrefixes, setInvoicePrefixes] = useState([]);
 
   useEffect(() => {
     const fetchCheques = async () => {
       try {
         const response = await axios.get('https://nihon-inventory.onrender.com/api/getall-cheque');
-        setCheques(response.data.cheques);
-        setFilteredCheques(response.data.cheques); 
+        const allCheques = response.data.cheques;
+
+        setCheques(allCheques);
+        setFilteredCheques(allCheques);
+
+        // Extract unique prefixes before the first dash
+        const prefixes = Array.from(
+          new Set(
+            allCheques
+              .map(c => c.invoiceNumber?.split('-')[0]) // take part before "-"
+              .filter(Boolean)
+          )
+        );
+        setInvoicePrefixes(prefixes);
+
       } catch (error) {
         console.error('Error fetching cheques:', error);
       } finally {
@@ -30,17 +45,27 @@ const Getallcheque = () => {
 
   useEffect(() => {
     const filtered = cheques.filter((cheque) => {
-      const invoiceMatch = cheque.invoiceNumber.toLowerCase().includes(invoiceSearch.toLowerCase());
-      const chequeNumberMatch = cheque.ChequeNumber.toLowerCase().includes(chequeNumberSearch.toLowerCase());
-      const dateMatch = cheque.DepositeDate
-        ? cheque.DepositeDate.substring(0, 10).includes(dateSearch)
-        : false;
+      const invoiceMatch = invoicePrefix
+        ? cheque.invoiceNumber?.startsWith(invoicePrefix)
+        : true;
 
-      return invoiceMatch && chequeNumberMatch && dateMatch;
+      const bankMatch = bankName
+        ? cheque.Bankdetails?.toLowerCase().includes(bankName.toLowerCase())
+        : true;
+
+      const chequeNumberMatch = chequeNumberSearch
+        ? cheque.ChequeNumber?.toLowerCase().includes(chequeNumberSearch.toLowerCase())
+        : true;
+
+      const dateMatch = dateSearch
+        ? cheque.DepositeDate?.substring(0, 10) === dateSearch
+        : true;
+
+      return invoiceMatch && bankMatch && chequeNumberMatch && dateMatch;
     });
 
     setFilteredCheques(filtered);
-  }, [invoiceSearch, chequeNumberSearch, dateSearch, cheques]);
+  }, [invoicePrefix, bankName, chequeNumberSearch, dateSearch, cheques]);
 
   if (loading) return <div className="loader">Loading...</div>;
 
@@ -48,13 +73,26 @@ const Getallcheque = () => {
     <div className="cheques-container">
       <h2>All Cheque Details</h2>
 
-      {/* Search Inputs */}
+      {/* Search Filters */}
       <div className="search-filters">
+        {/* Invoice Prefix Dropdown */}
+        <select
+          value={invoicePrefix}
+          onChange={(e) => setInvoicePrefix(e.target.value)}
+        >
+          <option value="">All Invoice Prefixes</option>
+          {invoicePrefixes.map((prefix, idx) => (
+            <option key={idx} value={prefix}>
+              {prefix}
+            </option>
+          ))}
+        </select>
+
         <input
           type="text"
-          placeholder="Search by Invoice Number"
-          value={invoiceSearch}
-          onChange={(e) => setInvoiceSearch(e.target.value)}
+          placeholder="Search by Bank Name"
+          value={bankName}
+          onChange={(e) => setBankName(e.target.value)}
         />
         <input
           type="text"
@@ -64,7 +102,6 @@ const Getallcheque = () => {
         />
         <input
           type="date"
-          placeholder="Search by Date"
           value={dateSearch}
           onChange={(e) => setDateSearch(e.target.value)}
         />
