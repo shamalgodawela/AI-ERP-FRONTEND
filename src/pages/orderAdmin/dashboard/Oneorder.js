@@ -93,8 +93,8 @@ const Oneorder = () => {
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
     try {
-              await axios.put(`https://nihon-inventory.onrender.com/api/orders/${id}`, updatedOrder);
-      
+      await axios.put(`https://nihon-inventory.onrender.com/api/orders/${id}`, updatedOrder);
+      // Assuming successful update, setOrder to updatedOrder to reflect changes
       setOrder(updatedOrder);
 
       
@@ -342,8 +342,8 @@ const Oneorder = () => {
                   </tbody>
                 </table><br/>
                 <h3 className='h3-order-admin'>Order Total :RS/= {formatNumbers(calculateTotal())}</h3>
-                <button type="submit" className='btn-dealer-history' onClick={handlepassdelaercode}>View Overall Dealer History</button>
-                <button type="submit" className='btn-dealer-history' onClick={handleInvoiceHistory}>Invoice-Wise Dealer History</button>
+                <button type="button" className='btn-dealer-history' onClick={handlepassdelaercode}>View Overall Dealer History</button>
+                <button type="button" className='btn-dealer-history' onClick={handleInvoiceHistory}>Invoice-Wise Dealer History</button>
                 <button type="submit">Update Order</button>
                 
               </form>
