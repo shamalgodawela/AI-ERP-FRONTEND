@@ -471,3 +471,13 @@ body{
     margin-top:0.1cm;
     position: fixed;
   } */
+
+  .stock_name{
+    position: absolute;
+    right: 0.5cm;
+    top: 1.5cm;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    font-weight: 200;
+    font-size: 24px;
+  }

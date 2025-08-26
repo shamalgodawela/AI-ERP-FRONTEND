@@ -25,7 +25,7 @@ const UpdateCustomerForm = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/customersn/${customerId}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/customersn/${customerId}`);
         setCustomer(response.data);
         setFormData(response.data);
         setLoading(false);
@@ -46,7 +46,7 @@ const UpdateCustomerForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-              await axios.patch(`http://localhost:5000/api/customersup/${customerId}`, formData);
+              await axios.patch(`https://nihon-inventory.onrender.com/api/customersup/${customerId}`, formData);
       alert('Customer details updated successfully');
     } catch (error) {
       console.error('Failed to update customer details', error.message);

@@ -15,7 +15,7 @@ const CustomerDetails = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/customers/${code}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/customers/${code}`);
         setCustomer(response.data);
       } catch (error) {
         console.error('Error fetching customer details:', error);
@@ -24,7 +24,7 @@ const CustomerDetails = () => {
 
     const fetchTotalInvoiceValue = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/get-total-invoice-value/${code}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-total-invoice-value/${code}`);
         setTotalInvoiceValue(response.data.totalInvoiceValue);
       } catch (error) {
         console.error('Error fetching total invoice value:', error);
@@ -33,7 +33,7 @@ const CustomerDetails = () => {
 
     const fetchMonthlyTotalInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/monthly-total-invoice/${code}`);
+        const response = await axios.get(`https://nihon-inventory.onrender.com/api/monthly-total-invoice/${code}`);
         setMonthlyTotalInvoices(response.data);
       } catch (error) {
         console.error('Error fetching monthly total invoices:', error);
