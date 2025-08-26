@@ -93,7 +93,7 @@ const Oneorder = () => {
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
     try {
-              await axios.put(`http://localhost:5000/api/orders/${id}`, updatedOrder);
+              await axios.put(`https://nihon-inventory.onrender.com/api/orders/${id}`, updatedOrder);
       
       setOrder(updatedOrder);
 

@@ -120,7 +120,9 @@ const calculateTaxtot = () => {
       />
         
       <div ref={containerRef} >
+      
         <div class="invoice-wrapper" id="print-area">
+        <h1 className="stock_name">EA1</h1>
           {/* Your existing invoice template code */}
           <div className="image"><img src={Logo} width="270px" height="100px" /></div>
           <div className="textheader">
@@ -129,6 +131,7 @@ const calculateTaxtot = () => {
             <h6>Email: info@nihonagholdings.com</h6>
             <h6>Hotline: 0777666802</h6>
           </div>
+          
               <p id='tax-invoice-text'>{invoice.VatNO}</p>
               <p id='vat-reg'>{invoice.VatRegNo}</p>
           
@@ -140,6 +143,7 @@ const calculateTaxtot = () => {
               </div>
               <div class="invoice-head-bottom">
                 <div class="invoice-head-bottom-left">
+                  
                   
                   <ul>
                     <li class='text-bold1'>Customer Details</li>

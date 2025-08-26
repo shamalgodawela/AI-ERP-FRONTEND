@@ -46,7 +46,8 @@ const InvoiceForm = () => {
     VatNO: '',
     TaxNo: '',
     CusVatNo:'',
-    IncentiveDueDate:''
+    IncentiveDueDate:'',
+    StockName:'',
   });
 
 
@@ -583,6 +584,22 @@ const InvoiceForm = () => {
           
             />
           </div>
+          <div className="form-group">
+  <label>Stock Name:</label>
+  <select
+    name="StockName"
+    value={formData.StockName}
+    onChange={handleChange}
+  >
+    <option value="">-- Select Stock --</option>
+    <option value="MS">MS</option>
+    <option value="EA1">EA1</option>
+    <option value="SOUTH">SOUTH</option>
+    <option value="UP-COUNTRY">UP-COUNTRY</option>
+  
+  </select>
+</div>
+
           <div className="form-group">
             <label>Tax (%):</label>
             <input

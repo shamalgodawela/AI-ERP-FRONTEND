@@ -32,7 +32,7 @@ const Sales = () => {
 
     const fetchTotalCollection = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/sumofcollection');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/sumofcollection');
         setTotalCollection(response.data.sum || 0); // Ensure default value
         setLoading(false);
       } catch (error) {
