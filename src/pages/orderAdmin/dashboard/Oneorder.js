@@ -70,8 +70,8 @@ const Oneorder = () => {
           const labelPrice = parseFloat(product.labelPrice);
           const discount = parseFloat(product.discount);
           const quantity = parseFloat(product.quantity);
-          const unitPrice = labelPrice * (1 - discount / 100); 
-          const invoiceTotal = unitPrice * quantity; 
+          const unitPrice = labelPrice * (1 - discount / 100); // Calculate unit price
+          const invoiceTotal = unitPrice * quantity; // Calculate invoice total
           return {
             ...product,
             unitPrice: isNaN(unitPrice) ? '' : unitPrice.toFixed(2),
@@ -89,7 +89,7 @@ const Oneorder = () => {
     setUpdatedOrder(updatedData);
   };
   
-  
+  // Handle form submission to update order details
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
     try {
@@ -114,7 +114,7 @@ const Oneorder = () => {
     const updatedProducts = [...updatedOrder.products];
     updatedProducts[index] = { ...updatedProducts[index], [name]: value };
   
-   
+    // Recalculate unitPrice and invoiceTotal if quantity or discount is changed
     if (name === 'quantity' || name === 'discount') {
       const labelPrice = parseFloat(updatedProducts[index].labelPrice);
       const discount = parseFloat(updatedProducts[index].discount);
