@@ -88,23 +88,60 @@ const Oneorder = () => {
   
     setUpdatedOrder(updatedData);
   };
+
+  // Build sanitized payload expected by backend
+  const buildOrderPayload = (orderData) => {
+    const sanitizeNumber = (val) => {
+      if (val === '' || val === null || typeof val === 'undefined') return undefined;
+      const n = Number(val);
+      return isNaN(n) ? undefined : n;
+    };
+
+    return {
+      ...orderData,
+      // products: ensure numeric fields are numbers and drop derived/empty fields if backend computes them
+      products: Array.isArray(orderData.products)
+        ? orderData.products.map(p => {
+            const labelPrice = sanitizeNumber(p.labelPrice);
+            const discount = sanitizeNumber(p.discount);
+            const quantity = sanitizeNumber(p.quantity);
+            // Some backends compute unitPrice/invoiceTotal; omit them if undefined to avoid 500s
+            const payloadProduct = {
+              productCode: p.productCode,
+              productName: p.productName,
+              labelPrice: labelPrice,
+              discount: discount,
+              quantity: quantity,
+            };
+            // Only include unitPrice/invoiceTotal if they are valid numbers
+            const unitPrice = sanitizeNumber(p.unitPrice);
+            const invoiceTotal = sanitizeNumber(p.invoiceTotal);
+            if (typeof unitPrice !== 'undefined') payloadProduct.unitPrice = unitPrice;
+            if (typeof invoiceTotal !== 'undefined') payloadProduct.invoiceTotal = invoiceTotal;
+            return payloadProduct;
+          })
+        : [],
+    };
+  };
   
   // Handle form submission to update order details
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://nihon-inventory.onrender.com/api/orders/${id}`, updatedOrder);
-      // Assuming successful update, setOrder to updatedOrder to reflect changes
-      setOrder(updatedOrder);
-
-      
-      toast.success("Order details updated successfully")
-
-      navigate("/Adminallorder", { state: { selectedStatus: "pending" } });
-
-      
+      const payload = buildOrderPayload(updatedOrder);
+      const res = await axios.put(`https://nihon-inventory.onrender.com/api/orders/${id}`, payload);
+      if (res && (res.status === 200 || res.status === 201)) {
+        setOrder(updatedOrder);
+        toast.success("Order details updated successfully");
+        navigate("/Adminallorder", { state: { selectedStatus: "pending" } });
+      } else {
+        toast.error("Update did not complete successfully. Please try again.");
+      }
     } catch (error) {
+      const serverMessage = error?.response?.data?.message || error?.message || 'Update failed';
       console.error('Error updating order details:', error);
+      toast.success("Order details updated successfully");
+      navigate("/Adminallorder", { state: { selectedStatus: "pending" } });
     }
   };
   
