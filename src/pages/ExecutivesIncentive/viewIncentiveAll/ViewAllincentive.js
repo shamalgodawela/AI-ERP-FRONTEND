@@ -147,7 +147,7 @@ const ViewAllincentive = () => {
               style={{ padding: '5px', marginRight: '10px' }}
             />
 
-            <label htmlFor="status-select" style={{ marginRight: '8px' }}>Filter by Incentive Status:</label>
+            <label htmlFor="status-select" style={{ marginRight: '8px' }}>Payment Status:</label>
             <select
               id="status-select"
               value={selectedStatus}
@@ -159,7 +159,7 @@ const ViewAllincentive = () => {
               ))}
             </select>
 
-            <label htmlFor="settlement-select" style={{ marginRight: '8px' }}>Filter by Incentive Settlement:</label>
+            <label htmlFor="settlement-select" style={{ marginRight: '8px' }}>Executive Incentive received or not:</label>
             <select
               id="settlement-select"
               value={selectedSettlement}
@@ -218,6 +218,58 @@ const ViewAllincentive = () => {
                 ))}
               </tbody>
             </table>
+
+            {/* Signature Section */}
+            <div className="signature-section" style={{ 
+              marginTop: '50px', 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              pageBreakInside: 'avoid'
+            }}>
+              <div className="signature-field" style={{
+                width: '45%',
+                textAlign: 'center',
+                borderTop: '1px solid #000',
+                paddingTop: '10px',
+                marginTop: '30px'
+              }}>
+                <p style={{ margin: '0', fontWeight: 'bold', fontSize: '14px' }}>System Validity Signature</p>
+                <div style={{
+                  height: '60px',
+                  border: '1px dashed #ccc',
+                  marginTop: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9'
+                }}>
+                  <span style={{ color: '#999', fontSize: '12px' }}>Signature Area</span>
+                </div>
+                <p style={{ margin: '5px 0 0 0', fontSize: '12px' }}>Date: _________________</p>
+              </div>
+
+              <div className="signature-field" style={{
+                width: '45%',
+                textAlign: 'center',
+                borderTop: '1px solid #000',
+                paddingTop: '10px',
+                marginTop: '30px'
+              }}>
+                <p style={{ margin: '0', fontWeight: 'bold', fontSize: '14px' }}>Approved Signature</p>
+                <div style={{
+                  height: '60px',
+                  border: '1px dashed #ccc',
+                  marginTop: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9'
+                }}>
+                  <span style={{ color: '#999', fontSize: '12px' }}>Signature Area</span>
+                </div>
+                <p style={{ margin: '5px 0 0 0', fontSize: '12px' }}>Date: _________________</p>
+              </div>
+            </div>
           </div>
         </div>
 
