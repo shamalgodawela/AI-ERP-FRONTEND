@@ -8,11 +8,11 @@ const UserAllcheque = () => {
   const [loading, setLoading] = useState(true);
 
   // Filters
-  const [invoicePrefix, setInvoicePrefix] = useState('');
+  const [areaSearch, setAreaSearch] = useState('');
   const [bankBranch, setBankBranch] = useState('');
   const [chequeNumberSearch, setChequeNumberSearch] = useState('');
   const [dateSearch, setDateSearch] = useState('');
-  const [invoicePrefixes, setInvoicePrefixes] = useState([]);
+  const [areas, setAreas] = useState([]);
   const [bankBranches, setBankBranches] = useState([]);
 
   useEffect(() => {
@@ -24,15 +24,16 @@ const UserAllcheque = () => {
         setCheques(allCheques);
         setFilteredCheques(allCheques);
 
-        // Unique invoice prefixes
-        const prefixes = Array.from(
+        // Extract unique areas (first 3 digits of invoice number)
+        const uniqueAreas = Array.from(
           new Set(
             allCheques
-              .map(c => c.invoiceNumber?.split('-')[0])
+              .map(c => c.invoiceNumber?.substring(0, 3)) // take first 3 characters
               .filter(Boolean)
+              .sort() // sort alphabetically
           )
         );
-        setInvoicePrefixes(prefixes);
+        setAreas(uniqueAreas);
 
         // Unique bank branches
         const branches = Array.from(
@@ -56,8 +57,8 @@ const UserAllcheque = () => {
 
   useEffect(() => {
     const filtered = cheques.filter((cheque) => {
-      const invoiceMatch = invoicePrefix
-        ? cheque.invoiceNumber?.startsWith(invoicePrefix)
+      const areaMatch = areaSearch
+        ? cheque.invoiceNumber?.substring(0, 3) === areaSearch
         : true;
 
       const branchMatch = bankBranch
@@ -72,11 +73,11 @@ const UserAllcheque = () => {
         ? cheque.DepositeDate?.substring(0, 10) === dateSearch
         : true;
 
-      return invoiceMatch && branchMatch && chequeNumberMatch && dateMatch;
+      return areaMatch && branchMatch && chequeNumberMatch && dateMatch;
     });
 
     setFilteredCheques(filtered);
-  }, [invoicePrefix, bankBranch, chequeNumberSearch, dateSearch, cheques]);
+  }, [areaSearch, bankBranch, chequeNumberSearch, dateSearch, cheques]);
 
   if (loading) return <div className="loader">Loading...</div>;
 
@@ -88,15 +89,21 @@ const UserAllcheque = () => {
 
       {/* Search Filters */}
       <div className="search-filters">
-        {/* Invoice Prefix Dropdown */}
+        {/* Area Dropdown */}
         <select
-          value={invoicePrefix}
-          onChange={(e) => setInvoicePrefix(e.target.value)}
+          value={areaSearch}
+          onChange={(e) => setAreaSearch(e.target.value)}
         >
           <option value="">Search by Area</option>
-          {invoicePrefixes.map((prefix, idx) => (
-            <option key={idx} value={prefix}>
-              {prefix}
+          <option value="EA1">EA1</option>
+          <option value="SU1">SU1</option>
+          <option value="NCP">NCP</option>
+          <option value="UPC">UPC</option>
+          <option value="NUM">NUM</option>
+          <option value="EA2">EA2</option>
+          {areas.map((area, idx) => (
+            <option key={idx} value={area}>
+              {area}
             </option>
           ))}
         </select>
