@@ -27,85 +27,39 @@ const AddOrder = ({ onAddOrder }) => {
     const [lastOrderNumber, setLastOrderNumber] = useState('');
 
     useEffect(() => {
-      const fetchLastOrderNumber = async () => {
-          if (orderData.exe === 'Mr.Ahamed') {
-              try {
-                  const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/ea`);
-                  setLastOrderNumber(response.data.lastOrderNumber);
-              } catch (error) {
-                  console.error('Error fetching last order number:', error);
-              }
-          }
-      };
-      const fetchLastOrderNumberSU = async () => {
-        if (orderData.exe === 'Mr.Dasun') {
-            try {
-                const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/su`);
-                setLastOrderNumber(response.data.lastOrderNumber);
-            } catch (error) {
-                console.error('Error fetching last order number:', error);
+        const fetchLastOrderNumber = async () => {
+            if (!orderData.exe) {
+                setLastOrderNumber('');
+                return;
             }
-        }
-    };
-    const fetchLastOrderNumberNCP = async () => {
-      if (orderData.exe === 'Mr.Chameera') {
-          try {
-              const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/ncp`);
-              setLastOrderNumber(response.data.lastOrderNumber);
-          } catch (error) {
-              console.error('Error fetching last order number:', error);
-          }
-      }
-  };
-  const fetchLastOrderNumberUPC = async () => {
-    if (orderData.exe === 'Mr.Sanjeewa') {
-        try {
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/upc`);
-            setLastOrderNumber(response.data.lastOrderNumber);
-        } catch (error) {
-            console.error('Error fetching last order number:', error);
-        }
-    }
-};
-const fetchLastOrderNumberUPC2 = async () => {
-  if (orderData.exe === 'Mr.Navaneedan') {
-      try {
-          const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/upc1`);
-          setLastOrderNumber(response.data.lastOrderNumber);
-      } catch (error) {
-          console.error('Error fetching last order number:', error);
-      }
-  }
-};
-const fetchLastOrderNumberNum = async () => {
-  if (orderData.exe === 'Mr.Nayum') {
-      try {
-          const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/NUM`);
-          setLastOrderNumber(response.data.lastOrderNumber);
-      } catch (error) {
-          console.error('Error fetching last order number:', error);
-      }
-  }
-};
-const fetchLastOrderNumberEA2 = async () => {
-  if (orderData.exe === 'Mr.Riyas') {
-      try {
-          const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/EA2`);
-          setLastOrderNumber(response.data.lastOrderNumber);
-      } catch (error) {
-          console.error('Error fetching last order number:', error);
-      }
-  }
-};
 
-      fetchLastOrderNumber();
-      fetchLastOrderNumberSU();
-      fetchLastOrderNumberNCP();
-      fetchLastOrderNumberUPC();
-      fetchLastOrderNumberUPC2();
-      fetchLastOrderNumberNum();
-      fetchLastOrderNumberEA2();
-  }, [orderData.exe]);
+            const executiveEndpoints = {
+                'Mr.Ahamed': 'ea',
+                'Mr.Dasun': 'su',
+                'Mr.Chameera': 'ncp',
+                'Mr.Sanjeewa': 'upc',
+                'Mr.Navaneedan': 'upc1',
+                'Mr.Nayum': 'NUM',
+                'Mr.Riyas': 'EA2'
+            };
+
+            const endpoint = executiveEndpoints[orderData.exe];
+            
+            if (endpoint) {
+                try {
+                    const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/${endpoint}`);
+                    setLastOrderNumber(response.data.lastOrderNumber);
+                } catch (error) {
+                    console.error('Error fetching last order number:', error);
+                    setLastOrderNumber('');
+                }
+            } else {
+                setLastOrderNumber('');
+            }
+        };
+
+        fetchLastOrderNumber();
+    }, [orderData.exe]);
    
 
   const handleChange = (e, index) => {
@@ -237,45 +191,10 @@ const fetchLastOrderNumberEA2 = async () => {
     <option value="Mr.Riyas">Mr.Riyas</option>
     <option value="Other">Other</option>
   </select>
-  {orderData.exe === 'Mr.Ahamed' && (
+            {orderData.exe && lastOrderNumber && (
                 <div className="form-row">
                     <p className="last-order-number">
-                        Last Order Number (Starting with EA): {lastOrderNumber}
-                    </p>
-                </div>
-            )}
-{orderData.exe === 'Mr.Dasun' && (
-                <div className="form-row">
-                    <p className="last-order-number">
-                        Last Order Number (Starting with SU): {lastOrderNumber}
-                    </p>
-                </div>
-            )}
-{orderData.exe === 'Mr.Chameera' && (
-                <div className="form-row">
-                    <p className="last-order-number">
-                        Last Order Number (Starting with NCP): {lastOrderNumber}
-                    </p>
-                </div>
-            )}
-{orderData.exe === 'Mr.Navaneedan' && (
-                <div className="form-row">
-                    <p className="last-order-number">
-                        Last Order Number (Starting with UPC2): {lastOrderNumber}
-                    </p>
-                </div>
-            )}
-{orderData.exe === 'Mr.Nayum' && (
-                <div className="form-row">
-                    <p className="last-order-number">
-                        Last Order Number (Starting with NUM): {lastOrderNumber}
-                    </p>
-                </div>
-            )}
-{orderData.exe === 'Mr.Riyas' && (
-                <div className="form-row">
-                    <p className="last-order-number">
-                        Last Order Number (Starting with EA2): {lastOrderNumber}
+                        Last Order Number: {lastOrderNumber}
                     </p>
                 </div>
             )}
