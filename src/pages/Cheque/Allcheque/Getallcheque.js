@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AllCheques.css';
-import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 
 const Getallcheque = () => {
   const [cheques, setCheques] = useState([]);
@@ -73,7 +72,7 @@ const Getallcheque = () => {
 
   return (
     <div>
-      <UserNavbar/>
+      
     <div className="cheques-container">
       <h2>All Cheque Details</h2>
 
@@ -85,6 +84,12 @@ const Getallcheque = () => {
           onChange={(e) => setAreaSearch(e.target.value)}
         >
           <option value="">Search by Area</option>
+          <option value="EA1">EA1</option>
+          <option value="SU1">SU1</option>
+          <option value="NCP">NCP</option>
+          <option value="UPC">UPC</option>
+          <option value="NUM">NUM</option>
+          <option value="EA2">EA2</option>
           {areas.map((area, idx) => (
             <option key={idx} value={area}>
               {area}
