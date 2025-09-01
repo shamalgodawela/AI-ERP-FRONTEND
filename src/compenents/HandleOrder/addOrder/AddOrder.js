@@ -26,39 +26,46 @@ const AddOrder = ({ onAddOrder }) => {
     });
     const [lastOrderNumber, setLastOrderNumber] = useState('');
 
-    useEffect(() => {
-        const fetchLastOrderNumber = async () => {
-            if (!orderData.exe) {
-                setLastOrderNumber('');
-                return;
-            }
+    const fetchLastOrderNumber = async () => {
+        if (!orderData.exe) {
+            setLastOrderNumber('');
+            toast.error('Please select an executive first');
+            return;
+        }
 
-            const executiveEndpoints = {
-                'Mr.Ahamed': 'ea',
-                'Mr.Dasun': 'su',
-                'Mr.Chameera': 'ncp',
-                'Mr.Sanjeewa': 'upc',
-                'Mr.Navaneedan': 'upc1',
-                'Mr.Nayum': 'NUM',
-                'Mr.Riyas': 'EA2'
-            };
-
-            const endpoint = executiveEndpoints[orderData.exe];
-            
-            if (endpoint) {
-                try {
-                    const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/${endpoint}`);
-                    setLastOrderNumber(response.data.lastOrderNumber);
-                } catch (error) {
-                    console.error('Error fetching last order number:', error);
-                    setLastOrderNumber('');
-                }
-            } else {
-                setLastOrderNumber('');
-            }
+        const executiveEndpoints = {
+            'Mr.Ahamed': 'ea',
+            'Mr.Dasun': 'su',
+            'Mr.Chameera': 'ncp',
+            'Mr.Sanjeewa': 'upc',
+            'Mr.Navaneedan': 'upc1',
+            'Mr.Nayum': 'NUM',
+            'Mr.Riyas': 'EA2'
         };
 
-        fetchLastOrderNumber();
+        const endpoint = executiveEndpoints[orderData.exe];
+        
+        if (endpoint) {
+            try {
+                const response = await axios.get(`https://nihon-inventory.onrender.com/api/lastorder/${endpoint}`);
+                setLastOrderNumber(response.data.lastOrderNumber);
+                toast.success('Last order number fetched successfully');
+            } catch (error) {
+                console.error('Error fetching last order number:', error);
+                setLastOrderNumber('');
+                toast.error('Failed to fetch last order number');
+            }
+        } else {
+            setLastOrderNumber('');
+            toast.error('Invalid executive selected');
+        }
+    };
+
+    useEffect(() => {
+        // Auto-fetch when executive changes (optional - you can remove this if you only want manual fetching)
+        if (orderData.exe) {
+            fetchLastOrderNumber();
+        }
     }, [orderData.exe]);
    
 
@@ -191,6 +198,7 @@ const AddOrder = ({ onAddOrder }) => {
     <option value="Mr.Riyas">Mr.Riyas</option>
     <option value="Other">Other</option>
   </select>
+  <button type="button" className="form-button" onClick={fetchLastOrderNumber}>Get Last Order Number</button>
             {orderData.exe && lastOrderNumber && (
                 <div className="form-row">
                     <p className="last-order-number">

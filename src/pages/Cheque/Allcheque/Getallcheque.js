@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AllCheques.css';
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 
 const Getallcheque = () => {
   const [cheques, setCheques] = useState([]);
@@ -8,11 +9,11 @@ const Getallcheque = () => {
   const [loading, setLoading] = useState(true);
 
   // Filters
-  const [invoicePrefix, setInvoicePrefix] = useState('');
+  const [areaSearch, setAreaSearch] = useState('');
   const [bankName, setBankName] = useState('');
   const [chequeNumberSearch, setChequeNumberSearch] = useState('');
   const [dateSearch, setDateSearch] = useState('');
-  const [invoicePrefixes, setInvoicePrefixes] = useState([]);
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
     const fetchCheques = async () => {
@@ -23,15 +24,16 @@ const Getallcheque = () => {
         setCheques(allCheques);
         setFilteredCheques(allCheques);
 
-        // Extract unique prefixes before the first dash
-        const prefixes = Array.from(
+        // Extract unique areas (first 3 digits of invoice number)
+        const uniqueAreas = Array.from(
           new Set(
             allCheques
-              .map(c => c.invoiceNumber?.split('-')[0]) // take part before "-"
+              .map(c => c.invoiceNumber?.substring(0, 3)) // take first 3 characters
               .filter(Boolean)
+              .sort() // sort alphabetically
           )
         );
-        setInvoicePrefixes(prefixes);
+        setAreas(uniqueAreas);
 
       } catch (error) {
         console.error('Error fetching cheques:', error);
@@ -45,8 +47,8 @@ const Getallcheque = () => {
 
   useEffect(() => {
     const filtered = cheques.filter((cheque) => {
-      const invoiceMatch = invoicePrefix
-        ? cheque.invoiceNumber?.startsWith(invoicePrefix)
+      const areaMatch = areaSearch
+        ? cheque.invoiceNumber?.substring(0, 3) === areaSearch
         : true;
 
       const bankMatch = bankName
@@ -61,29 +63,31 @@ const Getallcheque = () => {
         ? cheque.DepositeDate?.substring(0, 10) === dateSearch
         : true;
 
-      return invoiceMatch && bankMatch && chequeNumberMatch && dateMatch;
+      return areaMatch && bankMatch && chequeNumberMatch && dateMatch;
     });
 
     setFilteredCheques(filtered);
-  }, [invoicePrefix, bankName, chequeNumberSearch, dateSearch, cheques]);
+  }, [areaSearch, bankName, chequeNumberSearch, dateSearch, cheques]);
 
   if (loading) return <div className="loader">Loading...</div>;
 
   return (
+    <div>
+      <UserNavbar/>
     <div className="cheques-container">
       <h2>All Cheque Details</h2>
 
       {/* Search Filters */}
       <div className="search-filters">
-        {/* Invoice Prefix Dropdown */}
+      
         <select
-          value={invoicePrefix}
-          onChange={(e) => setInvoicePrefix(e.target.value)}
+          value={areaSearch}
+          onChange={(e) => setAreaSearch(e.target.value)}
         >
-          <option value="">All Invoice Prefixes</option>
-          {invoicePrefixes.map((prefix, idx) => (
-            <option key={idx} value={prefix}>
-              {prefix}
+          <option value="">Search by Area</option>
+          {areas.map((area, idx) => (
+            <option key={idx} value={area}>
+              {area}
             </option>
           ))}
         </select>
@@ -139,6 +143,7 @@ const Getallcheque = () => {
           )}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };
