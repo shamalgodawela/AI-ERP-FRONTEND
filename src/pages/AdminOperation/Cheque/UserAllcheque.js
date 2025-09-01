@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 
 const UserAllcheque = () => {
   const [cheques, setCheques] = useState([]);
@@ -80,6 +81,8 @@ const UserAllcheque = () => {
   if (loading) return <div className="loader">Loading...</div>;
 
   return (
+    <div>
+      <UserNavbar/>
     <div className="cheques-container">
       <h2>All Cheque Details</h2>
 
@@ -156,6 +159,7 @@ const UserAllcheque = () => {
           )}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };
