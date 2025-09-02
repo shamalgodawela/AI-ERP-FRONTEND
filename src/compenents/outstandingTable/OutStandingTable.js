@@ -16,6 +16,7 @@ const OutStandingTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
+  const [outstandingSearch, setOutstandingSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
@@ -28,11 +29,13 @@ const OutStandingTable = () => {
     const exe = searchParams.get("exe") || '';
     const month = searchParams.get("month") || '';
     const year = searchParams.get("year") || '';
+    const outstanding = searchParams.get("outstanding") || '';
 
     setSelectedCustomer(customerFromState);
     setSelectedExe(exe);
     setSelectedMonth(month);
     setSelectedYear(year);
+    setOutstandingSearch(outstanding);
   }, []);
 
   // Fetch data
@@ -78,15 +81,33 @@ const OutStandingTable = () => {
           return String(date.getFullYear()) === selectedYear;
         });
       }
+      if (outstandingSearch) {
+        filtered = filtered.filter(invoice => {
+          const outstandingStatus = String(invoice.lastOutstanding).toLowerCase();
+          const searchTerm = outstandingSearch.toLowerCase();
+          
+          // Check for exact matches or partial matches
+          if (searchTerm === 'paid') {
+            return outstandingStatus === 'paid';
+          } else if (searchTerm === 'not paid' || searchTerm === 'notpaid') {
+            // Show both "Not Paid" status and numeric values (unpaid amounts)
+            return outstandingStatus === 'not paid' || 
+                   (!isNaN(invoice.lastOutstanding) && invoice.lastOutstanding > 0);
+          } else {
+            // For other searches, check if the search term is contained in the outstanding value
+            return outstandingStatus.includes(searchTerm);
+          }
+        });
+      }
 
       setFilteredInvoices(filtered);
     }, 300),
-    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear]
+    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch]
   );
 
   useEffect(() => {
     debounceFilter();
-  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, debounceFilter]);
+  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, debounceFilter]);
 
   // Handle filter change and update URL
   const handleFilterChange = (param, value, setter) => {
@@ -148,6 +169,13 @@ const OutStandingTable = () => {
             value={selectedCustomer}
             onChange={(e) => handleFilterChange('customer', e.target.value, setSelectedCustomer)}
             placeholder="Search by customer name"
+          />
+
+          <input
+            type="text"
+            value={outstandingSearch}
+            onChange={(e) => handleFilterChange('outstanding', e.target.value, setOutstandingSearch)}
+            placeholder="Search by outstanding (Paid/Not Paid)"
           />
 
           <select

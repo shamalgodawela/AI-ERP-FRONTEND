@@ -117,6 +117,18 @@ const AdminViewincentive = () => {
           .no-print {
             display: none !important;
           }
+          .signature-section {
+            page-break-inside: avoid;
+            margin-top: 50px !important;
+          }
+          .signature-field {
+            border-top: 1px solid #000 !important;
+            page-break-inside: avoid;
+          }
+          .signature-field div {
+            border: 1px dashed #000 !important;
+            background-color: transparent !important;
+          }
         }
       `}</style>
 
@@ -147,7 +159,7 @@ const AdminViewincentive = () => {
               style={{ padding: '5px', marginRight: '10px' }}
             />
 
-            <label htmlFor="status-select" style={{ marginRight: '8px' }}>Filter by Incentive Status:</label>
+            <label htmlFor="status-select" style={{ marginRight: '8px' }}>Payment Settlement:</label>
             <select
               id="status-select"
               value={selectedStatus}
@@ -159,7 +171,7 @@ const AdminViewincentive = () => {
               ))}
             </select>
 
-            <label htmlFor="settlement-select" style={{ marginRight: '8px' }}>Filter by Incentive Settlement:</label>
+            <label htmlFor="settlement-select" style={{ marginRight: '8px' }}>Executive Incentive received or not:</label>
             <select
               id="settlement-select"
               value={selectedSettlement}
@@ -178,6 +190,17 @@ const AdminViewincentive = () => {
 
           {/* Printable Area */}
           <div id="printableArea">
+            {selectedExe !== 'All' && (
+              <h1 style={{ 
+                textAlign: 'center', 
+                marginBottom: '20px', 
+                color: '#333',
+                fontSize: '24px',
+                fontWeight: 'bold'
+              }}>
+                Executive Incentive Report - {selectedExe}
+              </h1>
+            )}
             <p><strong>Total Incentive Amount : Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
 
             <table
@@ -218,6 +241,58 @@ const AdminViewincentive = () => {
                 ))}
               </tbody>
             </table>
+
+            {/* Signature Section */}
+            <div className="signature-section" style={{ 
+              marginTop: '50px', 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              pageBreakInside: 'avoid'
+            }}>
+              <div className="signature-field" style={{
+                width: '45%',
+                textAlign: 'center',
+                borderTop: '1px solid #000',
+                paddingTop: '10px',
+                marginTop: '30px'
+              }}>
+                <p style={{ margin: '0', fontWeight: 'bold', fontSize: '14px' }}>System Validity</p>
+                <div style={{
+                  height: '60px',
+                  border: '1px dashed #ccc',
+                  marginTop: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9'
+                }}>
+                  <span style={{ color: '#999', fontSize: '12px' }}>Signature Area</span>
+                </div>
+                <p style={{ margin: '5px 0 0 0', fontSize: '12px' }}>Date: _________________</p>
+              </div>
+
+              <div className="signature-field" style={{
+                width: '45%',
+                textAlign: 'center',
+                borderTop: '1px solid #000',
+                paddingTop: '10px',
+                marginTop: '30px'
+              }}>
+                <p style={{ margin: '0', fontWeight: 'bold', fontSize: '14px' }}>Incentive Approval</p>
+                <div style={{
+                  height: '60px',
+                  border: '1px dashed #ccc',
+                  marginTop: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9'
+                }}>
+                  <span style={{ color: '#999', fontSize: '12px' }}>Signature Area</span>
+                </div>
+                <p style={{ margin: '5px 0 0 0', fontSize: '12px' }}>Date: _________________</p>
+              </div>
+            </div>
           </div>
         </div>
 
