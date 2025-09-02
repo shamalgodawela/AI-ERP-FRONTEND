@@ -16,7 +16,7 @@ const actions = [
   {
     label: 'View cheques',
     icon: <FaMoneyCheckAlt size={32} />,
-    route: '/admin-operation-getallcheque',
+    route: '/allcusoperation',
   },
   {
     label: 'Sales & Collection Details',
@@ -26,7 +26,7 @@ const actions = [
   {
     label: 'View Dealer History',
     icon: <FaUserTie size={32} />, 
-    route: '',
+    route: '/Admin-operations-dashboard',
   },
   {
     label: 'Executives Incentive',

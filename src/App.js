@@ -81,6 +81,7 @@ import UserAllcheque from "./pages/AdminOperation/Cheque/UserAllcheque";
 import ViewAllincentive from "./pages/ExecutivesIncentive/viewIncentiveAll/ViewAllincentive";
 import AdminViewincentive from "./pages/ExecutivesIncentive/adminincentiveview/AdminViewincentive";
 import EditCheque from "./pages/AdminOperation/Cheque/EditCheque";
+import Operationallcustomers from "./pages/ViewDealerHitory/Operationallcustomers";
 
 
 axios.defaults.withCredentials= true;
@@ -234,6 +235,7 @@ function App() {
     <Route path="/single-operations/:id" element={<SingleOutstanding/>} />
     <Route path="/admin-operation-getallcheque" element={<Allcheque/>} />
     <Route path="/admin-operation-incentive" element={<ViewAllincentive/>} />
+    <Route path="/allcusoperation" element={<Operationallcustomers/>} />
 
 
    
