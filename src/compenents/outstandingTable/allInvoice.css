@@ -152,6 +152,130 @@ select:focus, input[type='text']:focus {
   transform: scale(1.2);
 }
 
+/* Print Button Styles */
+.print-button {
+  background: #005704;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-left: 10px;
+}
+
+.print-button:hover {
+  background: #004a03;
+  transform: translateY(-1px);
+}
+
+.print-button:active {
+  transform: translateY(0);
+}
+
+.print-button svg {
+  font-size: 16px;
+}
+
+/* Print Media Queries */
+@media print {
+  /* Hide elements that shouldn't be printed */
+  .filter-section,
+  .print-button,
+  footer,
+  .footer,
+  nav,
+  .navbar,
+  .sidebar,
+  .header,
+  .action-icon,
+  a[href*="/caloutStanding/"],
+  a[href*="/invoice/"] {
+    display: none !important;
+  }
+
+  /* Adjust layout for print */
+  .outstanding-fullscreen-bg {
+    background: white !important;
+    min-height: auto !important;
+    width: 100% !important;
+  }
+
+  .invoice-body {
+    margin: 0 !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Table styles for print */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 12px !important;
+  }
+
+  th, td {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    text-align: left !important;
+  }
+
+  th {
+    background-color: #f5f5f5 !important;
+    font-weight: bold !important;
+  }
+
+  /* Hide action columns in print */
+  th:last-child,
+  th:nth-last-child(2),
+  td:last-child,
+  td:nth-last-child(2) {
+    display: none !important;
+  }
+
+  /* Page break settings */
+  .all-invoice {
+    page-break-inside: avoid;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* Header for print */
+  .h2-invoice {
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    font-size: 18px !important;
+    color: #005704 !important;
+  }
+
+  /* Remove background colors and shadows for print */
+  * {
+    background: white !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure text is black for better print readability */
+  body, p, div, span, td, th {
+    color: black !important;
+  }
+}
+
 @media (max-width: 900px) {
   .invoice-body {
     padding: 12px 2px;
