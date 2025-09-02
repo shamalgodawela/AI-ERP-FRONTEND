@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { AiOutlineEye } from 'react-icons/ai';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPrint } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import './allInvoice.css';
@@ -17,6 +17,7 @@ const OutStandingTable = () => {
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [outstandingSearch, setOutstandingSearch] = useState('');
+  const [exeNameSearch, setExeNameSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
@@ -30,12 +31,14 @@ const OutStandingTable = () => {
     const month = searchParams.get("month") || '';
     const year = searchParams.get("year") || '';
     const outstanding = searchParams.get("outstanding") || '';
+    const exeName = searchParams.get("exeName") || '';
 
     setSelectedCustomer(customerFromState);
     setSelectedExe(exe);
     setSelectedMonth(month);
     setSelectedYear(year);
     setOutstandingSearch(outstanding);
+    setExeNameSearch(exeName);
   }, []);
 
   // Fetch data
@@ -67,6 +70,11 @@ const OutStandingTable = () => {
       if (selectedCustomer) {
         filtered = filtered.filter(invoice =>
           invoice.customer.toLowerCase().includes(selectedCustomer.toLowerCase())
+        );
+      }
+      if (exeNameSearch) {
+        filtered = filtered.filter(invoice =>
+          invoice.exe.toLowerCase().includes(exeNameSearch.toLowerCase())
         );
       }
       if (selectedMonth) {
@@ -102,12 +110,12 @@ const OutStandingTable = () => {
 
       setFilteredInvoices(filtered);
     }, 300),
-    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch]
+    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch]
   );
 
   useEffect(() => {
     debounceFilter();
-  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, debounceFilter]);
+  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch, debounceFilter]);
 
   // Handle filter change and update URL
   const handleFilterChange = (param, value, setter) => {
@@ -144,6 +152,34 @@ const OutStandingTable = () => {
     return 0;
   };
 
+  // Print function
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Get current filter info for print header
+  const getPrintHeader = () => {
+    let header = "Outstanding Details";
+    const filters = [];
+    
+    if (selectedExe) filters.push(`Executive: ${selectedExe}`);
+    if (exeNameSearch) filters.push(`Executive Search: ${exeNameSearch}`);
+    if (selectedCustomer) filters.push(`Customer: ${selectedCustomer}`);
+    if (outstandingSearch) filters.push(`Outstanding: ${outstandingSearch}`);
+    if (selectedMonth) {
+      const monthNames = ["January", "February", "March", "April", "May", "June", 
+                         "July", "August", "September", "October", "November", "December"];
+      filters.push(`Month: ${monthNames[parseInt(selectedMonth) - 1]}`);
+    }
+    if (selectedYear) filters.push(`Year: ${selectedYear}`);
+    
+    if (filters.length > 0) {
+      header += ` - ${filters.join(", ")}`;
+    }
+    
+    return header;
+  };
+
   return (
     <div className="outstanding-fullscreen-bg">
       <div className='invoice-body'>
@@ -163,6 +199,13 @@ const OutStandingTable = () => {
             <option value="Other">Other</option>
             <option value="UpCountry">UpCountry</option>
           </select>
+
+          <input
+            type="text"
+            value={exeNameSearch}
+            onChange={(e) => handleFilterChange('exeName', e.target.value, setExeNameSearch)}
+            placeholder="Search by executive name"
+          />
 
           <input
             type="text"
@@ -205,10 +248,20 @@ const OutStandingTable = () => {
             <option value="2025">2025</option>
             <option value="2024">2024</option>
           </select>
+
+          <button 
+            onClick={handlePrint}
+            className="print-button"
+            title="Print Outstanding Details"
+          >
+            <FontAwesomeIcon icon={faPrint} />
+            Print
+          </button>
         </div>
 
         <div className="all-invoice">
           <h2 className='h2-invoice'>Outstanding Details</h2>
+          <h1 className='print-header'>{getPrintHeader()}</h1>
           {isLoading ? <Loader /> : (
             <table>
               <thead>
