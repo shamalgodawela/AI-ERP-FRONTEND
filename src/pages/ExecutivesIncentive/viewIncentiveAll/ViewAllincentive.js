@@ -178,6 +178,17 @@ const ViewAllincentive = () => {
 
           {/* Printable Area */}
           <div id="printableArea">
+            {selectedExe !== 'All' && (
+              <h1 style={{ 
+                textAlign: 'center', 
+                marginBottom: '20px', 
+                color: '#333',
+                fontSize: '24px',
+                fontWeight: 'bold'
+              }}>
+                Executive Incentive Report - {selectedExe}
+              </h1>
+            )}
             <p><strong>Total Incentive Amount : Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
 
             <table
