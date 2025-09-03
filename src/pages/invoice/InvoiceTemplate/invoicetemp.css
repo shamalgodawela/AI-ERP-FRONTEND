@@ -463,6 +463,8 @@ body{
     max-width: 40px; /* Adjust width as needed */
     overflow-wrap: break-word; /* Ensures text wraps */
   }
+
+
   
   /* .tax-inv-2{
     font-family:Arial, Helvetica, sans-serif;
@@ -481,3 +483,34 @@ body{
     font-weight: 200;
     font-size: 24px;
   }
+
+  .tbodyinvoice-new,
+  .tbodyinvoice-new tr,
+  .tbodyinvoice-new td {
+      border: none !important;      /* Remove borders on tbody, rows, and cells */
+  }
+  
+  .tbodyinvoice-new td {
+      border-width: 0 !important;   /* Ensure no border width */
+  }
+  
+  .invoice-body table {
+      border-collapse: collapse;    /* Remove spacing between cells */
+      border: none !important;      /* Remove table border */
+  }
+  .thead-invoicetemp,
+  .thead-invoicetemp,
+  .thead-invoicetemp,
+  .thead-invoicetemp tr,
+  .thead-invoicetemp tr,
+  .thead-invoicetemp td,
+  .thead-invoicetemp td {
+      border: none !important;       /* Removes all borders */
+      border-width: 0 !important;
+  }
+  
+  .thead-invoicetemp {
+      border-collapse: collapse;     /* Removes spacing between cells */
+  }
+    
+
