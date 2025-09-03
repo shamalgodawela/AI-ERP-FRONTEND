@@ -342,7 +342,7 @@ const InvoiceForm = () => {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-NUM';
       } else if (formData.exe === 'SOUTH') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-south1';
-      } else if (formData.exe === 'Others') {
+      } else if (formData.exe === 'Other') {
         url = 'https://nihon-inventory.onrender.com/api/lastorder/other';
       } else if (formData.exe === 'UpCountry') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-other';
