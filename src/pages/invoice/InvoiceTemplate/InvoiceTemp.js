@@ -190,9 +190,10 @@ const calculateTaxtot = () => {
                       <td  id='tdtext'>Invoice Total</td>
                     </tr>
                   </thead>
-                  <tbody>
-                    {allRows}
-                  </tbody>
+                  <tbody className="tbodyinvoice-new">
+  {allRows}
+</tbody>
+
                 </table>
                 <div class="invoice-body-bottom">
                   <div class="invoice-body-info-item border-bottom">
