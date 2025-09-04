@@ -95,7 +95,7 @@ const calculateTaxtot = () => {
   <td className="invoice-tdquantity">{product.quantity}</td>
   <td className="invoice-fontcolor-invoice">{formatNumbers(product.labelPrice.toFixed(2))}</td>
   <td className="invoice-tddiscount">{formatNumbers(product.discount.toFixed(2))}</td>
-  <td className="invoice-fontcolor-invoice">{formatNumbers(product.unitPrice.toFixed(2))}</td>
+  <td id="invoice-unitprice" className="invoice-fontcolor-invoice">{formatNumbers(product.unitPrice.toFixed(2))}</td>
   <td id="invoice-total-id" className="invoice-tdtot">
     {formatNumbers(
       (product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2)

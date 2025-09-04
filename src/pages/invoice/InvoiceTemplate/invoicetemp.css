@@ -424,6 +424,12 @@ body{
     font-family:Arial, Helvetica, sans-serif;
 
 }
+#invoice-unitprice{
+    position:absolute;
+    right:3.5cm;
+    font-family:Arial, Helvetica, sans-serif;
+
+}
 
 #invoice-tax{
     position: absolute;
