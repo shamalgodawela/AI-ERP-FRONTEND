@@ -376,13 +376,7 @@ body{
     visibility: hidden;
     
 }
-#print-area{
-    border:1px solid transparent;
-    
-    max-width: auto;
-    margin: 0 auto; 
-    
-}
+
 
 .tdquantity{
     position: absolute;
@@ -484,33 +478,4 @@ body{
     font-size: 24px;
   }
 
-  .tbodyinvoice-new,
-  .tbodyinvoice-new tr,
-  .tbodyinvoice-new td {
-      border: none !important;      /* Remove borders on tbody, rows, and cells */
-  }
-  
-  .tbodyinvoice-new td {
-      border-width: 0 !important;   /* Ensure no border width */
-  }
-  
-  .invoice-body table {
-      border-collapse: collapse;    /* Remove spacing between cells */
-      border: none !important;      /* Remove table border */
-  }
-  .thead-invoicetemp,
-  .thead-invoicetemp,
-  .thead-invoicetemp,
-  .thead-invoicetemp tr,
-  .thead-invoicetemp tr,
-  .thead-invoicetemp td,
-  .thead-invoicetemp td {
-      border: none !important;       /* Removes all borders */
-      border-width: 0 !important;
-  }
-  
-  .thead-invoicetemp {
-      border-collapse: collapse;     /* Removes spacing between cells */
-  }
-    
-
+  .tbodyinvoice-new, .tbodyinvoice-new tr, .tbodyinvoice-new td { border: none !important; } .tbodyinvoice-new td { border-width: 0 !important; } .invoice-body table { border-collapse: collapse; border: none !important; } .thead-invoicetemp, .thead-invoicetemp, .thead-invoicetemp, .thead-invoicetemp tr, .thead-invoicetemp tr, .thead-invoicetemp td, .thead-invoicetemp td { border: none !important; border-width: 0 !important; } .thead-invoicetemp { border-collapse: collapse; }
