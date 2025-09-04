@@ -145,7 +145,7 @@ const calculateTaxtot = () => {
       <div ref={containerRef} >
       
         <div className="invoice-wrapper" id="print-area">
-        <h1 className="invoice-stock_name">EA1</h1>
+        <h1 className="invoice-stock_name"></h1>
           {/* Your existing invoice template code */}
           <div className="invoice-image"><img src={Logo} width="270px" height="100px" /></div>
           <div className="invoice-textheader">
