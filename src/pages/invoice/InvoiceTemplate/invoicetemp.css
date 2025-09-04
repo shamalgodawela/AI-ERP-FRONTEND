@@ -1,23 +1,92 @@
-﻿*::after,
-*::before{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+﻿/* INVOICE TEMPLATE ISOLATED STYLES - Complete override of global styles */
+
+/* Reset all table styles for invoice wrapper */
+.invoice-wrapper * {
+  box-sizing: border-box;
 }
 
-:root{
-    --blue-color: #0c2f54;
-    --dark-color: #535b61;
-    --white-color: #fff;
+.invoice-wrapper table,
+.invoice-wrapper table *,
+.invoice-wrapper .invoice-body table,
+.invoice-wrapper .invoice-body table * {
+  all: unset;
+  display: revert;
+  box-sizing: border-box;
 }
 
-ul{
-    list-style-type: none;
-}
-ul li{
-    margin: 2px 0;
+/* Re-apply only the styles we want */
+.invoice-wrapper .invoice-body table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
+.invoice-wrapper .invoice-body table thead {
+  display: table-header-group !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.invoice-wrapper .invoice-body table tbody {
+  display: table-row-group !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.invoice-wrapper .invoice-body table tr {
+  display: table-row !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.invoice-wrapper .invoice-body table td,
+.invoice-wrapper .invoice-body table th {
+  display: table-cell !important;
+  padding: 7px !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: normal !important;
+  text-align: left !important;
+  vertical-align: top !important;
+}
+
+/* Remove all hover effects */
+.invoice-wrapper .invoice-body table tbody tr:hover,
+.invoice-wrapper .invoice-body table tbody tr:hover td {
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove alternating row colors */
+.invoice-wrapper .invoice-body table tbody tr:nth-child(even),
+.invoice-wrapper .invoice-body table tbody tr:nth-child(even) td {
+  background: transparent !important;
+}
+
+/* Remove any gradient backgrounds */
+.invoice-wrapper .invoice-body table thead,
+.invoice-wrapper .invoice-body table thead tr,
+.invoice-wrapper .invoice-body table thead td,
+.invoice-wrapper .invoice-body table thead th {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+/* Original invoice styles with higher specificity */
 .invoice-subject{
     visibility:hidden;
 }
@@ -37,11 +106,8 @@ ul li{
     text-align: left;
 }
 .invoice-text-bold1 {
-    
     font-weight: 700;
     visibility: hidden;
-    
-    
 }
 .invoice-licus{
     margin-top:0.2cm;
@@ -66,86 +132,63 @@ ul li{
     color: #000000;
     margin-left:1.5cm;
     margin-top:0.15cm;
-    
 }
 .invoice-cusd4{
     position: absolute;
-    
     font-family:Arial, Helvetica, sans-serif;
     color: #000000;
     margin-top:0.29cm
 }
 .invoice-cusd44{
     position: absolute;
-    
     font-family:Arial, Helvetica, sans-serif;
     color: #000000;
     margin-top:0.9cm;
 }
 .invoice-cusd45{
     position: absolute;
-   
-    
     font-family:Arial, Helvetica, sans-serif;
     color: #000000;
     margin-top: -0.3cm;
 }
 .invoice-cusd46{
     position: absolute;
-    
     font-family:Arial, Helvetica, sans-serif;
     color: #000000;
     margin-top:2.7cm
 }
-
 
 .invoice-text-boldorder{
     visibility:hidden;
 }
 .invoice-ordt{
     position: absolute;
-    
     font-family:Arial, Helvetica, sans-serif;
     color: #000000;
     margin-top:2cm
-    
-    
 }
 #invoice-tdtext{
     visibility: hidden;
 }
 #invoice-ornumber {
-    
     margin-left:4.56cm;
     visibility: hidden;
-   
 }
 #invoice-ordate{
     margin-left:6.1cm;
     visibility: hidden;
-    
-   
-    
-
 }
 #invoice-orexe{
-    
     margin-left:6.25cm;
     visibility: hidden;
-   
 }
 #invoice-orinvoice{
     margin-left:5.1cm;
     visibility: hidden;
-
-    
-
 }
 #invoice-oridate{
     margin-left:6.1cm;
     visibility: hidden;
-   
-
 }
 .invoice-label {
     visibility: hidden;
@@ -159,14 +202,10 @@ ul li{
     visibility:hidden;
 }
 
-
-
-
 .hr{
     height: 1px;
     background-color: rgba(0, 0, 0, 0.1);
 }
-/* border-bottom */
 .invoice-border-bottom{
     border-bottom:1px solid transparent;
 }
@@ -208,20 +247,7 @@ body{
     border-radius: 4px;
     overflow: hidden;
 }
-.invoice-body table{
-    border-collapse: collapse;
-    border-radius: 4px;
-    width: 100%;
-}
-.invoice-body table td, .invoice-body table th{
-    padding: 7px;
-}
-.invoice-body table tr{
-    border-bottom:1px solid transparent;
-}
-.invoice-body table thead{
-    background-color: rgba(0, 0, 0, 0.02);
-}
+
 .invoice-body-info-item{
     display: grid;
     grid-template-columns: 80% 20%;
@@ -263,7 +289,6 @@ body{
   flex-direction: column;
   border: none;
   order: 1px solid transparent;
-  
 }
 
 .invoice-table-row {
@@ -271,44 +296,37 @@ body{
   font-size: 10px;
   color: #000000;
   border: 1px solid transparent;
-  
 }
 
 .invoice-table-cell {
- 
   padding: 45px; 
   border: 1px solid transparent;
   width: 500px; 
   font-size: 13px;
   font-family:Arial, Helvetica, sans-serif;
-  
 }
 .invoice-table-cell1 {
- 
     padding: 8px;
     border:1px solid transparent;
-
     width: 400px; 
     height: 40px;
-  }
+}
 .invoice-table-cell-pay{
   flex: 1;
-  padding: 5px; /* Adjust padding as needed */
+  padding: 5px;
   border:1px solid transparent;
   margin-bottom: 0px;
   text-align: center;
   visibility: hidden;
-
 }
 .invoice-table-cell-final{
   flex: 1;
-  padding: 5px; /* Adjust padding as needed */
+  padding: 5px;
   border:1px solid transparent;
   margin-bottom: 0px;
   text-align: center;
   background-color: black;
   color: white;
-
 }
 
 .invoice-image{
@@ -321,23 +339,19 @@ body{
 .invoice-info-container {
   display: flex;
   justify-content: space-between;
-  align-items:normal; /* Align items at the baseline for proper vertical alignment */
-  
+  align-items:normal;
   border:1px solid transparent;
-  width: 400px; /* Adjust the width as needed */
+  width: 400px;
   margin-bottom: 0px;
 }
 .invoice-info-item-tot{
     margin-right: 1.5cm;
 }
 
-
 .invoice-subject {
-  margin: 0; /* Reset margin for the paragraph */
+  margin: 0;
   font-size: 10px;
   color: #000000;
-  
-  
 }
 #invoice-second{
   position: absolute;
@@ -345,7 +359,6 @@ body{
   top: 18.4cm;
   color:black;
   font-family:Arial, Helvetica, sans-serif;
-  
 }
 #invoice-second2{
     position: absolute;
@@ -353,25 +366,20 @@ body{
     top: 22cm;
     color:black;
     font-family:Arial, Helvetica, sans-serif;
-    
-  }
-  #invoice-mod{
+}
+#invoice-mod{
     margin-left:-0.6cm;
-  }
-  
+}
+
 .invoice-textheader{
   text-align: center;
   color: #000000;
   visibility: hidden;
-  
-  
 }
 .invoice-image{
     margin-top: -3%;
     visibility: hidden;
-    
 }
-
 
 .invoice-tdquantity{
     position: absolute;
@@ -399,7 +407,6 @@ body{
     font-style: normal;
     font-weight: 300;
     color: #000000;
-  
 }
 
 #invoice-tax{
@@ -415,7 +422,6 @@ body{
     left:10.8cm;
     color:black;
     font-family:Arial, Helvetica, sans-serif;
-
 }
 #invoice-vat-reg{
     position:absolute;
@@ -430,40 +436,26 @@ body{
     left:16.6cm;
     top:3cm;
     font-size: 22px;
-
 }
 .invoice-tav-invoice-No{
     position:absolute;
     color:black;
     left: 20.5cm;
     top:7.1cm
-
 }
-
-
 
 #invoice-mod{
     border:none;
 }
 
 .invoice-td-invoictemp {
-    word-break: break-word; /* Breaks long words */
-    white-space: normal; /* Allows text to wrap */
-    max-width: 40px; /* Adjust width as needed */
-    overflow-wrap: break-word; /* Ensures text wraps */
-  }
+    word-break: break-word;
+    white-space: normal;
+    max-width: 40px;
+    overflow-wrap: break-word;
+}
 
-
-  
-  /* .tax-inv-2{
-    font-family:Arial, Helvetica, sans-serif;
-    color: #000000;
-    margin-left:0.43cm;
-    margin-top:0.1cm;
-    position: fixed;
-  } */
-
-  .invoice-stock_name{
+.invoice-stock_name{
     position: absolute;
     right: 0.5cm;
     top: 1.5cm;
@@ -471,9 +463,26 @@ body{
     color: #000000;
     font-weight: 200;
     font-size: 24px;
-  }
+}
 
-  .invoice-tbodyinvoice-new, .invoice-tbodyinvoice-new tr, .invoice-tbodyinvoice-new td { border: none !important; } .invoice-tbodyinvoice-new td { border-width: 0 !important; } .invoice-body table { border-collapse: collapse; border: none !important; } .invoice-thead-invoicetemp, .invoice-thead-invoicetemp, .invoice-thead-invoicetemp, .invoice-thead-invoicetemp tr, .invoice-thead-invoicetemp tr, .invoice-thead-invoicetemp td, .invoice-thead-invoicetemp td { border: none !important; border-width: 0 !important; } .invoice-thead-invoicetemp { border-collapse: collapse; }
-
-
-  
+.invoice-tbodyinvoice-new, 
+.invoice-tbodyinvoice-new tr, 
+.invoice-tbodyinvoice-new td { 
+    border: none !important; 
+} 
+.invoice-tbodyinvoice-new td { 
+    border-width: 0 !important; 
+} 
+.invoice-body table { 
+    border-collapse: collapse; 
+    border: none !important; 
+} 
+.invoice-thead-invoicetemp, 
+.invoice-thead-invoicetemp tr, 
+.invoice-thead-invoicetemp td { 
+    border: none !important; 
+    border-width: 0 !important; 
+} 
+.invoice-thead-invoicetemp { 
+    border-collapse: collapse; 
+}
