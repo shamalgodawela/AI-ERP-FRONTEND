@@ -72,7 +72,7 @@ const calculateTaxtot = () => {
   const productsCount = invoice.products.length;
   const emptyRowsCount = Math.max(6 - productsCount, 0);
   const filledRows = invoice.products.map((product, index) => (
-    <tr key={index}>
+    <tr  key={index}>
       <td className="fontcolor-invoice">{product.productCode}</td>
       <td className="fontcolor-invoice">{product.productName}</td>
       <td className="tdquantity">{product.quantity}</td>
