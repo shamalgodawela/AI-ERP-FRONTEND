@@ -72,19 +72,40 @@ const calculateTaxtot = () => {
   const productsCount = invoice.products.length;
   const emptyRowsCount = Math.max(6 - productsCount, 0);
   const filledRows = invoice.products.map((product, index) => (
-    <tr  key={index}>
-      <td className="invoice-fontcolor-invoice">{product.productCode}</td>
-      <td className="invoice-fontcolor-invoice">{product.productName}</td>
-      <td className="invoice-tdquantity">{product.quantity}</td>
-      <td className="invoice-fontcolor-invoice">{formatNumbers(product.labelPrice.toFixed(2))}</td>
-      <td className="invoice-tddiscount">{formatNumbers(product.discount.toFixed(2))}</td>
-      <td className="invoice-fontcolor-invoice">{formatNumbers(product.unitPrice.toFixed(2))}</td>
-      <td className="invoice-tdtot" style={{ textAlign: 'end' }}>
-  {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}
-</td>
+    <tr key={index}>
+  <td className="invoice-fontcolor-invoice">{product.productCode}</td>
+
+  {/* Product Name with "3rd word going down" */}
+  <td className="invoice-fontcolor-invoice">
+    {(() => {
+      const words = product.productName.split(" ");
+      if (words.length > 2) {
+        return (
+          <>
+            {words.slice(0, 2).join(" ")} <br />
+            {words.slice(2).join(" ")}
+          </>
+        );
+      } else {
+        return product.productName;
+      }
+    })()}
+  </td>
+
+  <td className="invoice-tdquantity">{product.quantity}</td>
+  <td className="invoice-fontcolor-invoice">{formatNumbers(product.labelPrice.toFixed(2))}</td>
+  <td className="invoice-tddiscount">{formatNumbers(product.discount.toFixed(2))}</td>
+  <td className="invoice-fontcolor-invoice">{formatNumbers(product.unitPrice.toFixed(2))}</td>
+  <td className="invoice-tdtot" style={{ textAlign: 'end' }}>
+    {formatNumbers(
+      (product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2)
+    )}
+  </td>
+</tr>
 
 
-    </tr>
+
+    
   ));
 
 
