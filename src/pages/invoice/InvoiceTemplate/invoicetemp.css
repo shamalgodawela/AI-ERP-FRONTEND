@@ -1,6 +1,4 @@
-﻿/* INVOICE TEMPLATE ISOLATED STYLES - Complete override of global styles */
-
-/* Reset all table styles for invoice wrapper */
+﻿
 .invoice-wrapper * {
   box-sizing: border-box;
 }
@@ -399,7 +397,6 @@ body{
 }
 .invoice-tdtot{
     position:absolute;
-    right: 0.6cm;
     font-family:Arial, Helvetica, sans-serif;
     font-weight: 200;
     color: #000000;
@@ -414,6 +411,18 @@ body{
     white-space: normal;       /* allow wrapping */
   word-break: break-word;    /* break long words if needed */
   
+}
+#invoice-description{
+    position:absolute;
+    right: 16cm;
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+#invoice-total-id{
+    position:absolute;
+    right:1cm;
+    font-family:Arial, Helvetica, sans-serif;
+
 }
 
 #invoice-tax{
