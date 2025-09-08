@@ -40,7 +40,8 @@ const AddOrder = ({ onAddOrder }) => {
             'Mr.Sanjeewa': 'upc',
             'Mr.Navaneedan': 'upc1',
             'Mr.Nayum': 'NUM',
-            'Mr.Riyas': 'EA2'
+            'Mr.Riyas': 'EA2',
+            'Other':'Other'
         };
 
         const endpoint = executiveEndpoints[orderData.exe];

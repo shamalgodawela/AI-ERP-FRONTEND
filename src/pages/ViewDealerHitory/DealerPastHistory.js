@@ -151,6 +151,9 @@ const DealerPastHistory = () => {
           </div>
         )}
       </div>
+      <button className="home-btn" onClick={() => navigate('/admin-profile')}>
+        Home
+      </button>
       <Footer />
     </div>
   );

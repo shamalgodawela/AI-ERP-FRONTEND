@@ -82,6 +82,7 @@ import ViewAllincentive from "./pages/ExecutivesIncentive/viewIncentiveAll/ViewA
 import AdminViewincentive from "./pages/ExecutivesIncentive/adminincentiveview/AdminViewincentive";
 import EditCheque from "./pages/AdminOperation/Cheque/EditCheque";
 import Operationallcustomers from "./pages/ViewDealerHitory/Operationallcustomers";
+import DealerPastHistory from "./pages/ViewDealerHitory/DealerPastHistory";
 
 
 axios.defaults.withCredentials= true;
@@ -142,6 +143,8 @@ function App() {
     <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
     <Route path="/bankstatement" element={<BankStatement/>}/>
     <Route path="/admin-incentive" element={<AdminViewincentive/>}/>
+    <Route path="/view-Delaer-historys" element={<DealerPastHistory/>}/>
+
 
 
     </Route>

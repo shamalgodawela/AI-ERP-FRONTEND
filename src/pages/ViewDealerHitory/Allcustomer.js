@@ -35,7 +35,7 @@ const Allcustomer = () => {
   });
 
   const handlepassdelaercode = (code) => {
-    navigate('/view-Delaer-history', { state: { code } });
+    navigate('/view-Delaer-historys', { state: { code } });
   };
 
   return (
