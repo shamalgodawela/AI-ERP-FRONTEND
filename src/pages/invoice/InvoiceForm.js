@@ -427,7 +427,7 @@ const InvoiceForm = () => {
       name="invoiceNumber"
       value={formData.invoiceNumber}
       onChange={handleChange}
-      readOnly
+     
     />
     <button type="button" onClick={handleGetInvoiceNumber}>
       Get Invoice Number
