@@ -243,7 +243,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               className="form-input"
               name="orderNumber"
               value={orderData.orderNumber}
-              readOnly
+        
             />
           </div>
 
