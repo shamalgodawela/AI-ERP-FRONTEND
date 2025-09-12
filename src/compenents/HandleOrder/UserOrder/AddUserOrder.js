@@ -71,7 +71,7 @@ const AddUserOrder = ({ onAddOrder }) => {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/lastorder/${endpoint}`
+          `https://nihon-inventory.onrender.com/api/lastorder/${endpoint}`
         );
         const last = response.data.lastOrderNumber;
         setLastOrderNumber(last);
@@ -148,7 +148,7 @@ const AddUserOrder = ({ onAddOrder }) => {
     const productCode = orderData.products[index].productCode;
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/category/${productCode}`
+        `https://nihon-inventory.onrender.com/api/products/category/${productCode}`
       );
       const { name, price } = response.data;
       const products = [...orderData.products];
@@ -166,7 +166,7 @@ const AddUserOrder = ({ onAddOrder }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/orders`,
+        `https://nihon-inventory.onrender.com/api/orders`,
         orderData
       );
       toast.success('Order is added successfully');
@@ -181,7 +181,7 @@ const AddUserOrder = ({ onAddOrder }) => {
     const customerCode = orderData.code;
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/customers/${customerCode}`
+        `https://nihon-inventory.onrender.com/api/customers/${customerCode}`
       );
       const { companyName, address, phone } = response.data;
       setOrderData({
@@ -243,7 +243,6 @@ const AddUserOrder = ({ onAddOrder }) => {
               className="form-input"
               name="orderNumber"
               value={orderData.orderNumber}
-        
             />
           </div>
 
