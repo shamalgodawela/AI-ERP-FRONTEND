@@ -112,14 +112,16 @@ function App() {
     <Route path="/" element={<Home/>}/>
     <Route path="/All-in-one-Login" element={<Mlogin/>}/>
     <Route path="/Unotherized" element={<AuthError/>}/>
+    <Route path="/alloutstanding" element={<AllOutStanding />} />
+    <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
+    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
 
 {/* ----------------------------------------------------------------------------- */}
 
 {/* ---------------------------------Admin Pages--------------------------------- */}
 
     <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-      <Route path="/alloutstanding" element={<AllOutStanding />} />
-      <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
+      
       <Route path="/adminorder/:id" element={<Oneorder/>} />
       <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
 
@@ -127,7 +129,7 @@ function App() {
     <Route path="/Adminallorder" element={<ViewallOrder/>} />
     <Route path="/Collectioh-dashboard" element={<Collectiondash/>} />
     <Route path="/invoice/:invoiceNumber" element={<EditInvoice/>} />
-    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+    
     <Route path="/Dorder" element={<Dorder/>} />
     <Route path="/AllOutstanding-without-Menu" element={<WithoutMallout/>} />
     <Route path="/admin-profile" element={<Admin/>} />
