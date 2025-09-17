@@ -18,6 +18,7 @@ const OutStandingTable = () => {
   const [selectedYear, setSelectedYear] = useState('');
   const [outstandingSearch, setOutstandingSearch] = useState('');
   const [exeNameSearch, setExeNameSearch] = useState('');
+  const [selectedPaymentMode, setSelectedPaymentMode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
@@ -32,6 +33,7 @@ const OutStandingTable = () => {
     const year = searchParams.get("year") || '';
     const outstanding = searchParams.get("outstanding") || '';
     const exeName = searchParams.get("exeName") || '';
+    const paymentMode = searchParams.get("paymentMode") || '';
 
     setSelectedCustomer(customerFromState);
     setSelectedExe(exe);
@@ -39,6 +41,7 @@ const OutStandingTable = () => {
     setSelectedYear(year);
     setOutstandingSearch(outstanding);
     setExeNameSearch(exeName);
+    setSelectedPaymentMode(paymentMode);
   }, []);
 
   // Fetch data
@@ -94,28 +97,30 @@ const OutStandingTable = () => {
           const outstandingStatus = String(invoice.lastOutstanding).toLowerCase();
           const searchTerm = outstandingSearch.toLowerCase();
           
-          // Check for exact matches or partial matches
           if (searchTerm === 'paid') {
             return outstandingStatus === 'paid';
           } else if (searchTerm === 'not paid' || searchTerm === 'notpaid') {
-            // Show both "Not Paid" status and numeric values (unpaid amounts)
             return outstandingStatus === 'not paid' || 
                    (!isNaN(invoice.lastOutstanding) && invoice.lastOutstanding > 0);
           } else {
-            // For other searches, check if the search term is contained in the outstanding value
             return outstandingStatus.includes(searchTerm);
           }
         });
       }
+      if (selectedPaymentMode) {
+        filtered = filtered.filter(invoice => 
+          invoice.ModeofPayment && invoice.ModeofPayment.toLowerCase() === selectedPaymentMode.toLowerCase()
+        );
+      }
 
       setFilteredInvoices(filtered);
     }, 300),
-    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch]
+    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch, selectedPaymentMode]
   );
 
   useEffect(() => {
     debounceFilter();
-  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch, debounceFilter]);
+  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch, selectedPaymentMode, debounceFilter]);
 
   // Handle filter change and update URL
   const handleFilterChange = (param, value, setter) => {
@@ -152,12 +157,10 @@ const OutStandingTable = () => {
     return 0;
   };
 
-  // Print function
   const handlePrint = () => {
     window.print();
   };
 
-  // Get current filter info for print header
   const getPrintHeader = () => {
     let header = "Outstanding Details";
     const filters = [];
@@ -166,6 +169,7 @@ const OutStandingTable = () => {
     if (exeNameSearch) filters.push(`Executive Search: ${exeNameSearch}`);
     if (selectedCustomer) filters.push(`Customer: ${selectedCustomer}`);
     if (outstandingSearch) filters.push(`Outstanding: ${outstandingSearch}`);
+    if (selectedPaymentMode) filters.push(`Payment Mode: ${selectedPaymentMode}`);
     if (selectedMonth) {
       const monthNames = ["January", "February", "March", "April", "May", "June", 
                          "July", "August", "September", "October", "November", "December"];
@@ -222,6 +226,15 @@ const OutStandingTable = () => {
           />
 
           <select
+            value={selectedPaymentMode}
+            onChange={(e) => handleFilterChange('paymentMode', e.target.value, setSelectedPaymentMode)}
+          >
+            <option value="">All Payment Modes</option>
+            <option value="Cash">Cash</option>
+            <option value="Cheque">Cheque</option>
+          </select>
+
+          <select
             value={selectedMonth}
             onChange={(e) => handleFilterChange('month', e.target.value, setSelectedMonth)}
           >
@@ -268,7 +281,7 @@ const OutStandingTable = () => {
                 <tr>
                   <th className='th-invoice'>Invoice Number</th>
                   <th className='th-invoice'>Customer</th>
-                  <th className='th-invoice'>Customer Code</th>
+                  <th className='th-invoice'>Cheque/Cash</th>
                   <th className='th-invoice'>Printed or Canceled</th>
                   <th className='th-invoice'>Invoice Date</th>
                   <th className='th-invoice'>Due Date</th>
@@ -286,7 +299,7 @@ const OutStandingTable = () => {
                   <tr key={invoice._id} className={invoice.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
                     <td className='td-invoice'>{invoice.invoiceNumber}</td>
                     <td className='td-invoice'>{invoice.customer}</td>
-                    <td className='td-invoice'>{invoice.code}</td>
+                    <td className='td-invoice'>{invoice.ModeofPayment}</td>
                     <td className='td-invoice'>{invoice.GatePassNo}</td>
                     <td className='td-invoice'>{invoice.invoiceDate}</td>
                     <td className='td-invoice'>{invoice.Duedate}</td>
