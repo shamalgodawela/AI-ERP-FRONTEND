@@ -346,7 +346,20 @@ const InvoiceForm = () => {
         url = 'https://nihon-inventory.onrender.com/api/lastorder/other';
       } else if (formData.exe === 'UpCountry') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-other';
-      } else {
+      } else if(formData.exe ==='Mr.Arshad')
+      {
+        url="https://nihon-inventory.onrender.com/ap/get-last-invoice-number-PT1"
+      }
+      else if(formData.exe ==='Miss.Mubashshahira')
+        {
+          url="https://nihon-inventory.onrender.com/api/get-last-invoice-number-KU1"
+        }
+      else if(formData.exe='Mr.Buddhika')
+      {
+        url="https://nihon-inventory.onrender.com/api/get-last-invoice-number-ncp1"
+
+      }
+      else {
         toast.error("Please select a valid Executive before fetching invoice number.");
         return;
       }
