@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../../compenents/footer/Footer';
 import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
+import './UserBulkProduct.css'
 
 const UserBulkProduct= () => {
 
@@ -67,19 +68,22 @@ const UserBulkProduct= () => {
     });
 
     return (
-      <div>
+      <div className='bulk-page'>
         <UserNavbar/>
-        <br/><br/>
+        <div className='bulk-header'>
+          <button className='primary-btn'><a href='/Add-New-bulk-product' style={{ color: '#fff', textDecoration: 'none' }}>Add Import Product Details</a></button>
+        </div>
+        <br/>
         <h1 className='h1-return'> Bulk products details</h1>
         <ToastContainer /> 
         <div className='bulk-search-bar'>
-          <select value={searchYear} onChange={e => setSearchYear(e.target.value)} style={{ padding: '10px 14px', borderRadius: '7px', border: '1.5px solid #bdbdbd', fontSize: '1rem', minWidth: '120px' }}>
+          <select value={searchYear} onChange={e => setSearchYear(e.target.value)} className='filter-select'>
             <option value="">All Years</option>
             {years.map(y => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
-          <select value={searchMonth} onChange={e => setSearchMonth(e.target.value)} style={{ padding: '10px 14px', borderRadius: '7px', border: '1.5px solid #bdbdbd', fontSize: '1rem', minWidth: '120px' }}>
+          <select value={searchMonth} onChange={e => setSearchMonth(e.target.value)} className='filter-select'>
             {months.map(m => (
               <option key={m.value} value={m.value}>{m.label}</option>
             ))}

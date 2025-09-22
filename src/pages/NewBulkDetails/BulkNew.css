@@ -1,16 +1,104 @@
+.Form-data-bulk{
+    min-height: 100vh;
+    padding: 40px 16px;
+    background: linear-gradient(135deg, #f8faff 0%, #eef3ff 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.h1-add-bulk{
+    color:#1f2a44;
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    margin: 0 0 8px 0;
+}
+
 .form-bulk{
-    width:400px;
-    margin-left: 35%;
+    width:100%;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(31, 42, 68, 0.08);
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
 }
 
 .label-bulk-new{
-    color:black;
+    color:#344054;
     font-family:'Times New Roman', Times, serif;
-
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 6px;
 }
-.h1-add-bulk{
-    color:black;
-    text-align: center;
-    font-family:'Times New Roman', Times, serif;
 
+.form-bulk input[type='text'],
+.form-bulk input[type='date']{
+    width: 100%;
+    height: 44px;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #1d2939;
+    background: #f9fafb;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-bulk input[type='text']:focus,
+.form-bulk input[type='date']:focus{
+    border-color: #5b7cff;
+    box-shadow: 0 0 0 4px rgba(91, 124, 255, 0.15);
+    background: #ffffff;
+}
+
+.form-bulk button[type='submit']{
+    margin-top: 10px;
+    height: 46px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #5b7cff 0%, #3a5bff 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: transform 0.08s ease-in-out, box-shadow 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 8px 20px rgba(58, 91, 255, 0.25);
+}
+
+.form-bulk button[type='submit']:hover{
+    filter: brightness(1.05);
+    box-shadow: 0 10px 24px rgba(58, 91, 255, 0.3);
+}
+
+.form-bulk button[type='submit']:active{
+    transform: translateY(1px);
+}
+
+/* Subtle divider between groups (labels/inputs are stacked) */
+.form-bulk label + input{
+    margin-top: 6px;
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px){
+    .Form-data-bulk{
+        padding: 56px 20px;
+    }
+    .h1-add-bulk{
+        font-size: 36px;
+    }
+    .form-bulk{
+        padding: 32px;
+        gap: 16px;
+    }
 }
