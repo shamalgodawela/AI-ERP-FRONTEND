@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import './BulkNew.css'
 import NavBar from '../../compenents/sidebar/NavBar';
 import Footer from '../../compenents/footer/Footer';
+import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
 
 const AddNewBulk = () => {
 
@@ -61,7 +62,7 @@ const AddNewBulk = () => {
   return (
     <div>
 
-        <NavBar/>
+<UserNavbar/>
         <div className='Form-data-bulk'>
             <h1 className='h1-add-bulk'>Add New Bulk Product</h1>
             <form onSubmit={handleSubmit} className='form-bulk'>
