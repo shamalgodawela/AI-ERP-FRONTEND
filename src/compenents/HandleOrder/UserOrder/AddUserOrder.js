@@ -41,15 +41,14 @@ const AddUserOrder = ({ onAddOrder }) => {
   // Map EXE to endpoint suffix
   const exeEndpointMap = {
     'Mr.Ahamed': 'ea',
-    'Mr.Dasun': 'su',
-    'Mr.Chameera': 'ncp',
-    'Mr.Sanjeewa': 'upc',
-    'Mr.Navaneedan': 'upc1',
     'Mr.Nayum': 'NUM',
-    'Mr.Riyas': 'EA2',
     'UpCountry':'upcountry',
     'SOUTH':'south1',
-    'Other':'other'
+    'Other':'other',
+    'Mr.Arshad':'PT1',
+    'Miss.Mubashshahira':'KU1',
+    'Mr.Buddhika':'NCP'
+
 
   };
 
@@ -225,6 +224,9 @@ const AddUserOrder = ({ onAddOrder }) => {
               <option value="SOUTH">SOUTH-1</option>
               <option value="Other">Other</option>
               <option value="UpCountry">UpCountry</option>
+              <option value="Mr.Arshad">Mr.Arshad</option>
+              <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+              <option value="Mr.Buddhika">Mr.Buddhika</option>
             </select>
           </div>
 
