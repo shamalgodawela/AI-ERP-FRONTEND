@@ -81,6 +81,11 @@ const AddUserOrder = ({ onAddOrder }) => {
         console.error('Error fetching last order number:', error);
         toast.error('Failed to fetch last order number');
         setLastOrderNumber('');
+        
+        // If Mr.Arshad and no last order number, set as PT1-001
+        if (orderData.exe === 'Mr.Arshad') {
+          setOrderData((prev) => ({ ...prev, orderNumber: 'PT1-001' }));
+        }
       }
     };
 
