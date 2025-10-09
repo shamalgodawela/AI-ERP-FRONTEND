@@ -152,6 +152,113 @@ select:focus, input[type='text']:focus {
   transform: scale(1.2);
 }
 
+/* Outstanding Total Summary Styles */
+.total-outstanding-summary {
+  background: linear-gradient(135deg, #005704 0%, #43e97b 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 8px 32px rgba(0, 87, 4, 0.2);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.total-outstanding-summary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.outstanding-total-header {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+}
+
+.amount-highlight {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  100% {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+}
+
+/* Sales Total Summary Styles */
+.total-sales-summary {
+  background: linear-gradient(135deg, #1976d2 0%, #64b5f6 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.2);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.total-sales-summary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.sales-total-header {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+}
+
+.sales-total-header .amount-highlight {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
 /* Print Button Styles */
 .print-button {
   background: #005704;
@@ -295,5 +402,43 @@ select:focus, input[type='text']:focus {
   .go-admin-btn {
     font-size: 0.95rem;
     padding: 0.5rem 1.1rem;
+  }
+  
+  /* Mobile styles for outstanding summary */
+  .outstanding-total-header {
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+  
+  .amount-highlight {
+    font-size: 1.8rem;
+    padding: 6px 12px;
+    margin-left: 4px;
+    display: block;
+    margin-top: 8px;
+  }
+  
+  .total-outstanding-summary {
+    padding: 16px;
+    margin: 15px 0;
+  }
+  
+  /* Mobile styles for sales summary */
+  .sales-total-header {
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+  
+  .sales-total-header .amount-highlight {
+    font-size: 1.8rem;
+    padding: 6px 12px;
+    margin-left: 4px;
+    display: block;
+    margin-top: 8px;
+  }
+  
+  .total-sales-summary {
+    padding: 16px;
+    margin: 15px 0;
   }
 }

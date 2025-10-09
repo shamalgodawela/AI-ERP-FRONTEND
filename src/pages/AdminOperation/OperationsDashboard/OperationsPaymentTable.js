@@ -5,10 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPrint } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-
 import Loader from '../../../compenents/loader/Loader';
 
-const OutStandingTable = () => {
+const OperationsPaymentTable = () => {
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   const [error, setError] = useState(null);
@@ -184,6 +183,39 @@ const OutStandingTable = () => {
     return header;
   };
 
+  const calculateTotalOutstanding = () => {
+    let total = 0;
+    
+    filteredInvoices.forEach(invoice => {
+      // Only include invoices that are "Printed"
+      if (invoice.GatePassNo === 'Printed') {
+        if (invoice.lastOutstanding === "Not Paid" || invoice.lastOutstanding === "not paid") {
+          // If not paid, use invoice total
+          total += calculateTotal(invoice);
+        } else if (typeof invoice.lastOutstanding === 'number' && invoice.lastOutstanding > 0) {
+          // If it's a number greater than 0, use the outstanding amount
+          total += invoice.lastOutstanding;
+        }
+        // If it's "Paid" or 0, don't add to total
+      }
+    });
+    
+    return total;
+  };
+
+  const calculateTotalSales = () => {
+    let total = 0;
+    
+    filteredInvoices.forEach(invoice => {
+      // Only include invoices that are "Printed"
+      if (invoice.GatePassNo === 'Printed') {
+        total += calculateTotal(invoice);
+      }
+    });
+    
+    return total;
+  };
+
   return (
     <div className="outstanding-fullscreen-bg">
       <div className='invoice-body'>
@@ -206,6 +238,7 @@ const OutStandingTable = () => {
             <option value="Mr.Buddhika">Mr.Buddhika</option>
           </select>
 
+
           <input
             type="text"
             value={selectedCustomer}
@@ -221,7 +254,6 @@ const OutStandingTable = () => {
   <option value="Paid">Paid</option>
   <option value="Not Paid">Not Paid</option>
 </select>
-
 
           <select
             value={selectedPaymentMode}
@@ -273,6 +305,17 @@ const OutStandingTable = () => {
         <div className="all-invoice">
           <h2 className='h2-invoice'>Outstanding Details</h2>
           <h1 className='print-header'>{getPrintHeader()}</h1>
+          <div className="total-outstanding-summary">
+            <h1 className="outstanding-total-header">
+              💰 Total Outstanding Amount: <span className="amount-highlight">Rs. {formatNumbers(calculateTotalOutstanding())}</span>
+            </h1>
+          </div>
+          
+          <div className="total-sales-summary">
+            <h1 className="sales-total-header">
+              📊 Total Sales Amount: <span className="amount-highlight">Rs. {formatNumbers(calculateTotalSales())}</span>
+            </h1>
+          </div>
           {isLoading ? <Loader /> : (
             <table>
               <thead>
@@ -337,4 +380,4 @@ const OutStandingTable = () => {
   );
 };
 
-export default OutStandingTable;
+export default OperationsPaymentTable;
