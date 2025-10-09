@@ -206,12 +206,6 @@ const OutStandingTable = () => {
             <option value="Mr.Buddhika">Mr.Buddhika</option>
           </select>
 
-          <input
-            type="text"
-            value={exeNameSearch}
-            onChange={(e) => handleFilterChange('exeName', e.target.value, setExeNameSearch)}
-            placeholder="Search by executive name"
-          />
 
           <input
             type="text"
@@ -220,12 +214,14 @@ const OutStandingTable = () => {
             placeholder="Search by customer name"
           />
 
-          <input
-            type="text"
-            value={outstandingSearch}
-            onChange={(e) => handleFilterChange('outstanding', e.target.value, setOutstandingSearch)}
-            placeholder="Search by outstanding (Paid/Not Paid)"
-          />
+<select
+  value={outstandingSearch}
+  onChange={(e) => handleFilterChange('outstanding', e.target.value, setOutstandingSearch)}
+>
+  <option value="">Select Outstanding Status</option>
+  <option value="Paid">Paid</option>
+  <option value="Not Paid">Not Paid</option>
+</select>
 
           <select
             value={selectedPaymentMode}

@@ -1,42 +1,55 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { AiOutlineEye } from 'react-icons/ai';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faPrint } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
 import Loader from '../../../compenents/loader/Loader';
 
-const OperationsPaymentTable = () => {
+const OutStandingTable = () => {
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedExe, setSelectedExe] = useState('');
+  const [selectedCustomer, setSelectedCustomer] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [outstandingSearch, setOutstandingSearch] = useState('');
+  const [exeNameSearch, setExeNameSearch] = useState('');
+  const [selectedPaymentMode, setSelectedPaymentMode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const location = useLocation();
 
+  const location = useLocation();
+  const { state } = location;
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedExe, setSelectedExe] = useState(searchParams.get('exe') || '');
-  const [selectedCustomer, setSelectedCustomer] = useState(searchParams.get('customer') || '');
-  const [selectedMonth, setSelectedMonth] = useState(searchParams.get('month') || '');
-  const [selectedYear, setSelectedYear] = useState(searchParams.get('year') || '');
-
-  const { state } = location;
-
+  // Initialize filters from URL or navigation state
   useEffect(() => {
-    if (state?.customer) {
-      setSelectedCustomer(state.customer);
-      searchParams.set('customer', state.customer);
-      setSearchParams(searchParams);
-    }
-  }, [state, searchParams, setSearchParams]);
+    const customerFromState = state?.customer || searchParams.get("customer") || '';
+    const exe = searchParams.get("exe") || '';
+    const month = searchParams.get("month") || '';
+    const year = searchParams.get("year") || '';
+    const outstanding = searchParams.get("outstanding") || '';
+    const exeName = searchParams.get("exeName") || '';
+    const paymentMode = searchParams.get("paymentMode") || '';
 
+    setSelectedCustomer(customerFromState);
+    setSelectedExe(exe);
+    setSelectedMonth(month);
+    setSelectedYear(year);
+    setOutstandingSearch(outstanding);
+    setExeNameSearch(exeName);
+    setSelectedPaymentMode(paymentMode);
+  }, []);
+
+  // Fetch data
   useEffect(() => {
     const fetchAllInvoices = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          'https://nihon-inventory.onrender.com/api/get-invoicedetails-admin-outstanding'
-        );
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/get-invoicedetails-admin-outstanding');
         setInvoices(response.data);
         setFilteredInvoices(response.data);
       } catch (error) {
@@ -46,10 +59,10 @@ const OperationsPaymentTable = () => {
         setIsLoading(false);
       }
     };
-
     fetchAllInvoices();
   }, []);
 
+  // Debounced filter logic
   const debounceFilter = useCallback(
     debounce(() => {
       let filtered = invoices;
@@ -57,44 +70,68 @@ const OperationsPaymentTable = () => {
       if (selectedExe) {
         filtered = filtered.filter(invoice => invoice.exe === selectedExe);
       }
-
       if (selectedCustomer) {
         filtered = filtered.filter(invoice =>
           invoice.customer.toLowerCase().includes(selectedCustomer.toLowerCase())
         );
       }
-
+      if (exeNameSearch) {
+        filtered = filtered.filter(invoice =>
+          invoice.exe.toLowerCase().includes(exeNameSearch.toLowerCase())
+        );
+      }
       if (selectedMonth) {
         filtered = filtered.filter(invoice => {
           const date = new Date(invoice.invoiceDate);
           return String(date.getMonth() + 1).padStart(2, '0') === selectedMonth;
         });
       }
-
       if (selectedYear) {
         filtered = filtered.filter(invoice => {
           const date = new Date(invoice.invoiceDate);
           return String(date.getFullYear()) === selectedYear;
         });
       }
+      if (outstandingSearch) {
+        filtered = filtered.filter(invoice => {
+          const outstandingStatus = String(invoice.lastOutstanding).toLowerCase();
+          const searchTerm = outstandingSearch.toLowerCase();
+          
+          if (searchTerm === 'paid') {
+            return outstandingStatus === 'paid';
+          } else if (searchTerm === 'not paid' || searchTerm === 'notpaid') {
+            return outstandingStatus === 'not paid' || 
+                   (!isNaN(invoice.lastOutstanding) && invoice.lastOutstanding > 0);
+          } else {
+            return outstandingStatus.includes(searchTerm);
+          }
+        });
+      }
+      if (selectedPaymentMode) {
+        filtered = filtered.filter(invoice => 
+          invoice.ModeofPayment && invoice.ModeofPayment.toLowerCase() === selectedPaymentMode.toLowerCase()
+        );
+      }
 
       setFilteredInvoices(filtered);
     }, 300),
-    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear]
+    [invoices, selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch, selectedPaymentMode]
   );
 
   useEffect(() => {
     debounceFilter();
-  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, debounceFilter]);
+  }, [selectedExe, selectedCustomer, selectedMonth, selectedYear, outstandingSearch, exeNameSearch, selectedPaymentMode, debounceFilter]);
 
+  // Handle filter change and update URL
   const handleFilterChange = (param, value, setter) => {
     setter(value);
+    const newParams = new URLSearchParams(searchParams);
     if (value) {
-      searchParams.set(param, value);
+      newParams.set(param, value);
     } else {
-      searchParams.delete(param);
+      newParams.delete(param);
     }
-    setSearchParams(searchParams);
+    setSearchParams(newParams, { replace: true });
   };
 
   const formatNumbers = (x) => {
@@ -120,9 +157,36 @@ const OperationsPaymentTable = () => {
     return 0;
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const getPrintHeader = () => {
+    let header = "Outstanding Details";
+    const filters = [];
+    
+    if (selectedExe) filters.push(`Executive: ${selectedExe}`);
+    if (exeNameSearch) filters.push(`Executive Search: ${exeNameSearch}`);
+    if (selectedCustomer) filters.push(`Customer: ${selectedCustomer}`);
+    if (outstandingSearch) filters.push(`Outstanding: ${outstandingSearch}`);
+    if (selectedPaymentMode) filters.push(`Payment Mode: ${selectedPaymentMode}`);
+    if (selectedMonth) {
+      const monthNames = ["January", "February", "March", "April", "May", "June", 
+                         "July", "August", "September", "October", "November", "December"];
+      filters.push(`Month: ${monthNames[parseInt(selectedMonth) - 1]}`);
+    }
+    if (selectedYear) filters.push(`Year: ${selectedYear}`);
+    
+    if (filters.length > 0) {
+      header += ` - ${filters.join(", ")}`;
+    }
+    
+    return header;
+  };
+
   return (
     <div className="outstanding-fullscreen-bg">
-      <div className="invoice-body">
+      <div className='invoice-body'>
         <div className="filter-section">
           <select
             value={selectedExe}
@@ -138,6 +202,8 @@ const OperationsPaymentTable = () => {
             <option value="SOUTH">SOUTH-1</option>
             <option value="Other">Other</option>
             <option value="UpCountry">UpCountry</option>
+            <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+            <option value="Mr.Buddhika">Mr.Buddhika</option>
           </select>
 
           <input
@@ -146,6 +212,25 @@ const OperationsPaymentTable = () => {
             onChange={(e) => handleFilterChange('customer', e.target.value, setSelectedCustomer)}
             placeholder="Search by customer name"
           />
+
+<select
+  value={outstandingSearch}
+  onChange={(e) => handleFilterChange('outstanding', e.target.value, setOutstandingSearch)}
+>
+  <option value="">Select Outstanding Status</option>
+  <option value="Paid">Paid</option>
+  <option value="Not Paid">Not Paid</option>
+</select>
+
+
+          <select
+            value={selectedPaymentMode}
+            onChange={(e) => handleFilterChange('paymentMode', e.target.value, setSelectedPaymentMode)}
+          >
+            <option value="">All Payment Modes</option>
+            <option value="Cash">Cash</option>
+            <option value="Cheque">Cheque</option>
+          </select>
 
           <select
             value={selectedMonth}
@@ -174,46 +259,55 @@ const OperationsPaymentTable = () => {
             <option value="2025">2025</option>
             <option value="2024">2024</option>
           </select>
+
+          <button 
+            onClick={handlePrint}
+            className="print-button"
+            title="Print Outstanding Details"
+          >
+            <FontAwesomeIcon icon={faPrint} />
+            Print
+          </button>
         </div>
 
         <div className="all-invoice">
-          <h2 className="h2-invoice">Outstanding Details</h2>
-          {isLoading ? (
-            <Loader />
-          ) : (
+          <h2 className='h2-invoice'>Outstanding Details</h2>
+          <h1 className='print-header'>{getPrintHeader()}</h1>
+          {isLoading ? <Loader /> : (
             <table>
               <thead>
                 <tr>
-                  <th className="th-invoice">Invoice Number</th>
-                  <th className="th-invoice">Customer</th>
-                  <th className="th-invoice">Customer Code</th>
-                  <th className="th-invoice">Printed or Canceled</th>
-                  <th className="th-invoice">Invoice Date</th>
-                  <th className="th-invoice">Due Date</th>
-                  <th className="th-invoice">Tax Number</th>
-                  <th className="th-invoice">Exe</th>
-                  <th className="th-invoice">Outstanding</th>
-                  <th className="th-invoice">Invoice Total</th>
-                  <th className="th-invoice">Cheque Details</th>
-                  <th className="th-invoice">Action</th>
+                  <th className='th-invoice'>Invoice Number</th>
+                  <th className='th-invoice'>Customer</th>
+                  <th className='th-invoice'>Cheque/Cash</th>
+                  <th className='th-invoice'>Printed or Canceled</th>
+                  <th className='th-invoice'>Invoice Date</th>
+                  <th className='th-invoice'>Due Date</th>
+                  <th className='th-invoice'>Tax Number</th>
+                  <th className='th-invoice'>Exe</th>
+                  <th className='th-invoice'>Outstanding</th>
+                  <th className='th-invoice'>Invoice Total</th>
+                  <th className='th-invoice'>Cheque Details</th>
+                  <th className='th-invoice'>Action</th>
+                  <th className='th-invoice'>Edit</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredInvoices.map((invoice) => (
                   <tr key={invoice._id} className={invoice.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
-                    <td className="td-invoice">{invoice.invoiceNumber}</td>
-                    <td className="td-invoice">{invoice.customer}</td>
-                    <td className="td-invoice">{invoice.code}</td>
-                    <td className="td-invoice">{invoice.GatePassNo}</td>
-                    <td className="td-invoice">{invoice.invoiceDate}</td>
-                    <td className="td-invoice">{invoice.Duedate}</td>
-                    <td className="td-invoice">{invoice.TaxNo}</td>
-                    <td className="td-invoice">{invoice.exe}</td>
+                    <td className='td-invoice'>{invoice.invoiceNumber}</td>
+                    <td className='td-invoice'>{invoice.customer}</td>
+                    <td className='td-invoice'>{invoice.ModeofPayment}</td>
+                    <td className='td-invoice'>{invoice.GatePassNo}</td>
+                    <td className='td-invoice'>{invoice.invoiceDate}</td>
+                    <td className='td-invoice'>{invoice.Duedate}</td>
+                    <td className='td-invoice'>{invoice.TaxNo}</td>
+                    <td className='td-invoice'>{invoice.exe}</td>
                     <td className={`td-invoice ${invoice.lastOutstanding === "Not Paid" ? 'not-paid' : invoice.lastOutstanding === "Paid" ? 'paid' : ''}`}>
                       {formatNumbers(invoice.lastOutstanding)}
                     </td>
-                    <td className="td-invoice">{formatNumbers(calculateTotal(invoice))}</td>
-                    <td className="td-invoice">
+                    <td className='td-invoice'>{formatNumbers(calculateTotal(invoice))}</td>
+                    <td className='td-invoice'>
                       {Array.isArray(invoice.chequeValues) && invoice.chequeValues.length > 0 ? (
                         invoice.chequeValues.map((cheque, index) => (
                           <div key={index}>{formatNumbers(cheque)}</div>
@@ -222,9 +316,14 @@ const OperationsPaymentTable = () => {
                         "No cheque value"
                       )}
                     </td>
-                    <td className="td-invoice">
-                      <Link to={`/single-operations/${invoice._id}`}>
+                    <td className='td-invoice'>
+                      <Link to={`/caloutStanding/${invoice._id}`}>
                         <AiOutlineEye size={20} color={"purple"} />
+                      </Link>
+                    </td>
+                    <td className='td-invoice'>
+                      <Link to={`/invoice/${invoice.invoiceNumber}`}>
+                        <FontAwesomeIcon icon={faEye} className="action-icon" />
                       </Link>
                     </td>
                   </tr>
@@ -238,4 +337,4 @@ const OperationsPaymentTable = () => {
   );
 };
 
-export default OperationsPaymentTable;
+export default OutStandingTable;
