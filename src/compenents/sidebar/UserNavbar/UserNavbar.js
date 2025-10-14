@@ -15,8 +15,8 @@ const UserNavbar = () => {
         <div className="sm-nav-dropdown">
           <div className="sm-nav-link sm-dropdown-toggle">Return details▾</div>
           <div className="sm-dropdown-menu">
-            <a href="/customerReg" className="sm-dropdown-item">Add return</a>
-            <a href="/getAllCustomer" className="sm-dropdown-item">All Return Details</a>
+            <a href="/addreturn" className="sm-dropdown-item">Add return</a>
+            <a href="/getallreturn" className="sm-dropdown-item">All Return Details</a>
           </div>
         </div>
 
