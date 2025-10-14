@@ -23,7 +23,7 @@ const OrderDetails = () => {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/api/allor`);
+      const response = await fetch(`https://nihon-inventory.onrender.com/api/allor`);
       const data = await response.json();
       setAllOrders(data);
       setIsLoading(false);

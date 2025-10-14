@@ -83,6 +83,8 @@ import AdminViewincentive from "./pages/ExecutivesIncentive/adminincentiveview/A
 import EditCheque from "./pages/AdminOperation/Cheque/EditCheque";
 import Operationallcustomers from "./pages/ViewDealerHitory/Operationallcustomers";
 import DealerPastHistory from "./pages/ViewDealerHitory/DealerPastHistory";
+import AreaInventory from "./pages/InventoryAreas/AreaInventory";
+import AllInventories from "./pages/InventoryAreas/AllInventories";
 
 
 axios.defaults.withCredentials= true;
@@ -201,6 +203,8 @@ function App() {
     <Route path="/Add-Order-user-role" element={<AddUserOrder/>}/>
     <Route path="/user-cheque" element={<UserAllcheque/>}/>
     <Route path="/get-single-Cheque/:id" element={<EditCheque/>}/>
+    <Route path="/add-area-inventory" element={<AreaInventory/>}/>
+    <Route path="/area-allinventories" element={<AllInventories/>}/>
 
 
     

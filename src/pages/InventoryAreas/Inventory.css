@@ -1,0 +1,88 @@
+.inventory-form-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .inventory-form h2, .inventory-form h3 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .inventory-form .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .inventory-form .form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .inventory-form .form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  .inventory-form .product-group {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #fff;
+    position: relative;
+  }
+  
+  .inventory-form .add-btn,
+  .inventory-form .remove-btn,
+  .inventory-form .submit-btn {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  
+  .inventory-form .add-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .inventory-form .add-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .inventory-form .remove-btn {
+    background-color: #f44336;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .inventory-form .remove-btn:hover {
+    background-color: #e53935;
+  }
+  
+  .inventory-form .submit-btn {
+    background-color: #2196f3;
+    color: white;
+    width: 100%;
+  }
+  
+  .inventory-form .submit-btn:hover {
+    background-color: #1976d2;
+  }
+  
+
+  

@@ -61,7 +61,8 @@ const UserNavbar = () => {
             <a href="/user-Bulk-product-ton" className="sm-dropdown-item">Bulk Inventory</a>
             <a href="/user-finishedProduct" className="sm-dropdown-item">Packing Summary</a>
             <a href="/user-Bulk-product" className="sm-dropdown-item">Import Product Details</a>
-            <a href="/All-exe-product-user-role" className="sm-dropdown-item">Executives Inventory</a>
+            <a href="/area-allinventories" className="sm-dropdown-item">Executives Inventory</a>
+            <a href="/add-area-inventory" className="sm-dropdown-item"> Add Executives Inventory</a>
           </div>
         </div>
 
