@@ -411,7 +411,26 @@ const InvoiceForm = () => {
   
   
   
+  const fetchNextTaxNo = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/get-last-tax-no");
+      const lastTaxNo = response.data.nextTaxNo || 0; // assuming your backend returns nextTaxNo
+      setFormData(prev => ({
+        ...prev,
+        TaxNo: lastTaxNo
+      }));
+    } catch (error) {
+      console.error("Failed to fetch last TaxNo", error);
+      toast.error("Failed to fetch last TaxNo");
+    }
+  };
   
+  useEffect(() => {
+    // Only fetch TaxNo if a specific VAT Reg No is selected
+    if (formData.VatRegNo === "VAT Reg No-102784022-7000") {
+      fetchNextTaxNo();
+    }
+  }, [formData.VatRegNo]);
   
   
 
@@ -503,17 +522,18 @@ const InvoiceForm = () => {
             />
           </div>
           <div className="form-group">
-            <label>Vat RegNo:</label>
-              <select
-                name="VatRegNo"
-                value={formData.VatRegNo}
-                onChange={handleChange}
-              >
-                <option value="">Select Vat RegNo:</option>
-                <option value="VAT Reg No-102784022-7000">VAT Reg No-102784022-7000</option>
-                <option value="">None</option>
-              </select>
-          </div>
+  <label>Vat RegNo:</label>
+  <select
+    name="VatRegNo"
+    value={formData.VatRegNo}
+    onChange={handleChange}
+  >
+    <option value="">Select Vat RegNo:</option>
+    <option value="VAT Reg No-102784022-7000">VAT Reg No-102784022-7000</option>
+    <option value="">None</option>
+  </select>
+</div>
+
           <div className="form-group">
             <label>Tax invoice or not:</label>
               <select
@@ -534,6 +554,7 @@ const InvoiceForm = () => {
               name="TaxNo"
               value={formData.TaxNo}
               onChange={handleChange}
+              readOnly
               />
           </div>
           <div className="form-group">
