@@ -45,7 +45,7 @@ const AddReturnDetails = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://nihon-inventory.onrender.com/api/addReturnDetails', formData);
+            const response = await axios.post('https://nihon-inventory.onrender.com/api/addreturndetails', formData);
             console.log('Return details added successfully:', response.data);
             
         } catch (error) {
