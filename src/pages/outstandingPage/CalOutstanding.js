@@ -177,6 +177,7 @@ const CalOutstanding = () => {
         <h4 className="h1-out">Invoice Date:{invoice.invoiceDate}</h4>
         <h4 className="h1-out">EXE: {invoice.exe}</h4>
         <h4 className="h1-out">Address: {invoice.address}</h4>
+        <h4 className="h1-out">TaxNo: {invoice.TaxNo}</h4>
         
         <br/><hr/><br/>
 
@@ -209,8 +210,8 @@ const CalOutstanding = () => {
         </table>
        
 
-        {/* <div className="info-item-td text-end text-bold1" id="second1">SubTotal: RS/={calculateTotal()}</div>
-        <div className="info-item-td text-end text-bold2" id="second2">Tax: %{invoice.Tax}</div> */}
+        <div className="info-item-td text-end text-bold1" id="second1">SubTotal: RS/={calculateTotal()}</div>
+        <div className="info-item-td text-end text-bold2" id="second2">Tax: %{invoice.Tax}</div>
         <div className="info-item-td text-end text-bold3" id="second3">Total: RS/={calculateTotal()}
 </div>
         <br/><br/><hr/> <br/><br/>

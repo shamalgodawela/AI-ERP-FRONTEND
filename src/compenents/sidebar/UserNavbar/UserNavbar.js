@@ -41,6 +41,8 @@ const UserNavbar = () => {
           <div className="sm-dropdown-menu">
             <a href="/all-invoices" className="sm-dropdown-item">View All Invoices</a>
             <a href="/add-invoice" className="sm-dropdown-item">add Invoices</a>
+            <a href="/viewALLinvoice" className="sm-dropdown-item">Tax Print template Invoice</a>
+            
           </div>
         </div>
 

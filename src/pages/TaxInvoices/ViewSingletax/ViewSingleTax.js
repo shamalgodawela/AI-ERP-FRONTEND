@@ -1,260 +1,187 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Logo from "../../../assets/Nihon Logo-01.png"
-
 import ReactToPrint from 'react-to-print';
+import Logo from "../../../assets/Nihon Logo-01.png";
+import "./ViewSingleTax.css"; // create this new CSS file for styles
 
 export default function ViewSingleTax() {
-
   const containerRef = useRef(null);
-  
-  const {invoiceNumber} = useParams();
+  const { invoiceNumber } = useParams();
   const [invoice, setInvoice] = useState(null);
 
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-Taxinvoices/${invoiceNumber}`);
+        const response = await axios.get(
+          `https://nihon-inventory.onrender.com/api/get-Taxinvoices/${invoiceNumber}`
+        );
         setInvoice(response.data);
       } catch (error) {
         console.error(`Failed to fetch invoice with id ${invoiceNumber}`, error.message);
-        // Handle error
       }
     };
-
     fetchInvoice();
   }, [invoiceNumber]);
 
   const calculateTotal = () => {
-    let total = 0;
+    if (!invoice?.products) return 0;
+    const total = invoice.products.reduce((acc, product) => {
+      const productTotal =
+        product.labelPrice * (1 - product.discount / 100) * product.quantity;
+      return acc + productTotal;
+    }, 0);
+    return total.toFixed(2);
+  };
 
-    if (invoice && invoice.products) {
-        total = invoice.products.reduce((acc, product) => {
-            const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
-            return acc + productTotal;
-        }, 0);
-    }
+  const calculateTaxtot = () => {
+    if (!invoice?.products) return 0;
+    const taxRate = invoice.Tax || 0;
+    const subtotal = parseFloat(calculateTotal());
+    const totalTax = subtotal * (taxRate / 100);
+    return (subtotal + totalTax).toFixed(2);
+  };
 
-    return total.toFixed(2); // Return the total with 2 decimal places
-};
+  const formatNumbers = (x) =>
+    x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-const formatNumbers = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
+  if (!invoice) return <div>Loading...</div>;
 
-const calculateTaxtot = () => {
-    if (invoice && invoice.products) {
-        const taxRate = invoice.Tax || 0; // Default to 0 if tax rate is not available
-
-        const totalTax = invoice.products.reduce((acc, product) => {
-            const productTax = parseFloat(product.invoiceTotal) * (taxRate / 100);
-            return acc + productTax;
-        }, 0);
-
-        const subtotal = parseFloat(calculateTotal()); // Get the subtotal and parse it to float
-        const totalWithTax = subtotal - totalTax; // Add tax amount to subtotal // temp change for discount
-
-        console.log(typeof totalWithTax, totalWithTax); // Log type and value of totalWithTax
-
-        return totalWithTax.toFixed(2); // Adjust decimal places as needed
-    }
-
-    return 0;
-};
-
-
-  if (!invoice) {
-    return <div>Loading...</div>;
-  }
-  
-  // Ensure there are always 6 rows displayed, adding empty rows if needed
-  const productsCount = invoice.products.length;
-  const emptyRowsCount = Math.max(6 - productsCount, 0);
-  const filledRows = invoice.products.map((product, index) => (
-    <tr key={index}>
-      <td className="fontfamily-td">{product.productCode}</td>
-      <td className="fontfamily-td">{product.productName}</td>
-      <td className="tdquantity">{product.quantity}</td>
-      <td className="fontfamily-td">{formatNumbers(product.labelPrice.toFixed(2))}</td>
-      <td className="tddiscount">{product.discount}</td>
-      <td className="fontfamily-td">{formatNumbers(product.unitPrice.toFixed(2))}</td>
-      <td className="tdtot" style={{ textAlign: 'end' }}>
-  {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}
-</td>
-
-
-    </tr>
-  ));
-  const emptyRows = Array.from({ length: emptyRowsCount }, (_, index) => (
-    <tr key={`empty-${index}`}>
-      <td className="td-invoictemp">&nbsp;</td>
-      <td className="td-invoictemp">&nbsp;</td>
-      <td className="td-invoictemp">&nbsp;</td>
-      <td className="td-invoictemp">&nbsp;</td>
-      <td className="td-invoictemp">&nbsp;</td>
-      <td className="td-invoictemp">&nbsp;</td>
-      <td className="td-invoictemp">&nbsp;</td>
-    </tr>
-  ));
-  const allRows = [...filledRows, ...emptyRows];
-
- 
-  
-
-  
+  // Generate empty rows to keep table height consistent
+  const emptyRowsCount = Math.max(6 - invoice.products.length, 0);
+  const allRows = [
+    ...invoice.products.map((product, i) => (
+      <tr key={i}>
+        <td>{product.productCode}</td>
+        <td>{product.productName}</td>
+        <td className="taxinvoice-qty">{product.quantity}</td>
+        <td>{formatNumbers(product.labelPrice.toFixed(2))}</td>
+        <td>{product.discount}</td>
+        <td>{formatNumbers(product.unitPrice.toFixed(2))}</td>
+        <td className="taxinvoice-align-right">
+          {formatNumbers(
+            (product.labelPrice *
+              (1 - product.discount / 100) *
+              product.quantity).toFixed(2)
+          )}
+        </td>
+      </tr>
+    )),
+    ...Array.from({ length: emptyRowsCount }, (_, i) => (
+      <tr key={`empty-${i}`}>
+        {Array(7)
+          .fill("")
+          .map((_, j) => (
+            <td key={j}>&nbsp;</td>
+          ))}
+      </tr>
+    )),
+  ];
 
   return (
-    <body>
-    <div>
-      <a href="/viewAll-TaxInvoices">Go Back</a><br/>
-      <ReactToPrint
-      
-        trigger={() => (
-          <a href="#">Print this out!</a>
-          
-        )}
-        content={() => containerRef.current}
-        documentTitle=" "
-        pageStyle="print"
-      />
-        
-      <div ref={containerRef} >
-        <div class="invoice-wrapper" id="print-area">
-          {/* Your existing invoice template code */}
-          <div className="image"><img src={Logo} width="270px" height="100px" /></div>
-          <div className="textheader">
-            <h6>No 44, Wawsiri Uyana, Kelepitimulla , Hunumulla</h6>
-            <h6>Web: www.nihonagholdings.com</h6>
-            <h6>Email: info@nihonagholdings.com</h6>
-            <h6>Hotline: 0777666802</h6>
+    <div className="taxinvoice-body">
+      <div className="taxinvoice-controls">
+        <a href="/viewAll-TaxInvoices" className="taxinvoice-btn-back">
+          ← Go Back
+        </a>
+        <ReactToPrint
+          trigger={() => <button className="taxinvoice-btn-print">🖨️ Print</button>}
+          content={() => containerRef.current}
+          documentTitle={`Invoice-${invoice.invoiceNumber}`}
+        />
+      </div>
+
+      <div ref={containerRef} className="taxinvoice-container">
+        {/* Header */}
+        <div className="taxinvoice-header">
+          <img src={Logo} alt="Nihon Logo" className="taxinvoice-logo" />
+          <div className="taxinvoice-company-details">
+            <p>No 44, Wawsiri Uyana, Kelepitimulla, Hunumulla</p>
+            <p>Web: www.nihonagholdings.com</p>
+            <p>Email: info@nihonagholdings.com</p>
+            <p>Hotline: 0777666802</p>
           </div>
-              <p id='tax-invoice-text'>{invoice.VatNO}</p>
-              <p id='vat-reg'>VAT Reg No-102784022-7000</p>
-          
-          <div class="invoice-container">
-            <div class="invoice-head">
-              <div class="invoice-head-top">
-                <div class="invoice-head-top-left text-start"></div>
-                <div class="invoice-head-top-right text-end"></div>
-              </div>
-              <div class="invoice-head-bottom">
-                <div class="invoice-head-bottom-left">
-                  
-                  <ul>
-                    <li class='text-bold1'>Customer Details</li>
-                    <li className="licus"><span class="label" >Code:</span>{invoice.code}</li>
-                    <li className='cusd1'><span class="label" >Name:</span>{invoice.customer}</li>
-                    <li className='cusd2'><span class="label" >Address:</span>{invoice.address}</li>
-                    <li className='cusd3'><span class="label" >contact:</span>{invoice.contact}</li>
-                  </ul>
-                </div>
-                <div class="invoice-head-bottom">
-                  <ul>
-                    <li class='text-boldorder'>Order Details</li>
-                    <li className='cusd45'><span id="ornumber">Order Number:</span>{invoice.orderNumber}</li>
-                    <li className='cusd4'><span id='ordate' >Date:</span>{invoice.orderDate}</li>
-                    <li className='cusd44'><span id='orexe' >Exe:</span>{invoice.exe}</li>
-                    <li  className="ordt" ><span id='orinvoice'>Invoice No:</span>{invoice.invoiceNumber}</li>
-                    <li className='cusd46' ><span id='oridate'>Date:</span>{invoice.invoiceDate}</li>
-                  </ul>
-                </div>
-                <p className='tav-invoice-No'>-{invoice.TaxNo}</p>
-              </div>
-            </div>
-            <h4 className="table-cell-pay"><span class="label">Payment Details</span></h4>
-            <div className="table-container">
-              <div className="table-row">
-                <div className="table-cell" id='mod'><span class="label" >Mode of Payment:</span>{invoice.ModeofPayment}</div>
-                <div className="table-cell"><span class="label" id='mod1'>Terms of Payment:</span>{invoice.TermsofPayment} days</div>
-                <div className="table-cell with-space"><span class="label" id='mod2'>Due date:</span>{invoice.Duedate}</div>
-              </div>
-            </div>
-            <div class="overflow-view">
-              <div class="invoice-body">
-                <table className="thead-invoicetemp">
-                  <thead className="thead-invoicetemp">
-                    <tr>
-                      <td  id='tdtext'>Product Code</td>
-                      <td  id='tdtext'>Description</td>
-                      <td   id='tdtext'>Quantity</td>
-                      <td  id='tdtext'>Label Price</td>
-                      <td  id='tdtext'>Discount</td>
-                      <td  id='tdtext'>Unit Price</td>
-                      <td  id='tdtext'>Invoice Total</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allRows}
-                  </tbody>
-                </table>
-                <div class="invoice-body-bottom">
-                  <div class="invoice-body-info-item border-bottom">
-                    <div className="info-container">
-                      <div className="info-item">
-                        <p className="subject">Invoiced by</p>
-                      </div>
-                      <div className="info-item-td text-end text-bold" id="second"><span class="label">SubTotal:</span>{formatNumbers(calculateTotal())}</div>
-                    </div>
-                  </div>
-                  <div class="invoice-body-info-item border-bottom">
-                    <div className="info-container">
-                      <div className="info-item">
-                        <p className="subject">Checked and Approved by</p>
-                      </div>
-                      {/* <p id='vat-p'>VAT 18%</p> */}
-                      {/* <div className="info-item-td text-end text-bold" id="discount"><span class="label"></span>Add.Discount(3%):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formatNumbers((calculateTotal() - calculateTaxtot()).toFixed(2))}</div> */}
-                      {/* <div className="info-item-td text-end text-bold" id="tax"><span class="label">Tax:%</span></div> */}
-                    </div>
-                  </div>
-                  <div class="invoice-body-info-item">
-                    <div className="info-container">
-                      <div className="info-item">
-                        <p className="subject">Goods issued by</p>
-                      </div>
-                      <div className="info-item-tot" id="second2"><span class="label" >Total</span>{formatNumbers(calculateTaxtot())}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="table-container">
-              <div className="table-row">
-                <div className="table-cell2">Security Checked by</div>
-                <div className="table-cell2">Gate Pass No:{invoice.GatePassNo}</div>
-                <div className="table-cell2 with-space">Vehicle No:</div>
-              </div>
-            </div>
-            <div className="table-container">
-              <div className="table-row">
-                <div className="table-cell2">Driver Mobile:</div>
-                <div className="table-cell2">Nic:</div>
-                <div className="table-cell2 with-space">Name:</div>
-              </div>
-            </div>
-            <h5 className="table-cell-pay">I/We acknowledge receipt of the above mentioned goods in good condition</h5>
-            <div className="table-container">
-              <div className="table-row">
-                <div className="table-cell2">Customer stamp</div>
-                <div className="table-cell2">Name and NIC</div>
-                <div className="table-cell2">Signature</div>
-                <div className="table-cell2 with-space">Date:</div>
-              </div>
-            </div>
-            <div className="table-container">
-              <div className="table-row">
-                <div className="table-cell1"></div>
-                <div className="table-cell1"></div>
-                <div className="table-cell1"></div>
-                <div className="table-cell1 with-space"></div>
-              </div>
-            </div>
-            <h5 className="table-cell-final">Please draw the cheques infavour of "NIHON AGRICUTURE HOLDINGS (PVT)LTD " A/C PAYEE ONLY</h5>
+          <div className="taxinvoice-vat-details">
+            <p>VAT Reg No: 102784022-7000</p>
+            <p>{invoice.VatNO}</p>
           </div>
-          {/* End of your existing invoice template code */}
+        </div>
+
+        {/* Customer & Order Info */}
+        <div className="taxinvoice-info-section">
+          <div className="taxinvoice-customer">
+            <h4>Customer Details</h4>
+            <p><strong>Code:</strong> {invoice.code}</p>
+            <p><strong>Name:</strong> {invoice.customer}</p>
+            <p><strong>Address:</strong> {invoice.address}</p>
+            <p><strong>Contact:</strong> {invoice.contact}</p>
+          </div>
+          <div className="taxinvoice-order">
+            <h4>Order Details</h4>
+            <p><strong>Order Number:</strong> {invoice.orderNumber}</p>
+            <p><strong>Order Date:</strong> {invoice.orderDate}</p>
+            <p><strong>Exe:</strong> {invoice.exe}</p>
+            <p><strong>Invoice No:</strong> {invoice.invoiceNumber}</p>
+            <p><strong>Invoice Date:</strong> {invoice.invoiceDate}</p>
+          </div>
+        </div>
+
+        {/* Payment Info */}
+        <div className="taxinvoice-payment">
+          <h4>Payment Details</h4>
+          <div className="taxinvoice-payment-row">
+            <p><strong>Mode of Payment:</strong> {invoice.ModeofPayment}</p>
+            <p><strong>Terms of Payment:</strong> {invoice.TermsofPayment} days</p>
+            <p><strong>Due Date:</strong> {invoice.Duedate}</p>
+          </div>
+        </div>
+
+        {/* Products Table */}
+        <table className="taxinvoice-table">
+          <thead>
+            <tr>
+              <th>Product Code</th>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Label Price</th>
+              <th>Discount</th>
+              <th>Unit Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>{allRows}</tbody>
+        </table>
+
+        {/* Totals */}
+        <div className="taxinvoice-summary">
+          <p><strong>Subtotal:</strong> {formatNumbers(calculateTotal())}</p>
+          <p><strong>Total with Tax:</strong> {formatNumbers(calculateTaxtot())}</p>
+        </div>
+
+        {/* Footer */}
+        <div className="taxinvoice-footer">
+          <div className="taxinvoice-signature-row">
+            <p>Security Checked by</p>
+            <p>Gate Pass No: {invoice.GatePassNo}</p>
+            <p>Vehicle No:</p>
+          </div>
+          <div className="taxinvoice-signature-row">
+            <p>Driver Mobile:</p>
+            <p>NIC:</p>
+            <p>Name:</p>
+          </div>
+          <h5>I/We acknowledge receipt of the above-mentioned goods in good condition.</h5>
+          <div className="taxinvoice-signature-row">
+            <p>Customer Stamp</p>
+            <p>Name & NIC</p>
+            <p>Signature</p>
+            <p>Date</p>
+          </div>
+          <p className="taxinvoice-note">
+            Please draw cheques in favour of <strong>"NIHON AGRICULTURE HOLDINGS (PVT) LTD"</strong> A/C PAYEE ONLY.
+          </p>
         </div>
       </div>
     </div>
-    </body>
   );
 }

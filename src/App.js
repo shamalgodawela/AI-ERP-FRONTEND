@@ -174,13 +174,13 @@ function App() {
         <Route path="/Packing-Materials-details" element={<PackingDashboard/>} />
         <Route path="/addreturn" element={<AddReturnDetails/>} />
         <Route path="/Maindashboard" element={<Mdashboard/>} />
-        <Route path="/viewALLinvoice" element={<ViewAllinvoice/>} />
+        
     <Route path="/view-single-invoice/:id" element={<ViewInvoice/>} />
     <Route path="/viewAll-TaxInvoices" element={<AllTaxInvoice/>} />
     <Route path="/view-single-Taxinvoice/:invoiceNumber" element={<ViewSingleTax/>} />
     <Route path="/tax-invoice/:id" element={<Taxinvoice/>} />
     <Route path="allbulkproduct" element={<Alldetails/>} />
-    <Route path="/addbulkproduct" element={<Addbulk/>} />
+    <Route path="/addbulkproduct" element={<Addbulk/>} /> 
     <Route path="/Add-New-bulk-product" element={<AddNewBulk/>} />
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
     <Route path="/Add-newReturn-product" element={<NandRproduct/>} />
@@ -205,6 +205,9 @@ function App() {
     <Route path="/get-single-Cheque/:id" element={<EditCheque/>}/>
     <Route path="/add-area-inventory" element={<AreaInventory/>}/>
     <Route path="/area-allinventories" element={<AllInventories/>}/>
+    <Route path="/viewALLinvoice" element={<ViewAllinvoice/>} />
+    <Route path="/viewALLinvoice" element={<ViewSingleTax/>} />
+    
 
 
     

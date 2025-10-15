@@ -11,7 +11,7 @@ const AllInventories = () => {
 
   const fetchInventories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/inventory/all-inventories');
+      const response = await axios.get('https://nihon-inventory.onrender.com/api/inventory/all-inventories');
       setInventories(response.data);
       setLoading(false);
     } catch (error) {
