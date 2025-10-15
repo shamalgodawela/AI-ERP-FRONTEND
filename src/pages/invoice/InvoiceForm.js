@@ -413,7 +413,7 @@ const InvoiceForm = () => {
   
   const fetchNextTaxNo = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/get-last-tax-no");
+      const response = await axios.get("https://nihon-inventory.onrender.com/api/get-last-tax-no");
       const lastTaxNo = response.data.nextTaxNo || 0; // assuming your backend returns nextTaxNo
       setFormData(prev => ({
         ...prev,
