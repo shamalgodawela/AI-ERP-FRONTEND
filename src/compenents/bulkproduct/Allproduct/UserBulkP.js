@@ -27,8 +27,10 @@ const UserBulkP = () => {
 
   return (
     <div>
+      
       <UserNavbar/>
       <br/><br/>
+      <button><a className='btn-bulk-add' href='/Register-bulk'>Add Bulk Product</a></button>
     <h2 className='bulk-heading'>Bulk Products</h2>
     {isLoading ? (
       <p>Loading...</p>

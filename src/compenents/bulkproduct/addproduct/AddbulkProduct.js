@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './addbulk.css';
 import { toast } from 'react-toastify';
+import UserNavbar from '../../sidebar/UserNavbar/UserNavbar';
 
 const AddbulkProduct = () => {
   const [productData, setProductData] = useState({
@@ -71,6 +72,8 @@ const AddbulkProduct = () => {
   };
 
   return (
+    <div>
+      <UserNavbar/><br/><br/><br/>
     <div className="add-product-form">
       <h2>Add Product</h2>
       <form onSubmit={handleSubmit}>
@@ -144,7 +147,8 @@ const AddbulkProduct = () => {
                 {index > 0 && <button type="button" onClick={() => handleRemoveProduct(index)}>Remove Product</button>}
               </div>
             ))}
-            <button type="button" onClick={handleAddProduct}>Add More Product</button>
+            
+            <button type="button" onClick={handleAddProduct}>Add finished product cde belong to This bulk</button>
           </>
         )}
         {!showProductFields && (
@@ -152,6 +156,7 @@ const AddbulkProduct = () => {
         )}
         <button type="submit">Add Products</button>
       </form>
+    </div>
     </div>
   );
 };

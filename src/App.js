@@ -85,6 +85,8 @@ import Operationallcustomers from "./pages/ViewDealerHitory/Operationallcustomer
 import DealerPastHistory from "./pages/ViewDealerHitory/DealerPastHistory";
 import AreaInventory from "./pages/InventoryAreas/AreaInventory";
 import AllInventories from "./pages/InventoryAreas/AllInventories";
+import AddbulkProduct from "./compenents/bulkproduct/addproduct/AddbulkProduct";
+import EXEincentory from "./compenents/Exetable/AllTableexe/EXEincentory";
 
 
 axios.defaults.withCredentials= true;
@@ -141,13 +143,13 @@ function App() {
     <Route path="/dashboard" element={<Admininventory/>}/>
     <Route path="/edit-product/:id" element={<EditProduct/>}/>
     <Route path="/product-list" element={<ProductListExe/>} />
-    <Route path="/Allexetable" element={<AllExeTable/>}/>
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
     <Route path="/view-current-bulk" element={<AllProducts/>}/>
     <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
     <Route path="/bankstatement" element={<BankStatement/>}/>
     <Route path="/admin-incentive" element={<AdminViewincentive/>}/>
     <Route path="/view-Delaer-historys" element={<DealerPastHistory/>}/>
+    <Route path="/Allexetable" element={<EXEincentory/>}/>
 
 
 
@@ -205,8 +207,8 @@ function App() {
     <Route path="/get-single-Cheque/:id" element={<EditCheque/>}/>
     <Route path="/add-area-inventory" element={<AreaInventory/>}/>
     <Route path="/area-allinventories" element={<AllInventories/>}/>
-    <Route path="/viewALLinvoice" element={<ViewAllinvoice/>} />
-    <Route path="/viewALLinvoice" element={<ViewSingleTax/>} />
+    <Route path="/Register-bulk" element={<AddbulkProduct/>} />
+  
     
 
 
