@@ -236,6 +236,7 @@ const OperationsPaymentTable = () => {
             <option value="UpCountry">UpCountry</option>
             <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
             <option value="Mr.Buddhika">Mr.Buddhika</option>
+            <option value="Mr.Arshad">Mr.Arshad</option>
           </select>
 
 

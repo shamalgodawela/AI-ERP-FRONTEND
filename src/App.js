@@ -116,9 +116,8 @@ function App() {
     <Route path="/" element={<Home/>}/>
     <Route path="/All-in-one-Login" element={<Mlogin/>}/>
     <Route path="/Unotherized" element={<AuthError/>}/>
-    <Route path="/alloutstanding" element={<AllOutStanding />} />
-    <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
-    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+  
+
 
 {/* ----------------------------------------------------------------------------- */}
 
@@ -150,6 +149,8 @@ function App() {
     <Route path="/admin-incentive" element={<AdminViewincentive/>}/>
     <Route path="/view-Delaer-historys" element={<DealerPastHistory/>}/>
     <Route path="/Allexetable" element={<EXEincentory/>}/>
+    <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
+    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
 
 
 
