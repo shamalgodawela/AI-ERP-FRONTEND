@@ -332,7 +332,7 @@ const OperationsPaymentTable = () => {
                   <th className='th-invoice'>Invoice Total</th>
                   <th className='th-invoice'>Cheque Details</th>
                   <th className='th-invoice'>Action</th>
-                  <th className='th-invoice'>Edit</th>
+                
                 </tr>
               </thead>
               <tbody>
@@ -360,15 +360,11 @@ const OperationsPaymentTable = () => {
                       )}
                     </td>
                     <td className='td-invoice'>
-                      <Link to={`/caloutStanding/${invoice._id}`}>
+                      <Link to={`/single-operations/${invoice._id}`}>
                         <AiOutlineEye size={20} color={"purple"} />
                       </Link>
                     </td>
-                    <td className='td-invoice'>
-                      <Link to={`/invoice/${invoice.invoiceNumber}`}>
-                        <FontAwesomeIcon icon={faEye} className="action-icon" />
-                      </Link>
-                    </td>
+                   
                   </tr>
                 ))}
               </tbody>

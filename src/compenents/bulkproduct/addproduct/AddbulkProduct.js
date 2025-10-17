@@ -119,7 +119,7 @@ const AddbulkProduct = () => {
           />
         </label>
         <label>
-          Weight Size:
+          Weight Size: in grams(g)
           <input
             type="number"
             name="weight"
@@ -152,7 +152,7 @@ const AddbulkProduct = () => {
           </>
         )}
         {!showProductFields && (
-          <button type="button" onClick={() => setShowProductFields(true)}>Add More Product</button>
+          <button type="button" onClick={() => setShowProductFields(true)}>Add finished product code belong to This bulk</button>
         )}
         <button type="submit">Add Products</button>
       </form>

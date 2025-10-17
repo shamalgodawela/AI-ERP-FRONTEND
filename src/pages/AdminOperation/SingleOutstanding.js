@@ -113,6 +113,7 @@ const SingleOutstanding = () => {
                 <h4 className="h1-out">Customer: {invoice.customer}</h4>
                 <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
                 <h4 className="h1-out">EXE: {invoice.exe}</h4>
+                <h4 className="h1-out">Mobile No:: {invoice.contact}</h4>
 
                 <br /><hr /><br />
 
@@ -150,16 +151,19 @@ const SingleOutstanding = () => {
 
 
                 <br /><br /><hr /> <br /><br />
+                <button className="fetch-button" >
+                    Fetch All Cheque Details(Pending development)
+                </button>
 
                 <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>
-                    Fetch All Outstanding Details
+                    Fetch All payment Details
                 </button>
 
                 <br /><br /><hr /> <br />
 
                 {savedDetails && (
                     <div>
-                        <h2 className="h1-out">All Outstanding Details:</h2>
+                        <h2 className="h1-out">All Payment Details:</h2>
                         <table>
                             <thead>
                                 <tr>
