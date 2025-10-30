@@ -46,8 +46,8 @@ const AdminViewincentive = () => {
 
     if (month) {
       filtered = filtered.filter(item =>
-        item.IncentiveDueDate &&
-        item.IncentiveDueDate.startsWith(month)
+        item.invoiceDate &&
+        item.invoiceDate.startsWith(month)
       );
     }
 
@@ -216,6 +216,7 @@ const AdminViewincentive = () => {
                   <th>Customer</th>
                   <th>Executive</th>
                   <th>Payment Mode</th>
+                  <th>Invoice date</th>
                   <th>Invoice Total (Rs)</th>
                   <th>Incentive Amount (Rs)</th>
                   <th>Invoice Settled Date</th>
@@ -231,6 +232,7 @@ const AdminViewincentive = () => {
                     <td>{item.customer}</td>
                     <td>{item.exe}</td>
                     <td>{item.ModeofPayment}</td>
+                    <td>{item.invoiceDate}</td>
                     <td>{formatNumberWithCommas(parseFloat(item.invoiceTotal) || 0)}</td>
                     <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
                     <td>{item.IncentiveDueDate}</td>
