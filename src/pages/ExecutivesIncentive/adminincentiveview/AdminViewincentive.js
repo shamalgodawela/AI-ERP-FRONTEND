@@ -15,6 +15,8 @@ const AdminViewincentive = () => {
   const [searchMonth, setSearchMonth] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedSettlement, setSelectedSettlement] = useState('All');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
@@ -37,7 +39,7 @@ const AdminViewincentive = () => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, month,IncentiveStatus,Incentivesettlement) => {
+  const applyFilters = (exe, month, IncentiveStatus, Incentivesettlement, start = startDate, end = endDate) => {
     let filtered = incentives;
 
     if (exe !== 'All') {
@@ -59,6 +61,13 @@ const AdminViewincentive = () => {
       filtered = filtered.filter(item => item.Incentivesettlement === Incentivesettlement);
     }
 
+    // Filter by invoiceDate range
+    if (start) {
+      filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate >= start);
+    }
+    if (end) {
+      filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate <= end);
+    }
     setFilteredIncentives(filtered);
   };
 
@@ -85,6 +94,18 @@ const AdminViewincentive = () => {
     const settlement = e.target.value;
     setSelectedSettlement(settlement);
     applyFilters(selectedExe, searchMonth, selectedStatus, settlement);
+  };
+
+  // New handlers for start/end date
+  const handleStartDateChange = (e) => {
+    const val = e.target.value;
+    setStartDate(val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, val, endDate);
+  };
+  const handleEndDateChange = (e) => {
+    const val = e.target.value;
+    setEndDate(val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, startDate, val);
   };
 
   const totalIncentiveAmount = filteredIncentives.reduce((sum, item) => {
@@ -182,6 +203,15 @@ const AdminViewincentive = () => {
                 <option key={idx} value={settlement}>{settlement}</option>
               ))}
             </select>
+
+            <div style={{display:"inline-block", marginRight:'10px'}}>
+              <label htmlFor="start-date">Start Date: </label>
+              <input type="date" id="start-date" value={startDate} onChange={handleStartDateChange} style={{padding:'5px',marginRight:'10px'}} />
+            </div>
+            <div style={{display:"inline-block", marginRight:'10px'}}>
+              <label htmlFor="end-date">End Date: </label>
+              <input type="date" id="end-date" value={endDate} onChange={handleEndDateChange} style={{padding:'5px',marginRight:'10px'}} />
+            </div>
 
             <button onClick={handlePrint} style={{ padding: '5px 10px' }}>
               Print Report
