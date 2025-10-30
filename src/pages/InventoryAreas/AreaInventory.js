@@ -99,29 +99,37 @@ const AreaInventory = () => {
       <div className="inventory-form-container">
         <h2>Add Inventory</h2>
         <form onSubmit={handleSubmit} className="inventory-form">
-          <div className="form-group">
-            <label>Inventory Area:</label>
-            <input
-              type="text"
-              name="area"
-              value={formData.area}
-              onChange={handleChange}
-              placeholder="Enter inventory area"
-              required
-            />
-          </div>
+        <div className="form-group">
+  <label>Inventory Area:</label>
+  <select
+    name="area"
+    value={formData.area}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Kalpitiya</option>
+    <option value="Main Stock">Mr.Ahamed_kalmunei</option>
+    <option value="Sub Stock 1">SOUTH</option>
 
-          <div className="form-group">
-            <label>Owner:</label>
-            <input
-              type="text"
-              name="owner"
-              value={formData.owner}
-              onChange={handleChange}
-              placeholder="Enter owner name"
-              required
-            />
-          </div>
+  </select>
+</div>
+
+
+<div className="form-group">
+  <label>Owner:</label>
+  <select
+    name="owner"
+    value={formData.owner}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Select owner</option>
+    <option value="Mr.Arshad">Mr.Arshad</option>
+    <option value="Executive 1">Mr.Ahamed</option>
+    <option value="Executive 2">SOUTH</option>
+  </select>
+</div>
+
 
           <h3>Products</h3>
           {formData.products.map((product, index) => (

@@ -182,8 +182,28 @@ const InvoiceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     
-  
+    // Frontend validation: ensure each product has a code and quantity > 0
+    const hasInvalidProduct = formData.products.some((p) => {
+      const qty = Number(p.quantity);
+      return !p.productCode || !Number.isFinite(qty) || qty <= 0;
+    });
+
+    if (hasInvalidProduct) {
+      toast.error('Please ensure all products have a code and quantity > 0', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    if (totalInvoiceAmount <= 0) {
+      toast.error('Invoice total must be greater than 0', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      return;
+    }
+
     try {
               const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
       const orderExists = orderCheckResponse.data.exists;
@@ -681,6 +701,7 @@ const InvoiceForm = () => {
                   name={`products.${index}.quantity`}
                   value={product.quantity}
                   onChange={(e) => handleChange(e, index)}
+                  min={1}
                 />
               </div>
               <div className="form-group">
@@ -707,7 +728,7 @@ const InvoiceForm = () => {
                   type="text"
                   name={`products.${index}.unitPrice`}
                   value={product.unitPrice}
-                  
+                  readOnly
                 />
               </div>
               <div className="form-group">
@@ -716,7 +737,7 @@ const InvoiceForm = () => {
                   type="text"
                   name={`products.${index}.invoiceTotal`}
                   value={product.invoiceTotal}
-                  
+                  readOnly
                 />
               </div>
              
