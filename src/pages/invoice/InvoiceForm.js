@@ -196,14 +196,6 @@ const InvoiceForm = () => {
       return;
     }
 
-    if (totalInvoiceAmount <= 0) {
-      toast.error('Invoice total must be greater than 0', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-      return;
-    }
-
     try {
               const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
       const orderExists = orderCheckResponse.data.exists;

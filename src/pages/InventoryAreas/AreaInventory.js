@@ -107,6 +107,7 @@ const AreaInventory = () => {
     onChange={handleChange}
     required
   >
+    <option value="">-- Select area --</option>
     <option value="Kalpitiya">Kalpitiya</option>
     <option value="Main Stock">Mr.Ahamed_kalmunei</option>
     <option value="SOUTH">SOUTH</option>
