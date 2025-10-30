@@ -646,10 +646,9 @@ const InvoiceForm = () => {
     onChange={handleChange}
   >
     <option value="">-- Select Stock --</option>
-    <option value="MS">MS</option>
-    <option value="EA1">EA1</option>
-    <option value="SOUTH">SOUTH</option>
-    <option value="UP-COUNTRY">UP-COUNTRY</option>
+    <option value="Mr.Arshad">Mr.Arshad</option>
+    <option value="Executive 1">Mr.Ahamed</option>
+    <option value="Executive 2">SOUTH</option>
   
   </select>
 </div>
