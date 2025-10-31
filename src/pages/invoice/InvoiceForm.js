@@ -567,7 +567,7 @@ const InvoiceForm = () => {
               name="TaxNo"
               value={formData.TaxNo}
               onChange={handleChange}
-              readOnly
+            
               />
           </div>
           <div className="form-group">
