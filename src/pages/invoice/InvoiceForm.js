@@ -234,9 +234,10 @@ const InvoiceForm = () => {
   
       navigate("/all-invoices");
     } catch (error) {
-      console.error('Failed to add invoice', error.message);
-  
-      toast.error('Failed to add invoice', {
+      const serverMsg = (error && error.response && (error.response.data && (error.response.data.error || error.response.data.message))) || error.message || 'Failed to add invoice';
+      console.error('Failed to add invoice', serverMsg);
+
+      toast.error(serverMsg, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
