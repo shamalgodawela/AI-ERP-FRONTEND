@@ -599,6 +599,7 @@ const InvoiceForm = () => {
                <option value="">Select mode of payment</option>
                <option value="Cash">Cash</option>
                <option value="Cheque">Cheque</option>
+               <option value="Exe_stock">Exe_stock</option>
               </select>
           </div>
           <div className="form-group">
@@ -638,6 +639,7 @@ const InvoiceForm = () => {
     onChange={handleChange}
   >
     <option value="">-- Select Stock --</option>
+    <option value="MS">MS</option>
     <option value="Mr.Arshad">Mr.Arshad</option>
     <option value="Executive 1">Mr.Ahamed</option>
     <option value="Executive 2">SOUTH</option>
