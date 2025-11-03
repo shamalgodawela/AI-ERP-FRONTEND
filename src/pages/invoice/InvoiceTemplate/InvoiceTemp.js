@@ -154,10 +154,11 @@ const calculateTaxtot = () => {
             <h6>Email: info@nihonagholdings.com</h6>
             <h6>Hotline: 0777666802</h6>
           </div>
-          <h1>Stock Name: {invoice.StockName}</h1>
+         
           
               <p id='invoice-tax-invoice-text'>{invoice.VatNO}</p>
               <p id='invoice-vat-reg'>{invoice.VatRegNo}</p>
+              <p id='invoice-tax-invoice-text'>Stock Name: {invoice.StockName}</p>
           
           <div className="invoice-container">
             <div className="invoice-head">
