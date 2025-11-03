@@ -509,3 +509,10 @@ body{
 .invoice-thead-invoicetemp { 
     border-collapse: collapse; 
 }
+#invoice-stock{
+    position:absolute;
+    color:black;
+    left:16.6cm;
+    top:1cm;
+    font-size: 8px;
+}

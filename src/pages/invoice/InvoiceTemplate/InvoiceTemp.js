@@ -158,7 +158,7 @@ const calculateTaxtot = () => {
           
               <p id='invoice-tax-invoice-text'>{invoice.VatNO}</p>
               <p id='invoice-vat-reg'>{invoice.VatRegNo}</p>
-              <p id='invoice-tax-invoice-text'>Stock Name: {invoice.StockName}</p>
+              <p id='invoice-stock'>Stock Name:{invoice.StockName}</p>
           
           <div className="invoice-container">
             <div className="invoice-head">
