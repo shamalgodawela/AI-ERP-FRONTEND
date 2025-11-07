@@ -17,6 +17,7 @@ const AdminViewincentive = () => {
   const [selectedSettlement, setSelectedSettlement] = useState('All');
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [searchCustomer, setSearchCustomer] = useState('');
 
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
@@ -39,7 +40,7 @@ const AdminViewincentive = () => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, month, IncentiveStatus, Incentivesettlement, start = startDate, end = endDate) => {
+  const applyFilters = (exe, month, IncentiveStatus, Incentivesettlement, customer, start = startDate, end = endDate) => {
     let filtered = incentives;
 
     if (exe !== 'All') {
@@ -61,6 +62,14 @@ const AdminViewincentive = () => {
       filtered = filtered.filter(item => item.Incentivesettlement === Incentivesettlement);
     }
 
+    // Filter by customer (case-insensitive search)
+    if (customer && customer.trim() !== '') {
+      filtered = filtered.filter(item => 
+        item.customer && 
+        item.customer.toLowerCase().includes(customer.toLowerCase())
+      );
+    }
+
     // Filter by invoiceDate range
     if (start) {
       filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate >= start);
@@ -75,37 +84,43 @@ const AdminViewincentive = () => {
   const handleSelectChange = (e) => {
     const exe = e.target.value;
     setSelectedExe(exe);
-    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement);
+    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleMonthChange = (e) => {
     const month = e.target.value;
     setSearchMonth(month);
-    applyFilters(selectedExe, month, selectedStatus, selectedSettlement);
+    applyFilters(selectedExe, month, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleStatusChange = (e) => {
     const status = e.target.value;
     setSelectedStatus(status);
-    applyFilters(selectedExe, searchMonth, status, selectedSettlement);
+    applyFilters(selectedExe, searchMonth, status, selectedSettlement, searchCustomer);
   };
 
   const handleSettlementChange = (e) => {
     const settlement = e.target.value;
     setSelectedSettlement(settlement);
-    applyFilters(selectedExe, searchMonth, selectedStatus, settlement);
+    applyFilters(selectedExe, searchMonth, selectedStatus, settlement, searchCustomer);
+  };
+
+  const handleCustomerSearch = (e) => {
+    const customer = e.target.value;
+    setSearchCustomer(customer);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, customer);
   };
 
   // New handlers for start/end date
   const handleStartDateChange = (e) => {
     const val = e.target.value;
     setStartDate(val);
-    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, val, endDate);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, searchCustomer, val, endDate);
   };
   const handleEndDateChange = (e) => {
     const val = e.target.value;
     setEndDate(val);
-    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, startDate, val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, searchCustomer, startDate, val);
   };
 
   const totalIncentiveAmount = filteredIncentives.reduce((sum, item) => {
@@ -178,6 +193,16 @@ const AdminViewincentive = () => {
               value={searchMonth}
               onChange={handleMonthChange}
               style={{ padding: '5px', marginRight: '10px' }}
+            />
+
+            <label htmlFor="customer-search" style={{ marginRight: '8px' }}>Search by Customer:</label>
+            <input
+              type="text"
+              id="customer-search"
+              placeholder="Enter customer name"
+              value={searchCustomer}
+              onChange={handleCustomerSearch}
+              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
             />
 
             <label htmlFor="status-select" style={{ marginRight: '8px' }}>Payment Settlement:</label>
