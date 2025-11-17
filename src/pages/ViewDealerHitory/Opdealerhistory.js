@@ -150,9 +150,9 @@ const Opdealerhistory = () => {
           </div>
         )}
       </div>
-      <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>
+      {/* <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>
         Home
-      </button>
+      </button> */}
       <Footer />
     </div>
   );
