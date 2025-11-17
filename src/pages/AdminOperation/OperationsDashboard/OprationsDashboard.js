@@ -16,7 +16,7 @@ const actions = [
   {
     label: 'View cheques',
     icon: <FaMoneyCheckAlt size={32} />,
-    route: '/allcusoperation',
+    route: '',
   },
   {
     label: 'Sales & Collection Details',
