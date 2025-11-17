@@ -87,6 +87,7 @@ import AreaInventory from "./pages/InventoryAreas/AreaInventory";
 import AllInventories from "./pages/InventoryAreas/AllInventories";
 import AddbulkProduct from "./compenents/bulkproduct/addproduct/AddbulkProduct";
 import EXEincentory from "./compenents/Exetable/AllTableexe/EXEincentory";
+import Opdealerhistory from "./pages/ViewDealerHitory/Opdealerhistory";
 
 
 axios.defaults.withCredentials= true;
@@ -253,6 +254,7 @@ function App() {
     <Route path="/admin-operation-getallcheque" element={<Allcheque/>} />
     <Route path="/admin-operation-incentive" element={<ViewAllincentive/>} />
     <Route path="/allcusoperation" element={<Operationallcustomers/>} />
+    <Route path="/opdealerhistory" element={<Opdealerhistory/>} />
 
 
    

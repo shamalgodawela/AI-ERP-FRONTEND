@@ -26,7 +26,7 @@ const actions = [
   {
     label: 'View Dealer History',
     icon: <FaUserTie size={32} />, 
-    route: '/Admin-operations-dashboard',
+    route: '/allcusoperation',
   },
   {
     label: 'Executives Incentive',
