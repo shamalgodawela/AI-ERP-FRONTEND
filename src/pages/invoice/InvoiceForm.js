@@ -422,8 +422,6 @@ const InvoiceForm = () => {
     }
   };
   
-  
-  
   const fetchNextTaxNo = async () => {
     try {
       const response = await axios.get("https://nihon-inventory.onrender.com/api/get-last-tax-no");
