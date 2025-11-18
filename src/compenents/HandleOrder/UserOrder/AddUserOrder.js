@@ -102,7 +102,24 @@ const AddUserOrder = ({ onAddOrder }) => {
       const unitPrice = parseFloat(value);
       const quantity = parseFloat(products[index].quantity);
 
-      if (!isNaN(labelPrice)) {
+      // Calculate discount from unit price and label price
+      if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
+        const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
+        products[index].discount = isNaN(discount) ? '' : discount.toFixed(2);
+      }
+
+      // Calculate invoice total from unit price and quantity
+      const invoiceTotal = unitPrice * quantity;
+      products[index].invoiceTotal = isNaN(invoiceTotal)
+        ? ''
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'labelPrice') {
+      // When label price changes, recalculate discount if unit price exists
+      const labelPrice = parseFloat(value);
+      const unitPrice = parseFloat(products[index].unitPrice);
+      const quantity = parseFloat(products[index].quantity);
+
+      if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
         const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
         products[index].discount = isNaN(discount) ? '' : discount.toFixed(2);
       }
@@ -111,15 +128,20 @@ const AddUserOrder = ({ onAddOrder }) => {
       products[index].invoiceTotal = isNaN(invoiceTotal)
         ? ''
         : invoiceTotal.toFixed(2);
-    } else if (name === 'labelPrice' || name === 'discount') {
-      const labelPrice = parseFloat(products[index].labelPrice);
-      const discount = parseFloat(products[index].discount);
+    } else if (name === 'discount') {
+      // When discount is entered, do not calculate unit price
+      // Only update invoice total if unit price exists
+      const unitPrice = parseFloat(products[index].unitPrice);
       const quantity = parseFloat(products[index].quantity);
-      const unitPrice = labelPrice * (1 - discount / 100);
       const invoiceTotal = unitPrice * quantity;
-      products[index].unitPrice = isNaN(unitPrice)
+      products[index].invoiceTotal = isNaN(invoiceTotal)
         ? ''
-        : unitPrice.toFixed(2);
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'quantity') {
+      // When quantity changes, recalculate invoice total
+      const unitPrice = parseFloat(products[index].unitPrice);
+      const quantity = parseFloat(value);
+      const invoiceTotal = unitPrice * quantity;
       products[index].invoiceTotal = isNaN(invoiceTotal)
         ? ''
         : invoiceTotal.toFixed(2);
