@@ -13,8 +13,7 @@ const AllInvoice = () => {
   const [invoices, setInvoices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [invoiceDate, setInvoiceDate] = useState('');
   const [exe, setExe] = useState('');
   const [productCode, setProductCode] = useState(''); 
   const { id } = useParams();
@@ -54,14 +53,13 @@ const AllInvoice = () => {
         });
         setInvoices(invoicesWithQuantity);
       } else {
-        const formattedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : '';
-        const formattedEndDate = endDate ? new Date(endDate).toISOString().split('T')[0] : '';
+        const formattedDate = invoiceDate ? new Date(invoiceDate).toISOString().split('T')[0] : '';
 
         const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoices`, {
           params: {
             searchQuery,
-            startDate: formattedStartDate,
-            endDate: formattedEndDate,
+            startDate: formattedDate,
+            endDate: formattedDate,
             exe
           }
         });
@@ -106,18 +104,18 @@ const AllInvoice = () => {
     <body>
        <UserNavbar/>
       <div>
-        <div className="search-container" style={{ display: 'flex', marginBottom: '20px' }}>
+        <div className="search-container" style={{ display: 'flex', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
           <input
             type="text"
             placeholder="Search by Invoice Number or Customer"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginRight: '10px', padding: '5px' }}
+            style={{ padding: '5px', minWidth: '220px' }}
           />
           <select
             value={exe}
             onChange={(e) => setExe(e.target.value)}
-            style={{ marginRight: '10px', padding: '5px' }}
+            style={{ padding: '5px', minWidth: '160px' }}
           >
             <option value="">Select Exe</option>
             <option value="Mr.Ahamed">Mr.Ahamed</option>
@@ -131,11 +129,19 @@ const AllInvoice = () => {
           </select>
 
           <input
+            type="date"
+            placeholder="Invoice Date"
+            value={invoiceDate}
+            onChange={(e) => setInvoiceDate(e.target.value)}
+            style={{ padding: '5px', minWidth: '170px' }}
+          />
+
+          <input
             type="text"
             placeholder="Search by Product Code"
             value={productCode}
             onChange={(e) => setProductCode(e.target.value)}
-            style={{ marginRight: '10px', padding: '5px' }}
+            style={{ padding: '5px', minWidth: '200px' }}
           />
 
           <button
