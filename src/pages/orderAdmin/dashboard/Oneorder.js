@@ -151,16 +151,54 @@ const Oneorder = () => {
     const updatedProducts = [...updatedOrder.products];
     updatedProducts[index] = { ...updatedProducts[index], [name]: value };
   
-    // Recalculate unitPrice and invoiceTotal if quantity or discount is changed
-    if (name === 'quantity' || name === 'discount') {
+    if (name === 'unitPrice') {
       const labelPrice = parseFloat(updatedProducts[index].labelPrice);
-      const discount = parseFloat(updatedProducts[index].discount);
+      const unitPrice = parseFloat(value);
       const quantity = parseFloat(updatedProducts[index].quantity);
-      const unitPrice = labelPrice * (1 - discount / 100);
+
+      // Calculate discount from unit price and label price
+      if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
+        const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
+        updatedProducts[index].discount = isNaN(discount) ? '' : discount.toFixed(9);
+      }
+
+      // Calculate invoice total from unit price and quantity
       const invoiceTotal = unitPrice * quantity;
-  
-      updatedProducts[index].unitPrice = isNaN(unitPrice) ? '' : unitPrice.toFixed(2);
-      updatedProducts[index].invoiceTotal = isNaN(invoiceTotal) ? '' : invoiceTotal.toFixed(2);
+      updatedProducts[index].invoiceTotal = isNaN(invoiceTotal)
+        ? ''
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'labelPrice') {
+      // When label price changes, recalculate discount if unit price exists
+      const labelPrice = parseFloat(value);
+      const unitPrice = parseFloat(updatedProducts[index].unitPrice);
+      const quantity = parseFloat(updatedProducts[index].quantity);
+
+      if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
+        const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
+        updatedProducts[index].discount = isNaN(discount) ? '' : discount.toFixed(9);
+      }
+
+      const invoiceTotal = unitPrice * quantity;
+      updatedProducts[index].invoiceTotal = isNaN(invoiceTotal)
+        ? ''
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'discount') {
+      // When discount is entered, do not calculate unit price
+      // Only update invoice total if unit price exists
+      const unitPrice = parseFloat(updatedProducts[index].unitPrice);
+      const quantity = parseFloat(updatedProducts[index].quantity);
+      const invoiceTotal = unitPrice * quantity;
+      updatedProducts[index].invoiceTotal = isNaN(invoiceTotal)
+        ? ''
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'quantity') {
+      // When quantity changes, recalculate invoice total
+      const unitPrice = parseFloat(updatedProducts[index].unitPrice);
+      const quantity = parseFloat(value);
+      const invoiceTotal = unitPrice * quantity;
+      updatedProducts[index].invoiceTotal = isNaN(invoiceTotal)
+        ? ''
+        : invoiceTotal.toFixed(2);
     }
   
     setUpdatedOrder({
@@ -363,7 +401,7 @@ const Oneorder = () => {
                             type="text"
                             name="unitPrice"
                             value={updatedOrder.products[index].unitPrice}
-                            readOnly
+                            onChange={(e) => handleProductInputChange(e, index)}
                           />
                         </td>
                         <td>
