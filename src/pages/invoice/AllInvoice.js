@@ -53,15 +53,18 @@ const AllInvoice = () => {
         });
         setInvoices(invoicesWithQuantity);
       } else {
-        const formattedDate = invoiceDate ? new Date(invoiceDate).toISOString().split('T')[0] : '';
+        const params = {
+          searchQuery,
+          exe,
+        };
+
+        if (invoiceDate) {
+          params.startDate = invoiceDate;
+          params.endDate = invoiceDate;
+        }
 
         const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoices`, {
-          params: {
-            searchQuery,
-            startDate: formattedDate,
-            endDate: formattedDate,
-            exe
-          }
+          params,
         });
         setInvoices(response.data);
       }
