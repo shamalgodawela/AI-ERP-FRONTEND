@@ -105,7 +105,7 @@ const AddUserOrder = ({ onAddOrder }) => {
       // Calculate discount from unit price and label price
       if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
         const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
-        products[index].discount = isNaN(discount) ? '' : discount.toFixed(2);
+        products[index].discount = isNaN(discount) ? '' : discount.toFixed(9);
       }
 
       // Calculate invoice total from unit price and quantity
@@ -121,7 +121,7 @@ const AddUserOrder = ({ onAddOrder }) => {
 
       if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
         const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
-        products[index].discount = isNaN(discount) ? '' : discount.toFixed(2);
+        products[index].discount = isNaN(discount) ? '' : discount.toFixed(9);
       }
 
       const invoiceTotal = unitPrice * quantity;
