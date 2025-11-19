@@ -1,3 +1,4 @@
+/* Container */
 .product-quantity-container {
   max-width: 100%;
   margin: 0 auto;
@@ -5,6 +6,7 @@
   min-height: 100vh;
 }
 
+/* Search & Filter */
 .search-container {
   margin-bottom: 30px;
 }
@@ -58,6 +60,7 @@
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
+/* Buttons */
 .button-group {
   display: flex;
   gap: 10px;
@@ -104,6 +107,7 @@
   cursor: not-allowed;
 }
 
+/* Error */
 .error-message {
   background-color: #f8d7da;
   color: #721c24;
@@ -114,6 +118,7 @@
   text-align: center;
 }
 
+/* Results */
 .results-container {
   margin-top: 20px;
 }
@@ -136,6 +141,7 @@
   color: #007bff;
 }
 
+/* Table */
 .table-container {
   overflow-x: auto;
   border-radius: 8px;
@@ -149,11 +155,6 @@
   background-color: white;
 }
 
-.thead {
-  background-color: #181818;
-  color: white;
-}
-
 .th-invoice {
   padding: 12px;
   text-align: left;
@@ -161,14 +162,14 @@
   font-weight: bold;
   background-color: #181818;
   color: white;
-  border: 1px solid #000000;
+  border: 1px solid #000;
 }
 
 .td-invoice {
   padding: 12px;
   text-align: left;
   font-size: 13px;
-  border: 1px solid #000000;
+  border: 1px solid #000;
   color: #333;
 }
 
@@ -190,6 +191,7 @@
   background-color: #e6f2ff;
 }
 
+/* No results */
 .no-results {
   text-align: center;
   padding: 40px;
@@ -203,7 +205,7 @@
   margin: 0;
 }
 
-/* Print Button Styles */
+/* Print button */
 .print-button {
   background: #005704;
   color: white;
@@ -246,20 +248,15 @@
   gap: 15px;
 }
 
+/* Print header */
 .print-header {
   margin-bottom: 20px;
   padding: 15px;
   border-bottom: 2px solid #333;
-}
-
-.print-company-info {
   text-align: center;
-  margin-bottom: 15px;
 }
 
 .print-company-name {
-  text-align: center;
-  color: #000;
   font-family: 'Times New Roman', Times, serif;
   font-weight: bold;
   font-size: 28px;
@@ -268,7 +265,6 @@
 }
 
 .print-system-generated {
-  text-align: center;
   font-size: 12px;
   color: #666;
   margin: 0 0 15px 0;
@@ -276,16 +272,12 @@
 }
 
 .print-title {
-  text-align: center;
-  color: #000;
-  font-family: 'Times New Roman', Times, serif;
   font-weight: bold;
   font-size: 24px;
   margin-bottom: 10px;
 }
 
 .print-info {
-  text-align: center;
   font-size: 14px;
   color: #333;
   margin-bottom: 10px;
@@ -293,7 +285,6 @@
 }
 
 .print-summary {
-  text-align: center;
   font-size: 14px;
   color: #333;
   margin: 0;
@@ -304,103 +295,7 @@
   font-weight: bold;
 }
 
-/* Print Media Queries */
-@media print {
-  /* Hide elements that shouldn't be printed */
-  .no-print,
-  .filter-section,
-  .print-button,
-  .search-container,
-  footer,
-  .footer,
-  nav,
-  .navbar,
-  .sidebar,
-  header,
-  .sm-navbar,
-  UserNavbar {
-    display: none !important;
-  }
-
-  /* Show print-only elements */
-  .print-only {
-    display: block !important;
-  }
-
-  /* Adjust layout for print */
-  .product-quantity-container {
-    background: white !important;
-    padding: 20px !important;
-    margin: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .results-container {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Table styles for print */
-  .table-container {
-    overflow: visible !important;
-    box-shadow: none !important;
-  }
-
-  .product-table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    font-size: 11px !important;
-    page-break-inside: auto;
-  }
-
-  .th-invoice,
-  .td-invoice {
-    border: 1px solid #000 !important;
-    padding: 8px !important;
-    text-align: left !important;
-    color: #000 !important;
-  }
-
-  .th-invoice {
-    background-color: #181818 !important;
-    color: white !important;
-    font-weight: bold !important;
-  }
-
-  .product-table tbody tr {
-    page-break-inside: avoid;
-    page-break-after: auto;
-  }
-
-  .product-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9 !important;
-  }
-
-  .product-table tbody tr:hover {
-    background-color: #f9f9f9 !important;
-  }
-
-  /* Page break settings */
-  .print-header {
-    page-break-after: avoid;
-  }
-
-  .table-container {
-    page-break-inside: avoid;
-  }
-
-  /* Remove shadows and borders for print */
-  .summary-section {
-    display: none !important;
-  }
-
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-}
-
-/* Responsive design */
+/* Responsive */
 @media (max-width: 768px) {
   .filter-section {
     flex-direction: column;
@@ -440,3 +335,95 @@
   }
 }
 
+/* -------------------- PRINT STYLES -------------------- */
+@media print {
+  /* Hide unnecessary elements */
+  .no-print,
+  .filter-section,
+  .print-button,
+  .search-container,
+  footer,
+  .footer,
+  nav,
+  .navbar,
+  .sidebar,
+  header,
+  .sm-navbar,
+  UserNavbar {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .product-quantity-container {
+    background: white !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .results-container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Table styles */
+  .table-container {
+    overflow: visible !important;
+    box-shadow: none !important;
+    page-break-inside: auto;
+  }
+
+  .product-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 11px !important;
+  }
+
+  .th-invoice,
+  .td-invoice {
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+    text-align: left !important;
+    color: #000 !important;
+  }
+
+  .th-invoice {
+    background-color: #181818 !important;
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  .product-table tbody tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .product-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9 !important;
+  }
+
+  .product-table tbody tr:hover {
+    background-color: #f9f9f9 !important;
+  }
+
+  .print-header {
+    page-break-after: avoid;
+  }
+
+  .table-container {
+    page-break-inside: avoid;
+  }
+
+  .summary-section {
+    display: none !important;
+  }
+}
