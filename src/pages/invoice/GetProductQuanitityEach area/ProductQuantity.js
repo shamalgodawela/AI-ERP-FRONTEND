@@ -4,7 +4,6 @@ import './ProductQuantity.css';
 import Loader from '../../../compenents/loader/Loader';
 import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 import Footer from '../../../compenents/footer/Footer';
-import { FaPrint } from 'react-icons/fa';
 
 const ProductQuantity = () => {
   const [startDate, setStartDate] = useState('');
@@ -77,30 +76,12 @@ const ProductQuantity = () => {
     return products.reduce((sum, product) => sum + (product.totalQuantity || 0), 0);
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const getPrintHeader = () => {
-    const filters = [];
-    if (startDate && endDate) filters.push(`Period: ${formatDate(startDate)} to ${formatDate(endDate)}`);
-    if (exe) filters.push(`Executive: ${exe}`);
-    else filters.push('Executive: All Executives');
-    return filters.join(' | ');
-  };
-
   return (
     <div className="product-quantity-container">
-      <UserNavbar className="no-print" />
+      <UserNavbar />
 
       {/* Search & Filter */}
-      <div className="search-container no-print">
+      <div className="search-container">
         <h2 className="h2-invoice">Product Quantity by Code</h2>
 
         <div className="filter-section">
@@ -172,53 +153,30 @@ const ProductQuantity = () => {
         {isLoading ? (
           <Loader />
         ) : hasSearched && products.length > 0 ? (
-          <>
-            {/* Summary + Print Button */}
-            <div className="print-header-section no-print">
-              <p className="summary-text">
-                Total Products: <strong>{products.length}</strong> | 
-                Total Quantity: <strong>{formatNumbers(calculateTotalQuantity().toFixed(2))}</strong>
-              </p>
-              <button className="print-button" onClick={handlePrint}>
-                <FaPrint /> Print
-              </button>
-            </div>
-
-            {/* Print Content */}
-            <div className="print-only">
-              <div className="print-header">
-                <h1 className="print-company-name">Nihon ERP</h1>
-                <p className="print-system-generated">System Generated Report</p>
-                <h2 className="print-title">Product Quantity by Code</h2>
-                <p className="print-info">{getPrintHeader()}</p>
-                <p className="print-summary">
-                  Total Products: <strong>{products.length}</strong> | 
-                  Total Quantity: <strong>{formatNumbers(calculateTotalQuantity().toFixed(2))}</strong>
-                </p>
-              </div>
-
-              <div style={{ width: '100%', overflow: 'visible' }}>
-                <table className="product-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr>
-                      <th className="th-invoice">Product Code</th>
-                      <th className="th-invoice">Product Name</th>
-                      <th className="th-invoice">Total Quantity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {products.map((product, index) => (
-                      <tr key={product.productCode || index}>
-                        <td className="td-invoice">{product.productCode}</td>
-                        <td className="td-invoice">{product.productName || '-'}</td>
-                        <td className="td-invoice">{formatNumbers(product.totalQuantity?.toFixed(2) || '0')}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </>
+          <div className="table-container">
+            <p className="summary-text">
+              Total Products: <strong>{products.length}</strong> | 
+              Total Quantity: <strong>{formatNumbers(calculateTotalQuantity().toFixed(2))}</strong>
+            </p>
+            <table className="product-table">
+              <thead>
+                <tr>
+                  <th className="th-invoice">Product Code</th>
+                  <th className="th-invoice">Product Name</th>
+                  <th className="th-invoice">Total Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, index) => (
+                  <tr key={product.productCode || index}>
+                    <td className="td-invoice">{product.productCode}</td>
+                    <td className="td-invoice">{product.productName || '-'}</td>
+                    <td className="td-invoice">{formatNumbers(product.totalQuantity?.toFixed(2) || '0')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : hasSearched && products.length === 0 && !error ? (
           <div className="no-results">
             <p>No products found for the selected criteria.</p>
@@ -226,7 +184,7 @@ const ProductQuantity = () => {
         ) : null}
       </div>
 
-      <Footer className="no-print" />
+      <Footer />
     </div>
   );
 };
