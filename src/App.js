@@ -153,7 +153,7 @@ function App() {
     <Route path="/Allexetable" element={<EXEincentory/>}/>
     <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
     <Route path="/AllOutstanding" element={<AllOutStanding/>} />
-    <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
+   
 
 
 

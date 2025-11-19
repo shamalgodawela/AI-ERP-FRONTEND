@@ -98,6 +98,7 @@ const ProductQuantity = () => {
   return (
     <div className="product-quantity-container">
       <UserNavbar className="no-print" />
+      <UserNavbar/>
 
       {/* Search & Filter */}
       <div className="search-container no-print">
