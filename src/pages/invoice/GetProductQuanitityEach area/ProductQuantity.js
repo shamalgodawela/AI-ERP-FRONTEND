@@ -99,7 +99,7 @@ const ProductQuantity = () => {
 
   return (
     <div className="product-quantity-container">
-      <UserNavbar />
+      
 
       <div className="search-container no-print">
         <h2 className="h2-invoice">Product Quantity by Code</h2>

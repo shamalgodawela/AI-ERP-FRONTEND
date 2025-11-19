@@ -353,11 +353,6 @@
     display: none !important;
   }
 
-  /* Show print-only elements */
-  .print-only {
-    display: block !important;
-  }
-
   body {
     margin: 0 !important;
     padding: 0 !important;
@@ -365,7 +360,7 @@
 
   .product-quantity-container {
     background: white !important;
-    padding: 20px !important;
+    padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
   }
@@ -375,17 +370,27 @@
     padding: 0 !important;
   }
 
-  /* Table styles */
+  /* Allow table to break across pages */
   .table-container {
     overflow: visible !important;
     box-shadow: none !important;
-    page-break-inside: auto;
+    page-break-inside: auto !important;
+    -webkit-print-color-adjust: exact;
   }
 
   .product-table {
     width: 100% !important;
     border-collapse: collapse !important;
     font-size: 11px !important;
+    page-break-inside: auto !important;
+  }
+
+  .product-table tbody,
+  .product-table tr,
+  .product-table td,
+  .product-table th {
+    page-break-inside: avoid !important;
+    page-break-after: auto !important;
   }
 
   .th-invoice,
@@ -402,11 +407,6 @@
     font-weight: bold !important;
   }
 
-  .product-table tbody tr {
-    page-break-inside: avoid;
-    page-break-after: auto;
-  }
-
   .product-table tbody tr:nth-child(even) {
     background-color: #f9f9f9 !important;
   }
@@ -415,12 +415,9 @@
     background-color: #f9f9f9 !important;
   }
 
+  /* Print header */
   .print-header {
-    page-break-after: avoid;
-  }
-
-  .table-container {
-    page-break-inside: avoid;
+    page-break-after: avoid !important;
   }
 
   .summary-section {
