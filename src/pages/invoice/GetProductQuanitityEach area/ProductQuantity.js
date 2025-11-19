@@ -31,9 +31,7 @@ const ProductQuantity = () => {
         params.startDate = startDate;
         params.endDate = endDate;
       }
-      if (exe) {
-        params.exe = exe;
-      }
+      if (exe) params.exe = exe;
 
       const response = await axios.get(
         'https://nihon-inventory.onrender.com/api/get-product-quantity-by-code',
@@ -99,8 +97,9 @@ const ProductQuantity = () => {
 
   return (
     <div className="product-quantity-container">
-      
+      <UserNavbar className="no-print" />
 
+      {/* Search & Filter */}
       <div className="search-container no-print">
         <h2 className="h2-invoice">Product Quantity by Code</h2>
 
@@ -168,11 +167,13 @@ const ProductQuantity = () => {
         {error && <div className="error-message">{error}</div>}
       </div>
 
+      {/* Results */}
       <div className="results-container">
         {isLoading ? (
           <Loader />
         ) : hasSearched && products.length > 0 ? (
           <>
+            {/* Summary + Print Button */}
             <div className="print-header-section no-print">
               <p className="summary-text">
                 Total Products: <strong>{products.length}</strong> | 
@@ -183,7 +184,7 @@ const ProductQuantity = () => {
               </button>
             </div>
 
-            {/* Print Header */}
+            {/* Print Content */}
             <div className="print-only">
               <div className="print-header">
                 <h1 className="print-company-name">Nihon ERP</h1>
@@ -196,8 +197,8 @@ const ProductQuantity = () => {
                 </p>
               </div>
 
-              <div className="table-container">
-                <table className="product-table">
+              <div style={{ width: '100%', overflow: 'visible' }}>
+                <table className="product-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr>
                       <th className="th-invoice">Product Code</th>

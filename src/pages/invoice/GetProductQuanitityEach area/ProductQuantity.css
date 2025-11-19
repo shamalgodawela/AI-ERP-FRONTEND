@@ -423,4 +423,82 @@
   .summary-section {
     display: none !important;
   }
+
+}
+@media print {
+  /* Hide unnecessary elements */
+  .no-print,
+  .filter-section,
+  .print-button,
+  .search-container,
+  footer,
+  .footer,
+  nav,
+  .navbar,
+  .sidebar,
+  header,
+  .sm-navbar,
+  .UserNavbar {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+  }
+
+  .product-quantity-container,
+  .results-container,
+  .table-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    box-shadow: none !important;
+  }
+
+  /* Table */
+  .product-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 11px !important;
+  }
+
+  .product-table th,
+  .product-table td {
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+    text-align: left !important;
+  }
+
+  .product-table tbody tr {
+    page-break-inside: auto !important;
+    page-break-after: auto !important;
+  }
+
+  .th-invoice {
+    background-color: #181818 !important;
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  /* Print header */
+  .print-header {
+    page-break-after: avoid !important;
+  }
+
+  /* Remove hover & zebra stripes for print */
+  .product-table tbody tr:hover,
+  .product-table tbody tr:nth-child(even) {
+    background-color: white !important;
+  }
+
+  .summary-section {
+    display: none !important;
+  }
 }
