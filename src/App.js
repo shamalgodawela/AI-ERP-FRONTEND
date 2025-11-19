@@ -212,6 +212,7 @@ function App() {
     <Route path="/add-area-inventory" element={<AreaInventory/>}/>
     <Route path="/area-allinventories" element={<AllInventories/>}/>
     <Route path="/Register-bulk" element={<AddbulkProduct/>} />
+    <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
   
     
 

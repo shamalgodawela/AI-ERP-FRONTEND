@@ -52,6 +52,7 @@ const UserNavbar = () => {
             <a href="/user-check-outstanding" className="sm-dropdown-item">Outstanding</a>
             <a href="/Add-Cheque" className="sm-dropdown-item">add Cheques details</a>
             <a href="/user-cheque" className="sm-dropdown-item">view Cheques</a>
+            <a href="/product-quantity-by-code" className="sm-dropdown-item">Area Wise Product Quantity</a>
           </div>
         </div>
 
