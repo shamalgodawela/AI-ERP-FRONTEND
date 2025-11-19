@@ -135,17 +135,21 @@ const ProductQuantity = () => {
               onChange={(e) => setExe(e.target.value)}
               className="select-input"
             >
-              <option value="">All Executives</option>
-              <option value="Mr.Ahamed">Mr.Ahamed</option>
-              <option value="Mr.Dasun">Mr.Dasun</option>
-              <option value="Mr.Chameera">Mr.Chameera</option>
-              <option value="Mr.Sanjeewa">Mr.Sanjeewa</option>
-              <option value="Mr.Nayum">Mr.Nayum</option>
-              <option value="Mr.Navaneedan">Mr.Navaneedan</option>
-              <option value="Mr.Riyas">Mr.Riyas</option>
-              <option value="SOUTH-1">SOUTH-1</option>
-            </select>
-          </div>
+               <option value="">All Executives</option>
+            <option value="Mr.Ahamed">Mr.Ahamed</option>
+            <option value="Mr.Dasun">Mr.Dasun</option>
+            <option value="Mr.Chameera">Mr.Chameera</option>
+            <option value="Mr.Riyas">Mr.Riyas</option>
+            <option value="Mr.Navaneedan">Mr.Navaneedan</option>
+            <option value="Mr.Nayum">Mr.Nayum</option>
+            <option value="SOUTH">SOUTH-1</option>
+            <option value="Other">Other</option>
+            <option value="UpCountry">UpCountry</option>
+            <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+            <option value="Mr.Buddhika">Mr.Buddhika</option>
+            <option value="Mr.Arshad">Mr.Arshad</option>
+          </select>
+                      </div>
 
           <div className="button-group">
             <button
