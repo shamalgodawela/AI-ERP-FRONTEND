@@ -1,0 +1,209 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import './ProductQuantity.css';
+import Loader from '../../../compenents/loader/Loader';
+import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
+import Footer from '../../../compenents/footer/Footer';
+
+const ProductQuantity = () => {
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [exe, setExe] = useState('');
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const fetchProductQuantities = async () => {
+    // Validate dates
+    if (startDate && !endDate) {
+      setError('Please provide both start date and end date');
+      return;
+    }
+    if (!startDate && endDate) {
+      setError('Please provide both start date and end date');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+    setHasSearched(true);
+
+    try {
+      const params = {};
+      
+      if (startDate && endDate) {
+        params.startDate = startDate;
+        params.endDate = endDate;
+      }
+      
+      if (exe) {
+        params.exe = exe;
+      }
+
+      const response = await axios.get(
+        `https://nihon-inventory.onrender.com/api/get-product-quantity-by-code`,
+        { params }
+      );
+
+      if (response.data && response.data.length > 0) {
+        setProducts(response.data);
+        setError('');
+      } else {
+        setProducts([]);
+        setError('No products found for the selected criteria');
+      }
+    } catch (error) {
+      console.error('Failed to fetch product quantities:', error);
+      if (error.response && error.response.status === 404) {
+        setError(error.response.data.message || 'No products found for the selected criteria');
+      } else if (error.response && error.response.status === 400) {
+        setError(error.response.data.error || 'Invalid date format. Use YYYY-MM-DD format');
+      } else {
+        setError('Failed to fetch product quantities. Please try again.');
+      }
+      setProducts([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setStartDate('');
+    setEndDate('');
+    setExe('');
+    setProducts([]);
+    setError('');
+    setHasSearched(false);
+  };
+
+  const formatNumbers = (x) => {
+    if (x === null || x === undefined) return '0';
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const calculateTotalQuantity = () => {
+    return products.reduce((sum, product) => sum + (product.totalQuantity || 0), 0);
+  };
+
+  return (
+    <body>
+      <UserNavbar />
+      <div className="product-quantity-container">
+        <div className="search-container">
+          <h2 className="h2-invoice">Product Quantity by Code</h2>
+          
+          <div className="filter-section">
+            <div className="filter-group">
+              <label htmlFor="startDate">Start Date:</label>
+              <input
+                type="date"
+                id="startDate"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="date-input"
+              />
+            </div>
+
+            <div className="filter-group">
+              <label htmlFor="endDate">End Date:</label>
+              <input
+                type="date"
+                id="endDate"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="date-input"
+              />
+            </div>
+
+            <div className="filter-group">
+              <label htmlFor="exe">Executive:</label>
+              <select
+                id="exe"
+                value={exe}
+                onChange={(e) => setExe(e.target.value)}
+                className="select-input"
+              >
+                <option value="">All Executives</option>
+                <option value="Mr.Ahamed">Mr.Ahamed</option>
+                <option value="Mr.Dasun">Mr.Dasun</option>
+                <option value="Mr.Chameera">Mr.Chameera</option>
+                <option value="Mr.Sanjeewa">Mr.Sanjeewa</option>
+                <option value="Mr.Nayum">Mr.Nayum</option>
+                <option value="Mr.Navaneedan">Mr.Navaneedan</option>
+                <option value="Mr.Riyas">Mr.Riyas</option>
+                <option value="SOUTH-1">SOUTH-1</option>
+              </select>
+            </div>
+
+            <div className="button-group">
+              <button
+                onClick={fetchProductQuantities}
+                className="search-button"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Searching...' : 'Search'}
+              </button>
+              <button
+                onClick={handleReset}
+                className="reset-button"
+                disabled={isLoading}
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+        </div>
+
+        <div className="results-container">
+          {isLoading ? (
+            <Loader />
+          ) : hasSearched && products.length > 0 ? (
+            <>
+              <div className="summary-section">
+                <p className="summary-text">
+                  Total Products: <strong>{products.length}</strong> | 
+                  Total Quantity: <strong>{formatNumbers(calculateTotalQuantity().toFixed(2))}</strong>
+                </p>
+              </div>
+              <div className="table-container">
+                <table className="product-table">
+                  <thead>
+                    <tr>
+                      <th className="th-invoice">Product Code</th>
+                      <th className="th-invoice">Product Name</th>
+                      <th className="th-invoice">Total Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product, index) => (
+                      <tr key={product.productCode || index}>
+                        <td className="td-invoice">{product.productCode}</td>
+                        <td className="td-invoice">{product.productName || '-'}</td>
+                        <td className="td-invoice">{formatNumbers(product.totalQuantity?.toFixed(2) || '0')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : hasSearched && products.length === 0 && !error ? (
+            <div className="no-results">
+              <p>No products found for the selected criteria.</p>
+            </div>
+          ) : null}
+        </div>
+        <Footer />
+      </div>
+    </body>
+  );
+};
+
+export default ProductQuantity;
+

@@ -88,6 +88,7 @@ import AllInventories from "./pages/InventoryAreas/AllInventories";
 import AddbulkProduct from "./compenents/bulkproduct/addproduct/AddbulkProduct";
 import EXEincentory from "./compenents/Exetable/AllTableexe/EXEincentory";
 import Opdealerhistory from "./pages/ViewDealerHitory/Opdealerhistory";
+import ProductQuantity from "./pages/invoice/GetProductQuanitityEach area/ProductQuantity";
 
 
 axios.defaults.withCredentials= true;
@@ -152,6 +153,7 @@ function App() {
     <Route path="/Allexetable" element={<EXEincentory/>}/>
     <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
     <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+    <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
 
 
 

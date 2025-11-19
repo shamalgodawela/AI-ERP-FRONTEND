@@ -42,6 +42,11 @@ const actions = [
     icon: <FaUniversity size={32} />, 
     route: '/admin-incentive',
   },
+  {
+    label: 'Area wise Product Quantity',
+    icon: <FaUniversity size={32} />, 
+    route: '/product-quantity-by-code',
+  },
 ];
 
 const Admin = () => {
