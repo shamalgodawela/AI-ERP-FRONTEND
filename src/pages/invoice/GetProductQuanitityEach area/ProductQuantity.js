@@ -4,6 +4,7 @@ import './ProductQuantity.css';
 import Loader from '../../../compenents/loader/Loader';
 import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 import Footer from '../../../compenents/footer/Footer';
+import { FaPrint } from 'react-icons/fa';
 
 const ProductQuantity = () => {
   const [startDate, setStartDate] = useState('');
@@ -86,6 +87,36 @@ const ProductQuantity = () => {
     return products.reduce((sum, product) => sum + (product.totalQuantity || 0), 0);
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const getPrintHeader = () => {
+    const filters = [];
+    
+    if (startDate && endDate) {
+      filters.push(`Period: ${formatDate(startDate)} to ${formatDate(endDate)}`);
+    }
+    
+    if (exe) {
+      filters.push(`Executive: ${exe}`);
+    } else {
+      filters.push('Executive: All Executives');
+    }
+    
+    return filters.join(' | ');
+  };
+
   return (
     <body>
       <UserNavbar />
@@ -166,12 +197,36 @@ const ProductQuantity = () => {
             <Loader />
           ) : hasSearched && products.length > 0 ? (
             <>
-              <div className="summary-section">
-                <p className="summary-text">
+              <div className="print-header-section no-print">
+                <div className="summary-section">
+                  <p className="summary-text">
+                    Total Products: <strong>{products.length}</strong> | 
+                    Total Quantity: <strong>{formatNumbers(calculateTotalQuantity().toFixed(2))}</strong>
+                  </p>
+                </div>
+                <button
+                  onClick={handlePrint}
+                  className="print-button"
+                  disabled={isLoading}
+                >
+                  <FaPrint /> Print
+                </button>
+              </div>
+              
+              {/* Print Header - Only visible when printing */}
+              <div className="print-header print-only">
+                <div className="print-company-info">
+                  <h1 className="print-company-name">Nihon ERP</h1>
+                  <p className="print-system-generated">System Generated Report</p>
+                </div>
+                <h2 className="print-title">Product Quantity by Code</h2>
+                <p className="print-info">{getPrintHeader()}</p>
+                <p className="print-summary">
                   Total Products: <strong>{products.length}</strong> | 
                   Total Quantity: <strong>{formatNumbers(calculateTotalQuantity().toFixed(2))}</strong>
                 </p>
               </div>
+
               <div className="table-container">
                 <table className="product-table">
                   <thead>

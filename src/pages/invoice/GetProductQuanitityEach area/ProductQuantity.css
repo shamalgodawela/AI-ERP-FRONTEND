@@ -203,6 +203,203 @@
   margin: 0;
 }
 
+/* Print Button Styles */
+.print-button {
+  background: #005704;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.print-button:hover:not(:disabled) {
+  background: #004a03;
+  transform: translateY(-1px);
+}
+
+.print-button:active {
+  transform: translateY(0);
+}
+
+.print-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.print-button svg {
+  font-size: 16px;
+}
+
+.print-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.print-header {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-bottom: 2px solid #333;
+}
+
+.print-company-info {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.print-company-name {
+  text-align: center;
+  color: #000;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  font-size: 28px;
+  margin: 0 0 5px 0;
+  letter-spacing: 1px;
+}
+
+.print-system-generated {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 15px 0;
+  font-style: italic;
+}
+
+.print-title {
+  text-align: center;
+  color: #000;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.print-info {
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.print-summary {
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+.print-summary strong {
+  color: #000;
+  font-weight: bold;
+}
+
+/* Print Media Queries */
+@media print {
+  /* Hide elements that shouldn't be printed */
+  .no-print,
+  .filter-section,
+  .print-button,
+  .search-container,
+  footer,
+  .footer,
+  nav,
+  .navbar,
+  .sidebar,
+  header,
+  .sm-navbar,
+  UserNavbar {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Adjust layout for print */
+  .product-quantity-container {
+    background: white !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .results-container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Table styles for print */
+  .table-container {
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  .product-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 11px !important;
+    page-break-inside: auto;
+  }
+
+  .th-invoice,
+  .td-invoice {
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+    text-align: left !important;
+    color: #000 !important;
+  }
+
+  .th-invoice {
+    background-color: #181818 !important;
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  .product-table tbody tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .product-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9 !important;
+  }
+
+  .product-table tbody tr:hover {
+    background-color: #f9f9f9 !important;
+  }
+
+  /* Page break settings */
+  .print-header {
+    page-break-after: avoid;
+  }
+
+  .table-container {
+    page-break-inside: avoid;
+  }
+
+  /* Remove shadows and borders for print */
+  .summary-section {
+    display: none !important;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .filter-section {
@@ -230,6 +427,16 @@
 
   .product-table {
     min-width: 600px;
+  }
+
+  .print-header-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .print-button {
+    width: 100%;
+    justify-content: center;
   }
 }
 
