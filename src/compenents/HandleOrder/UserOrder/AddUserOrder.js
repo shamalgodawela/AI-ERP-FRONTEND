@@ -25,6 +25,7 @@ const AddUserOrder = ({ onAddOrder }) => {
     Paymentmethod: '',
     CusVatNo: '',
     IncentiveDueDate: '',
+    FreeissuedStatus:'',
     products: [
       {
         productCode: '',
@@ -371,6 +372,19 @@ const AddUserOrder = ({ onAddOrder }) => {
               value={orderData.Paymentmethod}
               onChange={(e) =>
                 setOrderData({ ...orderData, Paymentmethod: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className="form-row">
+            <label className="form-label">Dealer Incentive Amount/Black magic :</label>
+            <input
+              type="text"
+              className="form-input"
+              name="Paymentmethod"
+              value={orderData.FreeissuedStatus}
+              onChange={(e) =>
+                setOrderData({ ...orderData, FreeissuedStatus: e.target.value })
               }
               required
             />

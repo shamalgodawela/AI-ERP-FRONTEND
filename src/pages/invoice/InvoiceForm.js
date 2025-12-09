@@ -48,6 +48,7 @@ const InvoiceForm = () => {
     CusVatNo:'',
     IncentiveDueDate:'',
     StockName:'',
+    FreeissuedStatus:''
   });
 
 
@@ -520,6 +521,15 @@ const InvoiceForm = () => {
               type="date"
               name="invoiceDate"
               value={formData.invoiceDate}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Dealer Incentive or Black magic free issued status:</label>
+            <input
+              type="date"
+              name="invoiceDate"
+              value={formData.FreeissuedStatus}
               onChange={handleChange}
             />
           </div>
