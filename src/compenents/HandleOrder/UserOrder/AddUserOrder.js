@@ -244,6 +244,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, exe: e.target.value })
               }
+              required
             >
               <option value="">Select EXE:</option>
               <option value="Mr.Ahamed">Mr.Ahamed</option>
@@ -285,6 +286,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, orderDate: e.target.value })
               }
+              required
             />
           </div>
 
@@ -318,6 +320,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               name="customer"
               value={orderData.customer}
               readOnly
+              required
             />
           </div>
           <div className="form-row">
@@ -328,6 +331,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               name="address"
               value={orderData.address}
               readOnly
+              required
             />
           </div>
           <div className="form-row">
@@ -340,6 +344,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, contact: e.target.value })
               }
+              required
             />
           </div>
 
@@ -353,6 +358,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, CreditPeriod: e.target.value })
               }
+              required
             />
           </div>
 
@@ -366,6 +372,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, Paymentmethod: e.target.value })
               }
+              required
             />
           </div>
 
@@ -405,6 +412,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="productCode"
                 value={product.productCode}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
               <button
                 type="button"
@@ -419,6 +427,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="productName"
                 value={product.productName}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Label Price:</label>
@@ -427,6 +436,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="labelPrice"
                 value={product.labelPrice}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Quantity:</label>
@@ -435,6 +445,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="quantity"
                 value={product.quantity}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Discount (%):</label>
@@ -443,6 +454,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="discount"
                 value={product.discount}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Unit Price:</label>
