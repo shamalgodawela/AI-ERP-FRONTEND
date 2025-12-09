@@ -117,7 +117,7 @@ const calculateTaxtot = () => {
       <td className="invoice-td-invoictemp">&nbsp;</td>
       <td className="invoice-td-invoictemp">&nbsp;</td>
       <td className="invoice-td-invoictemp">&nbsp;</td>
-      <td className="invoice-td-invoictemp">&nbsp;</td>
+      <td className="invoice-td-invoictemp">{invoice.FreeissuedStatus}</td>
     </tr>
   ));
   const allRows = [...filledRows, ...emptyRows];
