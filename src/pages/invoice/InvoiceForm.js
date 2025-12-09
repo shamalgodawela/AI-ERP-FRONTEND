@@ -295,6 +295,7 @@ const InvoiceForm = () => {
           TaxNo: orderData.TaxNo,
           CusVatNo: orderData.CusVatNo,
           IncentiveDueDate: orderData.IncentiveDueDate,
+          FreeissuedStatus:orderData.FreeissuedStatus,
           products: orderData.products.map((product) => ({
             productCode: product.productCode,
             productName: product.productName,
