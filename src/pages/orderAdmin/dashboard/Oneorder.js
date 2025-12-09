@@ -321,6 +321,16 @@ const Oneorder = () => {
                     
                   />
                 </div>
+                <div className="form-group">
+                  <label className="order-details-label">Black Magic Umbrella Quantity:</label>
+                  <input
+                    type="text"
+                    name="FreeissuedStatus"
+                    value={updatedOrder.FreeissuedStatus}
+                    onChange={handleInputChange}
+                    
+                  />
+                </div>
                 <p className="order-details-item">
           <span className="order-details-label">Customer Vat:</span> {updatedOrder.CusVatNo}
         </p>

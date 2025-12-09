@@ -82,7 +82,6 @@ const ViewallOrder = () => {
                 <th className='thorder'>Customer Code</th>
                 <th className='thorder'>Order Date</th>
                 <th className='thorder'>Exe</th>
-                <th className='thorder'>Black magic Umbrella issued quantity</th>
                 <th className='thorder'>Status</th>
                 <th className='thorder'>Action</th>
               </tr>
@@ -95,7 +94,6 @@ const ViewallOrder = () => {
                   <td className='tdorder'>{order.code}</td>
                   <td className='tdorder'>{order.orderDate}</td>
                   <td className='tdorder'>{order.exe}</td>
-                  <td className='tdorder'>{order.FreeissuedStatus}</td>
                   <td className='tdorder'>{order.status}</td>
                   <td className='tdorder'>
                     <Link to={`/adminorder/${order.orderNumber}`}>
