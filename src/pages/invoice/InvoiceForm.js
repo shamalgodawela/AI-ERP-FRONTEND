@@ -527,7 +527,7 @@ const InvoiceForm = () => {
           <div className="form-group">
             <label>Dealer Incentive or Black magic free issued status:</label>
             <input
-              type="date"
+              type="text"
               name="invoiceDate"
               value={formData.FreeissuedStatus}
               onChange={handleChange}
