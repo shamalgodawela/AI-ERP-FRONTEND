@@ -143,7 +143,7 @@ function App() {
     <Route path="/productSummery" element={<ProductSummary/>}/>
     <Route path="/dashboard" element={<Admininventory/>}/>
     <Route path="/edit-product/:id" element={<EditProduct/>}/>
-    <Route path="/product-list" element={<ProductListExe/>} />
+  <Route path="/product-list" element={<ProductListExe/>} />
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
     <Route path="/view-current-bulk" element={<AllProducts/>}/>
     <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
