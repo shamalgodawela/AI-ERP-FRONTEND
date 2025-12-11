@@ -108,6 +108,7 @@ const SingleOutstanding = () => {
                 <h4 className="h1-out">EXE: {invoice.exe}</h4>
                 <h4 className="h1-out">Mobile No: {invoice.contact}</h4>
                 <h4 className="h1-out">Address: {invoice.address}</h4>
+                <h4 className="h1-out">Address: {invoice.TaxNo}</h4>
 
                 <br /><hr /><br />
 
