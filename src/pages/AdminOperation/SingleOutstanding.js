@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Footer from "../../compenents/footer/Footer";
+import { useReactToPrint } from 'react-to-print';
 
 const SingleOutstanding = () => {
     const containerRef = useRef(null);
@@ -10,10 +11,6 @@ const SingleOutstanding = () => {
     const [invoice, setInvoice] = useState(null);
     const [amount, setAmount] = useState(0);
     const [outstanding, setOutstanding] = useState(0);
-    const [date, setDate] = useState('');
-    const [backName, setBackname] = useState('');
-    const [depositedate, setdepositedate] = useState('');
-    const [CHnumber, setCHnumber] = useState('');
     const [savedDetails, setSavedDetails] = useState(null);
     const navigate = useNavigate();
 
@@ -26,7 +23,6 @@ const SingleOutstanding = () => {
                 console.error(`Failed to fetch invoice with id ${id}`, error.message);
             }
         };
-
         fetchInvoice();
     }, [id]);
 
@@ -39,31 +35,6 @@ const SingleOutstanding = () => {
             }, 0);
         }
         return total.toFixed(2);
-    };
-
-    const handleCalculate = async () => {
-        try {
-            const parsedAmount = parseFloat(amount);
-            if (isNaN(parsedAmount)) throw new Error('Invalid amount value');
-
-            const total = calculateTotal();
-            const parsedTotal = parseFloat(total.replace(/,/g, ''));
-            if (isNaN(parsedTotal)) throw new Error('Invalid total value');
-
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
-            const lastOutstanding = parseFloat(response.data.outstanding);
-
-            let newOutstanding;
-            if (lastOutstanding === -1) {
-                newOutstanding = parsedTotal - parsedAmount;
-            } else {
-                newOutstanding = lastOutstanding - parsedAmount;
-            }
-
-            setOutstanding(newOutstanding.toFixed(2));
-        } catch (error) {
-            console.error('Failed to calculate outstanding value:', error.message);
-        }
     };
 
     const handleFetchAllOutstandingDetails = async () => {
@@ -92,12 +63,18 @@ const SingleOutstanding = () => {
         navigate(-1);
     };
 
+    // React-to-print handler
+    const handlePrint = useReactToPrint({
+        content: () => containerRef.current,
+        documentTitle: `Invoice_${invoice ? invoice.invoiceNumber : ''}`,
+    });
+
     if (!invoice) return <div>Loading...</div>;
 
     return (
         <div>
             <br /><br />
-            <div className="cal-outstanding-container">
+            <div className="cal-outstanding-container" ref={containerRef}>
                 {/* Back Button */}
                 <button onClick={goback} style={{
                     backgroundColor: '#4CAF50',
@@ -109,12 +86,28 @@ const SingleOutstanding = () => {
                     cursor: 'pointer'
                 }}>← Back</button>
 
+                <button 
+                    onClick={handlePrint} 
+                    style={{
+                        backgroundColor: '#2196F3',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        marginBottom: '20px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        marginLeft: '10px'
+                    }}
+                >
+                    Print Invoice
+                </button>
+
                 <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
                 <h4 className="h1-out">Customer: {invoice.customer}</h4>
                 <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
                 <h4 className="h1-out">EXE: {invoice.exe}</h4>
-                <h4 className="h1-out">Mobile No:: {invoice.contact}</h4>
-                <h4 className="h1-out">Address:: {invoice.address}</h4>
+                <h4 className="h1-out">Mobile No: {invoice.contact}</h4>
+                <h4 className="h1-out">Address: {invoice.address}</h4>
 
                 <br /><hr /><br />
 
@@ -147,9 +140,8 @@ const SingleOutstanding = () => {
                 </table>
 
                 <div className="info-item-td text-end text-bold3" id="second3">
-    Total: RS/= {formatNumbers(calculateTotal())}
-</div>
-
+                    Total: RS/= {formatNumbers(calculateTotal())}
+                </div>
 
                 <br /><br /><hr /> <br /><br />
                 <button className="fetch-button" >
@@ -157,7 +149,7 @@ const SingleOutstanding = () => {
                 </button>
 
                 <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>
-                    Fetch All payment Details
+                    Fetch All Payment Details
                 </button>
 
                 <br /><br /><hr /> <br />
