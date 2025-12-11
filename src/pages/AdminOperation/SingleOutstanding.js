@@ -4,12 +4,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Footer from "../../compenents/footer/Footer";
 import { useReactToPrint } from 'react-to-print';
-import "./SingleOutstanding.css"; // create this CSS file
 
 const SingleOutstanding = () => {
     const containerRef = useRef(null);
     const { id } = useParams();
     const [invoice, setInvoice] = useState(null);
+    const [amount, setAmount] = useState(0);
+    const [outstanding, setOutstanding] = useState(0);
     const [savedDetails, setSavedDetails] = useState(null);
     const navigate = useNavigate();
 
@@ -74,11 +75,33 @@ const SingleOutstanding = () => {
         <div>
             <br /><br />
             <div className="cal-outstanding-container" ref={containerRef}>
-                {/* Header Buttons */}
-                <button onClick={goback} className="header-button">← Back</button>
-                <button onClick={handlePrint} className="header-button print-button">Print Invoice</button>
+                {/* Back Button */}
+                <button onClick={goback} style={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    border: 'none',
+                    padding: '8px 16px',
+                    marginBottom: '20px',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                }}>← Back</button>
 
-                {/* Invoice Info */}
+                <button 
+                    onClick={handlePrint} 
+                    style={{
+                        backgroundColor: '#2196F3',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        marginBottom: '20px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        marginLeft: '10px'
+                    }}
+                >
+                    Print Invoice
+                </button>
+
                 <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
                 <h4 className="h1-out">Customer: {invoice.customer}</h4>
                 <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
@@ -88,7 +111,6 @@ const SingleOutstanding = () => {
 
                 <br /><hr /><br />
 
-                {/* Product Details */}
                 <h2 className="h1-out">Product Details</h2>
                 <table>
                     <thead>
@@ -122,8 +144,6 @@ const SingleOutstanding = () => {
                 </div>
 
                 <br /><br /><hr /> <br /><br />
-
-                {/* Fetch Payment Details */}
                 <button className="fetch-button" >
                     Fetch All Cheque Details(Pending development)
                 </button>
@@ -132,9 +152,10 @@ const SingleOutstanding = () => {
                     Fetch All Payment Details
                 </button>
 
-                {/* Payment Details Block */}
-                {savedDetails && savedDetails.length > 0 && (
-                    <div className="payment-details-block">
+                <br /><br /><hr /> <br />
+
+                {savedDetails && (
+                    <div>
                         <h2 className="h1-out">All Payment Details:</h2>
                         <table>
                             <thead>
