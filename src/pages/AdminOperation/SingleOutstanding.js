@@ -9,8 +9,6 @@ const SingleOutstanding = () => {
     const containerRef = useRef(null);
     const { id } = useParams();
     const [invoice, setInvoice] = useState(null);
-    const [amount, setAmount] = useState(0);
-    const [outstanding, setOutstanding] = useState(0);
     const [savedDetails, setSavedDetails] = useState(null);
     const navigate = useNavigate();
 
@@ -63,7 +61,6 @@ const SingleOutstanding = () => {
         navigate(-1);
     };
 
-    // React-to-print handler
     const handlePrint = useReactToPrint({
         content: () => containerRef.current,
         documentTitle: `Invoice_${invoice ? invoice.invoiceNumber : ''}`,
@@ -71,108 +68,94 @@ const SingleOutstanding = () => {
 
     if (!invoice) return <div>Loading...</div>;
 
+    // Inline styles
+    const styles = {
+        container: { padding: "20px" },
+        headerButton: { backgroundColor: "#4CAF50", color: "white", border: "none", padding: "8px 16px", marginBottom: "20px", borderRadius: "4px", cursor: "pointer" },
+        printButton: { backgroundColor: "#2196F3", color: "white", border: "none", padding: "8px 16px", marginBottom: "20px", marginLeft: "10px", borderRadius: "4px", cursor: "pointer" },
+        fetchButton: { backgroundColor: "#f0ad4e", color: "white", border: "none", padding: "8px 16px", margin: "10px 5px", borderRadius: "4px", cursor: "pointer" },
+        table: { width: "100%", borderCollapse: "collapse", marginTop: "10px" },
+        thtd: { border: "1px solid #000", padding: "8px", textAlign: "left" },
+        paymentBlock: { pageBreakInside: "avoid", marginTop: "20px", padding: "10px", border: "1px solid #ccc", borderRadius: "8px", backgroundColor: "#f9f9f9" },
+        totalText: { textAlign: "right", fontWeight: "bold", marginTop: "10px" },
+    };
+
     return (
         <div>
-            <br /><br />
-            <div className="cal-outstanding-container" ref={containerRef}>
-                {/* Back Button */}
-                <button onClick={goback} style={{
-                    backgroundColor: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 16px',
-                    marginBottom: '20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>← Back</button>
+            <div ref={containerRef} style={styles.container}>
+                {/* Header Buttons */}
+                <button onClick={goback} style={styles.headerButton}>← Back</button>
+                <button onClick={handlePrint} style={styles.printButton}>Print Invoice</button>
 
-                <button 
-                    onClick={handlePrint} 
-                    style={{
-                        backgroundColor: '#2196F3',
-                        color: 'white',
-                        border: 'none',
-                        padding: '8px 16px',
-                        marginBottom: '20px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        marginLeft: '10px'
-                    }}
-                >
-                    Print Invoice
-                </button>
+                {/* Invoice Info */}
+                <h4>Invoice code: {invoice.invoiceNumber}</h4>
+                <h4>Customer: {invoice.customer}</h4>
+                <h4>Invoice Date: {invoice.invoiceDate}</h4>
+                <h4>EXE: {invoice.exe}</h4>
+                <h4>Mobile No: {invoice.contact}</h4>
+                <h4>Address: {invoice.address}</h4>
 
-                <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
-                <h4 className="h1-out">Customer: {invoice.customer}</h4>
-                <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
-                <h4 className="h1-out">EXE: {invoice.exe}</h4>
-                <h4 className="h1-out">Mobile No: {invoice.contact}</h4>
-                <h4 className="h1-out">Address: {invoice.address}</h4>
+                <hr style={{ margin: "20px 0" }} />
 
-                <br /><hr /><br />
-
-                <h2 className="h1-out">Product Details</h2>
-                <table>
+                {/* Product Details */}
+                <h2>Product Details</h2>
+                <table style={styles.table}>
                     <thead>
                         <tr>
-                            <td className="text-bold">Product Code</td>
-                            <td className="text-bold">Description</td>
-                            <td className="text-bold">Quantity</td>
-                            <td className="text-bold">Label Price</td>
-                            <td className="text-bold">Discount</td>
-                            <td className="text-bold">Unit Price</td>
-                            <td className="text-bold">Invoice Total</td>
+                            <th style={styles.thtd}>Product Code</th>
+                            <th style={styles.thtd}>Description</th>
+                            <th style={styles.thtd}>Quantity</th>
+                            <th style={styles.thtd}>Label Price</th>
+                            <th style={styles.thtd}>Discount</th>
+                            <th style={styles.thtd}>Unit Price</th>
+                            <th style={styles.thtd}>Invoice Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         {invoice.products.map((product, index) => (
                             <tr key={index}>
-                                <td>{product.productCode}</td>
-                                <td>{product.productName}</td>
-                                <td>{product.quantity}</td>
-                                <td>RS/={product.labelPrice}</td>
-                                <td>{product.discount}</td>
-                                <td>RS/={product.unitPrice}</td>
-                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
+                                <td style={styles.thtd}>{product.productCode}</td>
+                                <td style={styles.thtd}>{product.productName}</td>
+                                <td style={styles.thtd}>{product.quantity}</td>
+                                <td style={styles.thtd}>RS/={product.labelPrice}</td>
+                                <td style={styles.thtd}>{product.discount}</td>
+                                <td style={styles.thtd}>RS/={product.unitPrice}</td>
+                                <td style={styles.thtd}>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
 
-                <div className="info-item-td text-end text-bold3" id="second3">
+                <div style={styles.totalText}>
                     Total: RS/= {formatNumbers(calculateTotal())}
                 </div>
 
-                <br /><br /><hr /> <br /><br />
-                <button className="fetch-button" >
-                    Fetch All Cheque Details(Pending development)
-                </button>
+                <hr style={{ margin: "20px 0" }} />
 
-                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>
-                    Fetch All Payment Details
-                </button>
+                {/* Fetch Payment Details */}
+                <button style={styles.fetchButton}>Fetch All Cheque Details(Pending development)</button>
+                <button style={styles.fetchButton} onClick={handleFetchAllOutstandingDetails}>Fetch All Payment Details</button>
 
-                <br /><br /><hr /> <br />
-
-                {savedDetails && (
-                    <div>
-                        <h2 className="h1-out">All Payment Details:</h2>
-                        <table>
+                {/* Payment Details Block */}
+                {savedDetails && savedDetails.length > 0 && (
+                    <div style={styles.paymentBlock}>
+                        <h2>All Payment Details:</h2>
+                        <table style={styles.table}>
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Bank Name</th>
-                                    <th>Outstanding</th>
+                                    <th style={styles.thtd}>Date</th>
+                                    <th style={styles.thtd}>Amount</th>
+                                    <th style={styles.thtd}>Bank Name</th>
+                                    <th style={styles.thtd}>Outstanding</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {savedDetails.map((detail, index) => (
                                     <tr key={index}>
-                                        <td>{detail.date}</td>
-                                        <td>RS/= {formatNumbers(detail.amount)}</td>
-                                        <td>{detail.backName}</td>
-                                        <td>RS/= {formatNumbers(detail.outstanding)}</td>
+                                        <td style={styles.thtd}>{detail.date}</td>
+                                        <td style={styles.thtd}>RS/= {formatNumbers(detail.amount)}</td>
+                                        <td style={styles.thtd}>{detail.backName}</td>
+                                        <td style={styles.thtd}>RS/= {formatNumbers(detail.outstanding)}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -182,6 +165,19 @@ const SingleOutstanding = () => {
             </div>
 
             <Footer />
+
+            {/* Inline print styles */}
+            <style>
+                {`
+                @media print {
+                    body * { visibility: hidden; }
+                    div[ref] , div[ref] * { visibility: visible; }
+                    div[ref] { position: absolute; left: 0; top: 0; width: 100%; }
+                    button { display: none !important; }
+                    table, tr, td, th { page-break-inside: avoid !important; }
+                }
+                `}
+            </style>
         </div>
     );
 };
