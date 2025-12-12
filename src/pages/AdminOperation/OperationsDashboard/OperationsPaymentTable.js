@@ -20,7 +20,6 @@ const OperationsPaymentTable = () => {
   const [selectedPaymentMode, setSelectedPaymentMode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Date range filter
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -28,7 +27,6 @@ const OperationsPaymentTable = () => {
   const { state } = location;
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Initialize filters from URL or state
   useEffect(() => {
     const customerFromState = state?.customer || searchParams.get("customer") || '';
     const exe = searchParams.get("exe") || '';
@@ -51,7 +49,6 @@ const OperationsPaymentTable = () => {
     setEndDate(endD);
   }, []);
 
-  // Fetch invoices
   useEffect(() => {
     const fetchAllInvoices = async () => {
       setIsLoading(true);
@@ -69,7 +66,6 @@ const OperationsPaymentTable = () => {
     fetchAllInvoices();
   }, []);
 
-  // Debounced filter
   const debounceFilter = useCallback(
     debounce(() => {
       let filtered = invoices;
@@ -91,10 +87,11 @@ const OperationsPaymentTable = () => {
       }
 
       if (selectedPaymentMode) {
-        filtered = filtered.filter(i => i.ModeofPayment && i.ModeofPayment.toLowerCase() === selectedPaymentMode.toLowerCase());
+        filtered = filtered.filter(i =>
+          i.ModeofPayment && i.ModeofPayment.toLowerCase() === selectedPaymentMode.toLowerCase()
+        );
       }
 
-      // Date range filter
       if (startDate || endDate) {
         filtered = filtered.filter(i => {
           const invoiceDate = new Date(i.invoiceDate);
@@ -126,8 +123,11 @@ const OperationsPaymentTable = () => {
 
   const calculateTotal = invoice => {
     if (invoice && Array.isArray(invoice.products)) {
-      const productTotal = invoice.products.reduce((acc, product) => acc + product.labelPrice * (1 - product.discount/100) * product.quantity, 0);
-      if (invoice.Tax && typeof invoice.Tax === 'number') return productTotal - (productTotal * invoice.Tax / 100);
+      const productTotal = invoice.products.reduce((acc, product) =>
+        acc + product.labelPrice * (1 - product.discount/100) * product.quantity
+      , 0);
+      if (invoice.Tax && typeof invoice.Tax === 'number')
+        return productTotal - (productTotal * invoice.Tax / 100);
       return productTotal;
     }
     return 0;
@@ -138,7 +138,8 @@ const OperationsPaymentTable = () => {
     filteredInvoices.forEach(i => {
       if (i.GatePassNo === 'Printed') {
         if (i.lastOutstanding === "Not Paid") total += calculateTotal(i);
-        else if (typeof i.lastOutstanding === 'number' && i.lastOutstanding > 0) total += i.lastOutstanding;
+        else if (typeof i.lastOutstanding === 'number' && i.lastOutstanding > 0)
+          total += i.lastOutstanding;
       }
     });
     return total;
@@ -201,7 +202,9 @@ const OperationsPaymentTable = () => {
           <select value={selectedMonth} onChange={e => handleFilterChange('month', e.target.value, setSelectedMonth)}>
             <option value="">All Months</option>
             {Array.from({length: 12}, (_, i) => (
-              <option key={i} value={(i+1).toString().padStart(2,'0')}>{new Date(0,i).toLocaleString('default',{month:'long'})}</option>
+              <option key={i} value={(i+1).toString().padStart(2,'0')}>
+                {new Date(0,i).toLocaleString('default',{month:'long'})}
+              </option>
             ))}
           </select>
 
@@ -217,7 +220,7 @@ const OperationsPaymentTable = () => {
           <p>To</p>
           <input type="date" value={endDate} onChange={e => handleFilterChange('endDate', e.target.value, setEndDate)} />
 
-          <button onClick={handlePrint} className="print-button" title="Print Outstanding Details">
+          <button onClick={handlePrint} className="print-button">
             <FontAwesomeIcon icon={faPrint} /> Print
           </button>
         </div>
@@ -228,20 +231,42 @@ const OperationsPaymentTable = () => {
 
           <div className="total-outstanding-summary">
             <h1 className="outstanding-total-header">
-              RS Total Outstanding Amount: <span className="amount-highlight">Rs. {formatNumbers(calculateTotalOutstanding())}</span>
+              RS Total Outstanding Amount: 
+              <span className="amount-highlight">
+                Rs. {formatNumbers(calculateTotalOutstanding())}
+              </span>
             </h1>
           </div>
 
+          {/* ✅ FIXED: Total Sales Amount (only Printed invoices) */}
           <div className="total-sales-summary">
             <h1 className="sales-total-header">
-              📊 Rs:Total Sales Amount: <span className="amount-highlight">Rs. {formatNumbers(filteredInvoices.reduce((acc, i) => acc + calculateTotal(i), 0))}</span>
+              📊 Rs:Total Sales Amount: 
+              <span className="amount-highlight">
+                Rs. {
+                  formatNumbers(
+                    filteredInvoices
+                      .filter(i => i.GatePassNo === "Printed")
+                      .reduce((acc, i) => acc + calculateTotal(i), 0)
+                  )
+                }
+              </span>
             </h1>
           </div>
 
+          {/* ✅ FIXED: Total Collections Amount (only Printed invoices) */}
           <div className="total-sales-summary">
             <h1 className="sales-total-header">
-              Rs: Total Collections Amount: <span className="amount-highlight">
-                Rs. {formatNumbers(filteredInvoices.reduce((acc, i) => acc + calculateTotal(i), 0) - calculateTotalOutstanding())}
+              Rs: Total Collections Amount: 
+              <span className="amount-highlight">
+                Rs. {
+                  formatNumbers(
+                    filteredInvoices
+                      .filter(i => i.GatePassNo === "Printed")
+                      .reduce((acc, i) => acc + calculateTotal(i), 0) 
+                    - calculateTotalOutstanding()
+                  )
+                }
               </span>
             </h1>
           </div>
@@ -262,7 +287,7 @@ const OperationsPaymentTable = () => {
                   <th className='heading-outstanding'>Invoice Total</th>
                   <th className='heading-outstanding'>Cheque Details</th>
                   <th className='heading-outstanding'>Action</th>
-               
+       
                 </tr>
               </thead>
               <tbody>
@@ -276,21 +301,28 @@ const OperationsPaymentTable = () => {
                     <td>{i.Duedate}</td>
                     <td>{i.TaxNo}</td>
                     <td>{i.exe}</td>
-                    <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>{formatNumbers(i.lastOutstanding)}</td>
+                    <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
+                      {formatNumbers(i.lastOutstanding)}
+                    </td>
                     <td>{formatNumbers(calculateTotal(i))}</td>
-                    <td>{Array.isArray(i.chequeValues) && i.chequeValues.length > 0 ? i.chequeValues.map((c,j) => <div key={j}>{formatNumbers(c)}</div>) : "No cheque value"}</td>
+                    <td>
+                      {Array.isArray(i.chequeValues) && i.chequeValues.length > 0
+                        ? i.chequeValues.map((c,j) => <div key={j}>{formatNumbers(c)}</div>)
+                        : "No cheque value"}
+                    </td>
                     <td className='td-invoice'>
                       <Link to={`/single-operations/${i._id}`}>
                         <AiOutlineEye size={20} color={"purple"} />
                       </Link>
                     </td>
-                   
+                  
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
         </div>
+
       </div>
     </div>
   );
