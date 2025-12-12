@@ -251,19 +251,19 @@ const OutStandingTable = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Invoice Number</th>
-                  <th>Customer</th>
-                  <th>Cheque/Cash</th>
-                  <th>Printed or Canceled</th>
-                  <th>Invoice Date</th>
-                  <th>Due Date</th>
-                  <th>Tax Number</th>
-                  <th>Exe</th>
-                  <th>Outstanding</th>
-                  <th>Invoice Total</th>
-                  <th>Cheque Details</th>
-                  <th>Action</th>
-                  <th>Edit</th>
+                  <th className='heading-outstanding'>Invoice Number</th>
+                  <th className='heading-outstanding'>Customer</th>
+                  <th className='heading-outstanding'>Cheque/Cash</th>
+                  <th className='heading-outstanding'>Printed or Canceled</th>
+                  <th className='heading-outstanding'>Invoice Date</th>
+                  <th className='heading-outstanding'>Due Date</th>
+                  <th className='heading-outstanding'>Tax Number</th>
+                  <th className='heading-outstanding'>Exe</th>
+                  <th className='heading-outstanding'>Outstanding</th>
+                  <th className='heading-outstanding'>Invoice Total</th>
+                  <th className='heading-outstanding'>Cheque Details</th>
+                  <th className='heading-outstanding'>Action</th>
+                  <th className='heading-outstanding'>Edit</th>
                 </tr>
               </thead>
               <tbody>

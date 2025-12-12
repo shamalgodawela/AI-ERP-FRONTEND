@@ -442,3 +442,8 @@ select:focus, input[type='text']:focus {
     margin: 15px 0;
   }
 }
+
+.heading-outstanding{
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+}
