@@ -18,11 +18,6 @@ const actions = [
     route: '/Adminallorder',
   },
   {
-    label: 'Sales & Collection Details',
-    icon: <FaChartLine size={32} />, 
-    route: '/sales',
-  },
-  {
     label: 'View Dealer History',
     icon: <FaUserTie size={32} />, 
     route: '/AllcustomerWiseHistory',
@@ -32,11 +27,11 @@ const actions = [
     icon: <FaBoxes size={32} />, 
     route: '/dashboard',
   },
-  {
-    label: 'Bank Statements',
-    icon: <FaUniversity size={32} />, 
-    route: '/bankstatement',
-  },
+  // {
+  //   label: 'Bank Statements',
+  //   icon: <FaUniversity size={32} />, 
+  //   route: '/bankstatement',
+  // },
   {
     label: 'Executives Incentive',
     icon: <FaUniversity size={32} />, 
