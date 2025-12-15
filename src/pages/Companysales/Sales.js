@@ -60,77 +60,50 @@ const Sales = () => {
   };
 
   return (
-    <div>
-      
-      <div className='sales-Heading'>
-        <h3>Hi, Welcome back!</h3>
-        <h4>Finance Performance and Monitoring Sales Performance</h4>
-        <h4 className='h4-season-update-heading'>Updated details of 2024 April to present (Yala season)</h4>
-      </div>
-      <div className="cards-container">
-        <div className="card">
-          <div className="card-header">
-            <h2>Total Sales</h2>
-          </div>
-          <div className="card-body">
-            {loading ? (
-              <p>Loading...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              <p>RS/= {formatNumbers(totalSales)}</p>
-            )}
-          </div>
-        </div>
-        <Link to="/Collectioh-dashboard">
-          <div className="card">
-            <div className="card-header">
-              <h2>Total Collection</h2>
-            </div>
-            <div className="card-body">
-              {loading ? (
-                <p>Loading...</p>
-              ) : error ? (
-                <p>{error}</p>
-              ) : (
-                <p>RS/= {formatNumbers(totalcollection)}</p>
-              )}
-            </div>
-          </div>
-        </Link>
+    <div className="sales-page">
 
-        <div className="card">
-          <div className="card-header">
-            <h2>Total Outstanding</h2>
-          </div>
-          <div className="card-body">
-            {loading ? (
-              <p>Loading...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              <p>RS/= {formatNumbers(outstanding)}</p>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="chart-container">
-        <h2>Monthly Sales</h2>
-        <MonthlySalesChart />
-      </div>
-      <br/><br/><br/>
-      <div>
-        <h2 className="pie-container">Executive wise Sales (2024 April to present)</h2>
-        <SalesByExePieChart />
-      </div><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-      <div>
-        <h2 className="pie-container">Executive Monthly Sales</h2>
-        <Tabelexesales />
-      </div>
-      <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
+  <div className="sales-header">
+    <h1>Sales & Finance Dashboard</h1>
+    <p>Monitor revenue, collections and executive performance</p>
+  </div>
 
-      <Footer />
+  <div className="nav-action">
+    <Link to="/Collectioh-dashboard" className="primary-link">
+      Go to Collection Dashboard
+    </Link>
+  </div>
+
+  <section className="chart-section">
+    <div className="chart-container">
+      <div className="chart-header">
+        <h2>Monthly Sales Overview</h2>
+        <span className="chart-subtitle">
+          Financial Year Wise Performance
+        </span>
+      </div>
+      <MonthlySalesChart />
     </div>
+  </section>
+
+  <section className="chart-section">
+    <h2 className="section-title">
+      Executive Wise Sales (April 2024 – Present)
+    </h2>
+    <SalesByExePieChart />
+  </section>
+
+  <section className="chart-section">
+    <h2 className="section-title">Executive Monthly Sales</h2>
+    <Tabelexesales />
+  </section>
+
+  <button className="home-btn" onClick={() => navigate('/admin-profile')}>
+    Home
+  </button>
+
+  <Footer />
+</div>
+
   );
 };
 

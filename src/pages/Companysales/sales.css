@@ -1,162 +1,23 @@
-body, .sales-bg {
+.sales-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
-  margin: 0;
-  padding: 0;
+  background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+  padding-bottom: 40px;
 }
 
-.sales-Heading {
+.sales-header {
+  text-align: center;
+  margin: 40px 0 20px;
   font-family: 'Segoe UI', Arial, sans-serif;
-  color: #4f8cff;
+}
+
+.sales-header h1 {
+  font-size: 26px;
   font-weight: 700;
-  text-align: center;
-  margin: 32px 0 18px 0;
+  color: #0f172a;
 }
 
-.h4-season-update-heading {
-  color: #1a5edb;
-  font-weight: 700;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-style: italic;
-  margin-top: 8px;
-}
-
-.cards-container {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin: 32px 0 32px 0;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  color: #222;
-  min-width: 260px;
-  max-width: 340px;
-  flex: 1 1 260px;
-  overflow: hidden;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin: 0 8px;
-}
-
-.card:hover {
-  transform: translateY(-6px) scale(1.04);
-  box-shadow: 0 8px 32px rgba(79,140,255,0.18);
-}
-
-.card-header {
-  background: linear-gradient(90deg, #4f8cff 0%, #1a5edb 100%);
-  color: #fff;
-  padding: 18px 0 10px 0;
-  font-size: 1.3rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-weight: 600;
-  border-radius: 18px 18px 0 0;
-}
-
-.card-body {
-  font-size: 2rem;
-  padding: 28px 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-weight: 700;
-  color: #222;
-}
-
-.card-body p {
-  margin: 0;
-}
-
-.chart-container {
-  width: 90vw;
-  max-width: 1100px;
-  margin: 40px auto 0 auto;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 32px 18px;
-}
-
-.pie-container {
-  text-align: center;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  color: #4f8cff;
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin: 32px 0 18px 0;
-}
-
-.sales-by-exe-container {
-  padding: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-  font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-.sales-by-exe-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  color: #4f8cff;
-}
-
-.sales-by-exe-table {
-  width: 100%;
-  border-collapse: collapse;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.sales-by-exe-table th, .sales-by-exe-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
-
-.sales-by-exe-table th {
-  background-color: #4f8cff;
-  color: white;
-  text-transform: uppercase;
-}
-
-.sales-by-exe-table tr {
-  background-color: #f9f9f9;
-}
-
-.sales-by-exe-table tr:nth-child(even) {
-  background-color: #f1f1f1;
-}
-
-.sales-by-exe-table tr:hover {
-  background-color: #e0e7ff;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  color: #4f8cff;
-  font-size: 1.1rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-weight: 600;
-  text-decoration: none;
-  margin-bottom: 18px;
-  margin-left: 8px;
-  transition: color 0.2s;
-}
-.back-link:hover {
-  color: #1a5edb;
-}
-
-@media (max-width: 900px) {
-  .cards-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-  }
-  .chart-container {
-    padding: 12px 2px;
-    width: 98vw;
-  }
+.sales-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 6px;
 }

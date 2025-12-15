@@ -23,6 +23,11 @@ const actions = [
     route: '/AllcustomerWiseHistory',
   },
   {
+    label: 'Sales & Collection Details',
+    icon: <FaChartLine size={32} />, 
+    route: '/sales',
+  },
+  {
     label: 'Inventory Management',
     icon: <FaBoxes size={32} />, 
     route: '/dashboard',
