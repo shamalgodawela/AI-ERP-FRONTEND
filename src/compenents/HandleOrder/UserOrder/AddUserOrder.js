@@ -386,7 +386,6 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, FreeissuedStatus: e.target.value })
               }
-              required
             />
           </div>
 
