@@ -123,9 +123,10 @@ const SingleOutstanding = () => {
                             <td className="text-bold">Description</td>
                             <td className="text-bold">Quantity</td>
                             <td className="text-bold">Label Price</td>
+                            <td className="text-bold">Invoice Total</td>
                             <td className="text-bold">Discount</td>
                             <td className="text-bold">Unit Price</td>
-                            <td className="text-bold">Invoice Total</td>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -135,9 +136,10 @@ const SingleOutstanding = () => {
                                 <td>{product.productName}</td>
                                 <td>{product.quantity}</td>
                                 <td>RS/={product.labelPrice}</td>
+                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
                                 <td>{product.discount}</td>
                                 <td>RS/={product.unitPrice}</td>
-                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
+                                
                             </tr>
                         ))}
                     </tbody>

@@ -4,9 +4,7 @@ import Footer from '../../compenents/footer/Footer';
 import './sales.css';
 import MonthlySalesChart from './Barchartsales/MonthlySalesChart';
 import SalesByExePieChart from './piechartsales/SalesByExePieChart';
-import Tabelexesales from './tabelsales/Tabelexesales';
 import { Link, useNavigate } from 'react-router-dom';
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 const Sales = () => {
   const [totalSales, setTotalSales] = useState(0);
@@ -21,7 +19,7 @@ const Sales = () => {
     const fetchTotalSales = async () => {
       try {
         const response = await axios.get('https://nihon-inventory.onrender.com/api/invoi/sum');
-        setTotalSales(response.data.sum || 0); // Ensure default value
+        setTotalSales(response.data.sum || 0); 
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch total sales', error);
@@ -63,8 +61,7 @@ const Sales = () => {
     <div className="sales-page">
 
   <div className="sales-header">
-    <h1>Sales & Finance Dashboard</h1>
-    <p>Monitor revenue, collections and executive performance</p>
+    <h1>Monitor revenue, collections and executive performance</h1>
   </div>
 
   <div className="nav-action">
@@ -90,11 +87,6 @@ const Sales = () => {
       Executive Wise Sales (April 2024 – Present)
     </h2>
     <SalesByExePieChart />
-  </section>
-
-  <section className="chart-section">
-    <h2 className="section-title">Executive Monthly Sales</h2>
-    <Tabelexesales />
   </section>
 
   <button className="home-btn" onClick={() => navigate('/admin-profile')}>
