@@ -92,6 +92,7 @@ const Sales = () => {
   <button className="home-btn" onClick={() => navigate('/admin-profile')}>
     Home
   </button>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
   <Footer />
 </div>
