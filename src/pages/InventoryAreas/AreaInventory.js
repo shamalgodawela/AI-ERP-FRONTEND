@@ -117,6 +117,7 @@ const AreaInventory = () => {
 </div>
 
 
+
 <div className="form-group">
   <label>Owner:</label>
   <select
