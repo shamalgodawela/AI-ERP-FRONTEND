@@ -256,7 +256,7 @@ const OutStandingTable = () => {
           </div>
 
           {/* ✅ FIXED: Total Collections Amount (only Printed invoices) */}
-          <div className="total-sales-summary">
+          {/* <div className="total-sales-summary">
             <h1 className="sales-total-header">
               Rs: Total Collections Amount: 
               <span className="amount-highlight">
@@ -270,7 +270,7 @@ const OutStandingTable = () => {
                 }
               </span>
             </h1>
-          </div>
+          </div> */}
 
           {isLoading ? <Loader /> : (
             <table>
