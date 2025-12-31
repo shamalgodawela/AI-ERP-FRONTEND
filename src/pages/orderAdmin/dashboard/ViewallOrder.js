@@ -95,6 +95,7 @@ const ViewallOrder = () => {
                   <td className='tdorder'>{order.orderDate}</td>
                   <td className='tdorder'>{order.exe}</td>
                   <td className='tdorder'>{order.status}</td>
+                  
                   <td className='tdorder'>
                     <Link to={`/adminorder/${order.orderNumber}`}>
                       <AiOutlineEye size={20} className="action-icon" />

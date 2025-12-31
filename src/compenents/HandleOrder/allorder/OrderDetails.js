@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './orderdetails.css';
 import { SpinnerImg } from '../../loader/Loader';
+import { Link } from 'react-router-dom';
+import { AiOutlineEye } from 'react-icons/ai';
 
 const OrderDetails = () => {
   const [allOrders, setAllOrders] = useState([]);
@@ -143,6 +145,7 @@ const OrderDetails = () => {
               <th className="thorder">Order Date</th>
               <th className="thorder">Exe</th>
               <th className="thorder">Status</th>
+              <th className="thorder">view</th>
             </tr>
           </thead>
           <tbody>
@@ -154,6 +157,11 @@ const OrderDetails = () => {
                 <td className="tdorder">{order.orderDate}</td>
                 <td className="tdorder">{order.exe}</td>
                 <td className="tdorder">{order.status}</td>
+                <td className='tdorder'>
+                    <Link to={`/userorder/${order.orderNumber}`}>
+                      <AiOutlineEye size={20} className="action-icon" />
+                    </Link>
+                  </td>
               </tr>
             ))}
           </tbody>

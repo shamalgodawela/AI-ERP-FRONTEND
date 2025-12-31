@@ -89,6 +89,7 @@ import AddbulkProduct from "./compenents/bulkproduct/addproduct/AddbulkProduct";
 import EXEincentory from "./compenents/Exetable/AllTableexe/EXEincentory";
 import Opdealerhistory from "./pages/ViewDealerHitory/Opdealerhistory";
 import ProductQuantity from "./pages/invoice/GetProductQuanitityEach area/ProductQuantity";
+import UserOneorder from "./compenents/HandleOrder/allorder/UserOneorder";
 
 
 axios.defaults.withCredentials= true;
@@ -213,6 +214,7 @@ function App() {
     <Route path="/area-allinventories" element={<AllInventories/>}/>
     <Route path="/Register-bulk" element={<AddbulkProduct/>} />
     <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
+    <Route path="/userorder/:id" element={<UserOneorder/>} />
   
     
 
