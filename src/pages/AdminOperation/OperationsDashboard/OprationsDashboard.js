@@ -24,6 +24,11 @@ const actions = [
     route: '',
   },
   {
+    label: 'Payment Breakdown Monthly',
+    icon: <FaUniversity size={32} />, 
+    route: '/bankstatement-operations',
+  },
+  {
     label: 'View Dealer History',
     icon: <FaUserTie size={32} />, 
     route: '/allcusoperation',

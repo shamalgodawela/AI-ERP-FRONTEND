@@ -255,21 +255,7 @@ const OperationsPaymentTable = () => {
           </div>
 
           {/* ✅ FIXED: Total Collections Amount (only Printed invoices) */}
-          <div className="total-sales-summary">
-            <h1 className="sales-total-header">
-              Rs: Total Collections Amount: 
-              <span className="amount-highlight">
-                Rs. {
-                  formatNumbers(
-                    filteredInvoices
-                      .filter(i => i.GatePassNo === "Printed")
-                      .reduce((acc, i) => acc + calculateTotal(i), 0) 
-                    - calculateTotalOutstanding()
-                  )
-                }
-              </span>
-            </h1>
-          </div>
+         
 
           {isLoading ? <Loader /> : (
             <table>

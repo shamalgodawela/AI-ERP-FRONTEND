@@ -255,22 +255,7 @@ const OutStandingTable = () => {
             </h1>
           </div>
 
-          {/* ✅ FIXED: Total Collections Amount (only Printed invoices) */}
-          {/* <div className="total-sales-summary">
-            <h1 className="sales-total-header">
-              Rs: Total Collections Amount: 
-              <span className="amount-highlight">
-                Rs. {
-                  formatNumbers(
-                    filteredInvoices
-                      .filter(i => i.GatePassNo === "Printed")
-                      .reduce((acc, i) => acc + calculateTotal(i), 0) 
-                    - calculateTotalOutstanding()
-                  )
-                }
-              </span>
-            </h1>
-          </div> */}
+         
 
           {isLoading ? <Loader /> : (
             <table>
@@ -288,7 +273,7 @@ const OutStandingTable = () => {
                   <th className='heading-outstanding'>Invoice Total</th>
                   <th className='heading-outstanding'>Cheque Details</th>
                   <th className='heading-outstanding'>Action</th>
-                  <th className='heading-outstanding'>Edit</th>
+                  <th className='heading-outstanding'>Add Cheque Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -307,9 +292,7 @@ const OutStandingTable = () => {
                     </td>
                     <td>{formatNumbers(calculateTotal(i))}</td>
                     <td>
-                      {Array.isArray(i.chequeValues) && i.chequeValues.length > 0
-                        ? i.chequeValues.map((c,j) => <div key={j}>{formatNumbers(c)}</div>)
-                        : "No cheque value"}
+                      developing
                     </td>
                     <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
                     <td><Link to={`/invoice/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>

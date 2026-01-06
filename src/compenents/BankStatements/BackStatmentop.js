@@ -5,7 +5,7 @@ import Loader from '../loader/Loader'; // Optional: loading spinner component
 import { useNavigate } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
-const BankStatement = () => {
+const BackStatmentop = () => {
   const [statements, setStatements] = useState([]);
   const [filteredStatements, setFilteredStatements] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -152,11 +152,11 @@ const BankStatement = () => {
         </table>
       )}
 
-      <button className="home-btn" onClick={() => navigate('/admin-profile')}>
+      <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>
         Home
       </button>
     </div>
   );
 };
 
-export default BankStatement;
+export default BackStatmentop;

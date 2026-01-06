@@ -1,350 +1,162 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './edit.css'
+import './edit.css';
 import Footer from '../../../compenents/footer/Footer';
 
 const EditInvoice = () => {
   const { invoiceNumber } = useParams();
   const navigate = useNavigate();
-  const [invoiceData, setInvoiceData] = useState({
-    invoiceNumber: '',
-    customer: '',
-    address: '',
-    contact: '',
-    invoiceDate: '',
-    orderNumber: '',
-    orderDate: '',
-    exe: '',
-    ModeofPayment: '',
-    TermsofPayment: '',
-    Duedate: '',
-    Tax: '',
-    GatePassNo: '',
-    VehicleNo: '',
-    IncentiveDueDate:'',
-    IncentiveStatus: '',
-    Incentivesettlement: '',
-    
 
-    products: [
-      {
-        productCode: '',
-        productName: '',
-        quantity: 0,
-        labelPrice: 0,
-        discount: 0,
-        unitPrice: 0,
-        invoiceTotal: 0,
-      },
-    ],
+  const [gatePass, setGatePass] = useState('');
+  const [chequeData, setChequeData] = useState({
+    chequeNo: '',
+    bankName: '',
+    depositDate: '',
+    amount: '',
+    status: 'Pending',
   });
 
+  // Fetch current GatePassNo only
   useEffect(() => {
-    
     axios
-              .get(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`)
-      .then((response) => {
-        setInvoiceData(response.data);
+      .get(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`)
+      .then((res) => {
+        if (res.data.GatePassNo) setGatePass(res.data.GatePassNo);
       })
-      .catch((error) => {
-        console.error('There was an error fetching the invoice!', error);
-      });
+      .catch((err) => console.error(err));
   }, [invoiceNumber]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInvoiceData({
-      ...invoiceData,
-      [name]: value,
-    });
-  };
-
-  const handleProductChange = (index, e) => {
-    const { name, value } = e.target;
-    const products = [...invoiceData.products];
-    products[index][name] = value;
-    setInvoiceData({
-      ...invoiceData,
-      products,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-              .put(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`, invoiceData)
-      .then((response) => {
-        alert('Invoice updated successfully!');
-      })
-      .catch((error) => {
-        console.error('There was an error updating the invoice!', error);
+  // Update invoice status and push new cheque
+  const handleUpdateInvoice = async () => {
+    try {
+      await axios.put(
+        `https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`,
+        {
+          GatePassNo: gatePass,
+          $push: { cheques: chequeData }, // add new cheque
+        }
+      );
+      alert('Invoice updated successfully!');
+      // Reset cheque input
+      setChequeData({
+        chequeNo: '',
+        bankName: '',
+        depositDate: '',
+        amount: '',
+        status: 'Pending',
       });
+    } catch (err) {
+      console.error(err);
+      alert('Error updating invoice');
+    }
   };
-
-  const goback = () => {
-    navigate(-1);
-};
 
   return (
-    <div>
-
-<button onClick={goback} style={{
-                    backgroundColor: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 16px',
-                    marginBottom: '20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>← Back</button>
-        
     <div className="edit-invoice-container">
-    <h2>Edit Invoice</h2>
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="customer">Customer</label>
-        <input
-          type="text"
-          id="customer"
-          name="customer"
-          value={invoiceData.customer}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="address">Address</label>
-        <input
-          type="text"
-          id="address"
-          name="address"
-          value={invoiceData.address}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="contact">Contact</label>
-        <input
-          type="text"
-          id="contact"
-          name="contact"
-          value={invoiceData.contact}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="invoiceDate">Invoice Date</label>
-        <input
-          type="text"
-          id="invoiceDate"
-          name="invoiceDate"
-          value={invoiceData.invoiceDate}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="orderNumber">Order Number</label>
-        <input
-          type="text"
-          id="orderNumber"
-          name="orderNumber"
-          value={invoiceData.orderNumber}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="orderDate">Order Date</label>
-        <input
-          type="text"
-          id="orderDate"
-          name="orderDate"
-          value={invoiceData.orderDate}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="exe">Exe</label>
-        <input
-          type="text"
-          id="exe"
-          name="exe"
-          value={invoiceData.exe}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="ModeofPayment">Mode of Payment</label>
-        <input
-          type="text"
-          id="ModeofPayment"
-          name="ModeofPayment"
-          value={invoiceData.ModeofPayment}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="TermsofPayment">Terms of Payment</label>
-        <input
-          type="text"
-          id="TermsofPayment"
-          name="TermsofPayment"
-          value={invoiceData.TermsofPayment}
-          onChange={handleChange}
-        />
-        
-        
-      </div>
-      <div className="form-group">
-          <label htmlFor="GatePassNo">Incentive Eligibility</label>
-          <select
-            id="GatePassNo"
-            name="IncentiveStatus"
-            value={invoiceData.IncentiveStatus}
-            onChange={handleChange}
-          >
-            <option value="">Select</option>
-            <option value="Settled">Settled</option>
-            <option value="Not_Eligible">Not_Eligible</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="GatePassNo">Incentive Received or not</label>
-          <select
-  id="Incentivesettlement"
-  name="Incentivesettlement"
-  value={invoiceData.Incentivesettlement}
-  onChange={handleChange}
->
-  <option value="">Select</option>
-  <option value="Received">Received</option>
-  <option value="Not_Received">Not Received</option>
-</select>
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          padding: '8px 16px',
+          marginBottom: '20px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+        }}
+      >
+        ← Back
+      </button>
 
-        </div>
+      <h2>Invoice Status Update</h2>
+
+      {/* Invoice Status */}
       <div className="form-group">
-        <label htmlFor="Duedate">Due Date</label>
+        <label>Invoice Status</label>
+        <select value={gatePass} onChange={(e) => setGatePass(e.target.value)}>
+          <option value="">Select</option>
+          <option value="Printed">Printed</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Canceled">Canceled</option>
+          <option value="Free Issued">Free Issued</option>
+          <option value="Executive Stock">Executive Stock</option>
+        </select>
+      </div>
+
+      {/* Add Cheque */}
+      <h3 style={{ marginTop: '30px' }}>Add Cheque</h3>
+      <div className="form-group">
+        <label>Cheque No</label>
         <input
           type="text"
-          id="Duedate"
-          name="Duedate"
-          value={invoiceData.Duedate}
-          onChange={handleChange}
+          value={chequeData.chequeNo}
+          onChange={(e) =>
+            setChequeData({ ...chequeData, chequeNo: e.target.value })
+          }
         />
       </div>
       <div className="form-group">
-        <label htmlFor="Duedate">Exe Incentive date</label>
+        <label>Bank Name</label>
+        <input
+          type="text"
+          value={chequeData.bankName}
+          onChange={(e) =>
+            setChequeData({ ...chequeData, bankName: e.target.value })
+          }
+        />
+      </div>
+      <div className="form-group">
+        <label>Deposit Date</label>
         <input
           type="date"
-          id="Duedate"
-          name="IncentiveDueDate"
-          value={invoiceData.IncentiveDueDate}
-          onChange={handleChange}
+          value={chequeData.depositDate}
+          onChange={(e) =>
+            setChequeData({ ...chequeData, depositDate: e.target.value })
+          }
         />
       </div>
-      
       <div className="form-group">
-          <label htmlFor="GatePassNo">Printed or canceled</label>
-          <select
-            id="GatePassNo"
-            name="GatePassNo"
-            value={invoiceData.GatePassNo}
-            onChange={handleChange}
-          >
-            <option value="">Select</option>
-            <option value="Printed">Printed</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Canceled">Canceled</option>
-            <option value="Free Issued">Free Issued</option>
-            <option value="Executive Stock">Executive Stock</option>
-          </select>
-        </div>
-      
-      <h3>Products</h3>
-      {invoiceData.products.map((product, index) => (
-        <div className="product-group" key={index}>
-          <div className="form-group">
-            <label htmlFor={`productCode-${index}`}>Product Code</label>
-            <input
-              type="text"
-              id={`productCode-${index}`}
-              name="productCode"
-              value={product.productCode}
-              onChange={(e) => handleProductChange(index, e)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`productName-${index}`}>Product Name</label>
-            <input
-              type="text"
-              id={`productName-${index}`}
-              name="productName"
-              value={product.productName}
-              onChange={(e) => handleProductChange(index, e)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`quantity-${index}`}>Quantity</label>
-            <input
-              type="number"
-              id={`quantity-${index}`}
-              name="quantity"
-              value={product.quantity}
-              onChange={(e) => handleProductChange(index, e)}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`labelPrice-${index}`}>Label Price</label>
-            <input
-              type="number"
-              id={`labelPrice-${index}`}
-              name="labelPrice"
-              value={product.labelPrice}
-              onChange={(e) => handleProductChange(index, e)}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`discount-${index}`}>Discount</label>
-            <input
-              type="number"
-              id={`discount-${index}`}
-              name="discount"
-              value={product.discount}
-              onChange={(e) => handleProductChange(index, e)}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`unitPrice-${index}`}>Unit Price</label>
-            <input
-              type="number"
-              id={`unitPrice-${index}`}
-              name="unitPrice"
-              value={product.unitPrice}
-              onChange={(e) => handleProductChange(index, e)}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`invoiceTotal-${index}`}>Invoice Total</label>
-            <input
-              type="number"
-              id={`invoiceTotal-${index}`}
-              name="invoiceTotal"
-              value={product.invoiceTotal}
-              onChange={(e) => handleProductChange(index, e)}
-              readOnly
-            />
-          </div>
-        </div>
-      ))}
-      <button type="submit">Update Invoice</button>
-    </form>
-  </div>
-  <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
-  <Footer/>
-  </div>
+        <label>Amount</label>
+        <input
+          type="number"
+          value={chequeData.amount}
+          onChange={(e) =>
+            setChequeData({ ...chequeData, amount: e.target.value })
+          }
+        />
+      </div>
+      <div className="form-group">
+        <label>Status</label>
+        <select
+          value={chequeData.status}
+          onChange={(e) =>
+            setChequeData({ ...chequeData, status: e.target.value })
+          }
+        >
+          <option value="Pending">Pending</option>
+          <option value="Cleared">Cleared</option>
+          <option value="Bounced">Bounced</option>
+        </select>
+      </div>
+
+      <button
+        onClick={handleUpdateInvoice}
+        style={{ marginTop: '15px', padding: '8px 16px', cursor: 'pointer' }}
+      >
+        Update Invoice
+      </button>
+
+      <button
+        className="home-btn"
+        onClick={() => navigate('/admin-profile')}
+        style={{ marginTop: '20px' }}
+      >
+        Home
+      </button>
+
+      <Footer />
+    </div>
   );
 };
 

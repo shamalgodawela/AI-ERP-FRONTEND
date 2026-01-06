@@ -45,8 +45,6 @@ import AddNewBulk from "./pages/NewBulkDetails/AddNewBulk";
 import ViewAllBulk from "./pages/NewBulkDetails/ViewAllBulk";
 import SalesByExe from "./pages/Exeproductdetails/salesEachProduct/SalesByExe";
 import PackingDashboard from "./pages/PackingMaterials/PackingDashboard";
-import AddCheque from "./pages/Cheque/AddCheque/AddCheque";
-import ViewAllinvoice from "./pages/ViewAllinvoice/ViewAllinvoice";
 import ViewInvoice from "./pages/invoice/ViewInvoice/ViewInvoice";
 import AllTaxInvoice from "./pages/TaxInvoices/ViewAllInvoices/AllTaxInvoice";
 import ViewSingleTax from "./pages/TaxInvoices/ViewSingletax/ViewSingleTax";
@@ -90,6 +88,7 @@ import EXEincentory from "./compenents/Exetable/AllTableexe/EXEincentory";
 import Opdealerhistory from "./pages/ViewDealerHitory/Opdealerhistory";
 import ProductQuantity from "./pages/invoice/GetProductQuanitityEach area/ProductQuantity";
 import UserOneorder from "./compenents/HandleOrder/allorder/UserOneorder";
+import BackStatmentop from "./compenents/BankStatements/BackStatmentop";
 
 
 axios.defaults.withCredentials= true;
@@ -170,14 +169,13 @@ function App() {
           <Route path="/add-products" element={<AddProduct/>}/>
           <Route path="/product-detail/:id" element={<ProductDetails/>}/>
           <Route path="/edit-product/:id" element={<EditProduct/>}/>
-          <Route path="/add-invoice" element={<InvoiceForm/>}/>
+        <Route path="/add-invoice" element={<InvoiceForm/>}/>
         <Route path="/all-invoices" element={<AllInvoice/>} />
         <Route path="/invoice-temp/:id" element={<InvoiceTemp/>} />
         <Route path="/invoice-temp" element={<Sample/>} />
         <Route path="/customerReg" element={<CustomerReg/>} />
         <Route path="/getAllCustomer" element={<GetCustomer/>} />
         <Route path="/customer/:code" element={<CustomerDetails/>} />
-        <Route path="/Add-Cheque" element={<AddCheque/>} />
         <Route path="/Packing-Materials-details" element={<PackingDashboard/>} />
         <Route path="/addreturn" element={<AddReturnDetails/>} />
         <Route path="/Maindashboard" element={<Mdashboard/>} />
@@ -260,7 +258,7 @@ function App() {
     <Route path="/admin-operation-incentive" element={<ViewAllincentive/>} />
     <Route path="/allcusoperation" element={<Operationallcustomers/>} />
     <Route path="/opdealerhistory" element={<Opdealerhistory/>} />
-
+    <Route path="/bankstatement" element={<BackStatmentop/>} />
 
    
  

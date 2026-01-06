@@ -32,11 +32,11 @@ const actions = [
     icon: <FaBoxes size={32} />, 
     route: '/dashboard',
   },
-  // {
-  //   label: 'Bank Statements',
-  //   icon: <FaUniversity size={32} />, 
-  //   route: '/bankstatement',
-  // },
+  {
+    label: 'Payment Breakdown Monthly',
+    icon: <FaUniversity size={32} />, 
+    route: '/bankstatement',
+  },
   {
     label: 'Executives Incentive',
     icon: <FaUniversity size={32} />, 
