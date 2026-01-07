@@ -34,11 +34,12 @@ const EditInvoice = () => {
         `https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`,
         {
           GatePassNo: gatePass,
-          $push: { cheques: chequeData }, // add new cheque
+          chequeData: chequeData, // ✅ SEND PROPER FIELD
         }
       );
+  
       alert('Invoice updated successfully!');
-      // Reset cheque input
+  
       setChequeData({
         chequeNo: '',
         bankName: '',
@@ -46,11 +47,13 @@ const EditInvoice = () => {
         amount: '',
         status: 'Pending',
       });
+  
     } catch (err) {
       console.error(err);
       alert('Error updating invoice');
     }
   };
+  
 
   return (
     <div className="edit-invoice-container">
