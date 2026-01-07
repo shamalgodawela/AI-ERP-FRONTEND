@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './edit.css';
 import Footer from '../../../compenents/footer/Footer';
+import { toast } from 'react-toastify';
 
 const EditInvoice = () => {
   const { invoiceNumber } = useParams();
@@ -17,29 +18,35 @@ const EditInvoice = () => {
     status: 'Pending',
   });
 
-  // Fetch current GatePassNo only
+  // Fetch current invoice GatePass
   useEffect(() => {
     axios
       .get(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`)
-      .then((res) => {
+      .then(res => {
         if (res.data.GatePassNo) setGatePass(res.data.GatePassNo);
       })
-      .catch((err) => console.error(err));
+      .catch(err => {
+        console.error(err);
+        toast.error('Failed to fetch invoice');
+      });
   }, [invoiceNumber]);
 
-  // Update invoice status and push new cheque
   const handleUpdateInvoice = async () => {
     try {
-      await axios.put(
+      const payload = { GatePassNo: gatePass };
+
+      // Only send chequeData if chequeNo & amount exist
+      if (chequeData.chequeNo && chequeData.amount) {
+        payload.chequeData = chequeData;
+      }
+
+      const res = await axios.put(
         `https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`,
-        {
-          GatePassNo: gatePass,
-          chequeData: chequeData, // ✅ SEND PROPER FIELD
-        }
+        payload
       );
-  
-      alert('Invoice updated successfully!');
-  
+
+      toast.success('Invoice updated successfully!');
+      // Reset cheque form
       setChequeData({
         chequeNo: '',
         bankName: '',
@@ -47,37 +54,23 @@ const EditInvoice = () => {
         amount: '',
         status: 'Pending',
       });
-  
+
     } catch (err) {
       console.error(err);
-      alert('Error updating invoice');
+      toast.error('Error updating invoice');
     }
   };
-  
 
   return (
     <div className="edit-invoice-container">
-      <button
-        onClick={() => navigate(-1)}
-        style={{
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          border: 'none',
-          padding: '8px 16px',
-          marginBottom: '20px',
-          borderRadius: '4px',
-          cursor: 'pointer',
-        }}
-      >
-        ← Back
-      </button>
+      <button onClick={() => navigate(-1)} className="back-btn">← Back</button>
 
       <h2>Invoice Status Update</h2>
 
-      {/* Invoice Status */}
+      {/* GatePass */}
       <div className="form-group">
         <label>Invoice Status</label>
-        <select value={gatePass} onChange={(e) => setGatePass(e.target.value)}>
+        <select value={gatePass} onChange={e => setGatePass(e.target.value)}>
           <option value="">Select</option>
           <option value="Printed">Printed</option>
           <option value="Delivered">Delivered</option>
@@ -88,15 +81,13 @@ const EditInvoice = () => {
       </div>
 
       {/* Add Cheque */}
-      <h3 style={{ marginTop: '30px' }}>Add Cheque</h3>
+      <h3>Add Cheque</h3>
       <div className="form-group">
         <label>Cheque No</label>
         <input
           type="text"
           value={chequeData.chequeNo}
-          onChange={(e) =>
-            setChequeData({ ...chequeData, chequeNo: e.target.value })
-          }
+          onChange={e => setChequeData({ ...chequeData, chequeNo: e.target.value })}
         />
       </div>
       <div className="form-group">
@@ -104,9 +95,7 @@ const EditInvoice = () => {
         <input
           type="text"
           value={chequeData.bankName}
-          onChange={(e) =>
-            setChequeData({ ...chequeData, bankName: e.target.value })
-          }
+          onChange={e => setChequeData({ ...chequeData, bankName: e.target.value })}
         />
       </div>
       <div className="form-group">
@@ -114,9 +103,7 @@ const EditInvoice = () => {
         <input
           type="date"
           value={chequeData.depositDate}
-          onChange={(e) =>
-            setChequeData({ ...chequeData, depositDate: e.target.value })
-          }
+          onChange={e => setChequeData({ ...chequeData, depositDate: e.target.value })}
         />
       </div>
       <div className="form-group">
@@ -124,18 +111,14 @@ const EditInvoice = () => {
         <input
           type="number"
           value={chequeData.amount}
-          onChange={(e) =>
-            setChequeData({ ...chequeData, amount: e.target.value })
-          }
+          onChange={e => setChequeData({ ...chequeData, amount: e.target.value })}
         />
       </div>
       <div className="form-group">
         <label>Status</label>
         <select
           value={chequeData.status}
-          onChange={(e) =>
-            setChequeData({ ...chequeData, status: e.target.value })
-          }
+          onChange={e => setChequeData({ ...chequeData, status: e.target.value })}
         >
           <option value="Pending">Pending</option>
           <option value="Cleared">Cleared</option>
@@ -143,20 +126,8 @@ const EditInvoice = () => {
         </select>
       </div>
 
-      <button
-        onClick={handleUpdateInvoice}
-        style={{ marginTop: '15px', padding: '8px 16px', cursor: 'pointer' }}
-      >
-        Update Invoice
-      </button>
-
-      <button
-        className="home-btn"
-        onClick={() => navigate('/admin-profile')}
-        style={{ marginTop: '20px' }}
-      >
-        Home
-      </button>
+      <button onClick={handleUpdateInvoice} className="update-btn">Update Invoice</button>
+      <button onClick={() => navigate('/admin-profile')} className="home-btn">Home</button>
 
       <Footer />
     </div>
