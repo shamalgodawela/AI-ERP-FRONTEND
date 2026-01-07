@@ -119,13 +119,11 @@ const CalOutstanding = () => {
       setUpdatingChequeId(chequeId);
 
       const res = await axios.put(
-        `https://nihon-inventory.onrender.com/api/invoices/${invoice.invoiceNumber}`,
+        `https://nihon-inventory.onrender.com/api/invoices/cheque-status/${invoice.invoiceNumber}`,
         { chequeId, status }
       );
 
-      // 🔥 USE BACKEND RESPONSE (IMPORTANT)
-      setInvoice(res.data.invoice);
-
+      setInvoice(res.data.invoice); // update UI
       toast.success(res.data.message);
     } catch (error) {
       toast.error("Cheque update failed");
@@ -134,6 +132,7 @@ const CalOutstanding = () => {
     }
   };
 
+  // ---------------- FORMAT NUMBERS ----------------
   const formatNumbers = (x) =>
     x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
