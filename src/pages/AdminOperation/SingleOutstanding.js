@@ -1,19 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Footer from "../../compenents/footer/Footer";
-import { useReactToPrint } from 'react-to-print';
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const SingleOutstanding = () => {
-    const containerRef = useRef(null);
     const { id } = useParams();
+    const navigate = useNavigate();
+    const containerRef = useRef(null);
+
     const [invoice, setInvoice] = useState(null);
     const [amount, setAmount] = useState(0);
     const [outstanding, setOutstanding] = useState(0);
-    const [savedDetails, setSavedDetails] = useState(null);
-    const navigate = useNavigate();
+    const [date, setDate] = useState('');
+    const [backName, setBackname] = useState('');
+    const [depositedate, setDepositedate] = useState('');
+    const [CHnumber, setCHnumber] = useState('');
+    const [savedDetails, setSavedDetails] = useState(null); 
 
+    const backoption = ['BOC', 'Commercial', 'HNB'];
+
+    // Fetch invoice data
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
@@ -23,29 +31,71 @@ const SingleOutstanding = () => {
                 console.error(`Failed to fetch invoice with id ${id}`, error.message);
             }
         };
+
         fetchInvoice();
     }, [id]);
 
+    // Calculate total of products
     const calculateTotal = () => {
-        let total = 0;
-        if (invoice && invoice.products) {
-            total = invoice.products.reduce((acc, product) => {
-                const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
-                return acc + productTotal;
-            }, 0);
-        }
+        if (!invoice || !invoice.products) return 0;
+
+        const total = invoice.products.reduce((acc, product) => {
+            const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
+            return acc + productTotal;
+        }, 0);
+
         return total.toFixed(2);
     };
 
+    // Calculate new outstanding
+    const handleCalculate = async () => {
+        try {
+            const parsedAmount = parseFloat(amount);
+            if (isNaN(parsedAmount)) throw new Error('Invalid amount');
+
+            const total = parseFloat(calculateTotal());
+            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
+            const lastOutstanding = parseFloat(response.data.outstanding);
+
+            let newOutstanding;
+            if (lastOutstanding === -1) {
+                newOutstanding = total - parsedAmount;
+            } else {
+                newOutstanding = lastOutstanding - parsedAmount;
+            }
+
+            setOutstanding(newOutstanding.toFixed(2));
+        } catch (error) {
+            console.error('Failed to calculate outstanding:', error.message);
+        }
+    };
+
+    // Save outstanding payment
+    const handleSave = async () => {
+        try {
+            await axios.post(`https://nihon-inventory.onrender.com/api/create`, {
+                invoiceNumber: invoice.invoiceNumber,
+                date,
+                backName,
+                depositedate,
+                CHnumber,
+                amount,
+                outstanding
+            });
+            toast.success('Data added successfully!');
+        } catch (error) {
+            toast.error('Failed to add details');
+        }
+    };
+
+    // Fetch all outstanding details
     const handleFetchAllOutstandingDetails = async () => {
         try {
             const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
-            const data = response.data;
-            if (data.length === 0) {
+            if (response.data.length === 0) {
                 toast.error('Customer did not pay yet');
-                alert('Customer did not pay yet');
             } else {
-                setSavedDetails(data);
+                setSavedDetails(response.data);
             }
         } catch (error) {
             toast.error('Customer did not pay yet');
@@ -53,68 +103,29 @@ const SingleOutstanding = () => {
         }
     };
 
-    const formatNumbers = (x) => {
-        const num = parseFloat(x);
-        if (isNaN(num)) return x;
-        return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    };
-    
-    const goback = () => {
-        navigate(-1);
-    };
+    const goback = () => navigate(-1);
 
-    // React-to-print handler
-    const handlePrint = useReactToPrint({
-        content: () => containerRef.current,
-        documentTitle: `Invoice_${invoice ? invoice.invoiceNumber : ''}`,
-    });
+    const formatNumbers = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     if (!invoice) return <div>Loading...</div>;
 
     return (
-        <div>
-            <br /><br />
-            <div className="cal-outstanding-container" ref={containerRef}>
-                {/* Back Button */}
-                <button onClick={goback} style={{
-                    backgroundColor: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 16px',
-                    marginBottom: '20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>← Back</button>
+        <div ref={containerRef}>
+            <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
+                Go Back <IoMdArrowRoundBack size={23} />
+            </Link>
 
-                <button 
-                    onClick={handlePrint} 
-                    style={{
-                        backgroundColor: '#2196F3',
-                        color: 'white',
-                        border: 'none',
-                        padding: '8px 16px',
-                        marginBottom: '20px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        marginLeft: '10px'
-                    }}
-                >
-                    Print Invoice
-                </button>
-
+            <div className="cal-outstanding-container">
                 <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
                 <h4 className="h1-out">Customer: {invoice.customer}</h4>
                 <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
-                <h4 className="h1-out">Due Date: {invoice.Duedate}</h4>
                 <h4 className="h1-out">EXE: {invoice.exe}</h4>
-                <h4 className="h1-out">Mobile No: {invoice.contact}</h4>
                 <h4 className="h1-out">Address: {invoice.address}</h4>
-                <h4 className="h1-out">Tax No: {invoice.TaxNo}</h4>
-          
-          
-
+                <h4 className="h1-out">TaxNo: {invoice.TaxNo}</h4>
+                
                 <br /><hr /><br />
 
+                {/* Product Details */}
                 <h2 className="h1-out">Product Details</h2>
                 <table>
                     <thead>
@@ -123,10 +134,9 @@ const SingleOutstanding = () => {
                             <td className="text-bold">Description</td>
                             <td className="text-bold">Quantity</td>
                             <td className="text-bold">Label Price</td>
-                            <td className="text-bold">Invoice Total</td>
                             <td className="text-bold">Discount</td>
                             <td className="text-bold">Unit Price</td>
-                            
+                            <td className="text-bold">Invoice Total</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,33 +146,63 @@ const SingleOutstanding = () => {
                                 <td>{product.productName}</td>
                                 <td>{product.quantity}</td>
                                 <td>RS/={product.labelPrice}</td>
-                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
                                 <td>{product.discount}</td>
                                 <td>RS/={product.unitPrice}</td>
-                                
+                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
 
-                <div className="info-item-td text-end text-bold3" id="second3">
-                    Total: RS/= {formatNumbers(calculateTotal())}
-                </div>
+                <div className="info-item-td text-end text-bold1">SubTotal: RS/={calculateTotal()}</div>
+                <div className="info-item-td text-end text-bold2">Tax: %{invoice.Tax}</div>
+                <div className="info-item-td text-end text-bold3">Total: RS/={calculateTotal()}</div>
 
-                <br /><br /><hr /> <br /><br />
-                <button className="fetch-button" >
-                    Fetch All Cheque Details(Pending development)
-                </button>
+                <br /><hr /><br />
 
-                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>
-                    Fetch All Payment Details
-                </button>
+                {/* Add Outstanding */}
+                {/* <div className="add-outstanding-container">
+                    <h1 className="h1-out">Add Outstanding</h1>
 
-                <br /><br /><hr /> <br />
+                    <div className="input-container">
+                        <label>Deposited Date:</label>
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Bank Name:</label>
+                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
+                            <option value="" disabled>Select a Bank</option>
+                            {backoption.map((bank, index) => (
+                                <option key={index} value={bank}>{bank}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="input-container">
+                        <label>Date:</label>
+                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Cheque Number/Reference Number:</label>
+                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
+                    </div>
+                    <div className="input-container">
+                        <label>Amount:</label>
+                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+                    </div>
 
+                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
+                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
+                    <button className="save-button" onClick={handleSave}>Save</button>
+                    <hr />
+                    <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
+                </div> */}
+
+                <br /><hr /><br />
+
+                {/* Display saved outstanding details */}
                 {savedDetails && (
                     <div>
-                        <h2 className="h1-out">All Payment Details:</h2>
+                        <h2 className="h1-out">All Outstanding Details:</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -176,15 +216,46 @@ const SingleOutstanding = () => {
                                 {savedDetails.map((detail, index) => (
                                     <tr key={index}>
                                         <td>{detail.date}</td>
-                                        <td>RS/= {formatNumbers(detail.amount)}</td>
+                                        <td>RS/={detail.amount}</td>
                                         <td>{detail.backName}</td>
-                                        <td>RS/= {formatNumbers(detail.outstanding)}</td>
+                                        <td>RS/={detail.outstanding}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                 )}
+
+                {/* Display Cheque details */}
+                {invoice.cheques && invoice.cheques.length > 0 && (
+                    <div>
+                        <h2 className="h1-out">Cheque Details:</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cheque No</th>
+                                    <th>Bank Name</th>
+                                    <th>Deposit Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {invoice.cheques.map((cheque, index) => (
+                                    <tr key={index}>
+                                        <td>{cheque.chequeNo}</td>
+                                        <td>{cheque.bankName}</td>
+                                        <td>{cheque.depositDate}</td>
+                                        <td>RS/={cheque.amount}</td>
+                                        <td>{cheque.status}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                )}
+
             </div>
 
             <Footer />

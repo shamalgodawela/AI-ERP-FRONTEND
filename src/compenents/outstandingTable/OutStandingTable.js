@@ -260,45 +260,52 @@ const OutStandingTable = () => {
           {isLoading ? <Loader /> : (
             <table>
               <thead>
-                <tr>
-                  <th className='heading-outstanding'>Invoice Number</th>
-                  <th className='heading-outstanding'>Customer</th>
-                  <th className='heading-outstanding'>Cheque/Cash</th>
-                  <th className='heading-outstanding'>Printed or Canceled</th>
-                  <th className='heading-outstanding'>Invoice Date</th>
-                  <th className='heading-outstanding'>Due Date</th>
-                  <th className='heading-outstanding'>Tax Number</th>
-                  <th className='heading-outstanding'>Exe</th>
-                  <th className='heading-outstanding'>Outstanding</th>
-                  <th className='heading-outstanding'>Invoice Total</th>
-                  <th className='heading-outstanding'>Cheque Details</th>
-                  <th className='heading-outstanding'>Action</th>
-                  <th className='heading-outstanding'>Add Cheque Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredInvoices.map(i => (
-                  <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
-                    <td>{i.invoiceNumber}</td>
-                    <td>{i.customer}</td>
-                    <td>{i.ModeofPayment}</td>
-                    <td>{i.GatePassNo}</td>
-                    <td>{i.invoiceDate}</td>
-                    <td>{i.Duedate}</td>
-                    <td>{i.TaxNo}</td>
-                    <td>{i.exe}</td>
-                    <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
-                      {formatNumbers(i.lastOutstanding)}
-                    </td>
-                    <td>{formatNumbers(calculateTotal(i))}</td>
-                    <td>
-                      developing
-                    </td>
-                    <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
-                    <td><Link to={`/invoice/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>
-                  </tr>
-                ))}
-              </tbody>
+  <tr>
+    <th className='heading-outstanding'>Invoice Number</th>
+    <th className='heading-outstanding'>Customer</th>
+    <th className='heading-outstanding'>Cheque/Cash</th>
+    <th className='heading-outstanding'>Printed or Canceled</th>
+    <th className='heading-outstanding'>Invoice Date</th>
+    <th className='heading-outstanding'>Due Date</th>
+    <th className='heading-outstanding'>Tax Number</th>
+    <th className='heading-outstanding'>Exe</th>
+    <th className='heading-outstanding'>Outstanding</th>
+    <th className='heading-outstanding'>Invoice Total</th>
+    <th className='heading-outstanding'>Cheque Total (Pending)</th> {/* ✅ New column */}
+    <th className='heading-outstanding'>Action</th>
+    <th className='heading-outstanding'>Add Cheque Details</th>
+  </tr>
+</thead>
+<tbody>
+  {filteredInvoices.map(i => (
+    <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
+    <td>{i.invoiceNumber}</td>
+    <td>{i.customer}</td>
+    <td>{i.ModeofPayment}</td>
+    <td>{i.GatePassNo}</td>
+    <td>{i.invoiceDate}</td>
+    <td>{i.Duedate}</td>
+    <td>{i.TaxNo}</td>
+    <td>{i.exe}</td>
+    <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
+      {formatNumbers(i.lastOutstanding)}
+    </td>
+    <td>{formatNumbers(calculateTotal(i))}</td>
+    <td>
+  {typeof i.chequeValues === 'number'
+    ? formatNumbers(i.chequeValues)
+    : '-'}
+</td>
+
+ {/* Simplified */}
+    <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
+    <td><Link to={`/invoice/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>
+  </tr>
+  
+  
+  ))}
+</tbody>
+
             </table>
           )}
         </div>
