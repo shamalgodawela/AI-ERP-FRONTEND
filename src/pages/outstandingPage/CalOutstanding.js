@@ -1,231 +1,232 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import './CalOutstanding.css'; 
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "./CalOutstanding.css";
 import Footer from "../../compenents/footer/Footer";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const CalOutstanding = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const containerRef = useRef(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
 
-    const [invoice, setInvoice] = useState(null);
-    const [amount, setAmount] = useState(0);
-    const [outstanding, setOutstanding] = useState(0);
-    const [date, setDate] = useState('');
-    const [backName, setBackname] = useState('');
-    const [depositedate, setDepositedate] = useState('');
-    const [CHnumber, setCHnumber] = useState('');
-    const [savedDetails, setSavedDetails] = useState(null); 
+  const [invoice, setInvoice] = useState(null);
+  const [amount, setAmount] = useState(0);
+  const [outstanding, setOutstanding] = useState(0);
+  const [date, setDate] = useState("");
+  const [backName, setBackname] = useState("");
+  const [depositedate, setDepositedate] = useState("");
+  const [CHnumber, setCHnumber] = useState("");
+  const [savedDetails, setSavedDetails] = useState(null);
+  const [updatingChequeId, setUpdatingChequeId] = useState(null);
 
-    const backoption = ['BOC', 'Commercial', 'HNB'];
+  const backoption = ["BOC", "Commercial", "HNB"];
 
-    // Fetch invoice data
-    useEffect(() => {
-        const fetchInvoice = async () => {
-            try {
-                const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-invoice/${id}`);
-                setInvoice(response.data);
-            } catch (error) {
-                console.error(`Failed to fetch invoice with id ${id}`, error.message);
-            }
-        };
-
-        fetchInvoice();
-    }, [id]);
-
-    // Calculate total of products
-    const calculateTotal = () => {
-        if (!invoice || !invoice.products) return 0;
-
-        const total = invoice.products.reduce((acc, product) => {
-            const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
-            return acc + productTotal;
-        }, 0);
-
-        return total.toFixed(2);
+  // ---------------- FETCH INVOICE ----------------
+  useEffect(() => {
+    const fetchInvoice = async () => {
+      try {
+        const res = await axios.get(
+          `https://nihon-inventory.onrender.com/api/get-invoice/${id}`
+        );
+        setInvoice(res.data);
+      } catch (error) {
+        console.error("Fetch invoice failed", error);
+      }
     };
+    fetchInvoice();
+  }, [id]);
 
-    // Calculate new outstanding
-    const handleCalculate = async () => {
-        try {
-            const parsedAmount = parseFloat(amount);
-            if (isNaN(parsedAmount)) throw new Error('Invalid amount');
+  // ---------------- CALCULATIONS ----------------
+  const calculateTotal = () => {
+    if (!invoice?.products) return "0.00";
+    return invoice.products
+      .reduce(
+        (acc, p) =>
+          acc +
+          p.labelPrice * (1 - p.discount / 100) * p.quantity,
+        0
+      )
+      .toFixed(2);
+  };
 
-            const total = parseFloat(calculateTotal());
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
-            const lastOutstanding = parseFloat(response.data.outstanding);
+  const handleCalculate = async () => {
+    try {
+      const total = parseFloat(calculateTotal());
+      const res = await axios.get(
+        `https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`
+      );
 
-            let newOutstanding;
-            if (lastOutstanding === -1) {
-                newOutstanding = total - parsedAmount;
-            } else {
-                newOutstanding = lastOutstanding - parsedAmount;
-            }
+      const lastOutstanding = parseFloat(res.data.outstanding);
+      const newOutstanding =
+        lastOutstanding === -1
+          ? total - amount
+          : lastOutstanding - amount;
 
-            setOutstanding(newOutstanding.toFixed(2));
-        } catch (error) {
-            console.error('Failed to calculate outstanding:', error.message);
+      setOutstanding(newOutstanding.toFixed(2));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ---------------- SAVE OUTSTANDING ----------------
+  const handleSave = async () => {
+    try {
+      await axios.post(
+        `https://nihon-inventory.onrender.com/api/create`,
+        {
+          invoiceNumber: invoice.invoiceNumber,
+          date,
+          backName,
+          depositedate,
+          CHnumber,
+          amount,
+          outstanding,
         }
-    };
+      );
+      toast.success("Outstanding saved");
+    } catch (err) {
+      toast.error("Save failed");
+    }
+  };
 
-    // Save outstanding payment
-    const handleSave = async () => {
-        try {
-            await axios.post(`https://nihon-inventory.onrender.com/api/create`, {
-                invoiceNumber: invoice.invoiceNumber,
-                date,
-                backName,
-                depositedate,
-                CHnumber,
-                amount,
-                outstanding
-            });
-            toast.success('Data added successfully!');
-        } catch (error) {
-            toast.error('Failed to add details');
-        }
-    };
+  // ---------------- FETCH ALL OUTSTANDING ----------------
+  const handleFetchAllOutstandingDetails = async () => {
+    try {
+      const res = await axios.get(
+        `https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`
+      );
+      setSavedDetails(res.data);
+    } catch (err) {
+      toast.error("No outstanding data");
+    }
+  };
 
-    // Fetch all outstanding details
-    const handleFetchAllOutstandingDetails = async () => {
-        try {
-            const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
-            if (response.data.length === 0) {
-                toast.error('Customer did not pay yet');
-            } else {
-                setSavedDetails(response.data);
-            }
-        } catch (error) {
-            toast.error('Customer did not pay yet');
-            console.error('Failed to fetch all outstanding details:', error.message);
-        }
-    };
+  // ---------------- UPDATE CHEQUE STATUS ----------------
+  const updateChequeStatus = async (chequeId, status) => {
+    try {
+      setUpdatingChequeId(chequeId);
 
-    const goback = () => navigate(-1);
+      await axios.put(
+        `https://nihon-inventory.onrender.com/api/invoices/${invoice.invoiceNumber}`,
+        { chequeId, status }
+      );
 
-    const formatNumbers = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      toast.success("Cheque status updated");
 
-    if (!invoice) return <div>Loading...</div>;
+      // Update UI immediately
+      setInvoice((prev) => ({
+        ...prev,
+        cheques: prev.cheques.map((c) =>
+          c._id === chequeId ? { ...c, status } : c
+        ),
+      }));
+    } catch (err) {
+      toast.error("Update failed");
+    } finally {
+      setUpdatingChequeId(null);
+    }
+  };
 
-    return (
-        <div ref={containerRef}>
-            <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
-                Go Back <IoMdArrowRoundBack size={23} />
-            </Link>
+  if (!invoice) return <div>Loading...</div>;
 
-            <div className="cal-outstanding-container">
-                <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
-                <h4 className="h1-out">Customer: {invoice.customer}</h4>
-                <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
-                <h4 className="h1-out">EXE: {invoice.exe}</h4>
-                <h4 className="h1-out">Address: {invoice.address}</h4>
-                <h4 className="h1-out">TaxNo: {invoice.TaxNo}</h4>
-                
-                <br /><hr /><br />
+  return (
+    <div ref={containerRef}>
+      <Link onClick={() => navigate(-1)} className="Back-Icon">
+        Go Back <IoMdArrowRoundBack size={22} />
+      </Link>
 
-                {/* Product Details */}
-                <h2 className="h1-out">Product Details</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <td className="text-bold">Product Code</td>
-                            <td className="text-bold">Description</td>
-                            <td className="text-bold">Quantity</td>
-                            <td className="text-bold">Label Price</td>
-                            <td className="text-bold">Discount</td>
-                            <td className="text-bold">Unit Price</td>
-                            <td className="text-bold">Invoice Total</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {invoice.products.map((product, index) => (
-                            <tr key={index}>
-                                <td>{product.productCode}</td>
-                                <td>{product.productName}</td>
-                                <td>{product.quantity}</td>
-                                <td>RS/={product.labelPrice}</td>
-                                <td>{product.discount}</td>
-                                <td>RS/={product.unitPrice}</td>
-                                <td>RS/= {formatNumbers((product.labelPrice * (1 - product.discount / 100) * product.quantity).toFixed(2))}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+      <div className="cal-outstanding-container">
+        <h4>Invoice: {invoice.invoiceNumber}</h4>
+        <h4>Customer: {invoice.customer}</h4>
+        <h4>EXE: {invoice.exe}</h4>
 
-                <div className="info-item-td text-end text-bold1">SubTotal: RS/={calculateTotal()}</div>
-                <div className="info-item-td text-end text-bold2">Tax: %{invoice.Tax}</div>
-                <div className="info-item-td text-end text-bold3">Total: RS/={calculateTotal()}</div>
+        <hr />
 
-                <br /><hr /><br />
+        {/* ---------------- PRODUCTS ---------------- */}
+        <h2>Product Details</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoice.products.map((p, i) => (
+              <tr key={i}>
+                <td>{p.productCode}</td>
+                <td>{p.productName}</td>
+                <td>{p.quantity}</td>
+                <td>{p.labelPrice}</td>
+                <td>{p.discount}%</td>
+                <td>
+                  {(
+                    p.labelPrice *
+                    (1 - p.discount / 100) *
+                    p.quantity
+                  ).toFixed(2)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-                {/* Add Outstanding */}
-                
+        <div>Total: RS/= {calculateTotal()}</div>
 
-                <br /><hr /><br />
+        <hr />
 
-                {/* Display saved outstanding details */}
-                {savedDetails && (
-                    <div>
-                        <h2 className="h1-out">All Outstanding Details:</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Bank Name</th>
-                                    <th>Outstanding</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {savedDetails.map((detail, index) => (
-                                    <tr key={index}>
-                                        <td>{detail.date}</td>
-                                        <td>RS/={detail.amount}</td>
-                                        <td>{detail.backName}</td>
-                                        <td>RS/={detail.outstanding}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+        {/* ---------------- CHEQUES ---------------- */}
+        {invoice.cheques?.length > 0 && (
+          <>
+            <h2>Cheque Details</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Cheque No</th>
+                  <th>Bank</th>
+                  <th>Deposit Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoice.cheques.map((c) => (
+                  <tr key={c._id}>
+                    <td>{c.chequeNo}</td>
+                    <td>{c.bankName}</td>
+                    <td>{c.depositDate}</td>
+                    <td>RS/= {c.amount}</td>
+                    <td>
+                      <select
+                        value={c.status}
+                        disabled={updatingChequeId === c._id}
+                        onChange={(e) =>
+                          updateChequeStatus(c._id, e.target.value)
+                        }
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Cleared">Cleared</option>
+                        <option value="Bounced">Bounced</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
 
-                {/* Display Cheque details */}
-                {invoice.cheques && invoice.cheques.length > 0 && (
-                    <div>
-                        <h2 className="h1-out">Cheque Details:</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Cheque No</th>
-                                    <th>Bank Name</th>
-                                    <th>Deposit Date</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {invoice.cheques.map((cheque, index) => (
-                                    <tr key={index}>
-                                        <td>{cheque.chequeNo}</td>
-                                        <td>{cheque.bankName}</td>
-                                        <td>{cheque.depositDate}</td>
-                                        <td>RS/={cheque.amount}</td>
-                                        <td>{cheque.status}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <br />
-                    </div>
-                )}
-                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
-
-            </div>
-            <div className="add-outstanding-container">
+        <button onClick={handleFetchAllOutstandingDetails}>
+          Fetch Outstanding
+        </button>
+      </div>
+      <div className="add-outstanding-container">
                     <h1 className="h1-out">Add Outstanding</h1>
 
                     <div className="input-container">
@@ -261,9 +262,9 @@ const CalOutstanding = () => {
                     
                 </div>
 
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 };
 
 export default CalOutstanding;
