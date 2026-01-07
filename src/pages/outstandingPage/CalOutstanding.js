@@ -19,6 +19,7 @@ const CalOutstanding = () => {
   const [CHnumber, setCHnumber] = useState("");
   const [savedDetails, setSavedDetails] = useState(null);
   const [updatingChequeId, setUpdatingChequeId] = useState(null);
+  const [depositedate, setDepositedate] = useState('');
 
   const backoption = ["BOC", "Commercial", "HNB"];
 
@@ -87,6 +88,7 @@ const CalOutstanding = () => {
         date,
         backName,
         CHnumber,
+        depositedate,
         amount,
         outstanding
       });
@@ -268,33 +270,40 @@ const CalOutstanding = () => {
 
       {/* ADD OUTSTANDING */}
       <div className="add-outstanding-container">
-        <h1>Add Outstanding</h1>
+                    <h1 className="h1-out">Add Outstanding</h1>
 
-        <label>Date</label>
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    <div className="input-container">
+                        <label>Deposited Date:</label>
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Bank Name:</label>
+                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
+                            <option value="" disabled>Select a Bank</option>
+                            {backoption.map((bank, index) => (
+                                <option key={index} value={bank}>{bank}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="input-container">
+                        <label>Date:</label>
+                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Cheque Number/Reference Number:</label>
+                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
+                    </div>
+                    <div className="input-container">
+                        <label>Amount:</label>
+                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+                    </div>
 
-        <label>Bank</label>
-        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
-          <option value="">Select Bank</option>
-          {backoption.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
-
-        <label>Cheque / Ref No</label>
-        <input value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} />
-
-        <label>Amount</label>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-
-        <button onClick={handleCalculate}>Calculate</button>
-        <div>Outstanding: RS/= {formatNumbers(outstanding)}</div>
-        <button onClick={handleSave}>Save</button>
-      </div>
+                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
+                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
+                    <button className="save-button" onClick={handleSave}>Save</button>
+                    <hr />
+                    
+                </div>
 
       <Footer />
     </div>
