@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'; 
 import Footer from "../../compenents/footer/Footer";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
@@ -161,41 +161,7 @@ const SingleOutstanding = () => {
                 <br /><hr /><br />
 
                 {/* Add Outstanding */}
-                {/* <div className="add-outstanding-container">
-                    <h1 className="h1-out">Add Outstanding</h1>
-
-                    <div className="input-container">
-                        <label>Deposited Date:</label>
-                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                    </div>
-                    <div className="input-container">
-                        <label>Bank Name:</label>
-                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
-                            <option value="" disabled>Select a Bank</option>
-                            {backoption.map((bank, index) => (
-                                <option key={index} value={bank}>{bank}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="input-container">
-                        <label>Date:</label>
-                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
-                    </div>
-                    <div className="input-container">
-                        <label>Cheque Number/Reference Number:</label>
-                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
-                    </div>
-                    <div className="input-container">
-                        <label>Amount:</label>
-                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
-                    </div>
-
-                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
-                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
-                    <button className="save-button" onClick={handleSave}>Save</button>
-                    <hr />
-                    <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
-                </div> */}
+                
 
                 <br /><hr /><br />
 
@@ -255,8 +221,44 @@ const SingleOutstanding = () => {
                         <br />
                     </div>
                 )}
+                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
 
             </div>
+            {/* <div className="add-outstanding-container">
+                    <h1 className="h1-out">Add Outstanding</h1>
+
+                    <div className="input-container">
+                        <label>Deposited Date:</label>
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Bank Name:</label>
+                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
+                            <option value="" disabled>Select a Bank</option>
+                            {backoption.map((bank, index) => (
+                                <option key={index} value={bank}>{bank}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="input-container">
+                        <label>Date:</label>
+                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Cheque Number/Reference Number:</label>
+                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
+                    </div>
+                    <div className="input-container">
+                        <label>Amount:</label>
+                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+                    </div>
+
+                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
+                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
+                    <button className="save-button" onClick={handleSave}>Save</button>
+                    <hr />
+                    
+                </div> */}
 
             <Footer />
         </div>

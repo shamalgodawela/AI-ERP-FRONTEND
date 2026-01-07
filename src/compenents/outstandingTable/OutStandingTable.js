@@ -211,6 +211,7 @@ const OutStandingTable = () => {
 
           <select value={selectedYear} onChange={e => handleFilterChange('year', e.target.value, setSelectedYear)}>
             <option value="">All Years</option>
+            <option value="2026">2026</option>
             <option value="2025">2025</option>
             <option value="2024">2024</option>
           </select>
@@ -271,40 +272,55 @@ const OutStandingTable = () => {
     <th className='heading-outstanding'>Exe</th>
     <th className='heading-outstanding'>Outstanding</th>
     <th className='heading-outstanding'>Invoice Total</th>
-    <th className='heading-outstanding'>Cheque Total (Pending)</th> {/* ✅ New column */}
+    <th className='heading-outstanding'>Cheque Total (Pending)</th> 
+    <th className='heading-outstanding'>Outstanding(with cheque total)</th> 
     <th className='heading-outstanding'>Action</th>
     <th className='heading-outstanding'>Add Cheque Details</th>
   </tr>
 </thead>
 <tbody>
-  {filteredInvoices.map(i => (
-    <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
-    <td>{i.invoiceNumber}</td>
-    <td>{i.customer}</td>
-    <td>{i.ModeofPayment}</td>
-    <td>{i.GatePassNo}</td>
-    <td>{i.invoiceDate}</td>
-    <td>{i.Duedate}</td>
-    <td>{i.TaxNo}</td>
-    <td>{i.exe}</td>
-    <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
-      {formatNumbers(i.lastOutstanding)}
-    </td>
-    <td>{formatNumbers(calculateTotal(i))}</td>
-    <td>
-  {typeof i.chequeValues === 'number'
-    ? formatNumbers(i.chequeValues)
-    : '-'}
-</td>
+  {filteredInvoices.map(i => {
+    const invoiceTotal = calculateTotal(i);
+    const chequeTotal = typeof i.chequeValues === 'number' ? i.chequeValues : 0;
 
- {/* Simplified */}
-    <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
-    <td><Link to={`/invoice/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>
-  </tr>
-  
-  
-  ))}
+    let outstandingAfterCheque = 0;
+
+    if (i.lastOutstanding === "Paid") {
+      outstandingAfterCheque = 0;
+    } else if (i.lastOutstanding === "Not Paid") {
+      outstandingAfterCheque = invoiceTotal - chequeTotal;
+    } else if (typeof i.lastOutstanding === "number") {
+      outstandingAfterCheque = i.lastOutstanding - chequeTotal;
+    }
+
+    return (
+      <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
+        <td>{i.invoiceNumber}</td>
+        <td>{i.customer}</td>
+        <td>{i.ModeofPayment}</td>
+        <td>{i.GatePassNo}</td>
+        <td>{i.invoiceDate}</td>
+        <td>{i.Duedate}</td>
+        <td>{i.TaxNo}</td>
+        <td>{i.exe}</td>
+        <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
+          {formatNumbers(i.lastOutstanding)}
+        </td>
+        <td>{formatNumbers(invoiceTotal)}</td>
+        <td>{chequeTotal ? formatNumbers(chequeTotal) : '-'}</td>
+        
+        {/* ✅ New column: Outstanding after Cheque */}
+        <td className={`td-invoice ${outstandingAfterCheque > 0 ? 'not-paid' : 'paid'}`}>
+          {formatNumbers(outstandingAfterCheque)}
+        </td>
+
+        <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
+        <td><Link to={`/invoice/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>
+      </tr>
+    )
+  })}
 </tbody>
+
 
             </table>
           )}

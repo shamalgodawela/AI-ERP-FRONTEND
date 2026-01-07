@@ -210,6 +210,7 @@ const OperationsPaymentTable = () => {
 
           <select value={selectedYear} onChange={e => handleFilterChange('year', e.target.value, setSelectedYear)}>
             <option value="">All Years</option>
+            <option value="2026">2026</option>
             <option value="2025">2025</option>
             <option value="2024">2024</option>
           </select>
@@ -254,57 +255,74 @@ const OperationsPaymentTable = () => {
             </h1>
           </div>
 
-          {/* ✅ FIXED: Total Collections Amount (only Printed invoices) */}
          
 
           {isLoading ? <Loader /> : (
             <table>
               <thead>
-                <tr>
-                  <th className='heading-outstanding'>Invoice Number</th>
-                  <th className='heading-outstanding'>Customer</th>
-                  <th className='heading-outstanding'>Cheque/Cash</th>
-                  <th className='heading-outstanding'>Printed or Canceled</th>
-                  <th className='heading-outstanding'>Invoice Date</th>
-                  <th className='heading-outstanding'>Due Date</th>
-                  <th className='heading-outstanding'>Tax Number</th>
-                  <th className='heading-outstanding'>Exe</th>
-                  <th className='heading-outstanding'>Outstanding</th>
-                  <th className='heading-outstanding'>Invoice Total</th>
-                  <th className='heading-outstanding'>Cheque Details</th>
-                  <th className='heading-outstanding'>Action</th>
-       
-                </tr>
-              </thead>
-              <tbody>
-                {filteredInvoices.map(i => (
-                  <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
-                    <td>{i.invoiceNumber}</td>
-                    <td>{i.customer}</td>
-                    <td>{i.ModeofPayment}</td>
-                    <td>{i.GatePassNo}</td>
-                    <td>{i.invoiceDate}</td>
-                    <td>{i.Duedate}</td>
-                    <td>{i.TaxNo}</td>
-                    <td>{i.exe}</td>
-                    <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
-                      {formatNumbers(i.lastOutstanding)}
-                    </td>
-                    <td>{formatNumbers(calculateTotal(i))}</td>
-                    <td>
-                      {Array.isArray(i.chequeValues) && i.chequeValues.length > 0
-                        ? i.chequeValues.map((c,j) => <div key={j}>{formatNumbers(c)}</div>)
-                        : "No cheque value"}
-                    </td>
-                    <td className='td-invoice'>
+  <tr>
+    <th className='heading-outstanding'>Invoice Number</th>
+    <th className='heading-outstanding'>Customer</th>
+    <th className='heading-outstanding'>Cheque/Cash</th>
+    <th className='heading-outstanding'>Printed or Canceled</th>
+    <th className='heading-outstanding'>Invoice Date</th>
+    <th className='heading-outstanding'>Due Date</th>
+    <th className='heading-outstanding'>Tax Number</th>
+    <th className='heading-outstanding'>Exe</th>
+    <th className='heading-outstanding'>Outstanding</th>
+    <th className='heading-outstanding'>Invoice Total</th>
+    <th className='heading-outstanding'>Cheque Total (Pending)</th> 
+    <th className='heading-outstanding'>Outstanding(with cheque total)</th>  
+    <th className='heading-outstanding'>Action</th>
+  </tr>
+</thead>
+<tbody>
+  {filteredInvoices.map(i => {
+    const invoiceTotal = calculateTotal(i);
+    const chequeTotal = typeof i.chequeValues === 'number' ? i.chequeValues : 0;
+
+    let outstandingAfterCheque = 0;
+
+    if (i.lastOutstanding === "Paid") {
+      outstandingAfterCheque = 0;
+    } else if (i.lastOutstanding === "Not Paid") {
+      outstandingAfterCheque = invoiceTotal - chequeTotal;
+    } else if (typeof i.lastOutstanding === "number") {
+      outstandingAfterCheque = i.lastOutstanding - chequeTotal;
+    }
+
+    return (
+      <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
+        <td>{i.invoiceNumber}</td>
+        <td>{i.customer}</td>
+        <td>{i.ModeofPayment}</td>
+        <td>{i.GatePassNo}</td>
+        <td>{i.invoiceDate}</td>
+        <td>{i.Duedate}</td>
+        <td>{i.TaxNo}</td>
+        <td>{i.exe}</td>
+        <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
+          {formatNumbers(i.lastOutstanding)}
+        </td>
+        <td>{formatNumbers(invoiceTotal)}</td>
+        <td>{chequeTotal ? formatNumbers(chequeTotal) : '-'}</td>
+        
+        {/* ✅ New column: Outstanding after Cheque */}
+        <td className={`td-invoice ${outstandingAfterCheque > 0 ? 'not-paid' : 'paid'}`}>
+          {formatNumbers(outstandingAfterCheque)}
+        </td>
+
+        <td className='td-invoice'>
                       <Link to={`/single-operations/${i._id}`}>
                         <AiOutlineEye size={20} color={"purple"} />
                       </Link>
                     </td>
-                  
-                  </tr>
-                ))}
-              </tbody>
+      </tr>
+    )
+  })}
+</tbody>
+
+
             </table>
           )}
         </div>
