@@ -89,6 +89,7 @@ import Opdealerhistory from "./pages/ViewDealerHitory/Opdealerhistory";
 import ProductQuantity from "./pages/invoice/GetProductQuanitityEach area/ProductQuantity";
 import UserOneorder from "./compenents/HandleOrder/allorder/UserOneorder";
 import BackStatmentop from "./compenents/BankStatements/BackStatmentop";
+import Getallcheque from "./pages/Cheque/Allcheque/Getallcheque";
 
 
 axios.defaults.withCredentials= true;
@@ -153,6 +154,8 @@ function App() {
     <Route path="/Allexetable" element={<EXEincentory/>}/>
     <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
     <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+    <Route path="/getall-cheques" element={<Getallcheque/>} />
+  
    
 
 

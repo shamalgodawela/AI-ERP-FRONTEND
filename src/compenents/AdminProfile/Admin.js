@@ -1,53 +1,73 @@
 import React from 'react';
 import { useAuth } from '../../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { FaMoneyCheckAlt, FaClipboardList, FaChartLine, FaUserTie, FaUsers, FaSignOutAlt, FaBoxes, FaUniversity } from 'react-icons/fa';
+import {
+  FaMoneyCheckAlt,
+  FaClipboardCheck,
+  FaClock,
+  FaUserTie,
+  FaChartLine,
+  FaBoxes,
+  FaUniversity,
+  FaGift,
+  FaMapMarkedAlt,
+  FaSignOutAlt
+} from 'react-icons/fa';
+
 import bannerImg from '../../assets/agri.jpeg';
 import './Admin.css';
 import Footer from '../footer/Footer';
 
+
 const actions = [
-  {
-    label: 'Payment Details',
-    icon: <FaMoneyCheckAlt size={32} />, 
-    route: '/alloutstanding',
-  },
-  {
-    label: 'Pending Orders',
-    icon: <FaClipboardList size={32} />, 
-    route: '/Adminallorder',
-  },
-  {
-    label: 'View Dealer History',
-    icon: <FaUserTie size={32} />, 
-    route: '/AllcustomerWiseHistory',
-  },
-  {
-    label: 'Sales & Collection Details',
-    icon: <FaChartLine size={32} />, 
-    route: '/sales',
-  },
-  {
-    label: 'Inventory Management',
-    icon: <FaBoxes size={32} />, 
-    route: '/dashboard',
-  },
-  {
-    label: 'Payment Breakdown Monthly',
-    icon: <FaUniversity size={32} />, 
-    route: '/bankstatement',
-  },
-  {
-    label: 'Executives Incentive',
-    icon: <FaUniversity size={32} />, 
-    route: '/admin-incentive',
-  },
-  {
-    label: 'Area wise Product Quantity',
-    icon: <FaUniversity size={32} />, 
-    route: '/product-quantity-by-code',
-  },
-];
+    {
+      label: 'Payment Details',
+      icon: <FaMoneyCheckAlt size={32} />, 
+      route: '/alloutstanding',
+    },
+    {
+      label: 'Cheques Details',
+      icon: <FaClipboardCheck size={32} />, // ✔ cheque tracking
+      route: '/getall-cheques',
+    },
+    {
+      label: 'Pending Orders',
+      icon: <FaClock size={32} />, // ⏳ pending
+      route: '/Adminallorder',
+    },
+    {
+      label: 'View Dealer History',
+      icon: <FaUserTie size={32} />, // 👔 dealer
+      route: '/AllcustomerWiseHistory',
+    },
+    {
+      label: 'Sales & Collection Details',
+      icon: <FaChartLine size={32} />, // 📈 sales
+      route: '/sales',
+    },
+    {
+      label: 'Inventory Management',
+      icon: <FaBoxes size={32} />, // 📦 stock
+      route: '/dashboard',
+    },
+    {
+      label: 'Payment Breakdown Monthly',
+      icon: <FaUniversity size={32} />, // 🏦 bank
+      route: '/bankstatement',
+    },
+    {
+      label: 'Executives Incentive',
+      icon: <FaGift size={32} />, // 🎁 incentive
+      route: '/admin-incentive',
+    },
+    {
+      label: 'Area wise Product Quantity',
+      icon: <FaMapMarkedAlt size={32} />, // 🗺️ area-wise
+      route: '/product-quantity-by-code',
+    },
+  ];
+  
+
 
 const Admin = () => {
   const { user, setUser } = useAuth();

@@ -1,41 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './AllCheques.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./AllCheques.css";
+import { useNavigate } from "react-router-dom";
 
 const Getallcheque = () => {
   const [cheques, setCheques] = useState([]);
-  const [filteredCheques, setFilteredCheques] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Filters
-  const [areaSearch, setAreaSearch] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [chequeNumberSearch, setChequeNumberSearch] = useState('');
-  const [dateSearch, setDateSearch] = useState('');
-  const [areas, setAreas] = useState([]);
+  const [searchDate, setSearchDate] = useState(""); // ✅ NEW
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCheques = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/getall-cheque');
-        const allCheques = response.data.cheques;
-
-        setCheques(allCheques);
-        setFilteredCheques(allCheques);
-
-        // Extract unique areas (first 3 digits of invoice number)
-        const uniqueAreas = Array.from(
-          new Set(
-            allCheques
-              .map(c => c.invoiceNumber?.substring(0, 3)) // take first 3 characters
-              .filter(Boolean)
-              .sort() // sort alphabetically
-          )
+        const res = await axios.get(
+          "https://nihon-inventory.onrender.com/api/cheques"
         );
-        setAreas(uniqueAreas);
-
+        setCheques(res.data);
       } catch (error) {
-        console.error('Error fetching cheques:', error);
+        console.error("Failed to load cheque details", error);
       } finally {
         setLoading(false);
       }
@@ -44,111 +26,96 @@ const Getallcheque = () => {
     fetchCheques();
   }, []);
 
-  useEffect(() => {
-    const filtered = cheques.filter((cheque) => {
-      const areaMatch = areaSearch
-        ? cheque.invoiceNumber?.substring(0, 3) === areaSearch
-        : true;
-
-      const bankMatch = bankName
-        ? cheque.Bankdetails?.toLowerCase().includes(bankName.toLowerCase())
-        : true;
-
-      const chequeNumberMatch = chequeNumberSearch
-        ? cheque.ChequeNumber?.toLowerCase().includes(chequeNumberSearch.toLowerCase())
-        : true;
-
-      const dateMatch = dateSearch
-        ? cheque.DepositeDate?.substring(0, 10) === dateSearch
-        : true;
-
-      return areaMatch && bankMatch && chequeNumberMatch && dateMatch;
+  const formatNumber = (num) =>
+    Number(num).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
     });
 
-    setFilteredCheques(filtered);
-  }, [areaSearch, bankName, chequeNumberSearch, dateSearch, cheques]);
+  // ✅ FILTER BY DEPOSIT DATE
+  const filteredCheques = cheques.filter((c) => {
+    if (!searchDate) return true;
+    return c.depositDate === searchDate;
+  });
 
-  if (loading) return <div className="loader">Loading...</div>;
+  if (loading) return <p>Loading cheque details...</p>;
 
   return (
-    <div>
-      
-    <div className="cheques-container">
-      <h2>All Cheque Details</h2>
+    <div className="cheque-report-container">
+      <h2 className="cheque-report-title">Cheque Report</h2>
 
-      {/* Search Filters */}
-      <div className="search-filters">
-      
-        <select
-          value={areaSearch}
-          onChange={(e) => setAreaSearch(e.target.value)}
-        >
-          <option value="">Search by Area</option>
-          <option value="EA1">EA1</option>
-          <option value="SU1">SU1</option>
-          <option value="NCP">NCP</option>
-          <option value="UPC">UPC</option>
-          <option value="NUM">NUM</option>
-          <option value="EA2">EA2</option>
-          {areas.map((area, idx) => (
-            <option key={idx} value={area}>
-              {area}
-            </option>
-          ))}
-        </select>
-
-        <input
-          type="text"
-          placeholder="Search by Bank Name"
-          value={bankName}
-          onChange={(e) => setBankName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Search by Cheque Number"
-          value={chequeNumberSearch}
-          onChange={(e) => setChequeNumberSearch(e.target.value)}
-        />
+      {/* 🔍 SEARCH BY DEPOSIT DATE */}
+      <div className="cheque-search-bar">
+        <label className="cheque-search-label">
+          Search by Deposit Date:
+        </label>
         <input
           type="date"
-          value={dateSearch}
-          onChange={(e) => setDateSearch(e.target.value)}
+          className="cheque-search-input"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
         />
       </div>
 
-      <table className="cheques-table">
-        <thead>
-          <tr>
-            <th>Invoice No</th>
-            <th>Cheque No</th>
-            <th>Value</th>
-            <th>Deposit Date</th>
-            <th>Bank</th>
-            <th>Branch</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCheques.length > 0 ? (
-            filteredCheques.map((cheque, index) => (
-              <tr key={index}>
-                <td>{cheque.invoiceNumber}</td>
-                <td>{cheque.ChequeNumber}</td>
-                <td>{cheque.ChequeValue}</td>
-                <td>{cheque.DepositeDate ? cheque.DepositeDate.substring(0, 10) : 'N/A'}</td>
-                <td>{cheque.Bankdetails}</td>
-                <td>{cheque.BankBranch}</td>
-                <td>{cheque.status}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="7">No cheques found.</td>
+      <div className="cheque-report-table-wrapper">
+        <table className="cheque-report-table">
+          <thead className="cheque-report-thead">
+            <tr className="cheque-report-header-row">
+              <th className="cheque-th">Invoice No</th>
+              <th className="cheque-th">Customer</th>
+              <th className="cheque-th">Invoice Date</th>
+              <th className="cheque-th">Due Date</th>
+              <th className="cheque-th">Cheque No</th>
+              <th className="cheque-th">Bank</th>
+              <th className="cheque-th">Deposit Date</th>
+              <th className="cheque-th amount-col">Amount (Rs)</th>
+              <th className="cheque-th">Status</th>
             </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+
+          <tbody className="cheque-report-tbody">
+            {filteredCheques.length === 0 ? (
+              <tr className="cheque-row">
+                <td className="cheque-td empty" colSpan="9">
+                  No cheque records found
+                </td>
+              </tr>
+            ) : (
+              filteredCheques.map((c, index) => (
+                <tr className="cheque-row" key={index}>
+                  <td className="cheque-td">{c.invoiceNumber}</td>
+                  <td className="cheque-td">{c.customer}</td>
+                  <td className="cheque-td">{c.invoiceDate}</td>
+                  <td className="cheque-td">{c.dueDate}</td>
+                  <td className="cheque-td">{c.chequeNo}</td>
+                  <td className="cheque-td">{c.bankName}</td>
+                  <td className="cheque-td">{c.depositDate}</td>
+                  <td className="cheque-td amount-col">
+                    {formatNumber(c.amount)}
+                  </td>
+                  <td
+                    className={`cheque-td cheque-status ${
+                      c.status === "Cleared"
+                        ? "status-cleared"
+                        : c.status === "Bounced"
+                        ? "status-bounced"
+                        : "status-pending"
+                    }`}
+                  >
+                    {c.status}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <button
+        className="home-btn"
+        onClick={() => navigate("/admin-profile")}
+      >
+        Home
+      </button>
     </div>
   );
 };
