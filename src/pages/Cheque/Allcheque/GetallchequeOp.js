@@ -6,7 +6,12 @@ import { useNavigate } from "react-router-dom";
 const GetallchequeOp = () => {
   const [cheques, setCheques] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchDate, setSearchDate] = useState(""); // ✅ NEW
+
+  const [singleDate, setSingleDate] = useState(""); // ✅ new
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,11 +36,36 @@ const GetallchequeOp = () => {
       minimumFractionDigits: 2,
     });
 
-  // ✅ FILTER BY DEPOSIT DATE
+  // ✅ FILTER BY SINGLE DATE OR RANGE + STATUS
   const filteredCheques = cheques.filter((c) => {
-    if (!searchDate) return true;
-    return c.depositDate === searchDate;
+    const deposit = new Date(c.depositDate);
+    const depositStr = c.depositDate?.split("T")[0];
+
+    let dateMatch = true;
+
+    // Priority: single date
+    if (singleDate) {
+      dateMatch = depositStr === singleDate;
+    } else {
+      const from = fromDate ? new Date(fromDate) : null;
+      const to = toDate ? new Date(toDate) : null;
+
+      if (from && to) dateMatch = deposit >= from && deposit <= to;
+      else if (from) dateMatch = deposit >= from;
+      else if (to) dateMatch = deposit <= to;
+    }
+
+    const statusMatch =
+      statusFilter === "All" || c.status === statusFilter;
+
+    return dateMatch && statusMatch;
   });
+
+  // ✅ TOTAL AMOUNT
+  const totalFilteredAmount = filteredCheques.reduce(
+    (sum, c) => sum + Number(c.amount || 0),
+    0
+  );
 
   if (loading) return <p>Loading cheque details...</p>;
 
@@ -43,23 +73,70 @@ const GetallchequeOp = () => {
     <div className="cheque-report-container">
       <h2 className="cheque-report-title">Cheque Report</h2>
 
-      {/* 🔍 SEARCH BY DEPOSIT DATE */}
+      {/* 🔍 SEARCH BAR */}
       <div className="cheque-search-bar">
-        <label className="cheque-search-label">
-          Search by Deposit Date:
-        </label>
-        <input
-          type="date"
-          className="cheque-search-input"
-          value={searchDate}
-          onChange={(e) => setSearchDate(e.target.value)}
-        />
+
+        <div className="search-group">
+          <label>Single Date</label>
+          <input
+            type="date"
+            value={singleDate}
+            onChange={(e) => {
+              setSingleDate(e.target.value);
+              setFromDate("");
+              setToDate("");
+            }}
+          />
+        </div>
+
+        <div className="search-group">
+          <label>From</label>
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => {
+              setFromDate(e.target.value);
+              setSingleDate("");
+            }}
+          />
+        </div>
+
+        <div className="search-group">
+          <label>To</label>
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => {
+              setToDate(e.target.value);
+              setSingleDate("");
+            }}
+          />
+        </div>
+
+        <div className="search-group">
+          <label>Status</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Cleared">Cleared</option>
+            <option value="Bounced">Bounced</option>
+          </select>
+        </div>
       </div>
 
+      {/* ✅ TOTAL BOX */}
+      <div className="cheque-total-box">
+        Total Amount: <span>Rs {formatNumber(totalFilteredAmount)}</span>
+      </div>
+
+      {/* TABLE */}
       <div className="cheque-report-table-wrapper">
         <table className="cheque-report-table">
-          <thead className="cheque-report-thead">
-            <tr className="cheque-report-header-row">
+          <thead>
+            <tr>
               <th className="cheque-th">Invoice No</th>
               <th className="cheque-th">Customer</th>
               <th className="cheque-th">Invoice Date</th>
@@ -67,40 +144,29 @@ const GetallchequeOp = () => {
               <th className="cheque-th">Cheque No</th>
               <th className="cheque-th">Bank</th>
               <th className="cheque-th">Deposit Date</th>
-              <th className="cheque-th amount-col">Amount (Rs)</th>
+              <th className="cheque-th">Amount (Rs)</th>
               <th className="cheque-th">Status</th>
             </tr>
           </thead>
-
-          <tbody className="cheque-report-tbody">
+          <tbody>
             {filteredCheques.length === 0 ? (
-              <tr className="cheque-row">
-                <td className="cheque-td empty" colSpan="9">
+              <tr>
+                <td colSpan="9" className="empty">
                   No cheque records found
                 </td>
               </tr>
             ) : (
               filteredCheques.map((c, index) => (
-                <tr className="cheque-row" key={index}>
-                  <td className="cheque-td">{c.invoiceNumber}</td>
-                  <td className="cheque-td">{c.customer}</td>
-                  <td className="cheque-td">{c.invoiceDate}</td>
-                  <td className="cheque-td">{c.dueDate}</td>
-                  <td className="cheque-td">{c.chequeNo}</td>
-                  <td className="cheque-td">{c.bankName}</td>
-                  <td className="cheque-td">{c.depositDate}</td>
-                  <td className="cheque-td amount-col">
-                    {formatNumber(c.amount)}
-                  </td>
-                  <td
-                    className={`cheque-td cheque-status ${
-                      c.status === "Cleared"
-                        ? "status-cleared"
-                        : c.status === "Bounced"
-                        ? "status-bounced"
-                        : "status-pending"
-                    }`}
-                  >
+                <tr key={index}>
+                  <td>{c.invoiceNumber}</td>
+                  <td>{c.customer}</td>
+                  <td>{c.invoiceDate}</td>
+                  <td>{c.dueDate}</td>
+                  <td>{c.chequeNo}</td>
+                  <td>{c.bankName}</td>
+                  <td>{c.depositDate}</td>
+                  <td>{formatNumber(c.amount)}</td>
+                  <td className={`status ${c.status.toLowerCase()}`}>
                     {c.status}
                   </td>
                 </tr>
@@ -110,10 +176,7 @@ const GetallchequeOp = () => {
         </table>
       </div>
 
-      <button
-        className="home-btn"
-        onClick={() => navigate("/admin-profile")}
-      >
+      <button className="home-btn" onClick={() => navigate("/Admin-operations-dashboard")}>
         Home
       </button>
     </div>

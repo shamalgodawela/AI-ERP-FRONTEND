@@ -1,25 +1,108 @@
+/* =========================
+   MAIN CONTAINER
+========================= */
 .cheque-report-container {
-  padding: 20px;
-  background: #ffffff;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8fbff, #eef3f9);
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 .cheque-report-title {
-  margin-bottom: 15px;
-  font-size: 20px;
-  font-weight: 600;
+  margin-bottom: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: 0.4px;
 }
 
+/* =========================
+   SEARCH BAR
+========================= */
+.cheque-search-bar {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  background: #ffffff;
+  padding: 16px 20px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  align-items: flex-end;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border-left: 6px solid #4f46e5;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.search-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.search-group input,
+.search-group select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  min-width: 160px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.search-group input:focus,
+.search-group select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* =========================
+   TOTAL BOX
+========================= */
+.cheque-total-box {
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border: 1px solid #fed7aa;
+  padding: 14px 22px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+  font-weight: 700;
+  color: #9a3412;
+  width: fit-content;
+  box-shadow: 0 4px 10px rgba(234, 88, 12, 0.2);
+}
+
+.cheque-total-box span {
+  color: #c2410c;
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
 .cheque-report-table-wrapper {
   max-height: 70vh;
   overflow-y: auto;
-  border: 1px solid #ddd;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
 }
 
-/* Table */
+/* =========================
+   TABLE
+========================= */
 .cheque-report-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
 /* Header */
@@ -30,54 +113,114 @@
 }
 
 .cheque-report-header-row {
-  background-color: #f3f3f3;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
 }
 
 .cheque-th {
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   text-align: left;
   font-weight: 600;
-  color:white;
+  color: #ffffff;
+  white-space: nowrap;
 }
 
 /* Body */
 .cheque-report-tbody {
-  background: #fff;
+  background: #ffffff;
+}
+
+.cheque-row {
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.cheque-row:nth-child(even) {
+  background-color: #f9fafb;
 }
 
 .cheque-row:hover {
-  background-color: #fafafa;
+  background-color: #eef2ff;
 }
 
 .cheque-td {
-  padding: 8px;
-  border: 1px solid #ddd;
+  padding: 10px 10px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  white-space: nowrap;
 }
 
 .cheque-td.empty {
   text-align: center;
-  color: #777;
+  color: #9ca3af;
+  font-style: italic;
 }
 
 /* Amount Column */
 .amount-col {
   text-align: right;
+  font-weight: 600;
+  color: #111827;
 }
 
-/* Status Colors */
+/* =========================
+   STATUS COLORS
+========================= */
 .cheque-status {
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 12px;
 }
 
 .status-pending {
-  color: orange;
+  color: #f59e0b;
 }
 
 .status-cleared {
-  color: green;
+  color: #10b981;
 }
 
 .status-bounced {
-  color: red;
+  color: #ef4444;
+}
+
+/* Alternative status style used in table */
+.status.pending {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.status.cleared {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.status.bounced {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* =========================
+   HOME BUTTON (optional polish)
+========================= */
+.home-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.home-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.5);
+}
+
+.home-btn:active {
+  transform: translateY(0);
 }
