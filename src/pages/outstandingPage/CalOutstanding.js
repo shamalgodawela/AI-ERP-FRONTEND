@@ -162,8 +162,9 @@ const CalOutstanding = () => {
               <th>Code</th>
               <th>Description</th>
               <th>Qty</th>
-              <th>Price</th>
+              <th>Label Price</th>
               <th>Discount</th>
+              <th>unit price</th>
               <th>Total</th>
             </tr>
           </thead>
@@ -175,6 +176,7 @@ const CalOutstanding = () => {
                 <td>{p.quantity}</td>
                 <td>{p.labelPrice}</td>
                 <td>{p.discount}%</td>
+                <td>{p.unitPrice}%</td>
                 <td>
                   {formatNumbers(
                     (
