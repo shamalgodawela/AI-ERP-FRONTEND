@@ -41,7 +41,7 @@ const AddUserOrder = ({ onAddOrder }) => {
 
   // Map EXE to endpoint suffix
   const exeEndpointMap = {
-    'Mr.Ahamed': 'ea',
+    'Mr.Safrath': 'ea',
     'Mr.Nayum': 'NUM',
     'UpCountry':'upcountry',
     'SOUTH':'south1',
