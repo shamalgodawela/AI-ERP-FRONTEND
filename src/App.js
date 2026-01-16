@@ -59,7 +59,6 @@ import ProductListExe from "./compenents/product/productList/ProductListExe";
 import Admin from "./compenents/AdminProfile/Admin";
 import Allcustomers from "./pages/ViewDealerHitory/Allcustomer";
 import ProductSummary from "./compenents/product/productSummary/ProductSummary";
-import AllExeTable from "./compenents/Exetable/AllTableexe/AllExeTable";
 import AllProducts from "./compenents/bulkproduct/Allproduct/AllProducts";
 import BankStatement from "./compenents/BankStatements/BankStatement";
 import UserDashboard from "./pages/UserDashboard/UserDashboard";
