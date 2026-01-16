@@ -248,7 +248,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               required
             >
               <option value="">Select EXE:</option>
-              <option value="Mr.Ahamed">Mr.Ahamed</option>
+              <option value="Mr.Safrath">Mr.Safrath</option>
               <option value="Mr.Nayum">Mr.Nayum</option>
               <option value="SOUTH">SOUTH-1</option>
               <option value="Other">Other</option>
