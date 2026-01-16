@@ -91,6 +91,9 @@ import UserOneorder from "./compenents/HandleOrder/allorder/UserOneorder";
 import BackStatmentop from "./compenents/BankStatements/BackStatmentop";
 import Getallcheque from "./pages/Cheque/Allcheque/Getallcheque";
 import GetallchequeOp from "./pages/Cheque/Allcheque/GetallchequeOp";
+import AccountProfile from "./pages/Accountdepartment/Dashboard/AccountProfile";
+import AccountPayment from "./pages/Accountdepartment/PaymentDetilas/AccountPayment";
+import SingleCheque from "./pages/Accountdepartment/Singlecheque/SingleCheque";
 
 
 axios.defaults.withCredentials= true;
@@ -242,6 +245,18 @@ function App() {
 <Route path="/addorder" element={<AddOrderdetails/>} />
 <Route path="/product-list" element={<ProductListExe/>} />
 <Route path="/allorder" element={<Allorder/>} />
+</Route>
+
+
+{/* ---------------------------------Account department Pages--------------------------------- */}
+
+<Route element={<ProtectedRoute allowedRoles={["account"]} />}>
+<Route path="/account-dash" element={<AccountProfile/>} />
+<Route path="/account-payment" element={<AccountPayment/>} />
+<Route path="/single-cheque/:invoiceNumber" element={<SingleCheque/>} />
+
+
+
 </Route>
 
 

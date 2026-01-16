@@ -37,6 +37,9 @@ const Mlogin = () => {
             else if (userdata.role === "Operation") {
                 navigate("/Admin-operations-dashboard");
             }
+            else if (userdata.role === "account") {
+                navigate("/account-dash");
+            }
             else {
                 navigate("/Unotherized");
             }
