@@ -48,7 +48,7 @@ const actions = [
     {
       label: 'Payment Breakdown Monthly',
       icon: <FaUniversity size={32} />, // 🏦 bank
-      route: '',
+      route: '/BankAcc',
     },
 
   ];

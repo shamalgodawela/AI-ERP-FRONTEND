@@ -95,6 +95,7 @@ import AccountPayment from "./pages/Accountdepartment/PaymentDetilas/AccountPaym
 import SingleCheque from "./pages/Accountdepartment/Singlecheque/SingleCheque";
 import SingleIndetails from "./pages/Accountdepartment/Singleinvoice/SingleIndetails";
 import AllaccCheaue from "./pages/Accountdepartment/ChequeDetails/AllaccCheaue";
+import BankAcc from "./pages/Accountdepartment/BackdepositeDetails/BankAcc";
 
 
 axios.defaults.withCredentials= true;
@@ -257,6 +258,8 @@ function App() {
 <Route path="/single-cheque/:invoiceNumber" element={<SingleCheque/>} />
 <Route path="/single-invoice/:id" element={<SingleIndetails/>} />
 <Route path="/All-accCheaue" element={<AllaccCheaue/>} />
+<Route path="/BankAcc" element={<BankAcc/>} />
+
 
 
 
