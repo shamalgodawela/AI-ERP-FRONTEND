@@ -93,6 +93,8 @@ import GetallchequeOp from "./pages/Cheque/Allcheque/GetallchequeOp";
 import AccountProfile from "./pages/Accountdepartment/Dashboard/AccountProfile";
 import AccountPayment from "./pages/Accountdepartment/PaymentDetilas/AccountPayment";
 import SingleCheque from "./pages/Accountdepartment/Singlecheque/SingleCheque";
+import SingleIndetails from "./pages/Accountdepartment/Singleinvoice/SingleIndetails";
+import AllaccCheaue from "./pages/Accountdepartment/ChequeDetails/AllaccCheaue";
 
 
 axios.defaults.withCredentials= true;
@@ -253,6 +255,8 @@ function App() {
 <Route path="/account-dash" element={<AccountProfile/>} />
 <Route path="/account-payment" element={<AccountPayment/>} />
 <Route path="/single-cheque/:invoiceNumber" element={<SingleCheque/>} />
+<Route path="/single-invoice/:id" element={<SingleIndetails/>} />
+<Route path="/All-accCheaue" element={<AllaccCheaue/>} />
 
 
 

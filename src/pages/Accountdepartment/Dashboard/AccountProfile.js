@@ -28,7 +28,7 @@ const actions = [
     {
       label: 'Cheques Details',
       icon: <FaClipboardCheck size={32} />, // ✔ cheque tracking
-      route: '',
+      route: '/All-accCheaue',
     },
     // {
     //   label: 'Pending Orders',

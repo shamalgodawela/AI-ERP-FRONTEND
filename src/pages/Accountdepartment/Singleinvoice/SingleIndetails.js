@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "./CalOutstanding.css";
-import Footer from "../../compenents/footer/Footer";
+import Footer from "../../../compenents/footer/Footer";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-const CalOutstanding = () => {
+const SingleIndetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const containerRef = useRef(null);
@@ -312,4 +311,4 @@ const CalOutstanding = () => {
   );
 };
 
-export default CalOutstanding;
+export default SingleIndetails;

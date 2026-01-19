@@ -314,7 +314,7 @@ const AccountPayment = () => {
           {formatNumbers(outstandingAfterCheque)}
         </td>
 
-        <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
+        <td><Link to={`/single-invoice/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
         <td><Link to={`/single-cheque/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>
       </tr>
     )

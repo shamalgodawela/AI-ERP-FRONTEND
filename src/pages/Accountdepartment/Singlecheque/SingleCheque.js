@@ -140,7 +140,7 @@ const SingleCheque = () => {
       </div>
 
       <button onClick={handleUpdateInvoice} className="update-btn">Update Invoice</button>
-      <button onClick={() => navigate('/admin-profile')} className="home-btn">Home</button>
+      <button onClick={() => navigate('/account-dash')} className="home-btn">Home</button>
 
       <Footer />
     </div>
