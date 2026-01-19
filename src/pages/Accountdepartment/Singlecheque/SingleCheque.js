@@ -122,7 +122,7 @@ const SingleCheque = () => {
       <div className="form-group">
         <label>Amount</label>
         <input
-          type="number"
+          type="text"
           value={chequeData.amount}
           onChange={e => setChequeData({ ...chequeData, amount: e.target.value })}
         />
