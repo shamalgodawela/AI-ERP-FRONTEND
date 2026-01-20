@@ -194,6 +194,8 @@ const CalOutstanding = () => {
         <div>Total: RS/= {formatNumbers(calculateTotal())}</div>
 
         <hr />
+        <h1>Invoice date:{invoice.invoiceDate}</h1>
+        <h1>Invoice date:{invoice.Duedate}</h1>
 
         {/* CHEQUES */}
         {invoice.cheques?.length > 0 && (
