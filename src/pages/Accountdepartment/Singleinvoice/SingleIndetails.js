@@ -240,6 +240,8 @@ const SingleIndetails = () => {
         </button>
 
         <hr />
+        <h2>Invoice date:{invoice.invoiceDate}</h2>
+        <h2>Due date:{invoice.Duedate}</h2>
 
         {/* OUTSTANDING HISTORY */}
         {savedDetails && (

@@ -118,10 +118,8 @@ const SingleOutstanding = () => {
             <div className="cal-outstanding-container">
                 <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
                 <h4 className="h1-out">Customer: {invoice.customer}</h4>
-                <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
                 <h4 className="h1-out">EXE: {invoice.exe}</h4>
                 <h4 className="h1-out">Address: {invoice.address}</h4>
-                <h4 className="h1-out">TaxNo: {invoice.TaxNo}</h4>
                 
                 <br /><hr /><br />
 
@@ -191,6 +189,9 @@ const SingleOutstanding = () => {
                         </table>
                     </div>
                 )}
+
+<h2>Invoice date:{invoice.invoiceDate}</h2>
+<h2>Due date:{invoice.Duedate}</h2>
 
                 {/* Display Cheque details */}
                 {invoice.cheques && invoice.cheques.length > 0 && (
