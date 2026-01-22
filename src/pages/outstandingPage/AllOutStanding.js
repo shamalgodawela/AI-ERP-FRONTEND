@@ -13,7 +13,7 @@ const AllOutStanding = () => {
       
         <OutStandingTable/>
 
-        <button className="home-btn" onClick={() => navigate('/account-dash')}>Home</button>
+        <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
         
         <Footer/>
 
