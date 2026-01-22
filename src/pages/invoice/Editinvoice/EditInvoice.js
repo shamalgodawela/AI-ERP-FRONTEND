@@ -10,6 +10,9 @@ const EditInvoice = () => {
   const navigate = useNavigate();
 
   const [gatePass, setGatePass] = useState('');
+  const [incentiveDueDate, setIncentiveDueDate] = useState('');
+  const [incentiveStatus, setIncentiveStatus] = useState('');
+  const [incentiveSettlement, setIncentiveSettlement] = useState('');
   const [chequeData, setChequeData] = useState({
     chequeNo: '',
     bankName: '',
@@ -24,6 +27,9 @@ const EditInvoice = () => {
       .get(`https://nihon-inventory.onrender.com/api/invoices/${invoiceNumber}`)
       .then(res => {
         if (res.data.GatePassNo) setGatePass(res.data.GatePassNo);
+        if (res.data.IncentiveDueDate) setIncentiveDueDate(res.data.IncentiveDueDate);
+        if (res.data.IncentiveStatus) setIncentiveStatus(res.data.IncentiveStatus);
+        if (res.data.Incentivesettlement) setIncentiveSettlement(res.data.Incentivesettlement);
       })
       .catch(err => {
         console.error(err);
@@ -34,6 +40,11 @@ const EditInvoice = () => {
   const handleUpdateInvoice = async () => {
     try {
       const payload = { GatePassNo: gatePass };
+
+      // Add incentive fields
+      if (incentiveDueDate) payload.IncentiveDueDate = incentiveDueDate;
+      if (incentiveStatus) payload.IncentiveStatus = incentiveStatus;
+      if (incentiveSettlement) payload.Incentivesettlement = incentiveSettlement;
 
       // Only send chequeData if chequeNo & amount exist
       if (chequeData.chequeNo && chequeData.amount) {
@@ -77,6 +88,40 @@ const EditInvoice = () => {
           <option value="Canceled">Canceled</option>
           <option value="Free Issued">Free Issued</option>
           <option value="Executive Stock">Executive Stock</option>
+        </select>
+      </div>
+
+      {/* Incentive Fields */}
+      <h3>Incentive Details</h3>
+      <div className="form-group">
+        <label>Incentive Due Date</label>
+        <input
+          type="date"
+          value={incentiveDueDate}
+          onChange={e => setIncentiveDueDate(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label>Incentive Status</label>
+        <select
+          value={incentiveStatus}
+          onChange={e => setIncentiveStatus(e.target.value)}
+        >
+          <option value="">Select</option>
+          <option value="Not_Eligible">Not_Eligible</option>
+          <option value="Settled">Settled</option>
+        </select>
+      </div>
+      <div className="form-group">
+        <label>Incentive Settlement</label>
+        <select
+          value={incentiveSettlement}
+          onChange={e => setIncentiveSettlement(e.target.value)}
+        >
+          <option value="">Select</option>
+          <option value="Not_Received">Not_Received</option>
+          <option value="Received">Received</option>
+          <option value="Pending">Pending</option>
         </select>
       </div>
 

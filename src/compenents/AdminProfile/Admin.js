@@ -63,7 +63,7 @@ const actions = [
     {
       label: 'Area wise Product Quantity',
       icon: <FaMapMarkedAlt size={32} />, // 🗺️ area-wise
-      route: '/product-quantity-by-code',
+      route: '/Exe-product-wise-sales',
     },
   ];
   
