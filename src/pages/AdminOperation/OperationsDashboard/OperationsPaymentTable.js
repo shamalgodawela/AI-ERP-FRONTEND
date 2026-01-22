@@ -145,6 +145,23 @@ const OperationsPaymentTable = () => {
     return total;
   };
 
+  const calculateTotalCheque = () => {
+    let total = 0;
+    filteredInvoices.forEach(i => {
+      if (i.GatePassNo === 'Printed') {
+        const chequeTotal = typeof i.chequeValues === 'number' ? i.chequeValues : 0;
+        total += chequeTotal;
+      }
+    });
+    return total;
+  };
+
+  const calculateAmountToBeCollected = () => {
+    const totalOutstanding = calculateTotalOutstanding();
+    const totalCheque = calculateTotalCheque();
+    return totalOutstanding - totalCheque;
+  };
+
   const handlePrint = () => window.print();
 
   const getPrintHeader = () => {
@@ -252,6 +269,27 @@ const OperationsPaymentTable = () => {
                       .reduce((acc, i) => acc + calculateTotal(i), 0)
                   )
                 }
+              </span>
+            </h1>
+          </div>
+
+          {/* ✅ Total Cheque Amount (only Printed invoices) */}
+          <div className="total-sales-summary">
+            <h1 className="sales-total-header">
+              💰 Total Cheque Amount (Pending): 
+              <span className="amount-highlight">
+                Rs. {formatNumbers(calculateTotalCheque())}
+              </span>
+            </h1>
+          </div>
+
+
+          {/* ✅ Amount to be Collected (Outstanding - Cheque Amount) */}
+          <div className="total-outstanding-summary">
+            <h1 className="outstanding-total-header">
+              💵 Amount to be Collected (Outstanding - Cheque Amount): 
+              <span className="amount-highlight">
+                Rs. {formatNumbers(calculateAmountToBeCollected())}
               </span>
             </h1>
           </div>
