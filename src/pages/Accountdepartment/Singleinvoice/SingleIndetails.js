@@ -18,6 +18,7 @@ const SingleIndetails = () => {
   const [CHnumber, setCHnumber] = useState("");
   const [savedDetails, setSavedDetails] = useState(null);
   const [updatingChequeId, setUpdatingChequeId] = useState(null);
+  const [updatingDepositDateId, setUpdatingDepositDateId] = useState(null);
   const [depositedate, setDepositedate] = useState('');
 
   const backoption = ["BOC", "Commercial", "HNB","People's","Sampath","NSB","DFCC","AMANA"];
@@ -133,6 +134,25 @@ const SingleIndetails = () => {
     }
   };
 
+  // ---------------- UPDATE DEPOSIT DATE ----------------
+  const handleUpdateDepositDate = async (chequeId, depositDate) => {
+    try {
+      setUpdatingDepositDateId(chequeId);
+
+      const res = await axios.put(
+        `https://nihon-inventory.onrender.com/api/invoices/cheque-deposit-date/${invoice.invoiceNumber}`,
+        { chequeId, depositDate }
+      );
+
+      setInvoice(res.data.invoice); // update UI
+      toast.success(res.data.message || "Deposit date updated successfully");
+    } catch (error) {
+      toast.error("Deposit date update failed");
+    } finally {
+      setUpdatingDepositDateId(null);
+    }
+  };
+
   // ---------------- FORMAT NUMBERS ----------------
   const formatNumbers = (x) =>
     x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -213,7 +233,17 @@ const SingleIndetails = () => {
                   <tr key={c._id}>
                     <td>{c.chequeNo}</td>
                     <td>{c.bankName}</td>
-                    <td>{c.depositDate}</td>
+                    <td>
+                      <input
+                        type="date"
+                        value={c.depositDate ? new Date(c.depositDate).toISOString().split('T')[0] : ''}
+                        disabled={updatingDepositDateId === c._id}
+                        onChange={(e) =>
+                          handleUpdateDepositDate(c._id, e.target.value)
+                        }
+                        style={{ padding: '4px', border: '1px solid #ccc', borderRadius: '4px' }}
+                      />
+                    </td>
                     <td>RS/= {formatNumbers(c.amount)}</td>
                     <td>
                       <select
