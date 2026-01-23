@@ -19,6 +19,7 @@ const SingleIndetails = () => {
   const [savedDetails, setSavedDetails] = useState(null);
   const [updatingChequeId, setUpdatingChequeId] = useState(null);
   const [updatingDepositDateId, setUpdatingDepositDateId] = useState(null);
+  const [updatingAmountId, setUpdatingAmountId] = useState(null);
   const [depositedate, setDepositedate] = useState('');
 
   const backoption = ["BOC", "Commercial", "HNB","People's","Sampath","NSB","DFCC","AMANA"];
@@ -153,6 +154,31 @@ const SingleIndetails = () => {
     }
   };
 
+  // ---------------- UPDATE CHEQUE AMOUNT ----------------
+  const handleUpdateChequeAmount = async (chequeId, amount) => {
+    try {
+      const parsedAmount = parseFloat(amount);
+      if (isNaN(parsedAmount) || parsedAmount < 0) {
+        toast.error("Enter valid amount");
+        return;
+      }
+
+      setUpdatingAmountId(chequeId);
+
+      const res = await axios.put(
+        `https://nihon-inventory.onrender.com/api/invoices/cheque-amount/${invoice.invoiceNumber}`,
+        { chequeId, amount: parsedAmount }
+      );
+
+      setInvoice(res.data.invoice); // update UI
+      toast.success(res.data.message || "Cheque amount updated successfully");
+    } catch (error) {
+      toast.error("Cheque amount update failed");
+    } finally {
+      setUpdatingAmountId(null);
+    }
+  };
+
   // ---------------- FORMAT NUMBERS ----------------
   const formatNumbers = (x) =>
     x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -244,7 +270,20 @@ const SingleIndetails = () => {
                         style={{ padding: '4px', border: '1px solid #ccc', borderRadius: '4px' }}
                       />
                     </td>
-                    <td>RS/= {formatNumbers(c.amount)}</td>
+                    <td>
+                      <input
+                        type="number"
+                        defaultValue={c.amount || ''}
+                        disabled={updatingAmountId === c._id}
+                        onBlur={(e) => {
+                          const newAmount = parseFloat(e.target.value);
+                          if (!isNaN(newAmount) && newAmount !== c.amount) {
+                            handleUpdateChequeAmount(c._id, e.target.value);
+                          }
+                        }}
+                        style={{ padding: '4px', border: '1px solid #ccc', borderRadius: '4px', width: '120px' }}
+                      />
+                    </td>
                     <td>
                       <select
                         value={c.status}
