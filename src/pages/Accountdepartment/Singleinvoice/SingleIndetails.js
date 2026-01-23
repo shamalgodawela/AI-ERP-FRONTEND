@@ -24,6 +24,12 @@ const SingleIndetails = () => {
 
   const backoption = ["BOC", "Commercial", "HNB","People's","Sampath","NSB","DFCC","AMANA"];
 
+  // ---------------- SET TODAY'S DATE ----------------
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setDate(today);
+  }, []);
+
   // ---------------- FETCH INVOICE ----------------
   useEffect(() => {
     const fetchInvoice = async () => {
@@ -341,41 +347,304 @@ const SingleIndetails = () => {
       </div>
 
       {/* ADD OUTSTANDING */}
-      <div className="add-outstanding-container">
-                    <h1 className="h1-out">Add Outstanding</h1>
+      <div style={{
+        maxWidth: '900px',
+        margin: '40px auto',
+        padding: '40px',
+        background: 'linear-gradient(135deg, #ffffff 0%, #f8fbfc 100%)',
+        borderRadius: '16px',
+        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+        border: '1px solid rgba(22, 77, 114, 0.08)',
+      }}>
+        <h1 style={{
+          fontSize: '1.75rem',
+          fontWeight: '600',
+          color: '#164d72',
+          marginBottom: '32px',
+          textAlign: 'center',
+          letterSpacing: '0.3px',
+        }}>
+          Add payment
+        </h1>
 
-                    <div className="input-container">
-                        <label>Deposited Date:</label>
-                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                    </div>
-                    <div className="input-container">
-                        <label>Bank Name:</label>
-                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
-                            <option value="" disabled>Select a Bank</option>
-                            {backoption.map((bank, index) => (
-                                <option key={index} value={bank}>{bank}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="input-container">
-                        <label>Date:</label>
-                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
-                    </div>
-                    <div className="input-container">
-                        <label>Cheque Number/Reference Number:</label>
-                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
-                    </div>
-                    <div className="input-container">
-                        <label>Amount:</label>
-                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
-                    </div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '24px',
+          marginBottom: '32px',
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              color: '#1e293b',
+              letterSpacing: '0.2px',
+            }}>
+              Details update Date
+            </label>
+            <input
+              type="date"
+              value={date || ''}
+              readOnly
+              disabled
+              style={{
+                padding: '12px 16px',
+                border: '1px solid rgba(22, 77, 114, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                backgroundColor: '#f1f5f9',
+                color: '#64748b',
+                cursor: 'not-allowed',
+                width: '100%',
+                WebkitAppearance: 'none',
+                MozAppearance: 'textfield',
+              }}
+            />
+          </div>
 
-                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
-                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
-                    <button className="save-button" onClick={handleSave}>Save</button>
-                    <hr />
-                    
-                </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              color: '#1e293b',
+              letterSpacing: '0.2px',
+            }}>
+              Bank Name
+            </label>
+            <select
+              value={backName}
+              onChange={(e) => setBackname(e.target.value)}
+              style={{
+                padding: '12px 16px',
+                border: '1px solid rgba(22, 77, 114, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                backgroundColor: '#ffffff',
+                color: '#1e293b',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#164d72';
+                e.target.style.boxShadow = '0 0 0 3px rgba(22, 77, 114, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(22, 77, 114, 0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              <option value="" disabled>Select a Bank</option>
+              {backoption.map((bank, index) => (
+                <option key={index} value={bank}>{bank}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              color: '#1e293b',
+              letterSpacing: '0.2px',
+            }}>
+              Payment Date
+            </label>
+            <input
+              type="date"
+              value={depositedate}
+              onChange={(e) => setDepositedate(e.target.value)}
+              style={{
+                padding: '12px 16px',
+                border: '1px solid rgba(22, 77, 114, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                backgroundColor: '#ffffff',
+                color: '#1e293b',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#164d72';
+                e.target.style.boxShadow = '0 0 0 3px rgba(22, 77, 114, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(22, 77, 114, 0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              color: '#1e293b',
+              letterSpacing: '0.2px',
+            }}>
+              Cheque Number/Reference
+            </label>
+            <input
+              type="text"
+              placeholder="Enter cheque or reference number"
+              value={CHnumber}
+              onChange={(e) => setCHnumber(e.target.value)}
+              required
+              style={{
+                padding: '12px 16px',
+                border: '1px solid rgba(22, 77, 114, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                backgroundColor: '#ffffff',
+                color: '#1e293b',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#164d72';
+                e.target.style.boxShadow = '0 0 0 3px rgba(22, 77, 114, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(22, 77, 114, 0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              color: '#1e293b',
+              letterSpacing: '0.2px',
+            }}>
+              Amount (LKR)
+            </label>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(parseFloat(e.target.value))}
+              placeholder="0.00"
+              style={{
+                padding: '12px 16px',
+                border: '1px solid rgba(22, 77, 114, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                backgroundColor: '#ffffff',
+                color: '#1e293b',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#164d72';
+                e.target.style.boxShadow = '0 0 0 3px rgba(22, 77, 114, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(22, 77, 114, 0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '20px',
+          padding: '24px',
+          background: 'linear-gradient(135deg, #f8fafb 0%, #f1f5f9 100%)',
+          borderRadius: '12px',
+          border: '1px solid rgba(22, 77, 114, 0.08)',
+        }}>
+          <div style={{
+            fontSize: '1.25rem',
+            fontWeight: '600',
+            color: '#164d72',
+            padding: '12px 24px',
+            background: '#ffffff',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+            letterSpacing: '0.3px',
+          }}>
+            Outstanding: RS/= {formatNumbers(outstanding)}
+          </div>
+
+          <div style={{
+            display: 'flex',
+            gap: '16px',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}>
+            <button
+              onClick={handleCalculate}
+              style={{
+                padding: '12px 32px',
+                fontSize: '1rem',
+                fontWeight: '600',
+                color: '#164d72',
+                backgroundColor: '#ffffff',
+                border: '2px solid #164d72',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                letterSpacing: '0.3px',
+                boxShadow: '0 4px 12px rgba(22, 77, 114, 0.15)',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#164d72';
+                e.target.style.color = '#ffffff';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 20px rgba(22, 77, 114, 0.25)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#ffffff';
+                e.target.style.color = '#164d72';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 12px rgba(22, 77, 114, 0.15)';
+              }}
+            >
+              Calculate Outstanding
+            </button>
+
+            <button
+              onClick={handleSave}
+              style={{
+                padding: '12px 32px',
+                fontSize: '1rem',
+                fontWeight: '600',
+                color: '#ffffff',
+                backgroundColor: '#164d72',
+                border: '2px solid #164d72',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                letterSpacing: '0.3px',
+                boxShadow: '0 4px 12px rgba(22, 77, 114, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#0f4c5c';
+                e.target.style.borderColor = '#0f4c5c';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 20px rgba(22, 77, 114, 0.35)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#164d72';
+                e.target.style.borderColor = '#164d72';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 12px rgba(22, 77, 114, 0.25)';
+              }}
+            >
+              Save Payment
+            </button>
+          </div>
+        </div>
+      </div>
 
       <Footer />
     </div>

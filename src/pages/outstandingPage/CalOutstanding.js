@@ -12,14 +12,8 @@ const CalOutstanding = () => {
   const containerRef = useRef(null);
 
   const [invoice, setInvoice] = useState(null);
-  const [amount, setAmount] = useState("");
-  const [outstanding, setOutstanding] = useState("0.00");
-  const [date, setDate] = useState("");
-  const [backName, setBackname] = useState("");
-  const [CHnumber, setCHnumber] = useState("");
   const [savedDetails, setSavedDetails] = useState(null);
   const [updatingChequeId, setUpdatingChequeId] = useState(null);
-  const [depositedate, setDepositedate] = useState('');
 
   const backoption = ["BOC", "Commercial", "HNB","People's","Sampath","NSB","DFCC","AMANA"];
 
@@ -52,51 +46,8 @@ const CalOutstanding = () => {
       .toFixed(2);
   };
 
-  // ---------------- CALCULATE OUTSTANDING ----------------
-  const handleCalculate = async () => {
-    try {
-      const parsedAmount = parseFloat(amount);
-      if (isNaN(parsedAmount)) {
-        toast.error("Enter valid amount");
-        return;
-      }
 
-      const total = parseFloat(calculateTotal());
 
-      const res = await axios.get(
-        `https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`
-      );
-
-      const lastOutstanding = parseFloat(res.data.outstanding);
-
-      const newOutstanding =
-        lastOutstanding === -1
-          ? total - parsedAmount
-          : lastOutstanding - parsedAmount;
-
-      setOutstanding(newOutstanding.toFixed(2));
-    } catch (error) {
-      toast.error("Outstanding calculation failed");
-    }
-  };
-
-  // ---------------- SAVE OUTSTANDING ----------------
-  const handleSave = async () => {
-    try {
-      await axios.post(`https://nihon-inventory.onrender.com/api/create`, {
-        invoiceNumber: invoice.invoiceNumber,
-        date,
-        backName,
-        CHnumber,
-        depositedate,
-        amount,
-        outstanding
-      });
-      toast.success("Outstanding saved successfully");
-    } catch (error) {
-      toast.error("Failed to save outstanding");
-    }
-  };
 
   // ---------------- FETCH ALL OUTSTANDING ----------------
   const handleFetchAllOutstandingDetails = async () => {
@@ -218,19 +169,7 @@ const CalOutstanding = () => {
                     <td>{c.bankName}</td>
                     <td>{c.depositDate}</td>
                     <td>RS/= {formatNumbers(c.amount)}</td>
-                    <td>
-                      <select
-                        value={c.status}
-                        disabled={updatingChequeId === c._id}
-                        onChange={(e) =>
-                          handleUpdateChequeStatus(c._id, e.target.value)
-                        }
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Cleared">Cleared</option>
-                        <option value="Bounced">Bounced</option>
-                      </select>
-                    </td>
+                    <td>{c.status}</td>
                   </tr>
                 ))}
               </tbody>
@@ -272,42 +211,7 @@ const CalOutstanding = () => {
         )}
       </div>
 
-      {/* ADD OUTSTANDING */}
-      <div className="add-outstanding-container">
-                    <h1 className="h1-out">Add Outstanding</h1>
-
-                    <div className="input-container">
-                        <label>Deposited Date:</label>
-                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                    </div>
-                    <div className="input-container">
-                        <label>Bank Name:</label>
-                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
-                            <option value="" disabled>Select a Bank</option>
-                            {backoption.map((bank, index) => (
-                                <option key={index} value={bank}>{bank}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="input-container">
-                        <label>Date:</label>
-                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
-                    </div>
-                    <div className="input-container">
-                        <label>Cheque Number/Reference Number:</label>
-                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
-                    </div>
-                    <div className="input-container">
-                        <label>Amount:</label>
-                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
-                    </div>
-
-                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
-                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
-                    <button className="save-button" onClick={handleSave}>Save</button>
-                    <hr />
-                    
-                </div>
+      
 
       <Footer />
     </div>
