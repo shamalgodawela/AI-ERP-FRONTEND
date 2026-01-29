@@ -106,6 +106,7 @@ const SingleCheque = () => {
     <option value="NSB">NSB</option>
     <option value="DFCC">DFCC</option>HNB
     <option value="AMANA">AMANA</option>
+    <option value="seylan">seylan</option>
     
   </select>
 </div>
