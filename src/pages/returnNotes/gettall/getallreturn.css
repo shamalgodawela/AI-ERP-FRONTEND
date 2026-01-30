@@ -1,54 +1,86 @@
+/* MAIN CONTAINER */
 .return-details-container {
-    
-    
-    padding: 0 20px;
-    font-family: Arial, sans-serif;
+    padding: 0 25px;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* HEADING */
 .return-details-heading {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #fff; /* Changed heading color to white */
-    background-color: #333; /* Changed heading background color */
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2a4d69, #4b86b4);
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+/* TABLE */
 .return-details-table {
     width: 100%;
-    border-collapse: collapse;
-    
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.return-details-table th,
-.return-details-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-}
-
+/* TABLE HEADER */
 .return-details-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+    background-color: #f7f9fc;
+    padding: 14px;
+    font-size: 15px;
     color: #333;
+    border-bottom: 2px solid #e0e0e0;
+    text-align: left;
+    text-transform: uppercase;
 }
 
+/* TABLE BODY */
+.return-details-table td {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+/* ROW HOVER EFFECT */
 .return-details-table tbody tr:hover {
-    background-color: #f5f5f5;
+    background-color: #f0f7ff;
+    transition: 0.2s ease;
 }
 
+/* LOADING */
 .return-details-loading {
     margin-top: 20px;
     font-style: italic;
     color: #777;
 }
+
+/* PRODUCT BOX CARD */
 .product-box {
-    background: #f8f8f8;
-    padding: 8px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    border: 1px solid #ddd;
+    background: #f9fafc;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #4b86b4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* PRODUCT NAME */
+.product-box strong {
     font-size: 14px;
+    color: #2a4d69;
+}
+
+/* PRODUCT DIVIDER */
+.product-box hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 8px 0;
 }
