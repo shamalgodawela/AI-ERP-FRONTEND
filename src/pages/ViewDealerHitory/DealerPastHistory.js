@@ -175,6 +175,35 @@ const DealerPastHistory = () => {
                 }}
               />
             )}
+
+            {/* ---------------------------- PRODUCT MOVEMENT TABLE ---------------------------- */}
+
+            <h3 className="h2-dealer-history" style={{ marginTop: 30 }}>
+              Product Movement Table
+            </h3>
+
+            {Object.keys(productMovement).length === 0 ? (
+              <p>No product movement data available</p>
+            ) : (
+              <table className="dealer-history-table">
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(productMovement).map(
+                    ([product, quantity], index) => (
+                      <tr key={index}>
+                        <td>{product}</td>
+                        <td>{quantity}</td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
       </div>

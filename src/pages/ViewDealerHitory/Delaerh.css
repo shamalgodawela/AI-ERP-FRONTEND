@@ -96,3 +96,29 @@
     font-size: 1.2rem;
   }
 }
+.dealer-history-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dealer-history-table th,
+.dealer-history-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  font-size: 14px;
+}
+
+.dealer-history-table th {
+  background: #333;
+  color: white;
+  font-weight: 600;
+}
+
+.dealer-history-table tr:hover {
+  background: #f5f5f5;
+}
