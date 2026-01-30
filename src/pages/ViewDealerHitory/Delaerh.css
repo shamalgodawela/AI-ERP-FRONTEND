@@ -122,3 +122,47 @@
 .dealer-history-table tr:hover {
   background: #f5f5f5;
 }
+/* PRINT BUTTON */
+.print-btn {
+  background: #333;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+}
+
+.print-btn:hover {
+  background: #555;
+}
+
+/* HIDE ELEMENTS DURING PRINT */
+@media print {
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .dealer-history-card {
+    box-shadow: none !important;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .dealer-history-bg {
+    background: white !important;
+  }
+
+  table {
+    width: 100% !important;
+  }
+}

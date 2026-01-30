@@ -28,6 +28,10 @@ const DealerPastHistory = () => {
     }
   }, [state]);
 
+  const printPage = () => {
+    window.print();
+  };
+
   // Fetch data from backend based on dealer code
   const fetchData = useCallback(async () => {
     if (!dealerCode.trim()) {
@@ -67,7 +71,6 @@ const DealerPastHistory = () => {
     }
   }, [dealerCode, startDate, endDate]);
 
-  // Automatically fetch data when dealerCode is auto-filled
   useEffect(() => {
     if (dealerCode.trim()) {
       fetchData();
@@ -97,16 +100,23 @@ const DealerPastHistory = () => {
 
   return (
     <div className="dealer-history-bg">
-      <div className="dealer-history-card">
-        <Link to="#" onClick={goback} className="Back-Icon">
+
+      {/* PRINT BUTTON */}
+      <button onClick={printPage} className="print-btn">
+        Print Report
+      </button>
+
+      <div className="dealer-history-card" id="print-section">
+        <Link to="#" onClick={goback} className="Back-Icon no-print">
           <IoMdArrowRoundBack size={23} />
         </Link>
+
         <br />
         <br />
 
         <h2 className="h2-dealer-history">Dealer History Information</h2>
 
-        <div className="dealer-history-search">
+        <div className="dealer-history-search no-print">
           <input
             type="text"
             placeholder="Enter Dealer Code"
@@ -118,7 +128,6 @@ const DealerPastHistory = () => {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            style={{ minWidth: 120 }}
           />
 
           <span>to</span>
@@ -127,7 +136,6 @@ const DealerPastHistory = () => {
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            style={{ minWidth: 120 }}
           />
 
           <button
@@ -165,6 +173,7 @@ const DealerPastHistory = () => {
             ) : (
               <Bar
                 data={chartData}
+                className="no-print"
                 options={{
                   responsive: true,
                   scales: {
@@ -175,8 +184,6 @@ const DealerPastHistory = () => {
                 }}
               />
             )}
-
-            {/* ---------------------------- PRODUCT MOVEMENT TABLE ---------------------------- */}
 
             <h3 className="h2-dealer-history" style={{ marginTop: 30 }}>
               Product Movement Table
@@ -208,11 +215,11 @@ const DealerPastHistory = () => {
         )}
       </div>
 
-      <button className="home-btn" onClick={() => navigate('/admin-profile')}>
+      <button className="home-btn no-print" onClick={() => navigate('/admin-profile')}>
         Home
       </button>
 
-      <Footer />
+      <Footer className="no-print" />
     </div>
   );
 };
