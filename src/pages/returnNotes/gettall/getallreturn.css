@@ -44,3 +44,11 @@
     font-style: italic;
     color: #777;
 }
+.product-box {
+    background: #f8f8f8;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
