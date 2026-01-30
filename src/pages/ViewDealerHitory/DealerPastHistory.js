@@ -15,7 +15,9 @@ const DealerPastHistory = () => {
   const [dealerCode, setDealerCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const navigate = useNavigate();
+
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -32,7 +34,6 @@ const DealerPastHistory = () => {
     window.print();
   };
 
-  // Fetch data from backend based on dealer code
   const fetchData = useCallback(async () => {
     if (!dealerCode.trim()) {
       setError('Please enter a dealer code');
@@ -64,7 +65,6 @@ const DealerPastHistory = () => {
       setTotalCollectionAmount(totalCollectionAmount);
       setCustomerName(customerName);
     } catch (error) {
-      console.error('Error fetching dealer sales data:', error.message);
       setError('Data Not found');
     } finally {
       setLoading(false);
@@ -102,20 +102,31 @@ const DealerPastHistory = () => {
     <div className="dealer-history-bg">
 
       {/* PRINT BUTTON */}
-      <button onClick={printPage} className="print-btn">
+      <button onClick={printPage} className="print-btn no-print">
         Print Report
       </button>
 
       <div className="dealer-history-card" id="print-section">
+
         <Link to="#" onClick={goback} className="Back-Icon no-print">
           <IoMdArrowRoundBack size={23} />
         </Link>
 
-        <br />
-        <br />
-
         <h2 className="h2-dealer-history">Dealer History Information</h2>
 
+        {/* SHOW DATE RANGE */}
+        <div className="date-range-display">
+          {startDate && endDate ? (
+            <>
+              <p><strong>From:</strong> {startDate}</p>
+              <p><strong>To:</strong> {endDate}</p>
+            </>
+          ) : (
+            <p>No date range selected</p>
+          )}
+        </div>
+
+        {/* SEARCH BOX */}
         <div className="dealer-history-search no-print">
           <input
             type="text"
@@ -154,14 +165,17 @@ const DealerPastHistory = () => {
             <p className="dealer-history-p">
               Total Invoice Amount: Rs/= {formatNumbers(totalInvoiceAmount)}
             </p>
+
             <p className="dealer-history-p">
               Total Collection Amount: Rs/= {formatNumbers(totalCollectionAmount)}
             </p>
+
             <p className="dealer-history-p">
               Total Outstanding Amount: Rs/= {formatNumbers(
                 totalInvoiceAmount - totalCollectionAmount
               )}
             </p>
+
             <p className="dealer-history-p">
               Customer Name: {customerName || 'N/A'}
             </p>
@@ -176,11 +190,7 @@ const DealerPastHistory = () => {
                 className="no-print"
                 options={{
                   responsive: true,
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                    },
-                  },
+                  scales: { y: { beginAtZero: true } },
                 }}
               />
             )}
@@ -215,7 +225,10 @@ const DealerPastHistory = () => {
         )}
       </div>
 
-      <button className="home-btn no-print" onClick={() => navigate('/admin-profile')}>
+      <button
+        className="home-btn no-print"
+        onClick={() => navigate('/admin-profile')}
+      >
         Home
       </button>
 

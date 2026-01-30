@@ -1,3 +1,4 @@
+/* ---------------- Screen Styles ---------------- */
 .dealer-history-bg {
   min-height: 100vh;
   background: linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
@@ -51,18 +52,14 @@
   margin-bottom: 24px;
 }
 
-.dealer-history-search input[type="text"] {
+.dealer-history-search input[type="text"],
+.dealer-history-search input[type="date"] {
   padding: 10px 14px;
   border-radius: 7px;
   border: 1.5px solid #bfc9d9;
   font-size: 1rem;
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #f7faff;
-  transition: border 0.2s;
-}
-.dealer-history-search input[type="text"]:focus {
-  border: 1.5px solid #4f8cff;
-  outline: none;
 }
 
 .dealer-history-search button {
@@ -72,57 +69,34 @@
   border-radius: 7px;
   padding: 10px 24px;
   font-size: 1rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(79,140,255,0.08);
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.dealer-history-search button:disabled {
-  background: #bfc9d9;
-  cursor: not-allowed;
-}
-.dealer-history-search button:hover:not(:disabled) {
-  background: #1a5edb;
-  box-shadow: 0 4px 16px rgba(79,140,255,0.18);
 }
 
-@media (max-width: 900px) {
-  .dealer-history-card {
-    padding: 12px 2px;
-    max-width: 99vw;
-  }
-  .h2-dealer-history {
-    font-size: 1.2rem;
-  }
-}
 .dealer-history-table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
   background: #ffffff;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .dealer-history-table th,
 .dealer-history-table td {
   padding: 12px 15px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
   text-align: left;
-  font-size: 14px;
 }
 
 .dealer-history-table th {
   background: #333;
   color: white;
-  font-weight: 600;
 }
 
 .dealer-history-table tr:hover {
   background: #f5f5f5;
 }
-/* PRINT BUTTON */
+
+/* ---------------- Print Button ---------------- */
 .print-btn {
   background: #333;
   color: white;
@@ -140,29 +114,56 @@
   background: #555;
 }
 
-/* HIDE ELEMENTS DURING PRINT */
 @media print {
-  .no-print,
-  .no-print * {
+  /* Hide buttons/inputs */
+  .no-print, .no-print * {
     display: none !important;
   }
 
-  body {
+  body, .dealer-history-bg, .dealer-history-card {
     background: white !important;
-  }
-
-  .dealer-history-card {
     box-shadow: none !important;
-    background: white !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  .dealer-history-bg {
-    background: white !important;
+  /* Table fix */
+  .dealer-history-table {
+    display: table !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
   }
 
-  table {
-    width: 100% !important;
+  .dealer-history-table thead {
+    display: table-header-group !important;
+  }
+
+  .dealer-history-table tbody {
+    display: table-row-group !important;
+  }
+
+  .dealer-history-table tr {
+    display: table-row !important;
+    page-break-inside: avoid !important;
+  }
+
+  .dealer-history-table th,
+  .dealer-history-table td {
+    display: table-cell !important;
+    border: 1px solid black !important;
+    padding: 8px !important;
+    text-align: left !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Remove flex/grid that breaks table */
+  .dealer-history-card, .dealer-history-bg {
+    display: block !important;
+  }
+
+  /* Hide chart for print */
+  .no-print, .no-print * {
+    display: none !important;
   }
 }
