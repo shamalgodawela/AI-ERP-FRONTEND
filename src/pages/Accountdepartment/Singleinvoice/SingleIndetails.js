@@ -384,7 +384,7 @@ const SingleIndetails = () => {
             </label>
             <input
               type="date"
-              value={date || ''}
+              value={depositedate || ''}
               readOnly
               disabled
               style={{
@@ -454,8 +454,8 @@ const SingleIndetails = () => {
             </label>
             <input
               type="date"
-              value={depositedate}
-              onChange={(e) => setDepositedate(e.target.value)}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               style={{
                 padding: '12px 16px',
                 border: '1px solid rgba(22, 77, 114, 0.15)',
