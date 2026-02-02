@@ -35,11 +35,11 @@ const actions = [
     //   icon: <FaClock size={32} />, // ⏳ pending
     //   route: '/Adminallorder',
     // },
-    // {
-    //   label: 'View Dealer History',
-    //   icon: <FaUserTie size={32} />, // 👔 dealer
-    //   route: '/AllcustomerWiseHistory',
-    // },
+     {
+      label: 'View Dealer History',
+      icon: <FaUserTie size={32} />, // 👔 dealer
+      route: '/AccAlldealer',
+    },
     // {
     //   label: 'Sales & Collection Details',
     //   icon: <FaChartLine size={32} />, // 📈 sales

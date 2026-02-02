@@ -96,6 +96,8 @@ import SingleCheque from "./pages/Accountdepartment/Singlecheque/SingleCheque";
 import SingleIndetails from "./pages/Accountdepartment/Singleinvoice/SingleIndetails";
 import AllaccCheaue from "./pages/Accountdepartment/ChequeDetails/AllaccCheaue";
 import BankAcc from "./pages/Accountdepartment/BackdepositeDetails/BankAcc";
+import AccAlldealer from "./pages/Accountdepartment/AllDealerHis/AccAlldealer";
+import SingleDelaer from "./pages/Accountdepartment/AllDealerHis/SingleDelaer";
 
 
 axios.defaults.withCredentials= true;
@@ -259,6 +261,8 @@ function App() {
 <Route path="/single-invoice/:id" element={<SingleIndetails/>} />
 <Route path="/All-accCheaue" element={<AllaccCheaue/>} />
 <Route path="/BankAcc" element={<BankAcc/>} />
+<Route path="/AccAlldealer" element={<AccAlldealer/>} />
+<Route path="/SingleDelaer" element={<SingleDelaer/>} />
 
 
 
