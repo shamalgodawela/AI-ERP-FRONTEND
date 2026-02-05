@@ -610,6 +610,7 @@ const InvoiceForm = () => {
                <option value="Cash">Cash</option>
                <option value="Credit">Credit</option>
                <option value="Exe_stock">Exe_stock</option>
+               <option value="Sample">Sample</option>
               </select>
           </div>
           <div className="form-group">
