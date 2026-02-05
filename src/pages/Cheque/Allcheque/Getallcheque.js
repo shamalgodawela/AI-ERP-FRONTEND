@@ -7,10 +7,11 @@ const Getallcheque = () => {
   const [cheques, setCheques] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [singleDate, setSingleDate] = useState(""); // ✅ new
+  const [singleDate, setSingleDate] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [exeFilter, setExeFilter] = useState(""); // ⭐ NEW EXE FILTER
 
   const navigate = useNavigate();
 
@@ -27,7 +28,6 @@ const Getallcheque = () => {
         setLoading(false);
       }
     };
-
     fetchCheques();
   }, []);
 
@@ -36,14 +36,15 @@ const Getallcheque = () => {
       minimumFractionDigits: 2,
     });
 
-  // ✅ FILTER BY SINGLE DATE OR RANGE + STATUS
+  // ===========================
+  //   FILTER LOGIC
+  // ===========================
   const filteredCheques = cheques.filter((c) => {
     const deposit = new Date(c.depositDate);
     const depositStr = c.depositDate?.split("T")[0];
 
     let dateMatch = true;
 
-    // Priority: single date
     if (singleDate) {
       dateMatch = depositStr === singleDate;
     } else {
@@ -58,10 +59,13 @@ const Getallcheque = () => {
     const statusMatch =
       statusFilter === "All" || c.status === statusFilter;
 
-    return dateMatch && statusMatch;
+    // ⭐ NEW exe filter
+    const exeMatch =
+      exeFilter === "" || c.exe === exeFilter;
+
+    return dateMatch && statusMatch && exeMatch;
   });
 
-  // ✅ TOTAL AMOUNT
   const totalFilteredAmount = filteredCheques.reduce(
     (sum, c) => sum + Number(c.amount || 0),
     0
@@ -75,7 +79,6 @@ const Getallcheque = () => {
 
       {/* 🔍 SEARCH BAR */}
       <div className="cheque-search-bar">
-
         <div className="search-group">
           <label>Single Date</label>
           <input
@@ -125,9 +128,33 @@ const Getallcheque = () => {
             <option value="Bounced">Bounced</option>
           </select>
         </div>
+
+        {/* ⭐ EXE FILTER */}
+        <div className="search-group">
+          <label>Executive</label>
+          <select
+            value={exeFilter}
+            onChange={(e) => setExeFilter(e.target.value)}
+          >
+            <option value="">All Executives</option>
+            <option value="Mr.Ahamed">Mr.Ahamed</option>
+            <option value="Mr.Safrath">Mr.Safrath</option>
+            <option value="Mr.Dasun">Mr.Dasun</option>
+            <option value="Mr.Chameera">Mr.Chameera</option>
+            <option value="Mr.Riyas">Mr.Riyas</option>
+            <option value="Mr.Navaneedan">Mr.Navaneedan</option>
+            <option value="Mr.Nayum">Mr.Nayum</option>
+            <option value="SOUTH">SOUTH-1</option>
+            <option value="Other">Other</option>
+            <option value="UpCountry">UpCountry</option>
+            <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+            <option value="Mr.Buddhika">Mr.Buddhika</option>
+            <option value="Mr.Arshad">Mr.Arshad</option>
+          </select>
+        </div>
       </div>
 
-      {/* ✅ TOTAL BOX */}
+      {/* TOTAL BOX */}
       <div className="cheque-total-box">
         Total Amount: <span>Rs {formatNumber(totalFilteredAmount)}</span>
       </div>
@@ -139,6 +166,7 @@ const Getallcheque = () => {
             <tr>
               <th className="cheque-th">Invoice No</th>
               <th className="cheque-th">Customer</th>
+              <th className="cheque-th">Executive</th>
               <th className="cheque-th">Invoice Date</th>
               <th className="cheque-th">Due Date</th>
               <th className="cheque-th">Cheque No</th>
@@ -151,7 +179,7 @@ const Getallcheque = () => {
           <tbody>
             {filteredCheques.length === 0 ? (
               <tr>
-                <td colSpan="9" className="empty">
+                <td colSpan="10" className="empty">
                   No cheque records found
                 </td>
               </tr>
@@ -160,6 +188,7 @@ const Getallcheque = () => {
                 <tr key={index}>
                   <td>{c.invoiceNumber}</td>
                   <td>{c.customer}</td>
+                  <td>{c.exe}</td>
                   <td>{c.invoiceDate}</td>
                   <td>{c.dueDate}</td>
                   <td>{c.chequeNo}</td>
