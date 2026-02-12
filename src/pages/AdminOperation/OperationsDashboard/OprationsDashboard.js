@@ -38,6 +38,11 @@ const actions = [
     icon: <FaUniversity size={32} />, 
     route: '/admin-operation-incentive',
   },
+  {
+    label: 'Return Details',
+    icon: <FaUniversity size={32} />, 
+    route: '/Getallreturn-op',
+  },
 ];
 
 const OprationsDashboard = () => {

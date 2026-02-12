@@ -1,13 +1,15 @@
-/* MAIN CONTAINER */
-.return-details-container {
-    padding: 0 25px;
+/* PAGE WRAPPER TO AVOID NAVBAR OVERLAP */
+.unique-return-main-content {
+    padding-top: 80px; /* adjust based on navbar height */
+    padding-left: 25px;
+    padding-right: 25px;
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* HEADING */
-.return-details-heading {
+/* HEADER */
+.unique-return-header {
     font-size: 26px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #ffffff;
     background: linear-gradient(135deg, #2a4d69, #4b86b4);
     padding: 12px 18px;
@@ -18,19 +20,54 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+/* FILTER BOX (Add button + Year filter) */
+.unique-return-filter-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.unique-return-add-btn {
+    background: none;
+    border: 1px solid #4b86b4;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.unique-return-add-btn a {
+    text-decoration: none;
+    color: #4b86b4;
+}
+
+.unique-return-year-filter label {
+    margin-right: 8px;
+    font-weight: 500;
+}
+
+.unique-year-select-input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
 /* TABLE */
-.return-details-table {
+.unique-return-table-container {
+    overflow-x: auto;
+}
+
+.unique-return-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    overflow: hidden;
     border-radius: 10px;
     background: #ffffff;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* TABLE HEADER */
-.return-details-table th {
+.unique-return-table th {
     background-color: #f7f9fc;
     padding: 14px;
     font-size: 15px;
@@ -40,28 +77,34 @@
     text-transform: uppercase;
 }
 
-/* TABLE BODY */
-.return-details-table td {
+.unique-return-table td {
     padding: 14px;
     border-bottom: 1px solid #eee;
     font-size: 14px;
+    vertical-align: top;
+    word-break: break-word;
 }
 
-/* ROW HOVER EFFECT */
-.return-details-table tbody tr:hover {
+.unique-return-table tbody tr:hover {
     background-color: #f0f7ff;
     transition: 0.2s ease;
 }
 
-/* LOADING */
-.return-details-loading {
+/* LOADING TEXT */
+.unique-return-loading {
     margin-top: 20px;
     font-style: italic;
     color: #777;
 }
 
+/* PRODUCT CELL */
+.unique-return-product-cell {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 /* PRODUCT BOX CARD */
-.product-box {
+.unique-return-product-box {
     background: #f9fafc;
     padding: 10px 12px;
     border-radius: 8px;
@@ -72,15 +115,14 @@
     line-height: 1.5;
 }
 
-/* PRODUCT NAME */
-.product-box strong {
+.unique-return-product-box strong {
     font-size: 14px;
     color: #2a4d69;
 }
 
-/* PRODUCT DIVIDER */
-.product-box hr {
-    border: none;
-    border-top: 1px solid #ddd;
-    margin: 8px 0;
+/* RESPONSIVE */
+@media screen and (max-width: 768px) {
+    .unique-return-table-container, .unique-return-product-cell {
+        overflow-x: auto;
+    }
 }

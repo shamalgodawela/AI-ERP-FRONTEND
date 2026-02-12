@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './getallreturn.css';
 import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
+import { useNavigate } from 'react-router-dom';
 
-const GetAllReturnDetails = () => {
+const Getallreturnop = () => {
     const [returnDetails, setReturnDetails] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedYear, setSelectedYear] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchReturnDetails = async () => {
@@ -112,8 +114,9 @@ const GetAllReturnDetails = () => {
                 </div>
 
             </div>
+            <button className="home-btn" onClick={() => navigate('/Admin-operations-dashboard')}>Home</button>
         </div>
     );
 };
 
-export default GetAllReturnDetails;
+export default Getallreturnop ;
