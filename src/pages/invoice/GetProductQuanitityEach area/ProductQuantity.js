@@ -137,6 +137,7 @@ const ProductQuantity = () => {
             >
                <option value="">All Executives</option>
             <option value="Mr.Ahamed">Mr.Ahamed</option>
+            <option value="Mr.Safrath">Mr.Safrath</option>
             <option value="Mr.Dasun">Mr.Dasun</option>
             <option value="Mr.Chameera">Mr.Chameera</option>
             <option value="Mr.Riyas">Mr.Riyas</option>
