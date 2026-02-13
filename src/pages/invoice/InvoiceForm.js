@@ -652,8 +652,11 @@ const InvoiceForm = () => {
     <option value="">-- Select Stock --</option>
     <option value="MS">ms</option>
     <option value="Mr.Arshad">Mr.Arshad</option>
-    <option value="M.Ahamed">Mr.Ahamed</option>
+    <option value="Mr.Ahamed">Mr.Ahamed</option>
     <option value="SOUTH">SOUTH</option>
+    <option value="Mr.Buddika">Mr.Buddika</option>
+    <option value="UpCountry">UpCountry</option>
+    <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
   
   </select>
 </div>
