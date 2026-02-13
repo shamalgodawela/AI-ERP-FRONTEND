@@ -99,6 +99,7 @@ import BankAcc from "./pages/Accountdepartment/BackdepositeDetails/BankAcc";
 import AccAlldealer from "./pages/Accountdepartment/AllDealerHis/AccAlldealer";
 import SingleDelaer from "./pages/Accountdepartment/AllDealerHis/SingleDelaer";
 import Getallreturnop from "./pages/returnNotes/gettall/Getallreturnop";
+import Productquantityop from "./pages/invoice/GetProductQuanitityEach area/Productquantityop";
 
 
 axios.defaults.withCredentials= true;
@@ -291,6 +292,7 @@ function App() {
     <Route path="/bankstatement" element={<BackStatmentop/>} />
     <Route path="/Getallcheque-op" element={<GetallchequeOp/>} />
     <Route path="/Getallreturn-op" element={<Getallreturnop/>} />
+    <Route path="/productquantity-op" element={<Productquantityop/>} />
 
 
 

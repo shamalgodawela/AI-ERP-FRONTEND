@@ -43,6 +43,12 @@ const actions = [
     icon: <FaUniversity size={32} />, 
     route: '/Getallreturn-op',
   },
+  {
+    label: 'Product Quantity-Area wise',
+    icon: <FaUniversity size={32} />, 
+    route: '/productquantity-op',
+  },
+  
 ];
 
 const OprationsDashboard = () => {
