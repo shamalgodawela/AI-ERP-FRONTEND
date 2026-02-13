@@ -5,6 +5,7 @@ import Loader from '../../../compenents/loader/Loader';
 import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 import Footer from '../../../compenents/footer/Footer';
 import { FaPrint } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Productquantityop = () => {
   const [startDate, setStartDate] = useState('');
@@ -14,6 +15,7 @@ const Productquantityop = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const navigate = useNavigate();
 
   const fetchProductQuantities = async () => {
     if ((startDate && !endDate) || (!startDate && endDate)) {
