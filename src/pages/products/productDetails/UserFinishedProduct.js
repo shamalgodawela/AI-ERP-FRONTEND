@@ -8,7 +8,8 @@ import UserNavbar from '../../../compenents/sidebar/UserNavbar/UserNavbar';
 const UserFinishedProduct = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchDate, setSearchDate] = useState("");
+  const [searchStartDate, setSearchStartDate] = useState("");
+  const [searchEndDate, setSearchEndDate] = useState("");
   const [searchProductCode, setSearchProductCode] = useState("");
 
   useEffect(() => {
@@ -26,9 +27,19 @@ const UserFinishedProduct = () => {
     fetchData();
   }, []);
 
-  // Filter data by date and product code
+  // Filter data by date range and product code
   const filteredData = data.filter(item => {
-    const matchesDate = searchDate ? item.GpnDate === searchDate : true;
+    const itemDate = new Date(item.GpnDate);
+
+    const matchesStartDate = searchStartDate
+      ? itemDate >= new Date(searchStartDate)
+      : true;
+
+    const matchesEndDate = searchEndDate
+      ? itemDate <= new Date(searchEndDate)
+      : true;
+
+    const matchesDate = matchesStartDate && matchesEndDate;
     const matchesProductCode = searchProductCode ? 
       item.category.toLowerCase().includes(searchProductCode.toLowerCase()) : true;
     return matchesDate && matchesProductCode;
@@ -99,9 +110,16 @@ const UserFinishedProduct = () => {
       <div className="product-search-bar">
         <input
           type="date"
-          placeholder="Search by Date"
-          value={searchDate}
-          onChange={e => setSearchDate(e.target.value)}
+          placeholder="From Date"
+          value={searchStartDate}
+          onChange={e => setSearchStartDate(e.target.value)}
+          className="search-input"
+        />
+        <input
+          type="date"
+          placeholder="To Date"
+          value={searchEndDate}
+          onChange={e => setSearchEndDate(e.target.value)}
           className="search-input"
         />
         <input
