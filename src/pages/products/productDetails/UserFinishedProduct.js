@@ -45,6 +45,12 @@ const UserFinishedProduct = () => {
     return matchesDate && matchesProductCode;
   });
 
+  // Calculate total number of units for the filtered result
+  const totalUnits = filteredData.reduce((sum, item) => {
+    const units = Number(item.numberOfUnits) || 0;
+    return sum + units;
+  }, 0);
+
   const columns = React.useMemo(
     () => [
       {
@@ -129,6 +135,14 @@ const UserFinishedProduct = () => {
           onChange={e => setSearchProductCode(e.target.value)}
           className="search-input"
         />
+      </div>
+
+      {/* Summary of the current search result */}
+      <div className="product-summary">
+        <span>
+          Total Number of Units for current search:{" "}
+          <strong>{totalUnits}</strong>
+        </span>
       </div>
 
       {isLoading ? (
