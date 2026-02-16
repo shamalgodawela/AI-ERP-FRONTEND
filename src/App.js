@@ -100,6 +100,7 @@ import AccAlldealer from "./pages/Accountdepartment/AllDealerHis/AccAlldealer";
 import SingleDelaer from "./pages/Accountdepartment/AllDealerHis/SingleDelaer";
 import Getallreturnop from "./pages/returnNotes/gettall/Getallreturnop";
 import Productquantityop from "./pages/invoice/GetProductQuanitityEach area/Productquantityop";
+import AdminInvoice from "./pages/invoice/AdminInvoice";
 
 
 axios.defaults.withCredentials= true;
@@ -165,6 +166,8 @@ function App() {
     <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
     <Route path="/AllOutstanding" element={<AllOutStanding/>} />
     <Route path="/getall-cheques" element={<Getallcheque/>} />
+    <Route path="/Admin-invoice" element={<AdminInvoice/>} />
+
   
    
 

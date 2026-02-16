@@ -13,6 +13,10 @@ const AdminnavBar = () => {
       <Link to="/dashboard" className="active">Inventory</Link>
     </li>
     <li>
+      <Link to="/Admin-invoice">Invoice details</Link>
+      
+    </li>
+    <li>
       <Link to="/dateproductDetails">Packing Summary</Link>
     </li>
     <li>
