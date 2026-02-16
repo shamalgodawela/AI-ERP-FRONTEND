@@ -31,9 +31,10 @@ const AllInvoice = () => {
   const fetchInvoices = async () => {
     setIsLoading(true);
     try {
-              const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-invoices`);
+      const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-invoices`);
       const sortedInvoices = response.data.sort((a, b) => new Date(b.invoiceDate) - new Date(a.invoiceDate));
       setInvoices(sortedInvoices);
+      setTotalPrintedQuantity(0);
     } catch (error) {
       console.error('Failed to fetch invoices', error.message);
     } finally {
@@ -62,11 +63,19 @@ const AllInvoice = () => {
         }, 0);
         setTotalPrintedQuantity(totalQuantity);
       } else {
-        const params = {
-          searchQuery,
-          exe,
-        };
+        const params = {};
+        
+        // Only add searchQuery if it has a value
+        if (searchQuery) {
+          params.searchQuery = searchQuery;
+        }
+        
+        // Only add exe if it has a value
+        if (exe) {
+          params.exe = exe;
+        }
 
+        // Add date range if provided
         if (startDate) {
           params.startDate = startDate;
         }
@@ -74,14 +83,35 @@ const AllInvoice = () => {
           params.endDate = endDate;
         }
 
+        // Ensure at least one search parameter is provided
+        if (!searchQuery && !exe && !startDate && !endDate) {
+          // If no search criteria, fetch all invoices
+          fetchInvoices();
+          setTotalPrintedQuantity(0);
+          return;
+        }
+
         const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoices`, {
           params,
         });
         setInvoices(response.data);
-        setTotalPrintedQuantity(0);
+        
+        // Calculate total quantity for all products in invoices with GatePassNo="Printed"
+        const printedInvoices = response.data.filter(invoice => invoice.GatePassNo === "Printed");
+        const totalQuantity = printedInvoices.reduce((sum, invoice) => {
+          if (invoice.products && invoice.products.length > 0) {
+            const invoiceTotalQuantity = invoice.products.reduce((productSum, product) => {
+              return productSum + (product.quantity || 0);
+            }, 0);
+            return sum + invoiceTotalQuantity;
+          }
+          return sum;
+        }, 0);
+        setTotalPrintedQuantity(totalQuantity);
       }
     } catch (error) {
       console.error('Failed to search invoices', error.message);
+      setTotalPrintedQuantity(0);
     } finally {
       setIsLoading(false);
     }
@@ -183,9 +213,13 @@ const AllInvoice = () => {
           {isLoading ? <Loader /> : (
             <>
               <h2 className='h2-invoice'>All Invoices</h2>
-              {productCode && totalPrintedQuantity > 0 && (
+              {totalPrintedQuantity > 0 && (
                 <div style={{ marginBottom: '15px', padding: '10px', backgroundColor: '#e7f3ff', borderRadius: '5px', fontWeight: 'bold' }}>
-                  Total Quantity (Printed): {formatNumbers(totalPrintedQuantity)}
+                  {productCode ? (
+                    <>Total Quantity (Printed): {formatNumbers(totalPrintedQuantity)}</>
+                  ) : (
+                    <>Total Quantity (All Products - Printed): {formatNumbers(totalPrintedQuantity)}</>
+                  )}
                 </div>
               )}
               <table>

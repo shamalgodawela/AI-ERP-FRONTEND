@@ -95,7 +95,7 @@ const ProductdateList = () => {
   return (
 <div>
     
-    <AdminnavBar/>
+    
     <br/>
 
     <a href="/add-packing-product" 
