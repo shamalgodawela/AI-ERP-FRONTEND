@@ -196,10 +196,16 @@ const AdminInvoice = () => {
             <option value="Mr.Dasun">Mr.Dasun</option>
             <option value="Mr.Chameera">Mr.Chameera</option>
             <option value="Mr.Sanjeewa">Mr.Sanjeewa</option>
-            <option value="Mr.Nayum">Mr.Nayum</option>
             <option value="Mr.Navaneedan">Mr.Navaneedan</option>
             <option value="Mr.Riyas">Mr.Riyas</option>
-            <option value="SOUTH">SOUTH-1</option>
+            <option value="Mr.Safrath">Mr.Safrath</option>
+              <option value="Mr.Nayum">Mr.Nayum</option>
+              <option value="SOUTH">SOUTH-1</option>
+              <option value="Other">Other</option>
+              <option value="UpCountry">UpCountry</option>
+              <option value="Mr.Arshad">Mr.Arshad</option>
+              <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+              <option value="Mr.Buddhika">Mr.Buddhika</option>
           </select>
 
           <input
