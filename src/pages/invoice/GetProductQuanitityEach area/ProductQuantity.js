@@ -16,8 +16,15 @@ const ProductQuantity = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   const fetchProductQuantities = async () => {
+    // Validate date range if dates are provided
     if ((startDate && !endDate) || (!startDate && endDate)) {
       setError('Please provide both start date and end date');
+      return;
+    }
+
+    // Require at least date range to search
+    if (!startDate || !endDate) {
+      setError('Please provide a date range to search');
       return;
     }
 
@@ -26,12 +33,16 @@ const ProductQuantity = () => {
     setHasSearched(true);
 
     try {
-      const params = {};
-      if (startDate && endDate) {
-        params.startDate = startDate;
-        params.endDate = endDate;
+      const params = {
+        startDate: startDate,
+        endDate: endDate,
+      };
+      
+      // Only add exe param if an executive is selected
+      // If exe is empty, API should return data for all executives
+      if (exe) {
+        params.exe = exe;
       }
-      if (exe) params.exe = exe;
 
       const response = await axios.get(
         'https://nihon-inventory.onrender.com/api/get-product-quantity-by-code',
