@@ -13,9 +13,11 @@ const AllInvoice = () => {
   const [invoices, setInvoices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [invoiceDate, setInvoiceDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [exe, setExe] = useState('');
-  const [productCode, setProductCode] = useState(''); 
+  const [productCode, setProductCode] = useState('');
+  const [totalPrintedQuantity, setTotalPrintedQuantity] = useState(0); 
   const { id } = useParams();
   const [sinvoice, setsinvoice] = useState(null);
   const { user } = useAuth();
@@ -52,21 +54,31 @@ const AllInvoice = () => {
           };
         });
         setInvoices(invoicesWithQuantity);
+        
+        // Calculate total quantity for invoices with GatePassNo="Printed"
+        const printedInvoices = invoicesWithQuantity.filter(invoice => invoice.GatePassNo === "Printed");
+        const totalQuantity = printedInvoices.reduce((sum, invoice) => {
+          return sum + (invoice.productQuantity || 0);
+        }, 0);
+        setTotalPrintedQuantity(totalQuantity);
       } else {
         const params = {
           searchQuery,
           exe,
         };
 
-        if (invoiceDate) {
-          params.startDate = invoiceDate;
-          params.endDate = invoiceDate;
+        if (startDate) {
+          params.startDate = startDate;
+        }
+        if (endDate) {
+          params.endDate = endDate;
         }
 
         const response = await axios.get(`https://nihon-inventory.onrender.com/api/search-invoices`, {
           params,
         });
         setInvoices(response.data);
+        setTotalPrintedQuantity(0);
       }
     } catch (error) {
       console.error('Failed to search invoices', error.message);
@@ -133,9 +145,16 @@ const AllInvoice = () => {
 
           <input
             type="date"
-            placeholder="Invoice Date"
-            value={invoiceDate}
-            onChange={(e) => setInvoiceDate(e.target.value)}
+            placeholder="Start Date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            style={{ padding: '5px', minWidth: '170px' }}
+          />
+          <input
+            type="date"
+            placeholder="End Date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
             style={{ padding: '5px', minWidth: '170px' }}
           />
 
@@ -164,6 +183,11 @@ const AllInvoice = () => {
           {isLoading ? <Loader /> : (
             <>
               <h2 className='h2-invoice'>All Invoices</h2>
+              {productCode && totalPrintedQuantity > 0 && (
+                <div style={{ marginBottom: '15px', padding: '10px', backgroundColor: '#e7f3ff', borderRadius: '5px', fontWeight: 'bold' }}>
+                  Total Quantity (Printed): {formatNumbers(totalPrintedQuantity)}
+                </div>
+              )}
               <table>
                 <thead>
                   <tr>
@@ -196,8 +220,8 @@ const AllInvoice = () => {
                       <td className='td-invoice'>{invoice.ModeofPayment}</td>
                       <td className='td-invoice'>{formatNumbers(calculateTotal(invoice))}</td>
                       <td className='td-invoice'>
-  {productCode ? invoice.productQuantity || '-' : '-'}
-</td>
+                        {productCode ? invoice.productQuantity || '-' : '-'}
+                      </td>
 
 
                       <td className='td-invoice'>
