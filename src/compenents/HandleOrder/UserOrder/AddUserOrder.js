@@ -256,6 +256,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               <option value="Mr.Arshad">Mr.Arshad</option>
               <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
               <option value="Mr.Buddhika">Mr.Buddhika</option>
+              <option value="Mr.Buddhika">Nihon_Agriculture_EX</option>
             </select>
           </div>
 
