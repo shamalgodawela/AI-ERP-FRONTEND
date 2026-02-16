@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTable } from 'react-table';
-import { SpinnerImg } from '../../loader/Loader'; 
-import "./productdate.css"
+import { SpinnerImg } from '../../../compenents/loader/Loader'; 
+import AdminnavBar from '../../AdminNavbar/AdminnavBar';
+
+
 
 const ProductdateList = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchDate, setSearchDate] = useState("");
+  const [searchStartDate, setSearchStartDate] = useState("");
+  const [searchEndDate, setSearchEndDate] = useState("");
   const [searchProductCode, setSearchProductCode] = useState("");
 
   useEffect(() => {
@@ -25,23 +28,35 @@ const ProductdateList = () => {
     fetchData();
   }, []);
 
-  // Filter data by date and product code
+  // Filter data by date range and product code
   const filteredData = data.filter(item => {
-    const matchesDate = searchDate ? item.GpnDate === searchDate : true;
+    const itemDate = new Date(item.GpnDate);
+
+    const matchesStartDate = searchStartDate
+      ? itemDate >= new Date(searchStartDate)
+      : true;
+
+    const matchesEndDate = searchEndDate
+      ? itemDate <= new Date(searchEndDate)
+      : true;
+
+    const matchesDate = matchesStartDate && matchesEndDate;
     const matchesProductCode = searchProductCode ? 
       item.category.toLowerCase().includes(searchProductCode.toLowerCase()) : true;
     return matchesDate && matchesProductCode;
   });
+
+  // Calculate total number of units for the filtered result
+  const totalUnits = filteredData.reduce((sum, item) => {
+    const units = Number(item.numberOfUnits) || 0;
+    return sum + units;
+  }, 0);
 
   const columns = React.useMemo(
     () => [
       {
         Header: 'GPN Date',
         accessor: 'GpnDate',
-      },
-      {
-        Header: 'GPN Number',
-        accessor: 'GpnNumber',
       },
       {
         Header: 'Product Name',
@@ -78,14 +93,41 @@ const ProductdateList = () => {
   } = tableInstance;
 
   return (
+<div>
+    
+    <AdminnavBar/>
+    <br/>
+
+    <a href="/add-packing-product" 
+   style={{
+     display: 'inline-block',
+     padding: '10px 20px',
+     backgroundColor: '#1e40af',
+     color: '#ffffff',
+     textDecoration: 'none',
+     borderRadius: '6px',
+     fontSize: '14px',
+     fontWeight: '500'
+   }}
+>
+  Add Packing Details
+</a>
+
     <div className="product-management">
       
       <div className="product-search-bar">
         <input
           type="date"
-          placeholder="Search by Date"
-          value={searchDate}
-          onChange={e => setSearchDate(e.target.value)}
+          placeholder="From Date"
+          value={searchStartDate}
+          onChange={e => setSearchStartDate(e.target.value)}
+          className="search-input"
+        />
+        <input
+          type="date"
+          placeholder="To Date"
+          value={searchEndDate}
+          onChange={e => setSearchEndDate(e.target.value)}
           className="search-input"
         />
         <input
@@ -95,6 +137,14 @@ const ProductdateList = () => {
           onChange={e => setSearchProductCode(e.target.value)}
           className="search-input"
         />
+      </div>
+
+      {/* Summary of the current search result */}
+      <div className="product-summary">
+        <span>
+          Total Number of Units for current search:{" "}
+          <strong>{totalUnits}</strong>
+        </span>
       </div>
 
       {isLoading ? (
@@ -131,6 +181,7 @@ const ProductdateList = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
