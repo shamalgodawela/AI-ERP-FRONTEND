@@ -356,7 +356,7 @@ const InvoiceForm = () => {
       } else if (formData.exe === 'Mr.Nayum') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-NUM';
       } else if (formData.exe === 'SOUTH') {
-        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-south1';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-SOUTH1';
       } else if (formData.exe === 'Other') {
         url = 'https://nihon-inventory.onrender.com/api/lastorder/other';
       } else if (formData.exe === 'UpCountry') {
