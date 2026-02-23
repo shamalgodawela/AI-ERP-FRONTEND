@@ -8,14 +8,12 @@ const Home = () => {
     <div className="welcome-root">
       <div className="welcome-container">
         <div className="welcome-content">
-          <img src={logo} alt="ERP Logo" className="welcome-logo" />
+          {/* <img src={logo} alt="ERP Logo" className="welcome-logo" /> */}
           <h1 className="welcome-title">
-            Welcome to <span className="welcome-highlight">Nihon ERP System</span>
+            Welcome to <span className="welcome-highlight">ERP System</span>
           </h1>
           
-          <p className="welcome-subtitle">
-            Empowering agriculture with smart Agriculture management and AI-driven sales analytics
-          </p>
+          
           
           <div className="welcome-features">
             <div className="feature-item">
@@ -50,9 +48,9 @@ const Home = () => {
             </Link>
           </div>
           
-          <div className="welcome-footer">
+          {/* <div className="welcome-footer">
             <p>Powered by Nihon Software for Modern Agriculture</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

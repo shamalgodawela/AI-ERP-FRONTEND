@@ -15,8 +15,8 @@ const UserNavbar = () => {
         <div className="sm-nav-dropdown">
           <div className="sm-nav-link sm-dropdown-toggle">Return details▾</div>
           <div className="sm-dropdown-menu">
-            <a href="/customerReg" className="sm-dropdown-item">Add return</a>
-            <a href="/getAllCustomer" className="sm-dropdown-item">All Return Details</a>
+            <a href="/addreturn" className="sm-dropdown-item">Add return</a>
+            <a href="/getallreturn" className="sm-dropdown-item">All Return Details</a>
           </div>
         </div>
 
@@ -41,6 +41,7 @@ const UserNavbar = () => {
           <div className="sm-dropdown-menu">
             <a href="/all-invoices" className="sm-dropdown-item">View All Invoices</a>
             <a href="/add-invoice" className="sm-dropdown-item">add Invoices</a>
+            
           </div>
         </div>
 
@@ -51,6 +52,7 @@ const UserNavbar = () => {
             <a href="/user-check-outstanding" className="sm-dropdown-item">Outstanding</a>
             <a href="/Add-Cheque" className="sm-dropdown-item">add Cheques details</a>
             <a href="/user-cheque" className="sm-dropdown-item">view Cheques</a>
+            <a href="/product-quantity-by-code" className="sm-dropdown-item">Area Wise Product Quantity</a>
           </div>
         </div>
 
@@ -61,7 +63,8 @@ const UserNavbar = () => {
             <a href="/user-Bulk-product-ton" className="sm-dropdown-item">Bulk Inventory</a>
             <a href="/user-finishedProduct" className="sm-dropdown-item">Packing Summary</a>
             <a href="/user-Bulk-product" className="sm-dropdown-item">Import Product Details</a>
-            <a href="/All-exe-product-user-role" className="sm-dropdown-item">Executives Inventory</a>
+            <a href="/area-allinventories" className="sm-dropdown-item">Executives Inventory</a>
+            <a href="/add-area-inventory" className="sm-dropdown-item"> Add Executives Inventory</a>
           </div>
         </div>
 

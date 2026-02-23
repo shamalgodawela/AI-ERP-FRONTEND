@@ -1,22 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'; 
 import Footer from "../../compenents/footer/Footer";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const SingleOutstanding = () => {
-    const containerRef = useRef(null);
     const { id } = useParams();
+    const navigate = useNavigate();
+    const containerRef = useRef(null);
+
     const [invoice, setInvoice] = useState(null);
     const [amount, setAmount] = useState(0);
     const [outstanding, setOutstanding] = useState(0);
     const [date, setDate] = useState('');
     const [backName, setBackname] = useState('');
-    const [depositedate, setdepositedate] = useState('');
+    const [depositedate, setDepositedate] = useState('');
     const [CHnumber, setCHnumber] = useState('');
-    const [savedDetails, setSavedDetails] = useState(null);
-    const navigate = useNavigate();
+    const [savedDetails, setSavedDetails] = useState(null); 
 
+    const backoption = ['BOC', 'Commercial', 'HNB'];
+
+    // Fetch invoice data
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
@@ -30,51 +35,67 @@ const SingleOutstanding = () => {
         fetchInvoice();
     }, [id]);
 
+    // Calculate total of products
     const calculateTotal = () => {
-        let total = 0;
-        if (invoice && invoice.products) {
-            total = invoice.products.reduce((acc, product) => {
-                const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
-                return acc + productTotal;
-            }, 0);
-        }
+        if (!invoice || !invoice.products) return 0;
+
+        const total = invoice.products.reduce((acc, product) => {
+            const productTotal = product.labelPrice * (1 - product.discount / 100) * product.quantity;
+            return acc + productTotal;
+        }, 0);
+
         return total.toFixed(2);
     };
 
+    // Calculate new outstanding
     const handleCalculate = async () => {
         try {
             const parsedAmount = parseFloat(amount);
-            if (isNaN(parsedAmount)) throw new Error('Invalid amount value');
+            if (isNaN(parsedAmount)) throw new Error('Invalid amount');
 
-            const total = calculateTotal();
-            const parsedTotal = parseFloat(total.replace(/,/g, ''));
-            if (isNaN(parsedTotal)) throw new Error('Invalid total value');
-
+            const total = parseFloat(calculateTotal());
             const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-last-outstanding/${invoice.invoiceNumber}`);
             const lastOutstanding = parseFloat(response.data.outstanding);
 
             let newOutstanding;
             if (lastOutstanding === -1) {
-                newOutstanding = parsedTotal - parsedAmount;
+                newOutstanding = total - parsedAmount;
             } else {
                 newOutstanding = lastOutstanding - parsedAmount;
             }
 
             setOutstanding(newOutstanding.toFixed(2));
         } catch (error) {
-            console.error('Failed to calculate outstanding value:', error.message);
+            console.error('Failed to calculate outstanding:', error.message);
         }
     };
 
+    // Save outstanding payment
+    const handleSave = async () => {
+        try {
+            await axios.post(`https://nihon-inventory.onrender.com/api/create`, {
+                invoiceNumber: invoice.invoiceNumber,
+                date,
+                backName,
+                depositedate,
+                CHnumber,
+                amount,
+                outstanding
+            });
+            toast.success('Data added successfully!');
+        } catch (error) {
+            toast.error('Failed to add details');
+        }
+    };
+
+    // Fetch all outstanding details
     const handleFetchAllOutstandingDetails = async () => {
         try {
             const response = await axios.get(`https://nihon-inventory.onrender.com/api/get-all-outstanding/${invoice.invoiceNumber}`);
-            const data = response.data;
-            if (data.length === 0) {
+            if (response.data.length === 0) {
                 toast.error('Customer did not pay yet');
-                alert('Customer did not pay yet');
             } else {
-                setSavedDetails(data);
+                setSavedDetails(response.data);
             }
         } catch (error) {
             toast.error('Customer did not pay yet');
@@ -82,40 +103,27 @@ const SingleOutstanding = () => {
         }
     };
 
-    const formatNumbers = (x) => {
-        const num = parseFloat(x);
-        if (isNaN(num)) return x;
-        return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    };
-    
-    const goback = () => {
-        navigate(-1);
-    };
+    const goback = () => navigate(-1);
+
+    const formatNumbers = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     if (!invoice) return <div>Loading...</div>;
 
     return (
-        <div>
-            <br /><br />
-            <div className="cal-outstanding-container">
-                {/* Back Button */}
-                <button onClick={goback} style={{
-                    backgroundColor: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 16px',
-                    marginBottom: '20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>← Back</button>
+        <div ref={containerRef}>
+            <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
+                Go Back <IoMdArrowRoundBack size={23} />
+            </Link>
 
+            <div className="cal-outstanding-container">
                 <h4 className="h1-out">Invoice code: {invoice.invoiceNumber}</h4>
                 <h4 className="h1-out">Customer: {invoice.customer}</h4>
-                <h4 className="h1-out">Invoice Date: {invoice.invoiceDate}</h4>
                 <h4 className="h1-out">EXE: {invoice.exe}</h4>
-
+                <h4 className="h1-out">Address: {invoice.address}</h4>
+                
                 <br /><hr /><br />
 
+                {/* Product Details */}
                 <h2 className="h1-out">Product Details</h2>
                 <table>
                     <thead>
@@ -144,19 +152,18 @@ const SingleOutstanding = () => {
                     </tbody>
                 </table>
 
-                <div className="info-item-td text-end text-bold3" id="second3">
-    Total: RS/= {formatNumbers(calculateTotal())}
-</div>
+                <div className="info-item-td text-end text-bold1">SubTotal: RS/={calculateTotal()}</div>
+                <div className="info-item-td text-end text-bold2">Tax: %{invoice.Tax}</div>
+                <div className="info-item-td text-end text-bold3">Total: RS/={calculateTotal()}</div>
 
+                <br /><hr /><br />
 
-                <br /><br /><hr /> <br /><br />
+                {/* Add Outstanding */}
+                
 
-                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>
-                    Fetch All Outstanding Details
-                </button>
+                <br /><hr /><br />
 
-                <br /><br /><hr /> <br />
-
+                {/* Display saved outstanding details */}
                 {savedDetails && (
                     <div>
                         <h2 className="h1-out">All Outstanding Details:</h2>
@@ -173,16 +180,86 @@ const SingleOutstanding = () => {
                                 {savedDetails.map((detail, index) => (
                                     <tr key={index}>
                                         <td>{detail.date}</td>
-                                        <td>RS/= {formatNumbers(detail.amount)}</td>
+                                        <td>RS/={detail.amount}</td>
                                         <td>{detail.backName}</td>
-                                        <td>RS/= {formatNumbers(detail.outstanding)}</td>
+                                        <td>RS/={detail.outstanding}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                 )}
+
+<h2>Invoice date:{invoice.invoiceDate}</h2>
+<h2>Due date:{invoice.Duedate}</h2>
+
+                {/* Display Cheque details */}
+                {invoice.cheques && invoice.cheques.length > 0 && (
+                    <div>
+                        <h2 className="h1-out">Cheque Details:</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cheque No</th>
+                                    <th>Bank Name</th>
+                                    <th>Deposit Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {invoice.cheques.map((cheque, index) => (
+                                    <tr key={index}>
+                                        <td>{cheque.chequeNo}</td>
+                                        <td>{cheque.bankName}</td>
+                                        <td>{cheque.depositDate}</td>
+                                        <td>RS/={cheque.amount}</td>
+                                        <td>{cheque.status}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                )}
+                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
+
             </div>
+            {/* <div className="add-outstanding-container">
+                    <h1 className="h1-out">Add Outstanding</h1>
+
+                    <div className="input-container">
+                        <label>Deposited Date:</label>
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Bank Name:</label>
+                        <select value={backName} onChange={(e) => setBackname(e.target.value)}>
+                            <option value="" disabled>Select a Bank</option>
+                            {backoption.map((bank, index) => (
+                                <option key={index} value={bank}>{bank}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="input-container">
+                        <label>Date:</label>
+                        <input type="date" placeholder="Deposited date" value={depositedate} onChange={(e) => setDepositedate(e.target.value)} />
+                    </div>
+                    <div className="input-container">
+                        <label>Cheque Number/Reference Number:</label>
+                        <input type="text" placeholder="Cheque number" value={CHnumber} onChange={(e) => setCHnumber(e.target.value)} required />
+                    </div>
+                    <div className="input-container">
+                        <label>Amount:</label>
+                        <input type="number" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+                    </div>
+
+                    <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
+                    <div className="outstanding">Outstanding: RS/={outstanding}</div>
+                    <button className="save-button" onClick={handleSave}>Save</button>
+                    <hr />
+                    
+                </div> */}
 
             <Footer />
         </div>
