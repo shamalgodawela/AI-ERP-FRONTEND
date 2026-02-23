@@ -1,154 +1,213 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './AllCheques.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./AllCheques.css";
+import { useNavigate } from "react-router-dom";
 
 const Getallcheque = () => {
   const [cheques, setCheques] = useState([]);
-  const [filteredCheques, setFilteredCheques] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filters
-  const [areaSearch, setAreaSearch] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [chequeNumberSearch, setChequeNumberSearch] = useState('');
-  const [dateSearch, setDateSearch] = useState('');
-  const [areas, setAreas] = useState([]);
+  const [singleDate, setSingleDate] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [exeFilter, setExeFilter] = useState(""); // ⭐ NEW EXE FILTER
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCheques = async () => {
       try {
-        const response = await axios.get('https://nihon-inventory.onrender.com/api/getall-cheque');
-        const allCheques = response.data.cheques;
-
-        setCheques(allCheques);
-        setFilteredCheques(allCheques);
-
-        // Extract unique areas (first 3 digits of invoice number)
-        const uniqueAreas = Array.from(
-          new Set(
-            allCheques
-              .map(c => c.invoiceNumber?.substring(0, 3)) // take first 3 characters
-              .filter(Boolean)
-              .sort() // sort alphabetically
-          )
+        const res = await axios.get(
+          "https://nihon-inventory.onrender.com/api/cheques"
         );
-        setAreas(uniqueAreas);
-
+        setCheques(res.data);
       } catch (error) {
-        console.error('Error fetching cheques:', error);
+        console.error("Failed to load cheque details", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchCheques();
   }, []);
 
-  useEffect(() => {
-    const filtered = cheques.filter((cheque) => {
-      const areaMatch = areaSearch
-        ? cheque.invoiceNumber?.substring(0, 3) === areaSearch
-        : true;
-
-      const bankMatch = bankName
-        ? cheque.Bankdetails?.toLowerCase().includes(bankName.toLowerCase())
-        : true;
-
-      const chequeNumberMatch = chequeNumberSearch
-        ? cheque.ChequeNumber?.toLowerCase().includes(chequeNumberSearch.toLowerCase())
-        : true;
-
-      const dateMatch = dateSearch
-        ? cheque.DepositeDate?.substring(0, 10) === dateSearch
-        : true;
-
-      return areaMatch && bankMatch && chequeNumberMatch && dateMatch;
+  const formatNumber = (num) =>
+    Number(num).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
     });
 
-    setFilteredCheques(filtered);
-  }, [areaSearch, bankName, chequeNumberSearch, dateSearch, cheques]);
+  // ===========================
+  //   FILTER LOGIC
+  // ===========================
+  const filteredCheques = cheques.filter((c) => {
+    const deposit = new Date(c.depositDate);
+    const depositStr = c.depositDate?.split("T")[0];
 
-  if (loading) return <div className="loader">Loading...</div>;
+    let dateMatch = true;
+
+    if (singleDate) {
+      dateMatch = depositStr === singleDate;
+    } else {
+      const from = fromDate ? new Date(fromDate) : null;
+      const to = toDate ? new Date(toDate) : null;
+
+      if (from && to) dateMatch = deposit >= from && deposit <= to;
+      else if (from) dateMatch = deposit >= from;
+      else if (to) dateMatch = deposit <= to;
+    }
+
+    const statusMatch =
+      statusFilter === "All" || c.status === statusFilter;
+
+    // ⭐ NEW exe filter
+    const exeMatch =
+      exeFilter === "" || c.exe === exeFilter;
+
+    return dateMatch && statusMatch && exeMatch;
+  });
+
+  const totalFilteredAmount = filteredCheques.reduce(
+    (sum, c) => sum + Number(c.amount || 0),
+    0
+  );
+
+  if (loading) return <p>Loading cheque details...</p>;
 
   return (
-    <div>
-      
-    <div className="cheques-container">
-      <h2>All Cheque Details</h2>
+    <div className="cheque-report-container">
+      <h2 className="cheque-report-title">Cheque Report</h2>
 
-      {/* Search Filters */}
-      <div className="search-filters">
-      
-        <select
-          value={areaSearch}
-          onChange={(e) => setAreaSearch(e.target.value)}
-        >
-          <option value="">Search by Area</option>
-          <option value="EA1">EA1</option>
-          <option value="SU1">SU1</option>
-          <option value="NCP">NCP</option>
-          <option value="UPC">UPC</option>
-          <option value="NUM">NUM</option>
-          <option value="EA2">EA2</option>
-          {areas.map((area, idx) => (
-            <option key={idx} value={area}>
-              {area}
-            </option>
-          ))}
-        </select>
+      {/* 🔍 SEARCH BAR */}
+      <div className="cheque-search-bar">
+        <div className="search-group">
+          <label>Single Date</label>
+          <input
+            type="date"
+            value={singleDate}
+            onChange={(e) => {
+              setSingleDate(e.target.value);
+              setFromDate("");
+              setToDate("");
+            }}
+          />
+        </div>
 
-        <input
-          type="text"
-          placeholder="Search by Bank Name"
-          value={bankName}
-          onChange={(e) => setBankName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Search by Cheque Number"
-          value={chequeNumberSearch}
-          onChange={(e) => setChequeNumberSearch(e.target.value)}
-        />
-        <input
-          type="date"
-          value={dateSearch}
-          onChange={(e) => setDateSearch(e.target.value)}
-        />
+        <div className="search-group">
+          <label>From</label>
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => {
+              setFromDate(e.target.value);
+              setSingleDate("");
+            }}
+          />
+        </div>
+
+        <div className="search-group">
+          <label>To</label>
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => {
+              setToDate(e.target.value);
+              setSingleDate("");
+            }}
+          />
+        </div>
+
+        <div className="search-group">
+          <label>Status</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Cleared">Cleared</option>
+            <option value="Bounced">Bounced</option>
+          </select>
+        </div>
+
+        {/* ⭐ EXE FILTER */}
+        <div className="search-group">
+          <label>Executive</label>
+          <select
+            value={exeFilter}
+            onChange={(e) => setExeFilter(e.target.value)}
+          >
+            <option value="">All Executives</option>
+            <option value="Mr.Ahamed">Mr.Ahamed</option>
+            <option value="Mr.Safrath">Mr.Safrath</option>
+            <option value="Mr.Dasun">Mr.Dasun</option>
+            <option value="Mr.Chameera">Mr.Chameera</option>
+            <option value="Mr.Riyas">Mr.Riyas</option>
+            <option value="Mr.Navaneedan">Mr.Navaneedan</option>
+            <option value="Mr.Nayum">Mr.Nayum</option>
+            <option value="SOUTH">SOUTH-1</option>
+            <option value="Other">Other</option>
+            <option value="UpCountry">UpCountry</option>
+            <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+            <option value="Mr.Buddhika">Mr.Buddhika</option>
+            <option value="Mr.Arshad">Mr.Arshad</option>
+          </select>
+        </div>
       </div>
 
-      <table className="cheques-table">
-        <thead>
-          <tr>
-            <th>Invoice No</th>
-            <th>Cheque No</th>
-            <th>Value</th>
-            <th>Deposit Date</th>
-            <th>Bank</th>
-            <th>Branch</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCheques.length > 0 ? (
-            filteredCheques.map((cheque, index) => (
-              <tr key={index}>
-                <td>{cheque.invoiceNumber}</td>
-                <td>{cheque.ChequeNumber}</td>
-                <td>{cheque.ChequeValue}</td>
-                <td>{cheque.DepositeDate ? cheque.DepositeDate.substring(0, 10) : 'N/A'}</td>
-                <td>{cheque.Bankdetails}</td>
-                <td>{cheque.BankBranch}</td>
-                <td>{cheque.status}</td>
-              </tr>
-            ))
-          ) : (
+      {/* TOTAL BOX */}
+      <div className="cheque-total-box">
+        Total Amount: <span>Rs {formatNumber(totalFilteredAmount)}</span>
+      </div>
+
+      {/* TABLE */}
+      <div className="cheque-report-table-wrapper">
+        <table className="cheque-report-table">
+          <thead>
             <tr>
-              <td colSpan="7">No cheques found.</td>
+              <th className="cheque-th">Invoice No</th>
+              <th className="cheque-th">Customer</th>
+              <th className="cheque-th">Executive</th>
+              <th className="cheque-th">Invoice Date</th>
+              <th className="cheque-th">Due Date</th>
+              <th className="cheque-th">Cheque No</th>
+              <th className="cheque-th">Bank</th>
+              <th className="cheque-th">Deposit Date</th>
+              <th className="cheque-th">Amount (Rs)</th>
+              <th className="cheque-th">Status</th>
             </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filteredCheques.length === 0 ? (
+              <tr>
+                <td colSpan="10" className="empty">
+                  No cheque records found
+                </td>
+              </tr>
+            ) : (
+              filteredCheques.map((c, index) => (
+                <tr key={index}>
+                  <td>{c.invoiceNumber}</td>
+                  <td>{c.customer}</td>
+                  <td>{c.exe}</td>
+                  <td>{c.invoiceDate}</td>
+                  <td>{c.dueDate}</td>
+                  <td>{c.chequeNo}</td>
+                  <td>{c.bankName}</td>
+                  <td>{c.depositDate}</td>
+                  <td>{formatNumber(c.amount)}</td>
+                  <td className={`status ${c.status.toLowerCase()}`}>
+                    {c.status}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <button className="home-btn" onClick={() => navigate("/admin-profile")}>
+        Home
+      </button>
     </div>
   );
 };

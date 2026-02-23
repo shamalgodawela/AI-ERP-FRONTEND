@@ -89,24 +89,8 @@ const UserAllcheque = () => {
 
       {/* Search Filters */}
       <div className="search-filters">
-        {/* Area Dropdown */}
-        <select
-          value={areaSearch}
-          onChange={(e) => setAreaSearch(e.target.value)}
-        >
-          <option value="">Search by Area</option>
-          <option value="EA1">EA1</option>
-          <option value="SU1">SU1</option>
-          <option value="NCP">NCP</option>
-          <option value="UPC">UPC</option>
-          <option value="NUM">NUM</option>
-          <option value="EA2">EA2</option>
-          {areas.map((area, idx) => (
-            <option key={idx} value={area}>
-              {area}
-            </option>
-          ))}
-        </select>
+       
+        
 
         {/* Bank Branch Dropdown */}
         <select
@@ -142,7 +126,7 @@ const UserAllcheque = () => {
             <th>Value</th>
             <th>Deposit Date</th>
             <th>Bank</th>
-            <th>Branch</th>
+            <th>Executive</th>
             <th>Status</th>
           </tr>
         </thead>

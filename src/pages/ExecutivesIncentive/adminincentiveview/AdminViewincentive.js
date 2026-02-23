@@ -15,6 +15,9 @@ const AdminViewincentive = () => {
   const [searchMonth, setSearchMonth] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedSettlement, setSelectedSettlement] = useState('All');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [searchCustomer, setSearchCustomer] = useState('');
 
   useEffect(() => {
     axios.get('https://nihon-inventory.onrender.com/api/get-incentive')
@@ -37,7 +40,7 @@ const AdminViewincentive = () => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, month,IncentiveStatus,Incentivesettlement) => {
+  const applyFilters = (exe, month, IncentiveStatus, Incentivesettlement, customer, start = startDate, end = endDate) => {
     let filtered = incentives;
 
     if (exe !== 'All') {
@@ -46,8 +49,8 @@ const AdminViewincentive = () => {
 
     if (month) {
       filtered = filtered.filter(item =>
-        item.IncentiveDueDate &&
-        item.IncentiveDueDate.startsWith(month)
+        item.invoiceDate &&
+        item.invoiceDate.startsWith(month)
       );
     }
 
@@ -59,6 +62,21 @@ const AdminViewincentive = () => {
       filtered = filtered.filter(item => item.Incentivesettlement === Incentivesettlement);
     }
 
+    // Filter by customer (case-insensitive search)
+    if (customer && customer.trim() !== '') {
+      filtered = filtered.filter(item => 
+        item.customer && 
+        item.customer.toLowerCase().includes(customer.toLowerCase())
+      );
+    }
+
+    // Filter by invoiceDate range
+    if (start) {
+      filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate >= start);
+    }
+    if (end) {
+      filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate <= end);
+    }
     setFilteredIncentives(filtered);
   };
 
@@ -66,25 +84,43 @@ const AdminViewincentive = () => {
   const handleSelectChange = (e) => {
     const exe = e.target.value;
     setSelectedExe(exe);
-    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement);
+    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleMonthChange = (e) => {
     const month = e.target.value;
     setSearchMonth(month);
-    applyFilters(selectedExe, month, selectedStatus, selectedSettlement);
+    applyFilters(selectedExe, month, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleStatusChange = (e) => {
     const status = e.target.value;
     setSelectedStatus(status);
-    applyFilters(selectedExe, searchMonth, status, selectedSettlement);
+    applyFilters(selectedExe, searchMonth, status, selectedSettlement, searchCustomer);
   };
 
   const handleSettlementChange = (e) => {
     const settlement = e.target.value;
     setSelectedSettlement(settlement);
-    applyFilters(selectedExe, searchMonth, selectedStatus, settlement);
+    applyFilters(selectedExe, searchMonth, selectedStatus, settlement, searchCustomer);
+  };
+
+  const handleCustomerSearch = (e) => {
+    const customer = e.target.value;
+    setSearchCustomer(customer);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, customer);
+  };
+
+  // New handlers for start/end date
+  const handleStartDateChange = (e) => {
+    const val = e.target.value;
+    setStartDate(val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, searchCustomer, val, endDate);
+  };
+  const handleEndDateChange = (e) => {
+    const val = e.target.value;
+    setEndDate(val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, searchCustomer, startDate, val);
   };
 
   const totalIncentiveAmount = filteredIncentives.reduce((sum, item) => {
@@ -159,6 +195,16 @@ const AdminViewincentive = () => {
               style={{ padding: '5px', marginRight: '10px' }}
             />
 
+            <label htmlFor="customer-search" style={{ marginRight: '8px' }}>Search by Customer:</label>
+            <input
+              type="text"
+              id="customer-search"
+              placeholder="Enter customer name"
+              value={searchCustomer}
+              onChange={handleCustomerSearch}
+              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
+            />
+
             <label htmlFor="status-select" style={{ marginRight: '8px' }}>Payment Settlement:</label>
             <select
               id="status-select"
@@ -182,6 +228,15 @@ const AdminViewincentive = () => {
                 <option key={idx} value={settlement}>{settlement}</option>
               ))}
             </select>
+
+            <div style={{display:"inline-block", marginRight:'10px'}}>
+              <label htmlFor="start-date">Start Date: </label>
+              <input type="date" id="start-date" value={startDate} onChange={handleStartDateChange} style={{padding:'5px',marginRight:'10px'}} />
+            </div>
+            <div style={{display:"inline-block", marginRight:'10px'}}>
+              <label htmlFor="end-date">End Date: </label>
+              <input type="date" id="end-date" value={endDate} onChange={handleEndDateChange} style={{padding:'5px',marginRight:'10px'}} />
+            </div>
 
             <button onClick={handlePrint} style={{ padding: '5px 10px' }}>
               Print Report
@@ -216,6 +271,7 @@ const AdminViewincentive = () => {
                   <th>Customer</th>
                   <th>Executive</th>
                   <th>Payment Mode</th>
+                  <th>Invoice date</th>
                   <th>Invoice Total (Rs)</th>
                   <th>Incentive Amount (Rs)</th>
                   <th>Invoice Settled Date</th>
@@ -231,6 +287,7 @@ const AdminViewincentive = () => {
                     <td>{item.customer}</td>
                     <td>{item.exe}</td>
                     <td>{item.ModeofPayment}</td>
+                    <td>{item.invoiceDate}</td>
                     <td>{formatNumberWithCommas(parseFloat(item.invoiceTotal) || 0)}</td>
                     <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
                     <td>{item.IncentiveDueDate}</td>

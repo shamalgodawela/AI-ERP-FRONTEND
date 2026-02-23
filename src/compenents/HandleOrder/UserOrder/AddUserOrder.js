@@ -25,6 +25,7 @@ const AddUserOrder = ({ onAddOrder }) => {
     Paymentmethod: '',
     CusVatNo: '',
     IncentiveDueDate: '',
+    FreeissuedStatus:'',
     products: [
       {
         productCode: '',
@@ -40,7 +41,7 @@ const AddUserOrder = ({ onAddOrder }) => {
 
   // Map EXE to endpoint suffix
   const exeEndpointMap = {
-    'Mr.Ahamed': 'ea',
+    'Mr.Safrath': 'ea',
     'Mr.Nayum': 'NUM',
     'UpCountry':'upcountry',
     'SOUTH':'south1',
@@ -81,6 +82,11 @@ const AddUserOrder = ({ onAddOrder }) => {
         console.error('Error fetching last order number:', error);
         toast.error('Failed to fetch last order number');
         setLastOrderNumber('');
+        
+        // If Mr.Arshad and no last order number, set as PT1-001
+        if (orderData.exe === 'Mr.Arshad') {
+          setOrderData((prev) => ({ ...prev, orderNumber: 'PT1-001' }));
+        }
       }
     };
 
@@ -97,24 +103,46 @@ const AddUserOrder = ({ onAddOrder }) => {
       const unitPrice = parseFloat(value);
       const quantity = parseFloat(products[index].quantity);
 
-      if (!isNaN(labelPrice)) {
+      // Calculate discount from unit price and label price
+      if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
         const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
-        products[index].discount = isNaN(discount) ? '' : discount.toFixed(2);
+        products[index].discount = isNaN(discount) ? '' : discount.toFixed(9);
+      }
+
+      // Calculate invoice total from unit price and quantity
+      const invoiceTotal = unitPrice * quantity;
+      products[index].invoiceTotal = isNaN(invoiceTotal)
+        ? ''
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'labelPrice') {
+      // When label price changes, recalculate discount if unit price exists
+      const labelPrice = parseFloat(value);
+      const unitPrice = parseFloat(products[index].unitPrice);
+      const quantity = parseFloat(products[index].quantity);
+
+      if (!isNaN(labelPrice) && !isNaN(unitPrice) && labelPrice > 0) {
+        const discount = ((labelPrice - unitPrice) / labelPrice) * 100;
+        products[index].discount = isNaN(discount) ? '' : discount.toFixed(9);
       }
 
       const invoiceTotal = unitPrice * quantity;
       products[index].invoiceTotal = isNaN(invoiceTotal)
         ? ''
         : invoiceTotal.toFixed(2);
-    } else if (name === 'labelPrice' || name === 'discount') {
-      const labelPrice = parseFloat(products[index].labelPrice);
-      const discount = parseFloat(products[index].discount);
+    } else if (name === 'discount') {
+      // When discount is entered, do not calculate unit price
+      // Only update invoice total if unit price exists
+      const unitPrice = parseFloat(products[index].unitPrice);
       const quantity = parseFloat(products[index].quantity);
-      const unitPrice = labelPrice * (1 - discount / 100);
       const invoiceTotal = unitPrice * quantity;
-      products[index].unitPrice = isNaN(unitPrice)
+      products[index].invoiceTotal = isNaN(invoiceTotal)
         ? ''
-        : unitPrice.toFixed(2);
+        : invoiceTotal.toFixed(2);
+    } else if (name === 'quantity') {
+      // When quantity changes, recalculate invoice total
+      const unitPrice = parseFloat(products[index].unitPrice);
+      const quantity = parseFloat(value);
+      const invoiceTotal = unitPrice * quantity;
       products[index].invoiceTotal = isNaN(invoiceTotal)
         ? ''
         : invoiceTotal.toFixed(2);
@@ -175,7 +203,6 @@ const AddUserOrder = ({ onAddOrder }) => {
       toast.error('Order Number was already used');
     }
   };
-
   const handleGetCustomerDetails = async () => {
     const customerCode = orderData.code;
     try {
@@ -216,9 +243,10 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, exe: e.target.value })
               }
+              required
             >
               <option value="">Select EXE:</option>
-              <option value="Mr.Ahamed">Mr.Ahamed</option>
+              <option value="Mr.Safrath">Mr.Safrath</option>
               <option value="Mr.Nayum">Mr.Nayum</option>
               <option value="SOUTH">SOUTH-1</option>
               <option value="Other">Other</option>
@@ -256,6 +284,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, orderDate: e.target.value })
               }
+              required
             />
           </div>
           <div className="form-row">
@@ -288,6 +317,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               name="customer"
               value={orderData.customer}
               readOnly
+              required
             />
           </div>
           <div className="form-row">
@@ -298,6 +328,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               name="address"
               value={orderData.address}
               readOnly
+              required
             />
           </div>
           <div className="form-row">
@@ -310,6 +341,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, contact: e.target.value })
               }
+              required
             />
           </div>
 
@@ -323,6 +355,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               onChange={(e) =>
                 setOrderData({ ...orderData, CreditPeriod: e.target.value })
               }
+              required
             />
           </div>
 
@@ -335,6 +368,19 @@ const AddUserOrder = ({ onAddOrder }) => {
               value={orderData.Paymentmethod}
               onChange={(e) =>
                 setOrderData({ ...orderData, Paymentmethod: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className="form-row">
+            <label className="form-label">Dealer Incentive Amount/Black magic :</label>
+            <input
+              type="text"
+              className="form-input"
+              name="Paymentmethod"
+              value={orderData.FreeissuedStatus}
+              onChange={(e) =>
+                setOrderData({ ...orderData, FreeissuedStatus: e.target.value })
               }
             />
           </div>
@@ -375,6 +421,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="productCode"
                 value={product.productCode}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
               <button
                 type="button"
@@ -389,6 +436,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="productName"
                 value={product.productName}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Label Price:</label>
@@ -397,6 +445,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="labelPrice"
                 value={product.labelPrice}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Quantity:</label>
@@ -405,6 +454,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="quantity"
                 value={product.quantity}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Discount (%):</label>
@@ -413,6 +463,7 @@ const AddUserOrder = ({ onAddOrder }) => {
                 name="discount"
                 value={product.discount}
                 onChange={(e) => handleChange(e, index)}
+                required
               />
 
               <label>Unit Price:</label>

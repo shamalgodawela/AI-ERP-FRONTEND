@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './return.css'
-import Navbar2 from '../../compenents/sidebar/Navbar2';
+
+import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
 
 const AddReturnDetails = () => {
     const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ const AddReturnDetails = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://nihon-inventory.onrender.com/api/addReturnDetails', formData);
+            const response = await axios.post('https://nihon-inventory.onrender.com/api/addreturndetails', formData);
             console.log('Return details added successfully:', response.data);
             
         } catch (error) {
@@ -55,7 +56,7 @@ const AddReturnDetails = () => {
 
     return (
         <div>
-            <Navbar2/><br/><br/>
+            <UserNavbar/><br/><br/><br/><br/><br/><br/><br/><br/>
             <h2 className='h2return'>Add Return Details</h2> <br/><br/><br/><br/><br/><br/>
         
         <div className="return-details-container">

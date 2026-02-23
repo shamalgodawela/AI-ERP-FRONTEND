@@ -48,6 +48,7 @@ const InvoiceForm = () => {
     CusVatNo:'',
     IncentiveDueDate:'',
     StockName:'',
+    FreeissuedStatus:''
   });
 
 
@@ -182,8 +183,20 @@ const InvoiceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     
-  
+    // Frontend validation: ensure each product has a code and quantity > 0
+    const hasInvalidProduct = formData.products.some((p) => {
+      const qty = Number(p.quantity);
+      return !p.productCode || !Number.isFinite(qty) || qty <= 0;
+    });
+
+    if (hasInvalidProduct) {
+      toast.error('Please ensure all products have a code and quantity > 0', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      return;
+    }
+
     try {
               const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
       const orderExists = orderCheckResponse.data.exists;
@@ -222,9 +235,10 @@ const InvoiceForm = () => {
   
       navigate("/all-invoices");
     } catch (error) {
-      console.error('Failed to add invoice', error.message);
-  
-      toast.error('Failed to add invoice', {
+      const serverMsg = (error && error.response && (error.response.data && (error.response.data.error || error.response.data.message))) || error.message || 'Failed to add invoice';
+      console.error('Failed to add invoice', serverMsg);
+
+      toast.error(serverMsg, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -281,6 +295,7 @@ const InvoiceForm = () => {
           TaxNo: orderData.TaxNo,
           CusVatNo: orderData.CusVatNo,
           IncentiveDueDate: orderData.IncentiveDueDate,
+          FreeissuedStatus:orderData.FreeissuedStatus,
           products: orderData.products.map((product) => ({
             productCode: product.productCode,
             productName: product.productName,
@@ -341,11 +356,11 @@ const InvoiceForm = () => {
       } else if (formData.exe === 'Mr.Nayum') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-NUM';
       } else if (formData.exe === 'SOUTH') {
-        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-south1';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-SOUTH1';
       } else if (formData.exe === 'Other') {
         url = 'https://nihon-inventory.onrender.com/api/lastorder/other';
       } else if (formData.exe === 'UpCountry') {
-        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-other';
+        url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-upcountry';
       } else if(formData.exe ==='Mr.Arshad')
       {
         url="https://nihon-inventory.onrender.com/ap/get-last-invoice-number-PT1"
@@ -409,9 +424,26 @@ const InvoiceForm = () => {
     }
   };
   
+  const fetchNextTaxNo = async () => {
+    try {
+      const response = await axios.get("https://nihon-inventory.onrender.com/api/get-last-tax-no");
+      const lastTaxNo = response.data.nextTaxNo || 0; // assuming your backend returns nextTaxNo
+      setFormData(prev => ({
+        ...prev,
+        TaxNo: lastTaxNo
+      }));
+    } catch (error) {
+      console.error("Failed to fetch last TaxNo", error);
+      toast.error("Failed to fetch last TaxNo");
+    }
+  };
   
-  
-  
+  useEffect(() => {
+    // Only fetch TaxNo if a specific VAT Reg No is selected
+    if (formData.VatRegNo === "VAT Reg No-102784022-7000") {
+      fetchNextTaxNo();
+    }
+  }, [formData.VatRegNo]);
   
   
 
@@ -494,6 +526,15 @@ const InvoiceForm = () => {
             />
           </div>
           <div className="form-group">
+            <label>Dealer Incentive or Black magic free issued status:</label>
+            <input
+              type="text"
+              name="FreeissuedStatus"
+              value={formData.FreeissuedStatus}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
             <label>Order Date:</label>
             <input
               type="date"
@@ -503,17 +544,18 @@ const InvoiceForm = () => {
             />
           </div>
           <div className="form-group">
-            <label>Vat RegNo:</label>
-              <select
-                name="VatRegNo"
-                value={formData.VatRegNo}
-                onChange={handleChange}
-              >
-                <option value="">Select Vat RegNo:</option>
-                <option value="VAT Reg No-102784022-7000">VAT Reg No-102784022-7000</option>
-                <option value="">None</option>
-              </select>
-          </div>
+  <label>Vat RegNo:</label>
+  <select
+    name="VatRegNo"
+    value={formData.VatRegNo}
+    onChange={handleChange}
+  >
+    <option value="">Select Vat RegNo:</option>
+    <option value="VAT Reg No-102784022-7000">VAT Reg No-102784022-7000</option>
+    <option value="">None</option>
+  </select>
+</div>
+
           <div className="form-group">
             <label>Tax invoice or not:</label>
               <select
@@ -534,6 +576,7 @@ const InvoiceForm = () => {
               name="TaxNo"
               value={formData.TaxNo}
               onChange={handleChange}
+            
               />
           </div>
           <div className="form-group">
@@ -565,7 +608,9 @@ const InvoiceForm = () => {
               >
                <option value="">Select mode of payment</option>
                <option value="Cash">Cash</option>
-               <option value="Cheque">Cheque</option>
+               <option value="Credit">Credit</option>
+               <option value="Exe_stock">Exe_stock</option>
+               <option value="Sample">Sample</option>
               </select>
           </div>
           <div className="form-group">
@@ -605,10 +650,13 @@ const InvoiceForm = () => {
     onChange={handleChange}
   >
     <option value="">-- Select Stock --</option>
-    <option value="MS">MS</option>
-    <option value="EA1">EA1</option>
+    <option value="MS">ms</option>
+    <option value="Mr.Arshad">Mr.Arshad</option>
+    <option value="Mr.Ahamed">Mr.Ahamed</option>
     <option value="SOUTH">SOUTH</option>
-    <option value="UP-COUNTRY">UP-COUNTRY</option>
+    <option value="Mr.Buddika">Mr.Buddika</option>
+    <option value="UpCountry">UpCountry</option>
+    <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
   
   </select>
 </div>
@@ -660,6 +708,7 @@ const InvoiceForm = () => {
                   name={`products.${index}.quantity`}
                   value={product.quantity}
                   onChange={(e) => handleChange(e, index)}
+                  min={1}
                 />
               </div>
               <div className="form-group">
@@ -686,7 +735,7 @@ const InvoiceForm = () => {
                   type="text"
                   name={`products.${index}.unitPrice`}
                   value={product.unitPrice}
-                  
+                  readOnly
                 />
               </div>
               <div className="form-group">
@@ -695,7 +744,7 @@ const InvoiceForm = () => {
                   type="text"
                   name={`products.${index}.invoiceTotal`}
                   value={product.invoiceTotal}
-                  
+                  readOnly
                 />
               </div>
              

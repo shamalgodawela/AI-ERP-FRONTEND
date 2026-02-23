@@ -16,7 +16,7 @@ const actions = [
   {
     label: 'View cheques',
     icon: <FaMoneyCheckAlt size={32} />,
-    route: '/allcusoperation',
+    route: '/Getallcheque-op',
   },
   {
     label: 'Sales & Collection Details',
@@ -24,15 +24,31 @@ const actions = [
     route: '',
   },
   {
+    label: 'Payment Breakdown Monthly',
+    icon: <FaUniversity size={32} />, 
+    route: '/bankstatement-operations',
+  },
+  {
     label: 'View Dealer History',
     icon: <FaUserTie size={32} />, 
-    route: '/Admin-operations-dashboard',
+    route: '/allcusoperation',
   },
   {
     label: 'Executives Incentive',
     icon: <FaUniversity size={32} />, 
     route: '/admin-operation-incentive',
   },
+  {
+    label: 'Return Details',
+    icon: <FaUniversity size={32} />, 
+    route: '/Getallreturn-op',
+  },
+  {
+    label: 'Product Quantity-Area wise',
+    icon: <FaUniversity size={32} />, 
+    route: '/productquantity-op',
+  },
+  
 ];
 
 const OprationsDashboard = () => {

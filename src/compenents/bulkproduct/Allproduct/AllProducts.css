@@ -71,3 +71,8 @@
   letter-spacing: 1.5px;
   text-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
 }
+
+.btn-bulk-add{
+  color: black;
+  font-family: 'Times New Roman', Times, serif;
+}

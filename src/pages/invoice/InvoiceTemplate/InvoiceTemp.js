@@ -117,8 +117,10 @@ const calculateTaxtot = () => {
       <td className="invoice-td-invoictemp">&nbsp;</td>
       <td className="invoice-td-invoictemp">&nbsp;</td>
       <td className="invoice-td-invoictemp">&nbsp;</td>
-      <td className="invoice-td-invoictemp">&nbsp;</td>
+      
+      
     </tr>
+    
   ));
   const allRows = [...filledRows, ...emptyRows];
 
@@ -154,9 +156,11 @@ const calculateTaxtot = () => {
             <h6>Email: info@nihonagholdings.com</h6>
             <h6>Hotline: 0777666802</h6>
           </div>
+         
           
               <p id='invoice-tax-invoice-text'>{invoice.VatNO}</p>
               <p id='invoice-vat-reg'>{invoice.VatRegNo}</p>
+              <p id='invoice-stock'>Stock Name:{invoice.StockName}</p>
           
           <div className="invoice-container">
             <div className="invoice-head">
@@ -215,6 +219,7 @@ const calculateTaxtot = () => {
                   </thead>
                   <tbody className="invoice-tbodyinvoice-new">
   {allRows}
+  <p>{invoice.FreeissuedStatus}</p>
 </tbody>
 
                 </table>

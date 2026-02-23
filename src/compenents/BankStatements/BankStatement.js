@@ -81,7 +81,7 @@ const BankStatement = () => {
 
   return (
     <div className="bank-statement-container">
-      <h2>Bank Statement</h2>
+      <h2>Payment Summary</h2>
 
       {/* Month & Year Dropdowns */}
       <div style={{ marginBottom: '15px' }}>
@@ -103,15 +103,20 @@ const BankStatement = () => {
 
         <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} style={{ marginLeft: '10px' }}>
           <option value="">All Years</option>
+          <option value="2026">2026</option>
           <option value="2025">2025</option>
           <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
+      
         </select>
 
         <select value={selectbank} onChange={(e)=>setbankname(e.target.value)}style={{ marginLeft: '10px' }}>
-        <option value="">All Years</option>
+        <option value="">Bank Name</option>
         <option value="HNB">HNB</option>
+        <option value="Sampath">Sampath</option>
+        <option value="NDB">NDB</option>
+        <option value="NBE">NBE</option>
+        <option value="NSB">NSB</option>
+        <option value="BOC">BOC</option>
 
 
 
@@ -129,8 +134,7 @@ const BankStatement = () => {
               <th>Invoice Number</th>
               <th>Date</th>
               <th>Bank Name</th>
-              <th>Deposit Date</th>
-              <th>Cheque Number</th>
+              <th>Cheque Number/reference No</th>
               <th>Amount (LKR)</th>
             </tr>
           </thead>
@@ -140,7 +144,6 @@ const BankStatement = () => {
                 <td>{entry.invoiceNumber}</td>
                 <td>{formatDate(entry.date)}</td>
                 <td>{entry.backName}</td>
-                <td>{entry.depositedate || '-'}</td>
                 <td>{entry.CHnumber || '-'}</td>
                 <td>{formatCurrency(entry.amount)}</td>
               </tr>
