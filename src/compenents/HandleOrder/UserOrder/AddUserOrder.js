@@ -207,7 +207,6 @@ const AddUserOrder = ({ onAddOrder }) => {
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <h1 className="h1order">Order details</h1>
-
           <div className="form-row">
             <label className="form-label">Exe:</label>
             <select
@@ -247,7 +246,6 @@ const AddUserOrder = ({ onAddOrder }) => {
               value={orderData.orderNumber}
             />
           </div>
-
           <div className="form-row">
             <label className="form-label">Order Date:</label>
             <input
