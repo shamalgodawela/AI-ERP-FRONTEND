@@ -203,7 +203,6 @@ const AddUserOrder = ({ onAddOrder }) => {
       toast.error('Order Number was already used');
     }
   };
-
   const handleGetCustomerDetails = async () => {
     const customerCode = orderData.code;
     try {
