@@ -260,7 +260,6 @@ const AddUserOrder = ({ onAddOrder }) => {
               }
             />
           </div>
-
           <div className="form-row">
             <label className="form-label">Customer Code:</label>
             <input
