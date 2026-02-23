@@ -34,7 +34,7 @@ const Operationallcustomers = () => {
   });
 
   const handlepassdelaercode = (code) => {
-    navigate('', { state: { code } });
+    navigate('/opdealerhistory', { state: { code } });
   };
 
   return (

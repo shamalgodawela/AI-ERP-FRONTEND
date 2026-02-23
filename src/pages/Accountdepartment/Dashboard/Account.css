@@ -1,0 +1,290 @@
+/* ===== Root Container ===== */
+.admin-fullscreen-bg {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafb 0%, #f1f5f9 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* ===== Banner ===== */
+.admin-profile-banner {
+    width: 100%;
+    height: 340px;
+    background:
+      linear-gradient(135deg, rgba(15, 76, 92, 0.85), rgba(22, 101, 114, 0.80)),
+      url('../../../assets/account.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 28px 32px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* ===== Logout Button ===== */
+.admin-logout-btn {
+    background: #ffffff;
+    color: #164d72;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.3px;
+}
+
+.admin-logout-btn:hover {
+    background: #164d72;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(22, 77, 114, 0.3);
+}
+
+.admin-logout-btn:active {
+    transform: translateY(-1px);
+}
+
+/* ===== Avatar ===== */
+.admin-avatar-overlap {
+    position: absolute;
+    left: 32px;
+    bottom: -50px;
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 5px solid #ffffff;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 5;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #164d72;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+}
+
+.admin-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ===== Content Section ===== */
+.admin-profile-content {
+    width: 100%;
+    max-width: 1200px;
+    padding: 90px 32px 60px;
+    margin: 0 auto;
+}
+
+/* ===== Actions Grid ===== */
+.admin-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+    margin-bottom: 40px;
+}
+
+/* ===== Action Cards ===== */
+.admin-action-glass-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fbfc 100%);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 42px 28px;
+    border: 1px solid rgba(22, 77, 114, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-action-glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(22, 101, 114, 0.08) 0%, rgba(22, 101, 114, 0) 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    border-radius: 16px;
+}
+
+.admin-action-glass-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 48px rgba(22, 77, 114, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, #ffffff 0%, #f4f9fc 100%);
+    border-color: rgba(22, 77, 114, 0.15);
+}
+
+.admin-action-glass-card:hover::before {
+    opacity: 1;
+}
+
+.admin-action-glass-card:active {
+    transform: translateY(-4px) scale(1.01);
+}
+
+/* ===== Icon ===== */
+.admin-action-icon {
+    font-size: 3rem;
+    color: #164d72;
+    margin-bottom: 18px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-action-glass-card:hover .admin-action-icon {
+    color: #0f4c5c;
+    transform: scale(1.15);
+}
+
+/* ===== Label ===== */
+.admin-action-label {
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: #1e293b;
+    letter-spacing: 0.4px;
+    line-height: 1.5;
+    transition: color 0.35s ease;
+}
+
+.admin-action-glass-card:hover .admin-action-label {
+    color: #164d72;
+}
+
+/* ===== Access Denied ===== */
+.admin-access-denied {
+    max-width: 600px;
+    margin: 140px auto;
+    padding: 2.8rem;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #7f1d1d;
+    border-radius: 16px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    box-shadow: 0 12px 32px rgba(127, 29, 29, 0.2);
+    border: 1px solid rgba(127, 29, 29, 0.15);
+    letter-spacing: 0.3px;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 1024px) {
+    .admin-profile-content {
+        padding: 80px 24px 50px;
+    }
+
+    .admin-actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-profile-banner {
+        height: 260px;
+        padding: 20px 24px;
+    }
+
+    .admin-avatar-overlap {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -42px;
+        width: 90px;
+        height: 90px;
+        border-width: 4px;
+        font-size: 1.6rem;
+    }
+
+    .admin-profile-content {
+        padding-top: 75px;
+        padding: 75px 20px 40px;
+    }
+
+    .admin-actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .admin-action-glass-card {
+        padding: 32px 20px;
+    }
+
+    .admin-action-icon {
+        font-size: 2.4rem;
+        margin-bottom: 14px;
+    }
+
+    .admin-action-label {
+        font-size: 1rem;
+    }
+
+    .admin-logout-btn {
+        padding: 0.55rem 1.1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-fullscreen-bg {
+        padding: 0;
+    }
+
+    .admin-profile-banner {
+        height: 220px;
+        padding: 16px;
+        border-radius: 0;
+    }
+
+    .admin-avatar-overlap {
+        width: 80px;
+        height: 80px;
+        bottom: -35px;
+    }
+
+    .admin-profile-content {
+        padding: 65px 16px 30px;
+    }
+
+    .admin-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .admin-action-glass-card {
+        padding: 28px 16px;
+    }
+
+    .admin-action-icon {
+        font-size: 2rem;
+    }
+
+    .admin-access-denied {
+        margin: 100px 16px;
+        padding: 2rem;
+        font-size: 1.1rem;
+    }
+}

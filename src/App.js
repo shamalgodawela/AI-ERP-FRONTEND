@@ -45,8 +45,6 @@ import AddNewBulk from "./pages/NewBulkDetails/AddNewBulk";
 import ViewAllBulk from "./pages/NewBulkDetails/ViewAllBulk";
 import SalesByExe from "./pages/Exeproductdetails/salesEachProduct/SalesByExe";
 import PackingDashboard from "./pages/PackingMaterials/PackingDashboard";
-import AddCheque from "./pages/Cheque/AddCheque/AddCheque";
-import ViewAllinvoice from "./pages/ViewAllinvoice/ViewAllinvoice";
 import ViewInvoice from "./pages/invoice/ViewInvoice/ViewInvoice";
 import AllTaxInvoice from "./pages/TaxInvoices/ViewAllInvoices/AllTaxInvoice";
 import ViewSingleTax from "./pages/TaxInvoices/ViewSingletax/ViewSingleTax";
@@ -61,7 +59,6 @@ import ProductListExe from "./compenents/product/productList/ProductListExe";
 import Admin from "./compenents/AdminProfile/Admin";
 import Allcustomers from "./pages/ViewDealerHitory/Allcustomer";
 import ProductSummary from "./compenents/product/productSummary/ProductSummary";
-import AllExeTable from "./compenents/Exetable/AllTableexe/AllExeTable";
 import AllProducts from "./compenents/bulkproduct/Allproduct/AllProducts";
 import BankStatement from "./compenents/BankStatements/BankStatement";
 import UserDashboard from "./pages/UserDashboard/UserDashboard";
@@ -83,6 +80,27 @@ import AdminViewincentive from "./pages/ExecutivesIncentive/adminincentiveview/A
 import EditCheque from "./pages/AdminOperation/Cheque/EditCheque";
 import Operationallcustomers from "./pages/ViewDealerHitory/Operationallcustomers";
 import DealerPastHistory from "./pages/ViewDealerHitory/DealerPastHistory";
+import AreaInventory from "./pages/InventoryAreas/AreaInventory";
+import AllInventories from "./pages/InventoryAreas/AllInventories";
+import AddbulkProduct from "./compenents/bulkproduct/addproduct/AddbulkProduct";
+import EXEincentory from "./compenents/Exetable/AllTableexe/EXEincentory";
+import Opdealerhistory from "./pages/ViewDealerHitory/Opdealerhistory";
+import ProductQuantity from "./pages/invoice/GetProductQuanitityEach area/ProductQuantity";
+import UserOneorder from "./compenents/HandleOrder/allorder/UserOneorder";
+import BackStatmentop from "./compenents/BankStatements/BackStatmentop";
+import Getallcheque from "./pages/Cheque/Allcheque/Getallcheque";
+import GetallchequeOp from "./pages/Cheque/Allcheque/GetallchequeOp";
+import AccountProfile from "./pages/Accountdepartment/Dashboard/AccountProfile";
+import AccountPayment from "./pages/Accountdepartment/PaymentDetilas/AccountPayment";
+import SingleCheque from "./pages/Accountdepartment/Singlecheque/SingleCheque";
+import SingleIndetails from "./pages/Accountdepartment/Singleinvoice/SingleIndetails";
+import AllaccCheaue from "./pages/Accountdepartment/ChequeDetails/AllaccCheaue";
+import BankAcc from "./pages/Accountdepartment/BackdepositeDetails/BankAcc";
+import AccAlldealer from "./pages/Accountdepartment/AllDealerHis/AccAlldealer";
+import SingleDelaer from "./pages/Accountdepartment/AllDealerHis/SingleDelaer";
+import Getallreturnop from "./pages/returnNotes/gettall/Getallreturnop";
+import Productquantityop from "./pages/invoice/GetProductQuanitityEach area/Productquantityop";
+import AdminInvoice from "./pages/invoice/AdminInvoice";
 
 
 axios.defaults.withCredentials= true;
@@ -112,9 +130,8 @@ function App() {
     <Route path="/" element={<Home/>}/>
     <Route path="/All-in-one-Login" element={<Mlogin/>}/>
     <Route path="/Unotherized" element={<AuthError/>}/>
-    <Route path="/alloutstanding" element={<AllOutStanding />} />
-    <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
-    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+  
+
 
 {/* ----------------------------------------------------------------------------- */}
 
@@ -138,14 +155,21 @@ function App() {
     <Route path="/productSummery" element={<ProductSummary/>}/>
     <Route path="/dashboard" element={<Admininventory/>}/>
     <Route path="/edit-product/:id" element={<EditProduct/>}/>
-    <Route path="/product-list" element={<ProductListExe/>} />
-    <Route path="/Allexetable" element={<AllExeTable/>}/>
+  <Route path="/product-list" element={<ProductListExe/>} />
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
     <Route path="/view-current-bulk" element={<AllProducts/>}/>
     <Route path="/dateproductDetails" element={<ProductdateDetails/>} />
     <Route path="/bankstatement" element={<BankStatement/>}/>
     <Route path="/admin-incentive" element={<AdminViewincentive/>}/>
     <Route path="/view-Delaer-historys" element={<DealerPastHistory/>}/>
+    <Route path="/Allexetable" element={<EXEincentory/>}/>
+    <Route path="/caloutStanding/:id" element={<CalOutstanding/>} />
+    <Route path="/AllOutstanding" element={<AllOutStanding/>} />
+    <Route path="/getall-cheques" element={<Getallcheque/>} />
+    <Route path="/Admin-invoice" element={<AdminInvoice/>} />
+
+  
+   
 
 
 
@@ -161,24 +185,23 @@ function App() {
           <Route path="/add-products" element={<AddProduct/>}/>
           <Route path="/product-detail/:id" element={<ProductDetails/>}/>
           <Route path="/edit-product/:id" element={<EditProduct/>}/>
-          <Route path="/add-invoice" element={<InvoiceForm/>}/>
+        <Route path="/add-invoice" element={<InvoiceForm/>}/>
         <Route path="/all-invoices" element={<AllInvoice/>} />
         <Route path="/invoice-temp/:id" element={<InvoiceTemp/>} />
         <Route path="/invoice-temp" element={<Sample/>} />
         <Route path="/customerReg" element={<CustomerReg/>} />
         <Route path="/getAllCustomer" element={<GetCustomer/>} />
         <Route path="/customer/:code" element={<CustomerDetails/>} />
-        <Route path="/Add-Cheque" element={<AddCheque/>} />
         <Route path="/Packing-Materials-details" element={<PackingDashboard/>} />
         <Route path="/addreturn" element={<AddReturnDetails/>} />
         <Route path="/Maindashboard" element={<Mdashboard/>} />
-        <Route path="/viewALLinvoice" element={<ViewAllinvoice/>} />
+        
     <Route path="/view-single-invoice/:id" element={<ViewInvoice/>} />
     <Route path="/viewAll-TaxInvoices" element={<AllTaxInvoice/>} />
     <Route path="/view-single-Taxinvoice/:invoiceNumber" element={<ViewSingleTax/>} />
     <Route path="/tax-invoice/:id" element={<Taxinvoice/>} />
     <Route path="allbulkproduct" element={<Alldetails/>} />
-    <Route path="/addbulkproduct" element={<Addbulk/>} />
+    <Route path="/addbulkproduct" element={<Addbulk/>} /> 
     <Route path="/Add-New-bulk-product" element={<AddNewBulk/>} />
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
     <Route path="/Add-newReturn-product" element={<NandRproduct/>} />
@@ -201,6 +224,15 @@ function App() {
     <Route path="/Add-Order-user-role" element={<AddUserOrder/>}/>
     <Route path="/user-cheque" element={<UserAllcheque/>}/>
     <Route path="/get-single-Cheque/:id" element={<EditCheque/>}/>
+    <Route path="/add-area-inventory" element={<AreaInventory/>}/>
+    <Route path="/area-allinventories" element={<AllInventories/>}/>
+    <Route path="/Register-bulk" element={<AddbulkProduct/>} />
+    <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
+    <Route path="/userorder/:id" element={<UserOneorder/>} />
+  
+    
+
+
     
 
    
@@ -225,6 +257,24 @@ function App() {
 </Route>
 
 
+{/* ---------------------------------Account department Pages--------------------------------- */}
+
+<Route element={<ProtectedRoute allowedRoles={["account"]} />}>
+<Route path="/account-dash" element={<AccountProfile/>} />
+<Route path="/account-payment" element={<AccountPayment/>} />
+<Route path="/single-cheque/:invoiceNumber" element={<SingleCheque/>} />
+<Route path="/single-invoice/:id" element={<SingleIndetails/>} />
+<Route path="/All-accCheaue" element={<AllaccCheaue/>} />
+<Route path="/BankAcc" element={<BankAcc/>} />
+<Route path="/AccAlldealer" element={<AccAlldealer/>} />
+<Route path="/SingleDelaer" element={<SingleDelaer/>} />
+
+
+
+
+</Route>
+
+
 
 
 
@@ -241,6 +291,14 @@ function App() {
     <Route path="/admin-operation-getallcheque" element={<Allcheque/>} />
     <Route path="/admin-operation-incentive" element={<ViewAllincentive/>} />
     <Route path="/allcusoperation" element={<Operationallcustomers/>} />
+    <Route path="/opdealerhistory" element={<Opdealerhistory/>} />
+    <Route path="/bankstatement" element={<BackStatmentop/>} />
+    <Route path="/Getallcheque-op" element={<GetallchequeOp/>} />
+    <Route path="/Getallreturn-op" element={<Getallreturnop/>} />
+    <Route path="/productquantity-op" element={<Productquantityop/>} />
+
+
+
 
 
    

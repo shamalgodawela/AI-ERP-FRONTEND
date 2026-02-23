@@ -7,7 +7,7 @@ const Collectiondash = () => {
     <div>
         <Collectionbyexe/>
         
-        <MonthlyCollection/>
+        {/* <MonthlyCollection/> */}
         
     
 

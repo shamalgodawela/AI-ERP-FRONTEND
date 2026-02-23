@@ -11,7 +11,7 @@ const UserBulkP = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/getallbulk');
+        const response = await axios.get('https://nihon-inventory.onrender.com/api/getallbulk');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -27,8 +27,10 @@ const UserBulkP = () => {
 
   return (
     <div>
+      
       <UserNavbar/>
       <br/><br/>
+      <button><a className='btn-bulk-add' href='/Register-bulk'>Add Bulk Product</a></button>
     <h2 className='bulk-heading'>Bulk Products</h2>
     {isLoading ? (
       <p>Loading...</p>
