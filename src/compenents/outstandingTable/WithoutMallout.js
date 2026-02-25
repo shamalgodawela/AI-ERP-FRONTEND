@@ -131,86 +131,185 @@ const WithoutMallout = () => {
             </Link><br/><br/><br/>
 
             <div className='invoice-body'>
-               
-                <select value={selectedExe} onChange={(e) => setSelectedExe(e.target.value)}>
-                    <option value="">All Executives</option>
-                    <option value="Mr.Ahamed">Mr.Ahamed</option>
-                    <option value="Mr.Dasun">Mr.Dasun</option>
-                    <option value="Mr.Chameera">Mr.Chameera</option>
-                    <option value="Mr.Riyas">Mr.Riyas</option>
-                    <option value="Mr.Navaneedan">Mr.Navaneedan</option>
-                    <option value="Mr.Nayum">Mr.Nayum</option>
-                    <option value="Mr.Riyas">Mr.Riyas</option>
-                </select>
+        <div className="filter-section">
+          <select value={selectedExe} onChange={e => handleFilterChange('exe', e.target.value, setSelectedExe)}>
+            <option value="">All Executives</option>
+            <option value="Mr.Ahamed">Mr.Ahamed</option>
+            <option value="Mr.Safrath">Mr.Safrath</option>
+            <option value="Mr.Dasun">Mr.Dasun</option>
+            <option value="Mr.Chameera">Mr.Chameera</option>
+            <option value="Mr.Riyas">Mr.Riyas</option>
+            <option value="Mr.Navaneedan">Mr.Navaneedan</option>
+            <option value="Mr.Nayum">Mr.Nayum</option>
+            <option value="SOUTH">SOUTH-1</option>
+            <option value="Other">Other</option>
+            <option value="UpCountry">UpCountry</option>
+            <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+            <option value="Mr.Buddhika">Mr.Buddhika</option>
+            <option value="Mr.Arshad">Mr.Arshad</option>
+          </select>
 
-                
-                <input type='text' value={selectedCode} onChange={(e) => setSelectedCode(e.target.value)} placeholder='Custormer code '/>
+          <input type="text" value={selectedCustomer} onChange={e => handleFilterChange('customer', e.target.value, setSelectedCustomer)} placeholder="Search by customer name" />
 
-                
+          <select value={outstandingSearch} onChange={e => handleFilterChange('outstanding', e.target.value, setOutstandingSearch)}>
+            <option value="">Select Outstanding Status</option>
+            <option value="Paid">Paid</option>
+            <option value="Not Paid">Not Paid</option>
+          </select>
 
-                <div className="all-invoice">
-                    <h2 className='h2-invoice'>Outstanding Details</h2>
-                    {isLoading ? <Loader/> : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th className='th-invoice'>Invoice Number</th>
-                                <th className='th-invoice'>Customer</th>
-                                <th className='th-invoice'>Customer Code</th>
-                                <th className='th-invoice'>Printed or Canceled</th>
-                                <th className='th-invoice'>Invoice Date</th>
-                                <th className='th-invoice'>Due Date</th>
-                                <th className='th-invoice'>Tax Number</th>
-                                <th className='th-invoice'>Exe</th>
-                                <th className='th-invoice'>Outstanding</th>
-                                <th className='th-invoice'>Invoice Total</th>
-                                <th className='th-invoice'>Cheque Details</th>
-                                <th className='th-invoice'>Action</th>
-                                <th className='th-invoice'>Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredInvoices.map((invoice) => (
-                                <tr key={invoice._id} className={invoice.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
-                                    <td className='td-invoice'>{invoice.invoiceNumber}</td>
-                                    <td className='td-invoice'>{invoice.customer}</td>
-                                    <td className='td-invoice'>{invoice.code}</td>
-                                    <td className='td-invoice'>{invoice.GatePassNo}</td>
-                                    <td className='td-invoice'>{invoice.invoiceDate}</td>
-                                    <td className='td-invoice'>{invoice.Duedate}</td>
-                                    <th className='th-invoice'>{invoice.TaxNo}</th>
-                                    <td className='td-invoice'>{invoice.exe}</td>
-                                    <td className={`td-invoice ${invoice.lastOutstanding === "Not Paid" ? 'not-paid' : invoice.lastOutstanding === "Paid" ? 'paid' : ''}`}>
-                                        {formatNumbers(invoice.lastOutstanding)}
-                                    </td>
-                                    <td className='td-invoice'>{formatNumbers(calculateTotal(invoice))}</td>
-                                    <td className='td-invoice'>
-                                        {Array.isArray(invoice.chequeValues) && invoice.chequeValues.length > 0 ? (
-                                            invoice.chequeValues.map((cheque, index) => (
-                                                <div key={index}>{formatNumbers(cheque)}</div>
-                                            ))
-                                        ) : (
-                                            "No cheque value"
-                                        )}
-                                    </td>
+          <select value={selectedPaymentMode} onChange={e => handleFilterChange('paymentMode', e.target.value, setSelectedPaymentMode)}>
+            <option value="">All Payment Modes</option>
+            <option value="Cash">Cash</option>
+            <option value="Cheque">Cheque</option>
+          </select>
 
-                                    <td className='td-invoice'>
-                                        <Link to={`/view-admin-outstanding/${invoice._id}`}>
-                                            <AiOutlineEye size={20} color={"purple"} />
-                                        </Link>
-                                    </td>
-                                    <td className='td-invoice'>
-                                        <Link to={`/invoice/${invoice.invoiceNumber}`}>
-                                            <FontAwesomeIcon icon={faEye} className="action-icon" />
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    )}
-                </div>
-            </div>
+          <select value={selectedMonth} onChange={e => handleFilterChange('month', e.target.value, setSelectedMonth)}>
+            <option value="">All Months</option>
+            {Array.from({length: 12}, (_, i) => (
+              <option key={i} value={(i+1).toString().padStart(2,'0')}>
+                {new Date(0,i).toLocaleString('default',{month:'long'})}
+              </option>
+            ))}
+          </select>
+
+          <select value={selectedYear} onChange={e => handleFilterChange('year', e.target.value, setSelectedYear)}>
+            <option value="">All Years</option>
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+
+          <p>Select Time Period</p>
+
+          <input type="date" value={startDate} onChange={e => handleFilterChange('startDate', e.target.value, setStartDate)} />
+          <p>To</p>
+          <input type="date" value={endDate} onChange={e => handleFilterChange('endDate', e.target.value, setEndDate)} />
+
+          <button onClick={handlePrint} className="print-button">
+            <FontAwesomeIcon icon={faPrint} /> Print
+          </button>
+        </div>
+
+        <div className="all-invoice">
+          <h2 className='h2-invoice'>Outstanding Details</h2>
+          <h1 className='print-header'>{getPrintHeader()}</h1>
+
+          <div className="total-outstanding-summary">
+            <h1 className="outstanding-total-header">
+            Total Outstanding Amount (Cheques Not Yet Realized): 
+              <span className="amount-highlight">
+                Rs. {formatNumbers(calculateTotalOutstanding())}
+              </span>
+            </h1>
+          </div>
+
+          {/* ✅ FIXED: Total Sales Amount (only Printed invoices) */}
+          <div className="total-sales-summary">
+            <h1 className="sales-total-header">
+              📊 Total Sales Amount: 
+              <span className="amount-highlight">
+                Rs. {
+                  formatNumbers(
+                    filteredInvoices
+                      .filter(i => i.GatePassNo === "Printed")
+                      .reduce((acc, i) => acc + calculateTotal(i), 0)
+                  )
+                }
+              </span>
+            </h1>
+          </div>
+
+          {/* ✅ Total Cheque Amount (only Printed invoices) */}
+          <div className="total-sales-summary">
+            <h1 className="sales-total-header">
+              💰 Total Cheque Amount (Pending): 
+              <span className="amount-highlight">
+                Rs. {formatNumbers(calculateTotalCheque())}
+              </span>
+            </h1>
+          </div>
+
+          {/* ✅ Amount to be Collected (Outstanding - Cheque Amount) */}
+          <div className="total-outstanding-summary">
+            <h1 className="outstanding-total-header">
+              💵 Amount to be Collected (Outstanding - Cheque Amount): 
+              <span className="amount-highlight">
+                Rs. {formatNumbers(calculateAmountToBeCollected())}
+              </span>
+            </h1>
+          </div>
+
+         
+
+          {isLoading ? <Loader /> : (
+            <table>
+              <thead>
+  <tr>
+    <th className='heading-outstanding'>Invoice Number</th>
+    <th className='heading-outstanding'>Customer</th>
+    <th className='heading-outstanding'>Cheque/Cash</th>
+    <th className='heading-outstanding'>Printed or Canceled</th>
+    <th className='heading-outstanding'>Invoice Date</th>
+    <th className='heading-outstanding'>Due Date</th>
+    <th className='heading-outstanding'>Tax Number</th>
+    <th className='heading-outstanding'>Exe</th>
+    <th className='heading-outstanding'>Outstanding</th>
+    <th className='heading-outstanding'>Invoice Total</th>
+    <th className='heading-outstanding'>Cheque Total (Pending)</th> 
+    <th className='heading-outstanding'>Outstanding(with cheque total)</th> 
+    <th className='heading-outstanding'>Action</th>
+    <th className='heading-outstanding'>Add Cheque Details</th>
+  </tr>
+</thead>
+<tbody>
+  {filteredInvoices.map(i => {
+    const invoiceTotal = calculateTotal(i);
+    const chequeTotal = typeof i.chequeValues === 'number' ? i.chequeValues : 0;
+
+    let outstandingAfterCheque = 0;
+
+    if (i.lastOutstanding === "Paid") {
+      outstandingAfterCheque = 0;
+    } else if (i.lastOutstanding === "Not Paid") {
+      outstandingAfterCheque = invoiceTotal - chequeTotal;
+    } else if (typeof i.lastOutstanding === "number") {
+      outstandingAfterCheque = i.lastOutstanding - chequeTotal;
+    }
+
+    return (
+      <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
+        <td>{i.invoiceNumber}</td>
+        <td>{i.customer}</td>
+        <td>{i.ModeofPayment}</td>
+        <td>{i.GatePassNo}</td>
+        <td>{i.invoiceDate}</td>
+        <td>{i.Duedate}</td>
+        <td>{i.TaxNo}</td>
+        <td>{i.exe}</td>
+        <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
+          {formatNumbers(i.lastOutstanding)}
+        </td>
+        <td>{formatNumbers(invoiceTotal)}</td>
+        <td>{chequeTotal ? formatNumbers(chequeTotal) : '-'}</td>
+        
+        {/* ✅ New column: Outstanding after Cheque */}
+        <td className={`td-invoice ${outstandingAfterCheque > 0 ? 'not-paid' : 'paid'}`}>
+          {formatNumbers(outstandingAfterCheque)}
+        </td>
+
+        <td><Link to={`/caloutStanding/${i._id}`}><AiOutlineEye size={20} color="purple" /></Link></td>
+        <td><Link to={`/invoice/${i.invoiceNumber}`}><FontAwesomeIcon icon={faEye} className="action-icon" /></Link></td>
+      </tr>
+    )
+  })}
+</tbody>
+
+
+            </table>
+          )}
+        </div>
+
+      </div>
         </div>
     );
 };
