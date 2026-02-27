@@ -226,7 +226,7 @@ const GetallchequeOp = () => {
         </table>
       </div>
 
-      <button className="home-btn" onClick={() => navigate("/admin-profile")}>
+      <button className="home-btn" onClick={() => navigate("/Admin-operations-dashboard")}>
         Home
       </button>
     </div>
