@@ -11,7 +11,8 @@ const GetallchequeOp = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [exeFilter, setExeFilter] = useState(""); // ⭐ NEW EXE FILTER
+  const [exeFilter, setExeFilter] = useState("");
+  const [chequeNoFilter, setChequeNoFilter] = useState(""); // ⭐ NEW CHEQUE NO FILTER
 
   const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ const GetallchequeOp = () => {
     });
 
   // ===========================
-  //   FILTER LOGIC
+  //        FILTER LOGIC
   // ===========================
   const filteredCheques = cheques.filter((c) => {
     const deposit = new Date(c.depositDate);
@@ -59,11 +60,15 @@ const GetallchequeOp = () => {
     const statusMatch =
       statusFilter === "All" || c.status === statusFilter;
 
-    // ⭐ NEW exe filter
     const exeMatch =
       exeFilter === "" || c.exe === exeFilter;
 
-    return dateMatch && statusMatch && exeMatch;
+    // ⭐ NEW CHEQUE NO SEARCH
+    const chequeNoMatch =
+      chequeNoFilter === "" ||
+      (c.chequeNo && c.chequeNo.toString().includes(chequeNoFilter));
+
+    return dateMatch && statusMatch && exeMatch && chequeNoMatch;
   });
 
   const totalFilteredAmount = filteredCheques.reduce(
@@ -79,6 +84,7 @@ const GetallchequeOp = () => {
 
       {/* 🔍 SEARCH BAR */}
       <div className="cheque-search-bar">
+        {/* SINGLE DATE */}
         <div className="search-group">
           <label>Single Date</label>
           <input
@@ -92,6 +98,7 @@ const GetallchequeOp = () => {
           />
         </div>
 
+        {/* FROM DATE */}
         <div className="search-group">
           <label>From</label>
           <input
@@ -104,6 +111,7 @@ const GetallchequeOp = () => {
           />
         </div>
 
+        {/* TO DATE */}
         <div className="search-group">
           <label>To</label>
           <input
@@ -116,6 +124,7 @@ const GetallchequeOp = () => {
           />
         </div>
 
+        {/* STATUS */}
         <div className="search-group">
           <label>Status</label>
           <select
@@ -129,7 +138,7 @@ const GetallchequeOp = () => {
           </select>
         </div>
 
-        {/* ⭐ EXE FILTER */}
+        {/* EXECUTIVE */}
         <div className="search-group">
           <label>Executive</label>
           <select
@@ -151,6 +160,17 @@ const GetallchequeOp = () => {
             <option value="Mr.Buddhika">Mr.Buddhika</option>
             <option value="Mr.Arshad">Mr.Arshad</option>
           </select>
+        </div>
+
+        {/* ⭐ CHEQUE NUMBER SEARCH */}
+        <div className="search-group">
+          <label>Cheque No</label>
+          <input
+            type="text"
+            placeholder="Search Cheque No"
+            value={chequeNoFilter}
+            onChange={(e) => setChequeNoFilter(e.target.value)}
+          />
         </div>
       </div>
 
@@ -176,6 +196,7 @@ const GetallchequeOp = () => {
               <th className="cheque-th">Status</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredCheques.length === 0 ? (
               <tr>
