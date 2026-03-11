@@ -351,7 +351,7 @@ const InvoiceForm = () => {
     try {
       let url = '';
   
-      if (formData.exe === 'Mr.Arshad') {
+      if (formData.exe === 'Mr.Safrath') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-EA1';
       } else if (formData.exe === 'Mr.Nayum') {
         url = 'https://nihon-inventory.onrender.com/api/get-last-invoice-number-NUM';
