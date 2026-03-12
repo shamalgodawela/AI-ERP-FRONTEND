@@ -79,6 +79,14 @@ const Admin = () => {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
+  const handleActionClick = (route) => {
+    if (typeof route === 'string' && (route.startsWith('http://') || route.startsWith('https://'))) {
+      window.open(route, '_blank', 'noopener,noreferrer');
+    } else {
+      navigate(route);
+    }
+  };
+
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -109,7 +117,7 @@ const Admin = () => {
       <div className="admin-profile-content">
         <div className="admin-actions-grid">
           {actions.map((action, idx) => (
-            <div className="admin-action-glass-card" key={action.label} onClick={() => navigate(action.route)}>
+            <div className="admin-action-glass-card" key={action.label} onClick={() => handleActionClick(action.route)}>
               <div className="admin-action-icon">{action.icon}</div>
               <div className="admin-action-label">{action.label}</div>
             </div>
