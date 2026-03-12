@@ -1,7 +1,14 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { FaMoneyCheckAlt, FaClipboardList, FaChartLine, FaUserTie, FaUsers, FaSignOutAlt, FaBoxes, FaUniversity } from 'react-icons/fa';
+import {
+  FaMoneyCheckAlt,
+  FaUserTie,
+  FaChartLine,
+  FaUniversity,
+  FaMapMarkedAlt,
+  FaSignOutAlt
+} from 'react-icons/fa';
 import bannerImg from '../../../assets/agri.jpeg';
 import Footer from '../../../compenents/footer/Footer';
 import { useAuth } from '../../../services/AuthProvider';
