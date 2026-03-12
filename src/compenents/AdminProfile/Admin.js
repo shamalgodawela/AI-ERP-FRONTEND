@@ -21,6 +21,11 @@ import Footer from '../footer/Footer';
 
 
 const actions = [
+  {
+    label: 'Executives Location tracking',
+    icon: <FaMapMarkedAlt size={32} />, 
+    route: 'https://location-tracking-admin-ten.vercel.app/',
+  },
     {
       label: 'Payment Details',
       icon: <FaMoneyCheckAlt size={32} />, 
@@ -66,11 +71,7 @@ const actions = [
       icon: <FaCubes size={32} />,
       route: '/Exe-product-wise-sales',
     },
-    {
-      label: 'Executives Location tracking',
-      icon: <FaMapMarkedAlt size={32} />, 
-      route: 'https://location-tracking-admin-ten.vercel.app/',
-    },
+    
   ];
   
 

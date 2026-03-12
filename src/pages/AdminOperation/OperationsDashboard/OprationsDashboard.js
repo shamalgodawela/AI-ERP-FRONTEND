@@ -48,6 +48,11 @@ const actions = [
     icon: <FaUniversity size={32} />, 
     route: '/productquantity-op',
   },
+  {
+    label: 'Executives Location tracking',
+    icon: <FaMapMarkedAlt size={32} />, 
+    route: 'https://location-tracking-admin-ten.vercel.app/',
+  },
   
 ];
 
