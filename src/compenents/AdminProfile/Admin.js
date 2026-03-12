@@ -8,6 +8,7 @@ import {
   FaUserTie,
   FaChartLine,
   FaBoxes,
+  FaCubes,
   FaUniversity,
   FaGift,
   FaMapMarkedAlt,
@@ -27,43 +28,48 @@ const actions = [
     },
     {
       label: 'Cheques Details',
-      icon: <FaClipboardCheck size={32} />, // ✔ cheque tracking
+      icon: <FaClipboardCheck size={32} />, 
       route: '/getall-cheques',
     },
     {
       label: 'Pending Orders',
-      icon: <FaClock size={32} />, // ⏳ pending
+      icon: <FaClock size={32} />, 
       route: '/Adminallorder',
     },
     {
       label: 'View Dealer History',
-      icon: <FaUserTie size={32} />, // 👔 dealer
+      icon: <FaUserTie size={32} />, 
       route: '/AllcustomerWiseHistory',
     },
     {
       label: 'Sales & Collection Details',
-      icon: <FaChartLine size={32} />, // 📈 sales
+      icon: <FaChartLine size={32} />, 
       route: '/sales',
     },
     {
       label: 'Inventory Management',
-      icon: <FaBoxes size={32} />, // 📦 stock
+      icon: <FaBoxes size={32} />, 
       route: '/dashboard',
     },
     {
       label: 'Payment Breakdown Monthly',
-      icon: <FaUniversity size={32} />, // 🏦 bank
+      icon: <FaUniversity size={32} />, 
       route: '/bankstatement',
     },
     {
       label: 'Executives Incentive',
-      icon: <FaGift size={32} />, // 🎁 incentive
+      icon: <FaGift size={32} />, 
       route: '/admin-incentive',
     },
     {
       label: 'Area wise Product Quantity',
-      icon: <FaMapMarkedAlt size={32} />, // 🗺️ area-wise
+      icon: <FaCubes size={32} />,
       route: '/Exe-product-wise-sales',
+    },
+    {
+      label: 'Executives Location tracking',
+      icon: <FaMapMarkedAlt size={32} />, 
+      route: 'https://location-tracking-admin-ten.vercel.app/',
     },
   ];
   
