@@ -306,6 +306,7 @@ const AccountPage = () => {
           )}
         </section>
       </main>
+      <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
     </div>
   );
 };

@@ -325,23 +325,50 @@
 .coa-filter-tab--active { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
 
 /* ── Table ────────────────────────────────────────────────── */
-.coa-table-wrap { overflow-x: auto; }
+.coa-table-wrap { overflow-x: auto; width: 100%; }
 
 .coa-table {
-  width: 100%; border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
   font-size: .875rem;
+  table-layout: fixed;
 }
+
 .coa-table thead tr {
   background: #f8fafc;
   border-bottom: 1.5px solid var(--border);
 }
+
 .coa-table th {
-  padding: .75rem 1.25rem;
+  padding: .75rem 1rem;
   font-size: .72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .07em;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
-.coa-table td { padding: .9rem 1.25rem; border-bottom: 1px solid var(--border); }
+.coa-table th:nth-child(1) { width: 90px; }
+.coa-table th:nth-child(2) { width: auto; }
+.coa-table th:nth-child(3) { width: 125px; }
+.coa-table th:nth-child(4) { width: 130px; }
+.coa-table th:nth-child(5) { width: 155px; text-align: right; padding-right: 1.5rem; }
+
+.coa-table td {
+  padding: .85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Balance column — right-aligned */
+.coa-table td:nth-child(5) { text-align: right; padding-right: 1.5rem; }
+
+/* Name column — allow wrapping so long names never hide */
+.coa-table td:nth-child(2) { white-space: normal; word-break: break-word; }
 
 .coa-row {
   animation: coa-row-in .25s ease both;
@@ -360,17 +387,23 @@
   font-family: var(--font-mono);
   font-size: .8rem; color: var(--text-secondary);
   background: var(--bg);
-  padding: .15rem .5rem;
+  padding: .15rem .45rem;
   border-radius: 4px;
   border: 1px solid var(--border);
+  display: inline-block;
+  max-width: 100%;
 }
 .coa-name { font-weight: 500; color: var(--text-primary); }
 
 .coa-type-badge {
   display: inline-flex; align-items: center; gap: .3rem;
-  padding: .25rem .65rem;
+  padding: .25rem .6rem;
   border-radius: 999px;
   font-size: .775rem; font-weight: 600;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .coa-normal-badge {
@@ -379,6 +412,7 @@
   border-radius: 4px;
   font-family: var(--font-mono);
   font-size: .75rem; font-weight: 500;
+  white-space: nowrap;
 }
 .coa-normal-badge--debit  { background: #eff6ff; color: #2563eb; }
 .coa-normal-badge--credit { background: #f0fdf4; color: #16a34a; }
@@ -386,11 +420,12 @@
 .coa-balance { font-family: var(--font-mono); font-size: .875rem; }
 
 .coa-table-foot td {
-  padding: .85rem 1.25rem;
+  padding: .85rem 1rem;
   background: #f8fafc;
   border-top: 1.5px solid var(--border);
   font-size: .82rem; font-weight: 600; color: var(--text-secondary);
 }
+.coa-table-foot td:last-child { text-align: right; padding-right: 1.5rem; }
 
 /* ── Empty ────────────────────────────────────────────────── */
 .coa-empty { padding: 3rem 1rem; text-align: center; color: var(--text-muted); }
