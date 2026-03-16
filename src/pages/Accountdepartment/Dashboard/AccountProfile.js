@@ -50,6 +50,11 @@ const actions = [
       icon: <FaUniversity size={32} />, // 🏦 bank
       route: '/BankAcc',
     },
+    {
+      label: 'All Account',
+      icon: <FaUniversity size={32} />, // 🏦 bank
+      route: '/BankAcc',
+    },
 
   ];
   

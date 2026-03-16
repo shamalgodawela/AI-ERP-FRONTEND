@@ -1,0 +1,93 @@
+.nihon-accounts-page {
+    padding: 2rem;
+    background-color: #f5f7fa;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .nihon-accounts-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #2d3748;
+  }
+  
+  .nihon-add-account-form {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+  }
+  
+  .nihon-add-account-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .nihon-add-account-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .nihon-add-account-field label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+  
+  .nihon-add-account-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 0.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .nihon-add-account-btn {
+    margin-top: 1rem;
+    background-color: #3182ce;
+    color: #fff;
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .nihon-add-account-btn:hover {
+    background-color: #2b6cb0;
+  }
+  
+  .nihon-accounts-table-container {
+    overflow-x: auto;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .nihon-accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .nihon-accounts-table th, 
+  .nihon-accounts-table td {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .nihon-accounts-row:hover {
+    background-color: #f0f4f8;
+  }
+  
+  .nihon-accounts-loading {
+    margin-top: 2rem;
+    text-align: center;
+    font-weight: 500;
+  }

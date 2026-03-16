@@ -101,6 +101,7 @@ import SingleDelaer from "./pages/Accountdepartment/AllDealerHis/SingleDelaer";
 import Getallreturnop from "./pages/returnNotes/gettall/Getallreturnop";
 import Productquantityop from "./pages/invoice/GetProductQuanitityEach area/Productquantityop";
 import AdminInvoice from "./pages/invoice/AdminInvoice";
+import AccountPage from "./pages/Accountdepartment/AllAcount/AccountPage";
 
 
 axios.defaults.withCredentials= true;
@@ -268,6 +269,7 @@ function App() {
 <Route path="/BankAcc" element={<BankAcc/>} />
 <Route path="/AccAlldealer" element={<AccAlldealer/>} />
 <Route path="/SingleDelaer" element={<SingleDelaer/>} />
+<Route path="/All_Account" element={<AccountPage/>} />
 
 
 
