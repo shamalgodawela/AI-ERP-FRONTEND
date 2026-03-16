@@ -306,7 +306,7 @@ const AccountPage = () => {
           )}
         </section>
       </main>
-      <button className="home-btn" onClick={() => navigate('/admin-profile')}>Home</button>
+      <button className="home-btn" onClick={() => navigate('/account-dash')}>Home</button>
     </div>
   );
 };
