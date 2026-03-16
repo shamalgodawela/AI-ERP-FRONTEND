@@ -53,7 +53,7 @@ const actions = [
     {
       label: 'All Account',
       icon: <FaUniversity size={32} />, // 🏦 bank
-      route: '/BankAcc',
+      route: '/All_Account',
     },
 
   ];
