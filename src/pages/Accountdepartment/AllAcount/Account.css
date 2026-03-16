@@ -85,6 +85,7 @@
 .coa-main {
   flex: 1;
   min-width: 0;        /* CRITICAL: prevents flex overflow */
+  max-width: calc(100vw - var(--sidebar-w));
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -211,7 +212,7 @@
 
 .coa-table {
   width: 100%;
-  min-width: 580px;
+  min-width: 700px;
   border-collapse: collapse;
   font-size: .855rem;
   table-layout: auto;
@@ -227,12 +228,12 @@
 
 .coa-table th {
   padding: .7rem 1rem;
-  font-size: .7rem; font-weight: 700;
+  font-size: .68rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .07em;
   color: var(--text-muted); white-space: nowrap;
   vertical-align: middle; text-align: left;
 }
-.coa-table th:last-child { text-align: right; }
+.coa-table th:last-child { text-align: right; padding-right: 1.5rem; }
 
 .coa-table td {
   padding: .82rem 1rem;
@@ -252,7 +253,7 @@
 .coa-table td:nth-child(4) { white-space: nowrap; }
 
 /* Balance — right-aligned, no wrap */
-.coa-table td:nth-child(5) { text-align: right; white-space: nowrap; }
+.coa-table td:nth-child(5) { text-align: right; white-space: nowrap; padding-right: 1.5rem; }
 
 .coa-row {
   animation: coa-row-in .22s ease both;
@@ -292,7 +293,7 @@
   padding: .8rem 1rem; font-size: .8rem; font-weight: 600;
   color: var(--text-secondary); white-space: nowrap;
 }
-.coa-table-foot td:last-child { text-align: right; }
+.coa-table-foot td:last-child { text-align: right; padding-right: 1.5rem; }
 
 /* ── Empty ────────────────────────────────────────────────── */
 .coa-empty { padding: 3rem 1rem; text-align: center; color: var(--text-muted); }
