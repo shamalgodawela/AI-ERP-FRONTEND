@@ -8,24 +8,29 @@ const StockSnap = () => {
   const [snapshots, setSnapshots] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchSnapshots = async () => {
-    try {
-      const res = await axios.get(
-        "https://nihon-inventory.onrender.com/api/products/all-snapshots"
-      );
-      setSnapshots(res.data);
-    } catch (err) {
-      console.error("Error fetching snapshots", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchSnapshots = async () => {
+      try {
+        const res = await axios.get(
+          "https://nihon-inventory.onrender.com/api/products/all-snapshots"
+        );
+
+        // Ensure res.data is an array
+        setSnapshots(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        console.error("Error fetching snapshots", err);
+        setSnapshots([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchSnapshots();
   }, []);
 
-  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
+  if (loading) {
+    return <p style={{ textAlign: "center", marginTop: "40px" }}>Loading...</p>;
+  }
 
   return (
     <div>
@@ -45,14 +50,14 @@ const StockSnap = () => {
               <p>
                 <strong>Total Products:</strong> {snap.data.totalProducts}
               </p>
+
               <div className="stockSnap-products">
-                {snap.data.products.map((p) => (
+                {Array.isArray(snap.data.products) ? snap.data.products.map((p) => (
                   <div key={p._id} className="stockSnap-product">
-                    <span>{p.name}</span> -{" "}
-                    <span>Qty: {p.quantity}</span> -{" "}
+                    <span>{p.name}</span> - <span>Qty: {p.quantity}</span> -{" "}
                     <span>Price: {p.price}</span>
                   </div>
-                ))}
+                )) : <p>No product details</p>}
               </div>
             </div>
           ))
