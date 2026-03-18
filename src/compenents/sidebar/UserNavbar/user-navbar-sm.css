@@ -1,83 +1,332 @@
-/* Main Nav Container */
-.sm-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1e293b;
-    padding: 15px 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  /* Logo */
-  .sm-navbar-logo h1 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #38bdf8;
-    margin: 0;
-  }
-  
-  /* Nav links */
-  .sm-navbar-links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-  }
-  
-  .sm-nav-link {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: background-color 0.2s;
-    cursor: pointer;
-  }
-  
-  .sm-nav-link:hover {
-    background-color: #334155;
-    color: #fff;
-  }
-  
-  /* Dropdown wrapper */
-  .sm-nav-dropdown {
-    position: relative;
-  }
-  
-  /* Dropdown menu */
-  .sm-dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #1e293b;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    overflow: hidden;
-    min-width: 180px;
-    z-index: 1001;
-  }
-  
-  /* Dropdown visible on hover */
-  .sm-nav-dropdown:hover .sm-dropdown-menu {
-    display: block;
-  }
-  
-  /* Dropdown items */
-  .sm-dropdown-item {
-    display: block;
-    padding: 10px 15px;
-    color: #cbd5e1;
-    text-decoration: none;
-    font-size: 15px;
-    white-space: nowrap;
-  }
-  
-  .sm-dropdown-item:hover {
-    background-color: #334155;
-    color: #fff;
-  }
-  
+/* =============================================
+   USER SIDEBAR — Professional Dark Theme
+   ============================================= */
+
+   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+   :root {
+     --sb-bg:          #0f172a;
+     --sb-surface:     #1e293b;
+     --sb-border:      #2d3f55;
+     --sb-accent:      #38bdf8;
+     --sb-accent-dim:  rgba(56, 189, 248, 0.12);
+     --sb-accent-glow: rgba(56, 189, 248, 0.25);
+     --sb-text:        #cbd5e1;
+     --sb-text-muted:  #64748b;
+     --sb-danger:      #f87171;
+     --sb-width:       260px;
+     --sb-collapsed:   72px;
+     --sb-radius:      10px;
+     --sb-transition:  0.25s cubic-bezier(0.4, 0, 0.2, 1);
+     --sb-current-width: var(--sb-width);  /* tracks live sidebar width */
+   }
+   
+   /* ── Page content offset helper ─────────────── 
+      Add className="sb-page" to your page wrapper div.
+      No other page changes needed.
+   ────────────────────────────────────────────── */
+   .sb-page {
+     margin-left: var(--sb-current-width);
+     transition: margin-left var(--sb-transition);
+     min-height: 100vh;
+     box-sizing: border-box;
+   }
+   
+   /* ── Sidebar Shell ─────────────────────────── */
+   .sb-sidebar {
+     display: flex;
+     flex-direction: column;
+     width: var(--sb-width);
+     height: 100vh;
+     background: var(--sb-bg);
+     border-right: 1px solid var(--sb-border);
+     font-family: 'DM Sans', sans-serif;
+     transition: width var(--sb-transition);
+     overflow: hidden;
+     position: fixed;
+     top: 0;
+     left: 0;
+     z-index: 1000;
+   }
+   
+   .sb-sidebar--collapsed {
+     width: var(--sb-collapsed);
+   }
+   
+   /* ── Header ────────────────────────────────── */
+   .sb-header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 20px 16px 18px;
+     min-height: 72px;
+     gap: 10px;
+   }
+   
+   .sb-logo {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     overflow: hidden;
+   }
+   
+   .sb-logo__mark {
+     flex-shrink: 0;
+     width: 38px;
+     height: 38px;
+     border-radius: 10px;
+     background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+     color: #fff;
+     font-family: 'DM Mono', monospace;
+     font-size: 13px;
+     font-weight: 500;
+     letter-spacing: 0.5px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     box-shadow: 0 0 16px var(--sb-accent-glow);
+   }
+   
+   .sb-logo__text {
+     display: flex;
+     flex-direction: column;
+     line-height: 1.15;
+     white-space: nowrap;
+     animation: sb-fade-in 0.2s ease;
+   }
+   
+   .sb-logo__title {
+     font-size: 15px;
+     font-weight: 600;
+     color: #f1f5f9;
+   }
+   
+   .sb-logo__sub {
+     font-size: 11px;
+     font-weight: 400;
+     color: var(--sb-accent);
+     letter-spacing: 0.4px;
+     text-transform: uppercase;
+   }
+   
+   /* Collapse toggle */
+   .sb-collapse-btn {
+     flex-shrink: 0;
+     width: 28px;
+     height: 28px;
+     border-radius: 6px;
+     background: transparent;
+     border: 1px solid var(--sb-border);
+     color: var(--sb-text-muted);
+     font-size: 16px;
+     line-height: 1;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: background var(--sb-transition), color var(--sb-transition), border-color var(--sb-transition);
+   }
+   
+   .sb-collapse-btn:hover {
+     background: var(--sb-surface);
+     color: var(--sb-accent);
+     border-color: var(--sb-accent);
+   }
+   
+   /* ── Divider ───────────────────────────────── */
+   .sb-divider {
+     height: 1px;
+     background: var(--sb-border);
+     margin: 0 16px;
+   }
+   
+   /* ── Navigation ────────────────────────────── */
+   .sb-nav {
+     flex: 1;
+     padding: 12px 10px;
+     display: flex;
+     flex-direction: column;
+     gap: 2px;
+     overflow-y: auto;
+     overflow-x: hidden;
+     scrollbar-width: thin;
+     scrollbar-color: var(--sb-border) transparent;
+   }
+   
+   .sb-nav::-webkit-scrollbar { width: 4px; }
+   .sb-nav::-webkit-scrollbar-track { background: transparent; }
+   .sb-nav::-webkit-scrollbar-thumb { background: var(--sb-border); border-radius: 4px; }
+   
+   /* ── Nav Items ─────────────────────────────── */
+   .sb-item {
+     display: flex;
+     align-items: center;
+     gap: 11px;
+     width: 100%;
+     padding: 9px 11px;
+     border-radius: var(--sb-radius);
+     background: transparent;
+     border: none;
+     color: var(--sb-text);
+     font-family: 'DM Sans', sans-serif;
+     font-size: 14px;
+     font-weight: 400;
+     text-decoration: none;
+     cursor: pointer;
+     transition: background var(--sb-transition), color var(--sb-transition);
+     white-space: nowrap;
+     text-align: left;
+     box-sizing: border-box;
+   }
+   
+   .sb-item:hover {
+     background: var(--sb-surface);
+     color: #f1f5f9;
+   }
+   
+   .sb-item--toggle {
+     position: relative;
+   }
+   
+   .sb-item__icon {
+     flex-shrink: 0;
+     width: 22px;
+     text-align: center;
+     font-size: 15px;
+     line-height: 1;
+   }
+   
+   .sb-item__label {
+     flex: 1;
+     overflow: hidden;
+     text-overflow: ellipsis;
+   }
+   
+   .sb-item__chevron {
+     flex-shrink: 0;
+     font-size: 16px;
+     color: var(--sb-text-muted);
+     transition: transform var(--sb-transition), color var(--sb-transition);
+     display: inline-block;
+     line-height: 1;
+   }
+   
+   /* ── Dropdown Group ────────────────────────── */
+   .sb-group--open .sb-item__chevron {
+     transform: rotate(90deg);
+     color: var(--sb-accent);
+   }
+   
+   .sb-group--open > .sb-item {
+     color: #f1f5f9;
+     background: var(--sb-accent-dim);
+   }
+   
+   /* ── Submenu ───────────────────────────────── */
+   .sb-submenu {
+     overflow: hidden;
+     animation: sb-expand 0.22s ease forwards;
+     padding-left: 10px;
+     margin-top: 2px;
+     display: flex;
+     flex-direction: column;
+     gap: 1px;
+   }
+   
+   /* Floating submenu when sidebar is collapsed */
+   .sb-submenu--floating {
+     position: fixed;
+     left: 72px;
+     background: #1e293b;
+     border: 1px solid #2d3f55;
+     border-radius: 10px;
+     padding: 6px;
+     padding-left: 6px;
+     min-width: 200px;
+     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
+     z-index: 9999;
+     margin-top: -38px;
+   }
+   
+   @keyframes sb-expand {
+     from { opacity: 0; transform: translateY(-6px); }
+     to   { opacity: 1; transform: translateY(0); }
+   }
+   
+   .sb-subitem {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     padding: 8px 12px 8px 18px;
+     border-radius: 8px;
+     color: var(--sb-text-muted);
+     font-size: 13px;
+     font-weight: 400;
+     text-decoration: none;
+     transition: background var(--sb-transition), color var(--sb-transition);
+     position: relative;
+   }
+   
+   .sb-subitem:hover {
+     background: var(--sb-surface);
+     color: var(--sb-accent);
+   }
+   
+   .sb-subitem__dot {
+     width: 5px;
+     height: 5px;
+     border-radius: 50%;
+     background: var(--sb-border);
+     flex-shrink: 0;
+     transition: background var(--sb-transition);
+   }
+   
+   .sb-subitem:hover .sb-subitem__dot {
+     background: var(--sb-accent);
+   }
+   
+   /* ── Footer / Logout ───────────────────────── */
+   .sb-footer {
+     padding: 10px 10px 14px;
+   }
+   
+   .sb-item--logout {
+     color: var(--sb-text-muted);
+     margin-top: 2px;
+   }
+   
+   .sb-item--logout:hover {
+     background: rgba(248, 113, 113, 0.1);
+     color: var(--sb-danger);
+   }
+   
+   /* ── Fade-in animation ─────────────────────── */
+   @keyframes sb-fade-in {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+   }
+   
+   /* ── Collapsed tooltip polish ──────────────── */
+   .sb-sidebar--collapsed .sb-item {
+     justify-content: center;
+     padding: 10px;
+     position: relative;
+   }
+   
+   .sb-sidebar--collapsed .sb-item:hover::after {
+     content: attr(title);
+     position: absolute;
+     left: calc(100% + 10px);
+     top: 50%;
+     transform: translateY(-50%);
+     background: var(--sb-surface);
+     border: 1px solid var(--sb-border);
+     color: var(--sb-text);
+     font-size: 13px;
+     padding: 5px 10px;
+     border-radius: 6px;
+     white-space: nowrap;
+     pointer-events: none;
+     z-index: 9999;
+     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+   }
