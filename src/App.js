@@ -102,6 +102,7 @@ import Getallreturnop from "./pages/returnNotes/gettall/Getallreturnop";
 import Productquantityop from "./pages/invoice/GetProductQuanitityEach area/Productquantityop";
 import AdminInvoice from "./pages/invoice/AdminInvoice";
 import AccountPage from "./pages/Accountdepartment/AllAcount/AccountPage";
+import StockSnapshot from "./pages/StockSnapsot/StockSnap";
 
 
 axios.defaults.withCredentials= true;
@@ -230,6 +231,7 @@ function App() {
     <Route path="/Register-bulk" element={<AddbulkProduct/>} />
     <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
     <Route path="/userorder/:id" element={<UserOneorder/>} />
+    <Route path="/stockSnap" element={<StockSnapshot/>} />
   
     
 

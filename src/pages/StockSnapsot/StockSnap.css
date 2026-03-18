@@ -1,0 +1,46 @@
+/* Container */
+.stockSnap-container {
+    padding: 30px;
+    background-color: #f9fafb;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 40px auto;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Title */
+  .stockSnap-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Button */
+  .stockSnap-btn {
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .stockSnap-btn:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .stockSnap-btn:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+  
+  /* Message */
+  .stockSnap-message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #16a34a;
+  }

@@ -13,6 +13,13 @@ const NAV_ITEMS = [
     ],
   },
   {
+    label: 'Inventory History',
+    icon: '📦',
+    children: [
+      { label: 'Inventory History', href: '/stockSnap' },
+    ],
+  },
+  {
     label: 'Customers',
     icon: '👤',
     children: [
