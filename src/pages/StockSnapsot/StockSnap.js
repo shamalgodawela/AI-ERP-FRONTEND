@@ -1,47 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./StockSnap.css";
 import UserNavbar from "../../compenents/sidebar/UserNavbar/UserNavbar";
 
+
 const StockSnapshot = () => {
-  const [stockSnapLoading, setStockSnapLoading] = useState(false);
-  const [stockSnapMessage, setStockSnapMessage] = useState("");
+  const [snapshots, setSnapshots] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleStockSnapSave = async () => {
+  const fetchSnapshots = async () => {
     try {
-      setStockSnapLoading(true);
-      setStockSnapMessage("");
-
-      const res = await axios.get("https://nihon-inventory.onrender.com/api/products/save-daily-stock");
-
-      setStockSnapMessage(res.data.message);
-    } catch (error) {
-      setStockSnapMessage(
-        error.response?.data?.message || "Error saving stock"
+      const res = await axios.get(
+        "https://nihon-inventory.onrender.com/api/products/all-snapshots"
       );
+      setSnapshots(res.data);
+    } catch (err) {
+      console.error("Error fetching snapshots", err);
     } finally {
-      setStockSnapLoading(false);
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchSnapshots();
+  }, []);
+
+  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
+
   return (
     <div>
-        <UserNavbar/>
-    <div className="stockSnap-container">
-      <h2 className="stockSnap-title">Stock Snapshot</h2>
+      <UserNavbar />
+      <div className="stockSnap-container">
+        <h2 className="stockSnap-title">Saved Stock Snapshots</h2>
 
-      <button
-        className="stockSnap-btn"
-        onClick={handleStockSnapSave}
-        disabled={stockSnapLoading}
-      >
-        {stockSnapLoading ? "Saving..." : "Save Daily Stock"}
-      </button>
-
-      {stockSnapMessage && (
-        <p className="stockSnap-message">{stockSnapMessage}</p>
-      )}
-    </div>
+        {snapshots.length === 0 ? (
+          <p>No snapshots available</p>
+        ) : (
+          snapshots.map((snap) => (
+            <div key={snap._id} className="stockSnap-card">
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(snap.createdAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Total Products:</strong> {snap.data.totalProducts}
+              </p>
+              <div className="stockSnap-products">
+                {snap.data.products.map((p) => (
+                  <div key={p._id} className="stockSnap-product">
+                    <span>{p.name}</span> -{" "}
+                    <span>Qty: {p.quantity}</span> -{" "}
+                    <span>Price: {p.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

@@ -1,15 +1,12 @@
-/* Container */
 .stockSnap-container {
     padding: 30px;
+    max-width: 700px;
+    margin: 40px auto;
     background-color: #f9fafb;
     border-radius: 10px;
-    max-width: 400px;
-    margin: 40px auto;
-    text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
   
-  /* Title */
   .stockSnap-title {
     font-size: 22px;
     font-weight: 600;
@@ -17,30 +14,20 @@
     color: #333;
   }
   
-  /* Button */
-  .stockSnap-btn {
-    background-color: #2563eb;
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
+  .stockSnap-card {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .stockSnap-products {
+    margin-top: 10px;
+    padding-left: 10px;
+  }
+  
+  .stockSnap-product {
     font-size: 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-  
-  .stockSnap-btn:hover {
-    background-color: #1d4ed8;
-  }
-  
-  .stockSnap-btn:disabled {
-    background-color: #9ca3af;
-    cursor: not-allowed;
-  }
-  
-  /* Message */
-  .stockSnap-message {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #16a34a;
+    margin-bottom: 5px;
   }
