@@ -4,7 +4,7 @@ import "./StockSnap.css";
 import UserNavbar from "../../compenents/sidebar/UserNavbar/UserNavbar";
 
 
-const StockSnapshot = () => {
+const StockSnap = () => {
   const [snapshots, setSnapshots] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,4 +62,4 @@ const StockSnapshot = () => {
   );
 };
 
-export default StockSnapshot;
+export default StockSnap;
