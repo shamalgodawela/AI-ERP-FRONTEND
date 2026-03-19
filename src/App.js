@@ -103,6 +103,7 @@ import Productquantityop from "./pages/invoice/GetProductQuanitityEach area/Prod
 import AdminInvoice from "./pages/invoice/AdminInvoice";
 import AccountPage from "./pages/Accountdepartment/AllAcount/AccountPage";
 import StockSnapshot from "./pages/StockSnapsot/StockSnap";
+import FinancialReportEditor from "./pages/Accountdepartment/FinancialReport/Financereport";
 
 
 axios.defaults.withCredentials= true;
@@ -272,6 +273,7 @@ function App() {
 <Route path="/AccAlldealer" element={<AccAlldealer/>} />
 <Route path="/SingleDelaer" element={<SingleDelaer/>} />
 <Route path="/All_Account" element={<AccountPage/>} />
+<Route path="/Finance_report" element={<FinancialReportEditor/>} />
 
 
 

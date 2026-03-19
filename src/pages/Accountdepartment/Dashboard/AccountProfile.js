@@ -55,6 +55,11 @@ const actions = [
       icon: <FaUniversity size={32} />, // 🏦 bank
       route: '/All_Account',
     },
+    {
+      label: 'Finance Report Temp',
+      icon: <FaUniversity size={32} />, // 🏦 bank
+      route: '/Finance_report',
+    },
 
   ];
   

@@ -1,0 +1,459 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=EB+Garamond:wght@400;500;600&display=swap');
+
+:root {
+  --ink: #1c1812;
+  --muted: #6b6356;
+  --line: #cdc5b8;
+  --bg: #f7f3ed;
+  --paper: #fffef9;
+  --accent: #2c4a2e;
+  --danger: #8b2020;
+  --add: #2a4060;
+}
+
+
+
+/* ── Toolbar ─────────────────────────────────────── */
+.toolbar {
+  max-width: 820px;
+  margin: 0 auto 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tb-btn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1.5px solid;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.tb-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.tb-btn.primary:hover {
+  background: #1e3520;
+}
+
+.tb-btn.secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.tb-btn.secondary:hover {
+  border-color: var(--ink);
+}
+
+.tb-btn.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.tb-hint {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  margin-left: auto;
+}
+
+/* ── Card ────────────────────────────────────────── */
+.card {
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 52px 60px;
+  box-shadow: 0 6px 40px rgba(0, 0, 0, 0.07);
+}
+
+/* ── Report Header ───────────────────────────────── */
+.report-top {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+
+.report-top input.company-inp {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 6px;
+  padding: 2px 0;
+}
+
+.report-top .sub-inp {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  border-bottom: 1px dashed transparent;
+  padding: 1px 0;
+}
+
+.report-top .sub-inp:focus {
+  border-bottom-color: var(--line);
+}
+
+.print-company {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.print-sub {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ── Column Headers ──────────────────────────────── */
+.col-heads {
+  display: grid;
+  grid-template-columns: 1fr 140px 140px;
+  gap: 0;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+.col-head-inp {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  text-transform: uppercase;
+  border: none;
+  background: transparent;
+  outline: none;
+  border-bottom: 1px dashed transparent;
+  padding: 2px 4px;
+}
+
+.col-head-inp:focus {
+  border-bottom-color: var(--line);
+}
+
+.col-head-label {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding-right: 4px;
+}
+
+/* ── Sections ────────────────────────────────────── */
+.section {
+  margin-bottom: 14px;
+}
+
+.sec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 6px 0 4px;
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 2px;
+  letter-spacing: 0.01em;
+}
+
+.sec-sub-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 0 4px 0;
+  margin-top: 6px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 2px;
+}
+
+/* ── Editable Row ────────────────────────────────── */
+.er {
+  display: grid;
+  grid-template-columns: 1fr 140px 140px 28px;
+  align-items: center;
+  border-bottom: 1px solid #ede9e0;
+  min-height: 34px;
+}
+
+/* when no remove button (preview mode) */
+.er.no-remove {
+  grid-template-columns: 1fr 140px 140px;
+}
+
+/* ── Input fields ────────────────────────────────── */
+.inp {
+  font-family: 'EB Garamond', serif;
+  font-size: 13.5px;
+  color: var(--ink);
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  padding: 5px 4px;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.2s;
+}
+
+.inp:focus {
+  border-bottom-color: var(--line);
+  background: #faf8f4;
+}
+
+.inp.mono {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.inp.bold {
+  font-weight: 600;
+}
+
+.inp.label-inp {
+  padding-left: 12px;
+}
+
+.inp.cell {
+  width: 140px;
+}
+
+/* ── Print / Preview values ──────────────────────── */
+.print-label {
+  font-size: 13.5px;
+  color: var(--ink);
+  padding: 5px 4px 5px 12px;
+}
+
+.print-val {
+  font-size: 13.5px;
+  color: var(--ink);
+  text-align: right;
+  padding: 5px 4px;
+  font-variant-numeric: tabular-nums;
+  width: 140px;
+}
+
+/* ── Remove button ───────────────────────────────── */
+.rm-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 4px;
+  text-align: center;
+}
+
+.rm-btn:hover {
+  opacity: 1;
+}
+
+/* ── Add row button ──────────────────────────────── */
+.add-btn {
+  background: none;
+  border: 1px dashed var(--add);
+  color: var(--add);
+  font-family: 'EB Garamond', serif;
+  font-size: 12px;
+  padding: 4px 12px;
+  cursor: pointer;
+  margin: 6px 0 6px 12px;
+  border-radius: 1px;
+  letter-spacing: 0.03em;
+  transition: all 0.2s;
+}
+
+.add-btn:hover {
+  background: #eef3f8;
+}
+
+/* ── Closing stock row ───────────────────────────── */
+.closing-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 140px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  min-height: 34px;
+}
+
+.closing-label {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+  padding-left: 12px;
+}
+
+/* ── Total rows ──────────────────────────────────── */
+.tr-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 140px;
+  align-items: center;
+  padding: 7px 4px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  margin: 4px 0;
+}
+
+.tr-row.double {
+  border-bottom: 3px double var(--ink);
+}
+
+.tr-row.highlight-row {
+  background: var(--ink);
+  padding: 12px 10px;
+  margin: 18px 0 0;
+  border: none;
+}
+
+.tr-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tr-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: right;
+  padding-right: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.highlight-row .tr-label,
+.highlight-row .tr-val {
+  color: #f5e6c8;
+}
+
+/* ── Auditor row ─────────────────────────────────── */
+.auditor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.auditor-inp {
+  flex: 1;
+  font-family: 'EB Garamond', serif;
+  font-size: 12px;
+  color: var(--muted);
+  border: none;
+  background: transparent;
+  outline: none;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.2s;
+  padding: 2px 0;
+  letter-spacing: 0.03em;
+  font-style: italic;
+}
+
+.auditor-inp:focus {
+  border-bottom-color: var(--line);
+}
+
+.auditor-print {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ── Divider ─────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 16px 0;
+}
+
+/* ── Print styles ────────────────────────────────── */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  .toolbar {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none;
+    border: none;
+    padding: 32px 40px;
+    max-width: 100%;
+  }
+
+  .add-btn,
+  .rm-btn {
+    display: none !important;
+  }
+
+  .inp,
+  .company-inp,
+  .sub-inp,
+  .col-head-inp,
+  .auditor-inp {
+    border-bottom: none !important;
+    background: transparent !important;
+  }
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 600px) {
+  .card {
+    padding: 24px 16px;
+  }
+
+  .er,
+  .closing-row,
+  .tr-row,
+  .col-heads {
+    grid-template-columns: 1fr 100px 100px;
+  }
+
+  .er {
+    grid-template-columns: 1fr 100px 100px 24px;
+  }
+
+  .print-val,
+  .inp.cell,
+  .tr-val,
+  .col-head-inp {
+    width: 100px;
+  }
+}
