@@ -27,6 +27,7 @@ const AccountPayment = () => {
   const { state } = location;
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [productCodeSearch, setProductCodeSearch] = useState('');
 
   useEffect(() => {
     const customerFromState = state?.customer || searchParams.get("customer") || '';
@@ -103,10 +104,22 @@ const AccountPayment = () => {
           return true;
         });
       }
+      if (productCodeSearch) {
+        const search = productCodeSearch.toLowerCase();
+      
+        filtered = filtered.filter(i =>
+          Array.isArray(i.products) &&
+          i.products.some(p =>
+            String(p.productCode || p.code || p.BulkCode || '')
+              .toLowerCase()
+              .includes(search)
+          )
+        );
+      }
 
       setFilteredInvoices(filtered);
     }, 300),
-    [invoices, selectedExe, selectedCustomer, exeNameSearch, selectedMonth, selectedYear, outstandingSearch, selectedPaymentMode, startDate, endDate]
+    [invoices, selectedExe, selectedCustomer, exeNameSearch, selectedMonth, selectedYear, outstandingSearch, selectedPaymentMode, startDate, endDate, productCodeSearch]
   );
 
   useEffect(() => {
@@ -216,6 +229,12 @@ const AccountPayment = () => {
             <option value="2025">2025</option>
             <option value="2024">2024</option>
           </select>
+          <input
+  type="text"
+  value={productCodeSearch}
+  onChange={e => handleFilterChange('productCode', e.target.value, setProductCodeSearch)}
+  placeholder="Search by product code"
+/>
 
           <p>Select Time Period</p>
 
