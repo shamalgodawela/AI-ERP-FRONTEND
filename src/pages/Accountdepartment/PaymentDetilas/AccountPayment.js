@@ -105,15 +105,19 @@ const AccountPayment = () => {
         });
       }
       if (productCodeSearch) {
-        const search = productCodeSearch.toLowerCase();
+        // split by comma (max 5 codes)
+        const codes = productCodeSearch
+          .split(',')
+          .map(c => c.trim().toLowerCase())
+          .filter(c => c)
+          .slice(0, 5); // limit to 5
       
         filtered = filtered.filter(i =>
           Array.isArray(i.products) &&
-          i.products.some(p =>
-            String(p.productCode || p.code || p.BulkCode || '')
-              .toLowerCase()
-              .includes(search)
-          )
+          i.products.some(p => {
+            const code = String(p.productCode || p.code || p.BulkCode || '').toLowerCase();
+            return codes.some(searchCode => code.includes(searchCode));
+          })
         );
       }
 
@@ -233,7 +237,7 @@ const AccountPayment = () => {
   type="text"
   value={productCodeSearch}
   onChange={e => handleFilterChange('productCode', e.target.value, setProductCodeSearch)}
-  placeholder="Search by product code"
+  placeholder="Enter up to 5 product codes (comma separated)"
 />
 
           <p>Select Time Period</p>
