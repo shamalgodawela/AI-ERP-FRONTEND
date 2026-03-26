@@ -33,6 +33,21 @@ const ProductList = ({ products, isLoading }) => {
         return text;
       };
 
+      // If the product category is one of our inventory types, show it as part of the description.
+      const formatInventoryDescription = (category, description) => {
+        const normalizedCategory = (category || "").trim();
+        const normalizedDescription = (description ?? "").toString();
+
+        if (!normalizedDescription) return "";
+
+        const knownCategories = ["Liquid chemical", "Liquid", "Fertilizer"];
+        if (knownCategories.includes(normalizedCategory)) {
+          return `${normalizedCategory}: ${normalizedDescription}`;
+        }
+
+        return normalizedDescription;
+      };
+
       const delProduct= async(id)=>{
         await dispatch(deleteProduct(id))
         await dispatch(getProducts())
@@ -142,7 +157,7 @@ const ProductList = ({ products, isLoading }) => {
                             {/* <td>{discount}%</td> */}
                             <td>{"Rs:"}{formatNumbers(salesPrice.toFixed(2))}</td>
                             <td>{quantity}</td>
-                            <td>{formatNumbers(parseFloat(description * quantity).toFixed(2))}</td>
+                            <td>{formatInventoryDescription(category, description)}</td>
                             <td>{"Rs:"}{typeof price === 'string' ? formatNumbers(parseFloat(salesPrice * quantity).toFixed(2)) : formatNumbers((price * quantity).toFixed(2))}</td>
                             {/* <td className="icons">
                               <span>
