@@ -106,7 +106,6 @@ const ProductList = ({ products, isLoading, inventoryLinksBase = "/inventory" })
                 onChange={(e) => setSearch(e.target.value)}
               />
                 </span>
-               
               </div>
     
               {isLoading && <SpinnerImg />}
