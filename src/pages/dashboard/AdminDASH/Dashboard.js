@@ -12,9 +12,12 @@ import { getProducts } from "../../../redux/features/product/productSlice";
 
 
 const slugToLabel = {
+  "Old-product": "Old product",
   "liquid-chemical": "Liquid chemical",
   liquid: "Liquid",
   fertilizer: "Fertilizer",
+  chemical:"Chemical",
+  sample:"Sample"
 };
 
 const stripHtmlToText = (value) => {

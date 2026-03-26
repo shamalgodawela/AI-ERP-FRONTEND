@@ -93,6 +93,12 @@ const ProductList = ({ products, isLoading, inventoryLinksBase = "/inventory" })
                   <Link className="--btn --btn-primary" to={`${inventoryLinksBase}/fertilizer`}>
                     Fertilizer
                   </Link>
+                  <Link className="--btn --btn-primary" to={`${inventoryLinksBase}/fertilizer`}>
+                    Fertilizer
+                  </Link>
+                  <Link className="--btn --btn-primary" to={`${inventoryLinksBase}/sample`}>
+                  Sample
+                  </Link>
                 </span>
                 <span>
                 <Search
