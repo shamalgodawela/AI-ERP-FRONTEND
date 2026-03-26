@@ -12,15 +12,6 @@ const AdminnavBar = () => {
     <li>
       <Link to="/dashboard" className="active">Inventory</Link>
     </li>
-        <li>
-          <Link to="/inventory/liquid-chemical">Liquid chemical</Link>
-        </li>
-        <li>
-          <Link to="/inventory/liquid">Liquid</Link>
-        </li>
-        <li>
-          <Link to="/inventory/fertilizer">Fertilizer</Link>
-        </li>
     <li>
       <Link to="/Admin-invoice">Invoice details</Link>
       

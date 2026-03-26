@@ -17,7 +17,7 @@ import { deleteProduct, getProducts } from '../../../redux/features/product/prod
 
 
 
-const ProductList = ({ products, isLoading }) => {
+const ProductList = ({ products, isLoading, inventoryLinksBase = "/inventory" }) => {
   const [search, setSearch] = useState("");
   const filteredProducts = useSelector(selectFilteredProducts);
  
@@ -84,13 +84,13 @@ const ProductList = ({ products, isLoading }) => {
                   <h3>Finished Product Main Warehouse</h3>
                 </span>
                 <span style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <Link className="--btn --btn-primary" to="/inventory/liquid-chemical">
+                  <Link className="--btn --btn-primary" to={`${inventoryLinksBase}/liquid-chemical`}>
                     Liquid chemical
                   </Link>
-                  <Link className="--btn --btn-primary" to="/inventory/liquid">
+                  <Link className="--btn --btn-primary" to={`${inventoryLinksBase}/liquid`}>
                     Liquid
                   </Link>
-                  <Link className="--btn --btn-primary" to="/inventory/fertilizer">
+                  <Link className="--btn --btn-primary" to={`${inventoryLinksBase}/fertilizer`}>
                     Fertilizer
                   </Link>
                 </span>

@@ -2,15 +2,12 @@ import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import AdminnavBar from "../../../compenents/AdminNavbar/AdminnavBar";
-import ProductSummary from "../../../compenents/product/productSummary/ProductSummary";
-import ProductList from "../../../compenents/product/productList/ProductList";
-import Footer from "../../../compenents/footer/Footer";
+import UserNavbar from "../../compenents/sidebar/UserNavbar/UserNavbar";
+import Footer from "../../compenents/footer/Footer";
+import ProductSummary from "../../compenents/product/productSummary/ProductSummary";
+import ProductList from "../../compenents/product/productList/ProductList";
 
-import useRedirectLoggedOutUser from "../../../customHook/useRedirectLoggedOutUser";
-import { selectIsLoggedIn } from "../../../redux/features/auth/authSlice";
-import { getProducts } from "../../../redux/features/product/productSlice";
-import UserNavbar from "../../../compenents/sidebar/UserNavbar/UserNavbar";
+import { getProducts } from "../../redux/features/product/productSlice";
 
 const slugToLabel = {
   "liquid-chemical": "Liquid chemical",
@@ -29,32 +26,23 @@ const stripHtmlToText = (value) => {
 const matchesInventoryByDescription = (description, inventoryLabel) => {
   const text = stripHtmlToText(description).toLowerCase();
   const label = (inventoryLabel || "").toString().trim().toLowerCase();
-
   if (!label || !text) return false;
-
-  // In this project, `description` is used like a category field:
-  // it should be exactly one of: "liquid", "liquid chemical", "fertilizer"
   return text === label;
 };
 
-const InventoryByDescription = () => {
-  useRedirectLoggedOutUser("/login");
-
+const UserInventoryByDescription = () => {
   const { slug } = useParams();
   const inventoryLabel = slugToLabel[slug] || "";
 
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
   const { products, isLoading } = useSelector((state) => state.product);
 
   useEffect(() => {
-    if (isLoggedIn === true) {
-      dispatch(getProducts());
-    }
-  }, [isLoggedIn, dispatch]);
+    dispatch(getProducts());
+  }, [dispatch]);
 
   const filteredProducts = useMemo(() => {
-    if (!inventoryLabel) return [];
+    if (!inventoryLabel) return products || [];
     return (products || []).filter((p) =>
       matchesInventoryByDescription(p?.description, inventoryLabel)
     );
@@ -65,17 +53,21 @@ const InventoryByDescription = () => {
       <UserNavbar />
       <div style={{ padding: "12px 18px" }}>
         <h3 style={{ margin: "10px 0" }}>
-          Inventory: {inventoryLabel || "Unknown"}
+          Inventory: {inventoryLabel || "All"}
         </h3>
       </div>
 
       <ProductSummary products={filteredProducts} />
-      <ProductList products={filteredProducts} isLoading={isLoading} />
+      <ProductList
+        products={filteredProducts}
+        isLoading={isLoading}
+        inventoryLinksBase="/user-inventory"
+      />
 
       <Footer />
     </div>
   );
 };
 
-export default InventoryByDescription;
+export default UserInventoryByDescription;
 

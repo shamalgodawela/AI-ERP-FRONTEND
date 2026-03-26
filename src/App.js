@@ -62,8 +62,7 @@ import ProductSummary from "./compenents/product/productSummary/ProductSummary";
 import AllProducts from "./compenents/bulkproduct/Allproduct/AllProducts";
 import BankStatement from "./compenents/BankStatements/BankStatement";
 import UserDashboard from "./pages/UserDashboard/UserDashboard";
-import Admininventory from "./pages/dashboard/AdminDASH/Admininventory";
-import InventoryByDescription from "./pages/dashboard/AdminDASH/InventoryByDescription";
+import UserInventoryByDescription from "./pages/UserDashboard/UserInventoryByDescription";
 import Useroutstanding from "./pages/UserDashboard/UserOutstanding/Useroutstanding";
 import UserBulkProduct from "./pages/NewBulkDetails/UserBulkProduct";
 import UserBulkP from "./compenents/bulkproduct/Allproduct/UserBulkP";
@@ -105,6 +104,7 @@ import AdminInvoice from "./pages/invoice/AdminInvoice";
 import AccountPage from "./pages/Accountdepartment/AllAcount/AccountPage";
 import StockSnapshot from "./pages/StockSnapsot/StockSnap";
 import FinancialReportEditor from "./pages/Accountdepartment/FinancialReport/Financereport";
+import InventoryByDescription from "./pages/dashboard/AdminDASH/Dashboard";
 
 
 axios.defaults.withCredentials= true;
@@ -157,7 +157,8 @@ function App() {
     <Route path="/sales" element={<Sales/>} />
     <Route path="/AllcustomerWiseHistory" element={<Allcustomers/>}/>
     <Route path="/productSummery" element={<ProductSummary/>}/>
-    <Route path="/dashboard" element={<Admininventory/>}/>
+    <Route path="/dashboard" element={<InventoryByDescription/>}/>
+    <Route path="/inventory/:slug" element={<InventoryByDescription/>}/>
     
     <Route path="/edit-product/:id" element={<EditProduct/>}/>
   <Route path="/product-list" element={<ProductListExe/>} />
@@ -173,6 +174,7 @@ function App() {
     <Route path="/getall-cheques" element={<Getallcheque/>} />
     <Route path="/Admin-invoice" element={<AdminInvoice/>} />
 
+
   
    
 
@@ -187,6 +189,7 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
           <Route path="/view-all-order" element={<Allorder/>} />
           <Route path="/User-dashboard" element={<UserDashboard/>}/>
+          <Route path="/user-inventory/:slug" element={<UserInventoryByDescription/>} />
           <Route path="/add-products" element={<AddProduct/>}/>
           <Route path="/product-detail/:id" element={<ProductDetails/>}/>
           <Route path="/edit-product/:id" element={<EditProduct/>}/>
@@ -235,7 +238,8 @@ function App() {
     <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
     <Route path="/userorder/:id" element={<UserOneorder/>} />
     <Route path="/stockSnap" element={<StockSnapshot/>} />
-    <Route path="/inventory/:slug" element={<InventoryByDescription/>} />
+ 
+
   
     
 
