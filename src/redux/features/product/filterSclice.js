@@ -11,7 +11,17 @@ const filterSclice = createSlice({
   reducers: {
     FILTER_PRODUCTS(state,action){
         const {products, search}=action.payload;
-        const tempProducts=products.filter((product)=> product.name.toLowerCase().includes(search.toLowerCase()) ||  product.category.toLowerCase().includes(search.toLowerCase()))
+        const searchValue = (search ?? "").toString().toLowerCase();
+        const tempProducts=products.filter((product)=> {
+          const name = (product?.name ?? "").toString().toLowerCase();
+          const category = (product?.category ?? "").toString().toLowerCase();
+          const description = (product?.description ?? "").toString().toLowerCase();
+          return (
+            name.includes(searchValue) ||
+            category.includes(searchValue) ||
+            description.includes(searchValue)
+          );
+        })
 
         state.filteredProducts=tempProducts
 

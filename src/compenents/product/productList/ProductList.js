@@ -33,21 +33,6 @@ const ProductList = ({ products, isLoading }) => {
         return text;
       };
 
-      // If the product category is one of our inventory types, show it as part of the description.
-      const formatInventoryDescription = (category, description) => {
-        const normalizedCategory = (category || "").trim();
-        const normalizedDescription = (description ?? "").toString();
-
-        if (!normalizedDescription) return "";
-
-        const knownCategories = ["Liquid chemical", "Liquid", "Fertilizer"];
-        if (knownCategories.includes(normalizedCategory)) {
-          return `${normalizedCategory}: ${normalizedDescription}`;
-        }
-
-        return normalizedDescription;
-      };
-
       const delProduct= async(id)=>{
         await dispatch(deleteProduct(id))
         await dispatch(getProducts())
@@ -56,23 +41,7 @@ const ProductList = ({ products, isLoading }) => {
 
       }
 
-      //delete
-      const confirmDelete=(id)=>{
-        confirmAlert({
-          title: 'Delete Product',
-          message: 'Are you sure you want to delete this product.',
-          buttons: [
-            {
-              label: 'Delete',
-              onClick: () => delProduct(id)
-            },
-            {
-              label: 'Cancel',
-              // onClick: () => alert('Click No')
-            }
-          ]
-        });
-      }
+      
        //   Begin Pagination
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
@@ -113,6 +82,17 @@ const ProductList = ({ products, isLoading }) => {
               <div className="--flex-between --flex-dir-column">
                 <span>
                   <h3>Finished Product Main Warehouse</h3>
+                </span>
+                <span style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <Link className="--btn --btn-primary" to="/inventory/liquid-chemical">
+                    Liquid chemical
+                  </Link>
+                  <Link className="--btn --btn-primary" to="/inventory/liquid">
+                    Liquid
+                  </Link>
+                  <Link className="--btn --btn-primary" to="/inventory/fertilizer">
+                    Fertilizer
+                  </Link>
                 </span>
                 <span>
                 <Search
@@ -157,7 +137,7 @@ const ProductList = ({ products, isLoading }) => {
                             {/* <td>{discount}%</td> */}
                             <td>{"Rs:"}{formatNumbers(salesPrice.toFixed(2))}</td>
                             <td>{quantity}</td>
-                            <td>{formatInventoryDescription(category, description)}</td>
+                            <td>{description}</td>
                             <td>{"Rs:"}{typeof price === 'string' ? formatNumbers(parseFloat(salesPrice * quantity).toFixed(2)) : formatNumbers((price * quantity).toFixed(2))}</td>
                             {/* <td className="icons">
                               <span>

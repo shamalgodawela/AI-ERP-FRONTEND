@@ -63,6 +63,7 @@ import AllProducts from "./compenents/bulkproduct/Allproduct/AllProducts";
 import BankStatement from "./compenents/BankStatements/BankStatement";
 import UserDashboard from "./pages/UserDashboard/UserDashboard";
 import Admininventory from "./pages/dashboard/AdminDASH/Admininventory";
+import InventoryByDescription from "./pages/dashboard/AdminDASH/InventoryByDescription";
 import Useroutstanding from "./pages/UserDashboard/UserOutstanding/Useroutstanding";
 import UserBulkProduct from "./pages/NewBulkDetails/UserBulkProduct";
 import UserBulkP from "./compenents/bulkproduct/Allproduct/UserBulkP";
@@ -157,6 +158,7 @@ function App() {
     <Route path="/AllcustomerWiseHistory" element={<Allcustomers/>}/>
     <Route path="/productSummery" element={<ProductSummary/>}/>
     <Route path="/dashboard" element={<Admininventory/>}/>
+    
     <Route path="/edit-product/:id" element={<EditProduct/>}/>
   <Route path="/product-list" element={<ProductListExe/>} />
     <Route path="/view-all-bulk" element={<ViewAllBulk/>} />
@@ -233,6 +235,7 @@ function App() {
     <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
     <Route path="/userorder/:id" element={<UserOneorder/>} />
     <Route path="/stockSnap" element={<StockSnapshot/>} />
+    <Route path="/inventory/:slug" element={<InventoryByDescription/>} />
   
     
 
