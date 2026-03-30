@@ -114,6 +114,7 @@ const AreaInventory = () => {
     <option value="NCP_Stock">NCP_Stock</option>
     <option value="UpCountry">UpCountry</option>
     <option value="Kurunagala">Kurunagala</option>
+    <option value="ACC">Access_Amount_Product</option>
 
   </select>
 </div>
