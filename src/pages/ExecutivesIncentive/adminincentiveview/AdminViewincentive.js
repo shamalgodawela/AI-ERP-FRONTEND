@@ -10,7 +10,7 @@ const AdminViewincentive = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Filters
+  // Filter states
   const [selectedExe, setSelectedExe] = useState('All');
   const [searchMonth, setSearchMonth] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
@@ -33,26 +33,24 @@ const AdminViewincentive = () => {
       });
   }, []);
 
-  // Unique values
-  const uniqueExecutives = ['All', ...new Set(incentives.map(item => item.exe))];
-  const uniqueStatuses = ['All', ...new Set(incentives.map(item => item.IncentiveStatus))];
-  const uniqueSettlements = ['All', ...new Set(incentives.map(item => item.Incentivesettlement))];
-  const uniquePaymentModes = ['All', ...new Set(incentives.map(item => item.ModeofPayment))]; // ✅ NEW
+  const uniqueExecutives = ['All', ...Array.from(new Set(incentives.map(item => item.exe)))];
+  const uniqueStatuses = ['All', ...Array.from(new Set(incentives.map(item => item.IncentiveStatus)))];
+  const uniqueSettlements = ['All', ...Array.from(new Set(incentives.map(item => item.Incentivesettlement)))];
+  const uniquePaymentModes = ['All', ...Array.from(new Set(incentives.map(item => item.ModeofPayment)))]; // ✅ NEW
 
   const formatNumberWithCommas = (num) => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  // 🔥 FILTER LOGIC
   const applyFilters = (
     exe,
     month,
-    status,
-    settlement,
+    IncentiveStatus,
+    Incentivesettlement,
     customer,
     start = startDate,
     end = endDate,
-    paymentMode = selectedPaymentMode
+    paymentMode = selectedPaymentMode // ✅ NEW
   ) => {
     let filtered = incentives;
 
@@ -62,16 +60,17 @@ const AdminViewincentive = () => {
 
     if (month) {
       filtered = filtered.filter(item =>
-        item.invoiceDate && item.invoiceDate.startsWith(month)
+        item.invoiceDate &&
+        item.invoiceDate.startsWith(month)
       );
     }
 
-    if (status !== 'All') {
-      filtered = filtered.filter(item => item.IncentiveStatus === status);
+    if (IncentiveStatus !== 'All') {
+      filtered = filtered.filter(item => item.IncentiveStatus === IncentiveStatus);
     }
 
-    if (settlement !== 'All') {
-      filtered = filtered.filter(item => item.Incentivesettlement === settlement);
+    if (Incentivesettlement !== 'All') {
+      filtered = filtered.filter(item => item.Incentivesettlement === Incentivesettlement);
     }
 
     if (customer && customer.trim() !== '') {
@@ -84,14 +83,14 @@ const AdminViewincentive = () => {
     // ✅ Payment Mode Filter
     if (paymentMode !== 'All') {
       filtered = filtered.filter(item =>
-        item.ModeofPayment?.toLowerCase() === paymentMode.toLowerCase()
+        item.ModeofPayment &&
+        item.ModeofPayment.toLowerCase() === paymentMode.toLowerCase()
       );
     }
 
     if (start) {
       filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate >= start);
     }
-
     if (end) {
       filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate <= end);
     }
@@ -99,34 +98,33 @@ const AdminViewincentive = () => {
     setFilteredIncentives(filtered);
   };
 
-  // Handlers
   const handleSelectChange = (e) => {
-    const val = e.target.value;
-    setSelectedExe(val);
-    applyFilters(val, searchMonth, selectedStatus, selectedSettlement, searchCustomer);
+    const exe = e.target.value;
+    setSelectedExe(exe);
+    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleMonthChange = (e) => {
-    const val = e.target.value;
-    setSearchMonth(val);
-    applyFilters(selectedExe, val, selectedStatus, selectedSettlement, searchCustomer);
+    const month = e.target.value;
+    setSearchMonth(month);
+    applyFilters(selectedExe, month, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleStatusChange = (e) => {
-    const val = e.target.value;
-    setSelectedStatus(val);
-    applyFilters(selectedExe, searchMonth, val, selectedSettlement, searchCustomer);
+    const status = e.target.value;
+    setSelectedStatus(status);
+    applyFilters(selectedExe, searchMonth, status, selectedSettlement, searchCustomer);
   };
 
   const handleSettlementChange = (e) => {
-    const val = e.target.value;
-    setSelectedSettlement(val);
-    applyFilters(selectedExe, searchMonth, selectedStatus, val, searchCustomer);
+    const settlement = e.target.value;
+    setSelectedSettlement(settlement);
+    applyFilters(selectedExe, searchMonth, selectedStatus, settlement, searchCustomer);
   };
 
   const handlePaymentModeChange = (e) => {
-    const val = e.target.value;
-    setSelectedPaymentMode(val);
+    const mode = e.target.value;
+    setSelectedPaymentMode(mode);
     applyFilters(
       selectedExe,
       searchMonth,
@@ -135,14 +133,14 @@ const AdminViewincentive = () => {
       searchCustomer,
       startDate,
       endDate,
-      val
+      mode
     );
   };
 
   const handleCustomerSearch = (e) => {
-    const val = e.target.value;
-    setSearchCustomer(val);
-    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, val);
+    const customer = e.target.value;
+    setSearchCustomer(customer);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, customer);
   };
 
   const handleStartDateChange = (e) => {
@@ -161,94 +159,87 @@ const AdminViewincentive = () => {
     return sum + (parseFloat(item.incentiveAmount) || 0);
   }, 0);
 
-  const handlePrint = () => window.print();
+  const handlePrint = () => {
+    window.print();
+  };
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
     <>
-      <div className="incentive-container">
-        <h2>Executive Incentive Report</h2>
+      <style>{`
+        @media print {
+          body * { visibility: hidden; }
+          #printableArea, #printableArea * { visibility: visible; }
+          #printableArea { position: absolute; left: 0; top: 0; width: 100%; }
+          .no-print { display: none !important; }
+        }
+      `}</style>
 
-        {/* FILTERS */}
-        <div className="no-print">
+      <div>
+        <div className="incentive-container">
+          <h2>Executive Incentive Report</h2>
 
-          {/* Executive */}
-          <select value={selectedExe} onChange={handleSelectChange}>
-            {uniqueExecutives.map((exe, i) => (
-              <option key={i}>{exe}</option>
-            ))}
-          </select>
+          {/* Filters */}
+          <div className="no-print" style={{ marginBottom: '10px' }}>
 
-          {/* Month */}
-          <input type="month" value={searchMonth} onChange={handleMonthChange} />
+            <select value={selectedExe} onChange={handleSelectChange}>
+              {uniqueExecutives.map((exe, i) => <option key={i}>{exe}</option>)}
+            </select>
 
-          {/* Customer */}
-          <input
-            type="text"
-            placeholder="Customer"
-            value={searchCustomer}
-            onChange={handleCustomerSearch}
-          />
+            <input type="month" value={searchMonth} onChange={handleMonthChange} />
 
-          {/* Status */}
-          <select value={selectedStatus} onChange={handleStatusChange}>
-            {uniqueStatuses.map((s, i) => (
-              <option key={i}>{s}</option>
-            ))}
-          </select>
+            <input type="text" placeholder="Customer" value={searchCustomer} onChange={handleCustomerSearch} />
 
-          {/* Settlement */}
-          <select value={selectedSettlement} onChange={handleSettlementChange}>
-            {uniqueSettlements.map((s, i) => (
-              <option key={i}>{s}</option>
-            ))}
-          </select>
+            <select value={selectedStatus} onChange={handleStatusChange}>
+              {uniqueStatuses.map((s, i) => <option key={i}>{s}</option>)}
+            </select>
 
-          {/* ✅ Payment Mode */}
-          <select value={selectedPaymentMode} onChange={handlePaymentModeChange}>
-            {uniquePaymentModes.map((m, i) => (
-              <option key={i}>{m}</option>
-            ))}
-          </select>
+            <select value={selectedSettlement} onChange={handleSettlementChange}>
+              {uniqueSettlements.map((s, i) => <option key={i}>{s}</option>)}
+            </select>
 
-          {/* Date Range */}
-          <input type="date" value={startDate} onChange={handleStartDateChange} />
-          <input type="date" value={endDate} onChange={handleEndDateChange} />
+            {/* ✅ Payment Mode */}
+            <select value={selectedPaymentMode} onChange={handlePaymentModeChange}>
+              {uniquePaymentModes.map((m, i) => <option key={i}>{m}</option>)}
+            </select>
 
-          <button onClick={handlePrint}>Print</button>
-        </div>
+            <input type="date" value={startDate} onChange={handleStartDateChange} />
+            <input type="date" value={endDate} onChange={handleEndDateChange} />
 
-        {/* TABLE */}
-        <p><strong>Total Incentive: Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
+            <button onClick={handlePrint}>Print</button>
+          </div>
 
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Invoice</th>
-              <th>Customer</th>
-              <th>Executive</th>
-              <th>Payment</th>
-              <th>Date</th>
-              <th>Total</th>
-              <th>Incentive</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredIncentives.map((item, i) => (
-              <tr key={i}>
-                <td>{item.invoiceNumber}</td>
-                <td>{item.customer}</td>
-                <td>{item.exe}</td>
-                <td>{item.ModeofPayment}</td>
-                <td>{item.invoiceDate}</td>
-                <td>{formatNumberWithCommas(parseFloat(item.invoiceTotal) || 0)}</td>
-                <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
+          <p><strong>Total Incentive: Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
+
+          <table border="1" style={{ width: '100%' }}>
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>Customer</th>
+                <th>Executive</th>
+                <th>Payment</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Incentive</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredIncentives.map((item, i) => (
+                <tr key={i}>
+                  <td>{item.invoiceNumber}</td>
+                  <td>{item.customer}</td>
+                  <td>{item.exe}</td>
+                  <td>{item.ModeofPayment}</td>
+                  <td>{item.invoiceDate}</td>
+                  <td>{formatNumberWithCommas(parseFloat(item.invoiceTotal) || 0)}</td>
+                  <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <button onClick={() => navigate('/admin-profile')}>
           Home
@@ -258,7 +249,4 @@ const AdminViewincentive = () => {
   );
 };
 
-
 export default AdminViewincentive;
-
-
