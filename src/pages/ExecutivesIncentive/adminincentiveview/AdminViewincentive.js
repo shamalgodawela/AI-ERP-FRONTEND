@@ -10,11 +10,12 @@ const AdminViewincentive = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Filter states
+  // Filters
   const [selectedExe, setSelectedExe] = useState('All');
   const [searchMonth, setSearchMonth] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedSettlement, setSelectedSettlement] = useState('All');
+  const [selectedPaymentMode, setSelectedPaymentMode] = useState('All'); // ✅ NEW
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [searchCustomer, setSearchCustomer] = useState('');
@@ -32,15 +33,27 @@ const AdminViewincentive = () => {
       });
   }, []);
 
-  const uniqueExecutives = ['All', ...Array.from(new Set(incentives.map(item => item.exe)))];
-  const uniqueStatuses = ['All', ...Array.from(new Set(incentives.map(item => item.IncentiveStatus)))];
-  const uniqueSettlements = ['All', ...Array.from(new Set(incentives.map(item => item.Incentivesettlement)))];
+  // Unique values
+  const uniqueExecutives = ['All', ...new Set(incentives.map(item => item.exe))];
+  const uniqueStatuses = ['All', ...new Set(incentives.map(item => item.IncentiveStatus))];
+  const uniqueSettlements = ['All', ...new Set(incentives.map(item => item.Incentivesettlement))];
+  const uniquePaymentModes = ['All', ...new Set(incentives.map(item => item.ModeofPayment))]; // ✅ NEW
 
   const formatNumberWithCommas = (num) => {
     return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const applyFilters = (exe, month, IncentiveStatus, Incentivesettlement, customer, start = startDate, end = endDate) => {
+  // 🔥 FILTER LOGIC
+  const applyFilters = (
+    exe,
+    month,
+    status,
+    settlement,
+    customer,
+    start = startDate,
+    end = endDate,
+    paymentMode = selectedPaymentMode
+  ) => {
     let filtered = incentives;
 
     if (exe !== 'All') {
@@ -49,74 +62,95 @@ const AdminViewincentive = () => {
 
     if (month) {
       filtered = filtered.filter(item =>
-        item.invoiceDate &&
-        item.invoiceDate.startsWith(month)
+        item.invoiceDate && item.invoiceDate.startsWith(month)
       );
     }
 
-    if (IncentiveStatus !== 'All') {
-      filtered = filtered.filter(item => item.IncentiveStatus === IncentiveStatus);
+    if (status !== 'All') {
+      filtered = filtered.filter(item => item.IncentiveStatus === status);
     }
 
-    if (Incentivesettlement !== 'All') {
-      filtered = filtered.filter(item => item.Incentivesettlement === Incentivesettlement);
+    if (settlement !== 'All') {
+      filtered = filtered.filter(item => item.Incentivesettlement === settlement);
     }
 
-    // Filter by customer (case-insensitive search)
     if (customer && customer.trim() !== '') {
-      filtered = filtered.filter(item => 
-        item.customer && 
+      filtered = filtered.filter(item =>
+        item.customer &&
         item.customer.toLowerCase().includes(customer.toLowerCase())
       );
     }
 
-    // Filter by invoiceDate range
+    // ✅ Payment Mode Filter
+    if (paymentMode !== 'All') {
+      filtered = filtered.filter(item =>
+        item.ModeofPayment?.toLowerCase() === paymentMode.toLowerCase()
+      );
+    }
+
     if (start) {
       filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate >= start);
     }
+
     if (end) {
       filtered = filtered.filter(item => item.invoiceDate && item.invoiceDate <= end);
     }
+
     setFilteredIncentives(filtered);
   };
 
-  // Handlers for each filter change
+  // Handlers
   const handleSelectChange = (e) => {
-    const exe = e.target.value;
-    setSelectedExe(exe);
-    applyFilters(exe, searchMonth, selectedStatus, selectedSettlement, searchCustomer);
+    const val = e.target.value;
+    setSelectedExe(val);
+    applyFilters(val, searchMonth, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleMonthChange = (e) => {
-    const month = e.target.value;
-    setSearchMonth(month);
-    applyFilters(selectedExe, month, selectedStatus, selectedSettlement, searchCustomer);
+    const val = e.target.value;
+    setSearchMonth(val);
+    applyFilters(selectedExe, val, selectedStatus, selectedSettlement, searchCustomer);
   };
 
   const handleStatusChange = (e) => {
-    const status = e.target.value;
-    setSelectedStatus(status);
-    applyFilters(selectedExe, searchMonth, status, selectedSettlement, searchCustomer);
+    const val = e.target.value;
+    setSelectedStatus(val);
+    applyFilters(selectedExe, searchMonth, val, selectedSettlement, searchCustomer);
   };
 
   const handleSettlementChange = (e) => {
-    const settlement = e.target.value;
-    setSelectedSettlement(settlement);
-    applyFilters(selectedExe, searchMonth, selectedStatus, settlement, searchCustomer);
+    const val = e.target.value;
+    setSelectedSettlement(val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, val, searchCustomer);
+  };
+
+  const handlePaymentModeChange = (e) => {
+    const val = e.target.value;
+    setSelectedPaymentMode(val);
+    applyFilters(
+      selectedExe,
+      searchMonth,
+      selectedStatus,
+      selectedSettlement,
+      searchCustomer,
+      startDate,
+      endDate,
+      val
+    );
   };
 
   const handleCustomerSearch = (e) => {
-    const customer = e.target.value;
-    setSearchCustomer(customer);
-    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, customer);
+    const val = e.target.value;
+    setSearchCustomer(val);
+    applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, val);
   };
 
-  // New handlers for start/end date
   const handleStartDateChange = (e) => {
     const val = e.target.value;
     setStartDate(val);
     applyFilters(selectedExe, searchMonth, selectedStatus, selectedSettlement, searchCustomer, val, endDate);
   };
+
   const handleEndDateChange = (e) => {
     const val = e.target.value;
     setEndDate(val);
@@ -127,237 +161,96 @@ const AdminViewincentive = () => {
     return sum + (parseFloat(item.incentiveAmount) || 0);
   }, 0);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
     <>
-      <style>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          #printableArea, #printableArea * {
-            visibility: visible;
-          }
-          #printableArea {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-          }
-          .no-print {
-            display: none !important;
-          }
-          .signature-section {
-            page-break-inside: avoid;
-            margin-top: 50px !important;
-          }
-          .signature-field {
-            border-top: 1px solid #000 !important;
-            page-break-inside: avoid;
-          }
-          .signature-field div {
-            border: 1px dashed #000 !important;
-            background-color: transparent !important;
-          }
-        }
-      `}</style>
+      <div className="incentive-container">
+        <h2>Executive Incentive Report</h2>
 
-      <div>
-        <div className="incentive-container">
-          <h2>Executive Incentive Report</h2>
+        {/* FILTERS */}
+        <div className="no-print">
 
-          {/* Filter Controls */}
-          <div className="no-print" style={{ marginBottom: '10px' }}>
-            <label htmlFor="exe-select" style={{ marginRight: '8px' }}>Filter by Executive:</label>
-            <select
-              id="exe-select"
-              value={selectedExe}
-              onChange={handleSelectChange}
-              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
-            >
-              {uniqueExecutives.map((exe, idx) => (
-                <option key={idx} value={exe}>{exe}</option>
-              ))}
-            </select>
+          {/* Executive */}
+          <select value={selectedExe} onChange={handleSelectChange}>
+            {uniqueExecutives.map((exe, i) => (
+              <option key={i}>{exe}</option>
+            ))}
+          </select>
 
-            <label htmlFor="month-filter" style={{ marginRight: '8px' }}>Filter by Month:</label>
-            <input
-              type="month"
-              id="month-filter"
-              value={searchMonth}
-              onChange={handleMonthChange}
-              style={{ padding: '5px', marginRight: '10px' }}
-            />
+          {/* Month */}
+          <input type="month" value={searchMonth} onChange={handleMonthChange} />
 
-            <label htmlFor="customer-search" style={{ marginRight: '8px' }}>Search by Customer:</label>
-            <input
-              type="text"
-              id="customer-search"
-              placeholder="Enter customer name"
-              value={searchCustomer}
-              onChange={handleCustomerSearch}
-              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
-            />
+          {/* Customer */}
+          <input
+            type="text"
+            placeholder="Customer"
+            value={searchCustomer}
+            onChange={handleCustomerSearch}
+          />
 
-            <label htmlFor="status-select" style={{ marginRight: '8px' }}>Payment Settlement:</label>
-            <select
-              id="status-select"
-              value={selectedStatus}
-              onChange={handleStatusChange}
-              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
-            >
-              {uniqueStatuses.map((status, idx) => (
-                <option key={idx} value={status}>{status}</option>
-              ))}
-            </select>
+          {/* Status */}
+          <select value={selectedStatus} onChange={handleStatusChange}>
+            {uniqueStatuses.map((s, i) => (
+              <option key={i}>{s}</option>
+            ))}
+          </select>
 
-            <label htmlFor="settlement-select" style={{ marginRight: '8px' }}>Executive Incentive received or not:</label>
-            <select
-              id="settlement-select"
-              value={selectedSettlement}
-              onChange={handleSettlementChange}
-              style={{ padding: '5px', width: '180px', marginRight: '10px' }}
-            >
-              {uniqueSettlements.map((settlement, idx) => (
-                <option key={idx} value={settlement}>{settlement}</option>
-              ))}
-            </select>
+          {/* Settlement */}
+          <select value={selectedSettlement} onChange={handleSettlementChange}>
+            {uniqueSettlements.map((s, i) => (
+              <option key={i}>{s}</option>
+            ))}
+          </select>
 
-            <div style={{display:"inline-block", marginRight:'10px'}}>
-              <label htmlFor="start-date">Start Date: </label>
-              <input type="date" id="start-date" value={startDate} onChange={handleStartDateChange} style={{padding:'5px',marginRight:'10px'}} />
-            </div>
-            <div style={{display:"inline-block", marginRight:'10px'}}>
-              <label htmlFor="end-date">End Date: </label>
-              <input type="date" id="end-date" value={endDate} onChange={handleEndDateChange} style={{padding:'5px',marginRight:'10px'}} />
-            </div>
+          {/* ✅ Payment Mode */}
+          <select value={selectedPaymentMode} onChange={handlePaymentModeChange}>
+            {uniquePaymentModes.map((m, i) => (
+              <option key={i}>{m}</option>
+            ))}
+          </select>
 
-            <button onClick={handlePrint} style={{ padding: '5px 10px' }}>
-              Print Report
-            </button>
-          </div>
+          {/* Date Range */}
+          <input type="date" value={startDate} onChange={handleStartDateChange} />
+          <input type="date" value={endDate} onChange={handleEndDateChange} />
 
-          {/* Printable Area */}
-          <div id="printableArea">
-            {selectedExe !== 'All' && (
-              <h1 style={{ 
-                textAlign: 'center', 
-                marginBottom: '20px', 
-                color: '#333',
-                fontSize: '24px',
-                fontWeight: 'bold'
-              }}>
-                Executive Incentive Report - {selectedExe}
-              </h1>
-            )}
-            <p><strong>Total Incentive Amount : Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
-
-            <table
-              className="incentive-table"
-              border="1"
-              cellPadding="5"
-              cellSpacing="0"
-              style={{ borderCollapse: 'collapse', width: '100%' }}
-            >
-              <thead>
-                <tr>
-                  <th>Invoice Number</th>
-                  <th>Customer</th>
-                  <th>Executive</th>
-                  <th>Payment Mode</th>
-                  <th>Invoice date</th>
-                  <th>Invoice Total (Rs)</th>
-                  <th>Incentive Amount (Rs)</th>
-                  <th>Invoice Settled Date</th>
-                  <th>Invoice Due Date</th>
-                  <th>Incentive Status</th>
-                  <th>Incentive Settlement</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredIncentives.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.invoiceNumber}</td>
-                    <td>{item.customer}</td>
-                    <td>{item.exe}</td>
-                    <td>{item.ModeofPayment}</td>
-                    <td>{item.invoiceDate}</td>
-                    <td>{formatNumberWithCommas(parseFloat(item.invoiceTotal) || 0)}</td>
-                    <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
-                    <td>{item.IncentiveDueDate}</td>
-                    <td>{item.Duedate}</td>
-                    <td>{item.IncentiveStatus}</td>
-                    <td>{item.Incentivesettlement}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Signature Section */}
-            <div className="signature-section" style={{ 
-              marginTop: '50px', 
-              display: 'flex', 
-              justifyContent: 'space-between',
-              pageBreakInside: 'avoid'
-            }}>
-              <div className="signature-field" style={{
-                width: '45%',
-                textAlign: 'center',
-                borderTop: '1px solid #000',
-                paddingTop: '10px',
-                marginTop: '30px'
-              }}>
-                <p style={{ margin: '0', fontWeight: 'bold', fontSize: '14px' }}>System Validity</p>
-                <div style={{
-                  height: '60px',
-                  border: '1px dashed #ccc',
-                  marginTop: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#f9f9f9'
-                }}>
-                  <span style={{ color: '#999', fontSize: '12px' }}>Signature Area</span>
-                </div>
-                <p style={{ margin: '5px 0 0 0', fontSize: '12px' }}>Date: _________________</p>
-              </div>
-
-              <div className="signature-field" style={{
-                width: '45%',
-                textAlign: 'center',
-                borderTop: '1px solid #000',
-                paddingTop: '10px',
-                marginTop: '30px'
-              }}>
-                <p style={{ margin: '0', fontWeight: 'bold', fontSize: '14px' }}>Incentive Approval</p>
-                <div style={{
-                  height: '60px',
-                  border: '1px dashed #ccc',
-                  marginTop: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#f9f9f9'
-                }}>
-                  <span style={{ color: '#999', fontSize: '12px' }}>Signature Area</span>
-                </div>
-                <p style={{ margin: '5px 0 0 0', fontSize: '12px' }}>Date: _________________</p>
-              </div>
-            </div>
-          </div>
+          <button onClick={handlePrint}>Print</button>
         </div>
 
-        <button
-          className="home-btn no-print"
-          onClick={() => navigate('/admin-profile')}
-          style={{ marginTop: '15px' }}
-        >
+        {/* TABLE */}
+        <p><strong>Total Incentive: Rs {formatNumberWithCommas(totalIncentiveAmount)}</strong></p>
+
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Customer</th>
+              <th>Executive</th>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Incentive</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredIncentives.map((item, i) => (
+              <tr key={i}>
+                <td>{item.invoiceNumber}</td>
+                <td>{item.customer}</td>
+                <td>{item.exe}</td>
+                <td>{item.ModeofPayment}</td>
+                <td>{item.invoiceDate}</td>
+                <td>{formatNumberWithCommas(parseFloat(item.invoiceTotal) || 0)}</td>
+                <td>{formatNumberWithCommas(parseFloat(item.incentiveAmount) || 0)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <button onClick={() => navigate('/admin-profile')}>
           Home
         </button>
       </div>
