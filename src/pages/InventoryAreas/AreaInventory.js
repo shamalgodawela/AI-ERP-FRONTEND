@@ -136,6 +136,7 @@ const AreaInventory = () => {
     <option value="Mr.Buddika">Mr.Buddika</option>
     <option value="UpCountry">UpCountry</option>
     <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
+    <option value="Nihon">Nihon</option>
   
   </select>
 </div>
