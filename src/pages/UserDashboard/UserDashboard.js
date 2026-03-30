@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import './dashboard.css';
 import UserNavbar from '../../compenents/sidebar/UserNavbar/UserNavbar';
 
@@ -8,6 +8,8 @@ import ProductSummary from '../../compenents/product/productSummary/ProductSumma
 import ProductList from '../../compenents/product/productList/ProductList';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../../redux/features/product/productSlice';
+import { useNavigate, useParams } from 'react-router-dom';
+import useRedirectLoggedOutUser from '../../customHook/useRedirectLoggedOutUser';
 
 
 const slugToLabel = {
