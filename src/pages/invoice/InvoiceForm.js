@@ -374,6 +374,10 @@ const InvoiceForm = () => {
         url="https://nihon-inventory.onrender.com/api/get-last-invoice-number-ncp1"
 
       }
+      else if(formData.exe ==='UpCountry1')
+      {
+        url="https://nihon-inventory.onrender.com/api/get-last-invoice-number-UpCountry1"
+      }
       else {
         toast.error("Please select a valid Executive before fetching invoice number.");
         return;

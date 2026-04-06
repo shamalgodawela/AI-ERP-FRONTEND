@@ -48,7 +48,8 @@ const AddUserOrder = ({ onAddOrder }) => {
     'Other':'other',
     'Mr.Arshad':'PT1',
     'Miss.Mubashshahira':'KU1',
-    'Mr.Buddhika':'NCP'
+    'Mr.Buddhika':'NCP',
+    'UpCountry1':'UpCountry1'
 
 
   };
@@ -252,6 +253,7 @@ const AddUserOrder = ({ onAddOrder }) => {
               <option value="SOUTH">SOUTH-1</option>
               <option value="Other">Other</option>
               <option value="UpCountry">UpCountry</option>
+              <option value="UpCountry1">UpCountry1</option>
               <option value="Mr.Arshad">Mr.Arshad</option>
               <option value="Miss.Mubashshahira">Miss.Mubashshahira</option>
               <option value="Mr.Buddhika">Mr.Buddhika</option>
