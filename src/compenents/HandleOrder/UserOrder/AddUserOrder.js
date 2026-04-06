@@ -88,6 +88,10 @@ const AddUserOrder = ({ onAddOrder }) => {
         if (orderData.exe === 'Mr.Arshad') {
           setOrderData((prev) => ({ ...prev, orderNumber: 'PT1-001' }));
         }
+        else if(orderData.exe === 'UpCountry1')
+        {
+          setOrderData((prev) => ({ ...prev, orderNumber: 'UpCountry1-001' }));
+        }
       }
     };
 
