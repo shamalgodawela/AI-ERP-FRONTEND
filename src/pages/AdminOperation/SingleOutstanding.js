@@ -166,7 +166,7 @@ const SingleOutstanding = () => {
                 {/* Display saved outstanding details */}
                 {savedDetails && (
                     <div>
-                        <h2 className="h1-out">All Outstanding Details:</h2>
+                        <h2 className="h1-out">All Payment Details:</h2>
                         <table>
                             <thead>
                                 <tr>
