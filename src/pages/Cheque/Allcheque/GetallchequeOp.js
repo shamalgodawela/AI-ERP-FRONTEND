@@ -12,7 +12,7 @@ const GetallchequeOp = () => {
   const [toDate, setToDate] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [exeFilter, setExeFilter] = useState("");
-  const [chequeNoFilter, setChequeNoFilter] = useState(""); // ⭐ NEW CHEQUE NO FILTER
+  const [chequeNoFilter, setChequeNoFilter] = useState("");
 
   const navigate = useNavigate();
 

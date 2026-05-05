@@ -11,7 +11,8 @@ const Getallcheque = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [exeFilter, setExeFilter] = useState(""); // ⭐ NEW EXE FILTER
+  const [exeFilter, setExeFilter] = useState(""); 
+  const [chequeNoFilter, setChequeNoFilter] = useState("");
 
   const navigate = useNavigate();
 
@@ -153,6 +154,15 @@ const Getallcheque = () => {
           </select>
         </div>
       </div>
+      <div className="search-group">
+          <label>Cheque No</label>
+          <input
+            type="text"
+            placeholder="Search Cheque No"
+            value={chequeNoFilter}
+            onChange={(e) => setChequeNoFilter(e.target.value)}
+          />
+        </div>
 
       {/* TOTAL BOX */}
       <div className="cheque-total-box">
