@@ -130,6 +130,17 @@ const AddbulkProduct = () => {
             required
           />
         </label>
+        <label>
+          Bulk GRN:
+          <input
+            type="text"
+            name="BulkGRN"
+            value={productData.BulkGRN}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
         
         {showProductFields && (
           <>
