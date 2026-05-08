@@ -6,9 +6,9 @@ import logo from '../../assets/nihon.png';
 const Home = () => {
   return (
     <div className="welcome-root">
-      <div className="welcome-container">
+      <h1>System is under development</h1>
+      {/* <div className="welcome-container">
         <div className="welcome-content">
-          {/* <img src={logo} alt="ERP Logo" className="welcome-logo" /> */}
           <h1 className="welcome-title">
             Welcome to <span className="welcome-highlight">ERP System</span>
           </h1>
@@ -47,12 +47,9 @@ const Home = () => {
               Login
             </Link>
           </div>
-          
-          {/* <div className="welcome-footer">
-            <p>Powered by Nihon Software for Modern Agriculture</p>
-          </div> */}
+        
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
