@@ -6,8 +6,7 @@ import logo from '../../assets/nihon.png';
 const Home = () => {
   return (
     <div className="welcome-root">
-      <h1>System is under development</h1>
-      {/* <div className="welcome-container">
+      <div className="welcome-container">
         <div className="welcome-content">
           <h1 className="welcome-title">
             Welcome to <span className="welcome-highlight">ERP System</span>
@@ -49,7 +48,7 @@ const Home = () => {
           </div>
         
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

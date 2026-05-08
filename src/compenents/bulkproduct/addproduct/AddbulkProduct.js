@@ -13,7 +13,7 @@ const AddbulkProduct = () => {
     name:'',
     BulkGRN:'',
     
-    products: [{ productCode: '', weight: '', totweight: '' }]
+    products: [{ productCode: '', productweight: '' }]
   });
   const [showProductFields, setShowProductFields] = useState(false);
 
@@ -38,7 +38,7 @@ const AddbulkProduct = () => {
   const handleAddProduct = () => {
     setProductData({
       ...productData,
-      products: [...productData.products, { productCode: '', weight: '', totweight: '' }]
+      products: [...productData.products, { productCode: '', productweight: '' }]
     });
     setShowProductFields(true);
   };
@@ -62,8 +62,9 @@ const AddbulkProduct = () => {
         weight: '',
         weightsh:'',
         name:'',
+        BulkGRN:'',
         
-        products: [{ productCode: '', weight: '', totweight: '' }]
+        products: [{ productCode: '', productweight: '' }]
       });
       setShowProductFields(false);
     } catch (error) {
@@ -144,12 +145,21 @@ const AddbulkProduct = () => {
                     required
                   />
                 </label>
-                
+                <label>
+                  Product Weight (grams:g):
+                  <input
+                    type="number"
+                    name="productweight"
+                    value={product.productweight}
+                    onChange={(e) => handleProductChange(index, e)}
+                    required
+                  />
+                </label>
                 {index > 0 && <button type="button" onClick={() => handleRemoveProduct(index)}>Remove Product</button>}
               </div>
             ))}
             
-            <button type="button" onClick={handleAddProduct}>Add finished product cde belong to This bulk</button>
+            <button type="button" onClick={handleAddProduct}>Add finished product code belong to This bulk</button>
           </>
         )}
         {!showProductFields && (
