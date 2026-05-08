@@ -11,6 +11,7 @@ const AddbulkProduct = () => {
     weight: '',
     weightsh:'',
     name:'',
+    BulkGRN:'',
     
     products: [{ productCode: '', weight: '', totweight: '' }]
   });
@@ -109,7 +110,7 @@ const AddbulkProduct = () => {
         </label>
         
         <label>
-          weight:
+          Bulk Size:
           <input
             type="text"
             name="weightsh"
