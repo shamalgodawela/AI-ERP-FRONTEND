@@ -37,7 +37,6 @@ const Getallcheque = () => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-
   // ===========================
   //   FILTER LOGIC
   // ===========================
