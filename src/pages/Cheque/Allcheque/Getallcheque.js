@@ -32,8 +32,9 @@ const Getallcheque = () => {
   }, []);
 
   const formatNumber = (num) =>
-    Number(num).toLocaleString("en-IN", {
+    Number(num).toLocaleString("en-US", {
       minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     });
 
   // ===========================
