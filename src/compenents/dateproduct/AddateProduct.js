@@ -125,7 +125,7 @@ const AddateProduct = () => {
 
                 <div className="form-group">
                     <label htmlFor="numberOfUnits">Number of Units:</label>
-                    <input type="number" id="numberOfUnits" name="numberOfUnits" value={formData.numberOfUnits} onChange={handleChange} required />
+                    <input type="text" id="numberOfUnits" name="numberOfUnits" value={formData.numberOfUnits} onChange={handleChange} required />
                 </div>
 
                 <button className="submit-button" type="submit">Add Product</button>
