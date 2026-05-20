@@ -5,16 +5,18 @@ import { toast } from 'react-toastify';
 import UserNavbar from '../sidebar/UserNavbar/UserNavbar';
 import Footer from '../footer/Footer';
 
+const initialFormData = {
+    GpnDate: '',
+    BulkGRN: '',
+    productName: '',
+    category: '',
+    unitPrice: '',
+    numberOfUnits: '',
+    packsize: ''
+};
+
 const AddateProduct = () => {
-    const [formData, setFormData] = useState({
-        GpnDate: '',
-        BulkGRN: '',
-        productName: '',
-        category: '',
-        unitPrice: '',
-        numberOfUnits: '',
-        packsize: ''
-    });
+    const [formData, setFormData] = useState(initialFormData);
 
     const handleChange = (e) => {
         setFormData({
@@ -43,7 +45,7 @@ const AddateProduct = () => {
 
             console.log('Product added successfully:', data);
             toast.success(data.message || 'Product added successfully!');
-            
+            setFormData(initialFormData);
         } catch (error) {
             console.error('Error adding product:', error.message);
             toast.error(error.message || 'Failed to add product. Please try again.');
