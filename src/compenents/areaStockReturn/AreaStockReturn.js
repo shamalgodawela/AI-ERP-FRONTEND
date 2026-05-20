@@ -20,6 +20,10 @@ const AreaStockReturn = () => {
     const [returns, setReturns] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+    const [invoiceLoading, setInvoiceLoading] = useState(false);
+    const [invoiceProducts, setInvoiceProducts] = useState([]);
+    const [invoiceInfo, setInvoiceInfo] = useState(null);
+    const [selectedProductIndex, setSelectedProductIndex] = useState(null);
 
     const fetchReturns = useCallback(async () => {
         try {
@@ -38,10 +42,75 @@ const AreaStockReturn = () => {
     }, [fetchReturns]);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+
+        if (name === 'invoiceNumber') {
+            setInvoiceProducts([]);
+            setInvoiceInfo(null);
+            setSelectedProductIndex(null);
+        }
+    };
+
+    const handleLoadInvoice = async () => {
+        const invoiceNumber = formData.invoiceNumber.trim();
+        if (!invoiceNumber) {
+            toast.error('Enter invoice number first');
+            return;
+        }
+
+        setInvoiceLoading(true);
+        setInvoiceProducts([]);
+        setInvoiceInfo(null);
+        setSelectedProductIndex(null);
+
+        try {
+            const response = await axios.get(
+                `${API_BASE}/invoices/${encodeURIComponent(invoiceNumber)}`
+            );
+            const invoice = response.data;
+
+            if (!invoice.products || invoice.products.length === 0) {
+                toast.warning('Invoice found but has no products');
+                setInvoiceInfo({
+                    customer: invoice.customer,
+                    invoiceDate: invoice.invoiceDate,
+                    exe: invoice.exe,
+                });
+                return;
+            }
+
+            setInvoiceProducts(invoice.products);
+            setInvoiceInfo({
+                customer: invoice.customer,
+                invoiceDate: invoice.invoiceDate,
+                exe: invoice.exe,
+            });
+
+            toast.success(`Loaded ${invoice.products.length} product(s) from invoice`);
+        } catch (error) {
+            console.error('Failed to fetch invoice:', error);
+            const message =
+                error.response?.data?.message || 'Invoice not found';
+            toast.error(message);
+        } finally {
+            setInvoiceLoading(false);
+        }
+    };
+
+    const handleSelectInvoiceProduct = (product, index) => {
+        setSelectedProductIndex(index);
+        setFormData((prev) => ({
+            ...prev,
+            productCode: product.productCode || '',
+            productName: product.productName || '',
+            price: product.unitPrice ?? product.labelPrice ?? '',
+            quantity: product.quantity ?? '',
+        }));
+        toast.info('Product selected — adjust return quantity if needed');
     };
 
     const handleGetProductDetails = async () => {
@@ -60,12 +129,20 @@ const AreaStockReturn = () => {
                 productName: product.name,
                 price: product.price,
             }));
+            setSelectedProductIndex(null);
 
             toast.success('Product details loaded');
         } catch (error) {
             console.error('Failed to fetch product:', error);
             toast.error('Product not found');
         }
+    };
+
+    const resetForm = () => {
+        setFormData(initialFormData);
+        setInvoiceProducts([]);
+        setInvoiceInfo(null);
+        setSelectedProductIndex(null);
     };
 
     const handleSubmit = async (e) => {
@@ -75,7 +152,7 @@ const AreaStockReturn = () => {
         try {
             const response = await axios.post(`${API_BASE}/area-stock-returns`, formData);
             toast.success(response.data.message || 'Area stock return added successfully');
-            setFormData(initialFormData);
+            resetForm();
             await fetchReturns();
         } catch (error) {
             const message =
@@ -99,19 +176,79 @@ const AreaStockReturn = () => {
             <div className="area-return-page">
                 <h1>Area Stock Return</h1>
 
-                <div className="area-return-form-card">
+                <div className="area-return-form-card area-return-form-card--wide">
                     <form className="area-return-form" onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="invoiceNumber">Invoice Number:</label>
-                            <input
-                                type="text"
-                                id="invoiceNumber"
-                                name="invoiceNumber"
-                                value={formData.invoiceNumber}
-                                onChange={handleChange}
-                                required
-                            />
+                            <div className="code-row">
+                                <input
+                                    type="text"
+                                    id="invoiceNumber"
+                                    name="invoiceNumber"
+                                    value={formData.invoiceNumber}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Enter invoice number"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleLoadInvoice}
+                                    disabled={invoiceLoading}
+                                >
+                                    {invoiceLoading ? 'Loading...' : 'Load Invoice'}
+                                </button>
+                            </div>
                         </div>
+
+                        {invoiceInfo && (
+                            <div className="invoice-info-banner">
+                                <span><strong>Customer:</strong> {invoiceInfo.customer || '-'}</span>
+                                <span><strong>Date:</strong> {invoiceInfo.invoiceDate || '-'}</span>
+                                <span><strong>Executive:</strong> {invoiceInfo.exe || '-'}</span>
+                            </div>
+                        )}
+
+                        {invoiceProducts.length > 0 && (
+                            <div className="invoice-products-section">
+                                <h3>Invoice Products — click a row to fill the form</h3>
+                                <div className="invoice-products-table-wrap">
+                                    <table className="area-return-table invoice-products-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product Code</th>
+                                                <th>Product Name</th>
+                                                <th>Qty</th>
+                                                <th>Label Price</th>
+                                                <th>Unit Price</th>
+                                                <th>Invoice Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {invoiceProducts.map((product, index) => (
+                                                <tr
+                                                    key={`${product.productCode}-${index}`}
+                                                    className={
+                                                        selectedProductIndex === index
+                                                            ? 'invoice-product-row--selected'
+                                                            : 'invoice-product-row'
+                                                    }
+                                                    onClick={() =>
+                                                        handleSelectInvoiceProduct(product, index)
+                                                    }
+                                                >
+                                                    <td>{product.productCode}</td>
+                                                    <td>{product.productName}</td>
+                                                    <td>{product.quantity}</td>
+                                                    <td>{product.labelPrice}</td>
+                                                    <td>{product.unitPrice}</td>
+                                                    <td>{product.invoiceTotal}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="form-group">
                             <label htmlFor="productCode">Product Code:</label>
@@ -155,7 +292,7 @@ const AreaStockReturn = () => {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="quantity">Quantity:</label>
+                            <label htmlFor="quantity">Return Quantity:</label>
                             <input
                                 type="number"
                                 id="quantity"

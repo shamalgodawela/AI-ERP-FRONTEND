@@ -20,6 +20,10 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
+.area-return-form-card--wide {
+    max-width: 900px;
+}
+
 .area-return-form {
     display: flex;
     flex-direction: column;
@@ -123,4 +127,42 @@
 .area-return-form .submit-button {
     width: 100%;
     margin-top: 8px;
+}
+
+.invoice-info-banner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 14px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1e3a5f;
+}
+
+.invoice-products-section h3 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.invoice-products-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 8px;
+}
+
+.invoice-product-row {
+    cursor: pointer;
+}
+
+.invoice-product-row--selected {
+    cursor: pointer;
+    background: #dbeafe !important;
+    font-weight: 500;
+}
+
+.invoice-products-table th {
+    background: #0f766e;
 }
