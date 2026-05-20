@@ -1,128 +1,196 @@
-/* PAGE WRAPPER TO AVOID NAVBAR OVERLAP */
-.unique-return-main-content {
-    padding-top: 80px; /* adjust based on navbar height */
-    padding-left: 25px;
-    padding-right: 25px;
-    font-family: "Segoe UI", Arial, sans-serif;
+.return-details-page {
+    min-height: 100vh;
+    background: #f1f5f9;
 }
 
-/* HEADER */
-.unique-return-header {
-    font-size: 26px;
-    margin-bottom: 20px;
-    color: #ffffff;
-    background: linear-gradient(135deg, #2a4d69, #4b86b4);
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+.return-details-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 28px 48px;
 }
 
-/* FILTER BOX (Add button + Year filter) */
-.unique-return-filter-box {
+.return-details-toolbar {
     display: flex;
-    align-items: center;
-    gap: 20px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 20px;
 }
 
-.unique-return-add-btn {
-    background: none;
-    border: 1px solid #4b86b4;
-    padding: 8px 15px;
-    border-radius: 5px;
+.return-details-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.return-details-subtitle {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.return-details-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.return-details-year-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.return-details-year-filter label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.return-details-year-filter select {
+    min-width: 140px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    color: #1e293b;
     cursor: pointer;
-    font-weight: 500;
 }
 
-.unique-return-add-btn a {
+.return-details-year-filter select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.return-details-add-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    background: #1e40af;
+    color: #fff !important;
     text-decoration: none;
-    color: #4b86b4;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+    white-space: nowrap;
 }
 
-.unique-return-year-filter label {
-    margin-right: 8px;
-    font-weight: 500;
+.return-details-add-btn:hover {
+    background: #1d4ed8;
 }
 
-.unique-year-select-input {
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+.return-details-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
 }
 
-/* TABLE */
-.unique-return-table-container {
+.return-details-table-scroll {
     overflow-x: auto;
 }
 
-.unique-return-table {
+.return-details-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.unique-return-table th {
-    background-color: #f7f9fc;
-    padding: 14px;
-    font-size: 15px;
-    color: #333;
-    border-bottom: 2px solid #e0e0e0;
-    text-align: left;
-    text-transform: uppercase;
-}
-
-.unique-return-table td {
-    padding: 14px;
-    border-bottom: 1px solid #eee;
+    border-collapse: collapse;
     font-size: 14px;
-    vertical-align: top;
+}
+
+.return-details-table thead {
+    background: #1e40af;
+    color: #fff;
+}
+
+.return-details-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.return-details-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.return-details-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.return-details-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.return-details-remarks {
+    max-width: 180px;
     word-break: break-word;
 }
 
-.unique-return-table tbody tr:hover {
-    background-color: #f0f7ff;
-    transition: 0.2s ease;
+.return-details-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
-/* LOADING TEXT */
-.unique-return-loading {
-    margin-top: 20px;
+.return-details-total {
+    font-weight: 600;
+    color: #0f766e;
+}
+
+.return-details-no-products {
+    color: #94a3b8;
     font-style: italic;
-    color: #777;
+    text-align: center;
 }
 
-/* PRODUCT CELL */
-.unique-return-product-cell {
-    max-height: 200px;
-    overflow-y: auto;
+.return-details-loading,
+.return-details-empty {
+    padding: 48px 24px;
+    text-align: center;
+    color: #64748b;
+    font-size: 15px;
 }
 
-/* PRODUCT BOX CARD */
-.unique-return-product-box {
-    background: #f9fafc;
-    padding: 10px 12px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 4px solid #4b86b4;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    font-size: 13px;
-    line-height: 1.5;
-}
+@media (max-width: 768px) {
+    .return-details-content {
+        padding: 16px 12px 32px;
+    }
 
-.unique-return-product-box strong {
-    font-size: 14px;
-    color: #2a4d69;
-}
+    .return-details-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-/* RESPONSIVE */
-@media screen and (max-width: 768px) {
-    .unique-return-table-container, .unique-return-product-cell {
-        overflow-x: auto;
+    .return-details-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .return-details-year-filter select,
+    .return-details-add-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .return-details-table {
+        font-size: 13px;
+    }
+
+    .return-details-table th,
+    .return-details-table td {
+        padding: 10px 12px;
     }
 }
