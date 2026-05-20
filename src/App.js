@@ -106,6 +106,7 @@ import AccountPage from "./pages/Accountdepartment/AllAcount/AccountPage";
 import StockSnapshot from "./pages/StockSnapsot/StockSnap";
 import FinancialReportEditor from "./pages/Accountdepartment/FinancialReport/Financereport";
 import InventoryByDescription from "./pages/dashboard/AdminDASH/Dashboard";
+import Getallreturnadmin from "./pages/returnNotes/gettall/Getallreturnadmin";
 
 
 
@@ -175,6 +176,9 @@ function App() {
     <Route path="/AllOutstanding" element={<AllOutStanding/>} />
     <Route path="/getall-cheques" element={<Getallcheque/>} />
     <Route path="/Admin-invoice" element={<AdminInvoice/>} />
+    <Route path="/Admin-invoice-return" element={<Getallreturnadmin/>} />
+
+
 
 
   

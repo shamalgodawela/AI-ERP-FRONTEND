@@ -71,6 +71,11 @@ const actions = [
       icon: <FaCubes size={32} />,
       route: '/Exe-product-wise-sales',
     },
+    {
+      label: 'Invoice Return Details',
+      icon: <FaCubes size={32} />,
+      route: '/Admin-invoice-return',
+    },
     
   ];
   
