@@ -1,0 +1,126 @@
+.area-return-page {
+    padding: 24px 32px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.area-return-page h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #1e293b;
+    font-size: 24px;
+}
+
+.area-return-form-card {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.area-return-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.area-return-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.area-return-form label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.area-return-form input {
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.area-return-form input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.area-return-form input:read-only {
+    background: #f1f5f9;
+}
+
+.area-return-form .code-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.area-return-form .code-row input {
+    flex: 1;
+}
+
+.area-return-table-wrap {
+    overflow-x: auto;
+}
+
+.area-return-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.area-return-table th,
+.area-return-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.area-return-table th {
+    background: #1e40af;
+    color: #fff;
+    font-weight: 600;
+}
+
+.area-return-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.area-return-table h2 {
+    margin-bottom: 16px;
+    color: #1e293b;
+    font-size: 20px;
+}
+
+.area-return-empty {
+    text-align: center;
+    padding: 24px;
+    color: #64748b;
+}
+
+.area-return-form button {
+    padding: 10px 20px;
+    background: #1e40af;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.area-return-form button:hover {
+    background: #2563eb;
+}
+
+.area-return-form .submit-button {
+    width: 100%;
+    margin-top: 8px;
+}

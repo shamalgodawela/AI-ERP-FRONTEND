@@ -68,6 +68,7 @@ import UserBulkProduct from "./pages/NewBulkDetails/UserBulkProduct";
 import UserBulkP from "./compenents/bulkproduct/Allproduct/UserBulkP";
 import UserFinishedProduct from "./pages/products/productDetails/UserFinishedProduct";
 import AddateProduct from "./compenents/dateproduct/AddateProduct";
+import AreaStockReturn from "./compenents/areaStockReturn/AreaStockReturn";
 import UserAllexetable from "./compenents/Exetable/AllTableexe/UserAllexetable";
 import AddUserOrder from "./compenents/HandleOrder/UserOrder/AddUserOrder";
 import OprationsDashboard from "./pages/AdminOperation/OperationsDashboard/OprationsDashboard";
@@ -229,6 +230,7 @@ function App() {
     <Route path="/user-Bulk-product-ton" element={<UserBulkP/>} />
     <Route path="/user-finishedProduct" element={<UserFinishedProduct/>} />
     <Route path="/add-packing-product" element={<AddateProduct/>} />
+    <Route path="/area-stock-return" element={<AreaStockReturn/>} />
     <Route path="/All-exe-product-user-role" element={<UserAllexetable/>}/>
     <Route path="/Add-Order-user-role" element={<AddUserOrder/>}/>
     <Route path="/user-cheque" element={<UserAllcheque/>}/>

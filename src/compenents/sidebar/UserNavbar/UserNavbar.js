@@ -62,6 +62,7 @@ const NAV_ITEMS = [
       { label: 'Import Product Details', href: '/user-Bulk-product' },
       { label: 'Executives Inventory', href: '/area-allinventories' },
       { label: 'Add Executives Inventory', href: '/add-area-inventory' },
+      { label: 'Area Stock Return', href: '/area-stock-return' },
     ],
   },
 ];
