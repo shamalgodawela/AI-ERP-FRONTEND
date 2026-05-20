@@ -151,7 +151,7 @@ const Getallreturnadmin = () => {
                     )}
                 </div>
             </div>
-            <button className="home-btn" onClick={() => navigate("/admin-profile")}></button>
+            <button className="home-btn" onClick={() => navigate("/admin-profile")}>Home</button>
 
             <Footer />
         </div>
