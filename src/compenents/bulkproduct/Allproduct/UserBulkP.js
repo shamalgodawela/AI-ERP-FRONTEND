@@ -38,6 +38,7 @@ const UserBulkP = () => {
       <table className="product-table"> 
         <thead>
           <tr>
+            <th>Bulk GRN</th>
             <th>Bulk Code</th>
             <th>Bulk Name</th>
             <th>Number of Quantities</th>
@@ -51,6 +52,7 @@ const UserBulkP = () => {
         <tbody>
           {products.map(product => (
             <tr key={product._id}>
+              <td>{product.BulkGRN}</td>
               <td>{product.bulkCode}</td>
               <td>{product.name}</td>
               <td>{parseFloat(product.quantity).toFixed(2)}</td>

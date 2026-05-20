@@ -8,6 +8,7 @@ import Footer from '../footer/Footer';
 const AddateProduct = () => {
     const [formData, setFormData] = useState({
         GpnDate: '',
+        BulkGRN: '',
         productName: '',
         category: '',
         unitPrice: '',
@@ -34,17 +35,18 @@ const AddateProduct = () => {
                 body: JSON.stringify(formData)
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                throw new Error('Failed to add product');
+                throw new Error(data.message || 'Failed to add product');
             }
 
-            const data = await response.json();
             console.log('Product added successfully:', data);
-            toast.success('Product added successfully!');
+            toast.success(data.message || 'Product added successfully!');
             
         } catch (error) {
             console.error('Error adding product:', error.message);
-            toast.error('Failed to add product. Please try again.');
+            toast.error(error.message || 'Failed to add product. Please try again.');
         }
     };
 
@@ -95,9 +97,13 @@ const AddateProduct = () => {
                     <input type="date" id="GpnDate" name="GpnDate" value={formData.GpnDate} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
+                    <label htmlFor="BulkGRN">Bulk GRN:</label>
+                    <input type="text" id="BulkGRN" name="BulkGRN" value={formData.BulkGRN} onChange={handleChange} required placeholder="e.g. BAG992025" />
+                </div>
+                <div className="form-group">
                     <label htmlFor="category">Product Code:</label>
                     <input type="text" id="category" name="category" value={formData.category} onChange={handleChange} required />
-                    <button onClick={handleGetProductDetails}>Get Product Details</button>
+                    <button type="button" onClick={handleGetProductDetails}>Get Product Details</button>
                 </div>
 
                 <div className="form-group">
