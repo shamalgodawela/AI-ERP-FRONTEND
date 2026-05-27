@@ -217,6 +217,8 @@ const OutStandingTable = () => {
             <option value="">All Payment Modes</option>
             <option value="Cash">Cash</option>
             <option value="Cheque">Cheque</option>
+            <option value="Credit">Credit</option>
+
           </select>
 
           <select value={selectedMonth} onChange={e => handleFilterChange('month', e.target.value, setSelectedMonth)}>
