@@ -58,6 +58,11 @@ const Collectionbyexe = () => {
         navigate(-1);
     };
 
+    const grandTotal = data.reduce(
+        (sum, item) => sum + (Number(item.totalCollection) || 0),
+        0
+      );
+
     return (
         <div>
         <div className="collectionbyexe-bg">
@@ -103,6 +108,10 @@ const Collectionbyexe = () => {
 
     {/* ✅ Table Section */}
     <div style={{ marginTop: '30px' }}>
+    <tr style={{ fontWeight: 'bold' }}>
+  <td>Total</td>
+  <td>{grandTotal.toLocaleString()}</td>
+</tr>
       <table className="exe-table">
         <thead>
           <tr>
