@@ -15,6 +15,7 @@ const BankStatement = () => {
   const [selectbank,setbankname]=useState('');
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const fetchStatements = async () => {
       setIsLoading(true);
@@ -79,9 +80,19 @@ const BankStatement = () => {
     return date.toLocaleDateString('en-GB');
   };
 
+  const totalAmount = filteredStatements.reduce((sum, entry) => {
+    const value = Number(entry.amount) || 0;
+    return sum + value;
+  }, 0);
+
+  const formattedTotal = formatCurrency(totalAmount);
+
   return (
     <div className="bank-statement-container">
       <h2>Payment Summary</h2>
+      <div style={{ marginBottom: '10px', fontWeight: 'bold', fontSize: '16px' }}>
+  Total Amount: LKR {formattedTotal}
+</div>
 
       {/* Month & Year Dropdowns */}
       <div style={{ marginBottom: '15px' }}>
