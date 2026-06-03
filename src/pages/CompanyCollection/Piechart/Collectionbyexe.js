@@ -59,6 +59,7 @@ const Collectionbyexe = () => {
     };
 
     return (
+        <div>
         <div className="collectionbyexe-bg">
             <div className="collectionbyexe-container">
                 <Link to="#" onClick={goBack} className="back-link"><IoMdArrowRoundBack size={23} /> Back</Link>
@@ -93,6 +94,34 @@ const Collectionbyexe = () => {
                     )}
                 </div>
             </div>
+        </div>
+        {!loading && !error && startDate && endDate && (
+  <>
+    <div className="chart-container">
+      <Pie data={chartData} />
+    </div>
+
+    {/* ✅ Table Section */}
+    <div style={{ marginTop: '30px' }}>
+      <table className="exe-table">
+        <thead>
+          <tr>
+            <th>Executive</th>
+            <th>Total Collection (LKR)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td>{item.exe}</td>
+              <td>{Number(item.totalCollection).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </>
+)}
         </div>
     );
 };
