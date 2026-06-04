@@ -43,28 +43,38 @@ const Getallcheque = () => {
   const filteredCheques = cheques.filter((c) => {
     const deposit = new Date(c.depositDate);
     const depositStr = c.depositDate?.split("T")[0];
-
+  
     let dateMatch = true;
-
+  
     if (singleDate) {
       dateMatch = depositStr === singleDate;
     } else {
       const from = fromDate ? new Date(fromDate) : null;
       const to = toDate ? new Date(toDate) : null;
-
+  
       if (from && to) dateMatch = deposit >= from && deposit <= to;
       else if (from) dateMatch = deposit >= from;
       else if (to) dateMatch = deposit <= to;
     }
-
+  
     const statusMatch =
       statusFilter === "All" || c.status === statusFilter;
-
-    // ⭐ NEW exe filter
+  
     const exeMatch =
       exeFilter === "" || c.exe === exeFilter;
-
-    return dateMatch && statusMatch && exeMatch;
+  
+    const chequeNoMatch =
+      chequeNoFilter === "" ||
+      c.chequeNo?.toString().toLowerCase().includes(
+        chequeNoFilter.toLowerCase()
+      );
+  
+    return (
+      dateMatch &&
+      statusMatch &&
+      exeMatch &&
+      chequeNoMatch
+    );
   });
 
   const totalFilteredAmount = filteredCheques.reduce(
@@ -127,6 +137,7 @@ const Getallcheque = () => {
             <option value="Pending">Pending</option>
             <option value="Cleared">Cleared</option>
             <option value="Bounced">Bounced</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
         </div>
 

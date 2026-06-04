@@ -136,6 +136,7 @@ const GetallchequeOp = () => {
             <option value="Pending">Pending</option>
             <option value="Cleared">Cleared</option>
             <option value="Bounced">Bounced</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
         </div>
 
