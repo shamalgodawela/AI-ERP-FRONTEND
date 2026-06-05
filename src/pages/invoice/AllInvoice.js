@@ -262,6 +262,7 @@ const AllInvoice = () => {
                     <th className='th-invoice'>Invoice Number</th>
                     <th className='th-invoice'>Order Number</th>
                     <th className='th-invoice'>Printed or Canceled</th>
+                    <th className='th-invoice'>Inventory Status</th>
                     <th className='th-invoice'>Customer</th>
                     <th className='th-invoice'>Customer Code</th>
                     <th className='th-invoice'>Invoice Date</th>
@@ -280,6 +281,7 @@ const AllInvoice = () => {
                       <td className='td-invoice'>{invoice.invoiceNumber}</td>
                       <td className='td-invoice'>{invoice.orderNumber}</td>
                       <td className='td-invoice'>{invoice.GatePassNo}</td>
+                      <td className='td-invoice'>{invoice.StockName}</td>
                       <td className='td-invoice'>{invoice.customer}</td>
                       <td className='td-invoice'>{invoice.code}</td>
                       <td className='td-invoice'>{invoice.invoiceDate}</td>
