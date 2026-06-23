@@ -122,6 +122,11 @@ const OutStandingTable = () => {
 
   const formatNumbers = x => (typeof x === 'number' ? x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : x);
 
+  const getPaymentStatusClass = (lastOutstanding) => {
+    if (lastOutstanding === 'Paid') return 'paid';
+    return 'not-paid';
+  };
+
   const calculateTotal = invoice => {
     if (invoice && Array.isArray(invoice.products)) {
       const productTotal = invoice.products.reduce((acc, product) =>
@@ -345,14 +350,16 @@ const OutStandingTable = () => {
         <td>{i.Duedate}</td>
         <td>{i.TaxNo}</td>
         <td>{i.exe}</td>
-        <td className={`td-invoice ${i.lastOutstanding === "Not Paid" ? 'not-paid' : i.lastOutstanding === "Paid" ? 'paid' : ''}`}>
+        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding)}`}>
           {formatNumbers(i.lastOutstanding)}
         </td>
-        <td>{formatNumbers(invoiceTotal)}</td>
+        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding)}`}>
+          {formatNumbers(invoiceTotal)}
+        </td>
         <td>{chequeTotal ? formatNumbers(chequeTotal) : '-'}</td>
         
         {/* ✅ New column: Outstanding after Cheque */}
-        <td className={`td-invoice ${outstandingAfterCheque > 0 ? 'not-paid' : 'paid'}`}>
+        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding)}`}>
           {formatNumbers(outstandingAfterCheque)}
         </td>
 
