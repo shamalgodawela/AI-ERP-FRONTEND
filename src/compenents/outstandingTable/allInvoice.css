@@ -66,6 +66,26 @@
   letter-spacing: 0.01em;
 }
 
+.outstanding-table-wrapper {
+  max-height: calc(100vh - 320px);
+  overflow: auto;
+  margin-top: 18px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.07);
+  background: #f8fafc;
+}
+
+.outstanding-table-wrapper table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 0;
+  background: #f8fafc;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+
 table {
   width: 100%;
   border-collapse: separate;
@@ -73,16 +93,21 @@ table {
   margin-top: 18px;
   background: #f8fafc;
   border-radius: 14px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 2px 8px rgba(76,175,80,0.07);
 }
 
 thead {
   background: linear-gradient(90deg, #005704 0%, #43e97b 100%);
   color: #fff;
+}
+
+.outstanding-table-wrapper thead th {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 2;
+  background: #005704;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 
 th, td {
@@ -323,6 +348,12 @@ select:focus, input[type='text']:focus {
   }
 
   /* Table styles for print */
+  .outstanding-table-wrapper {
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
   table {
     width: 100% !important;
     border-collapse: collapse !important;
@@ -440,6 +471,10 @@ select:focus, input[type='text']:focus {
   .total-sales-summary {
     padding: 16px;
     margin: 15px 0;
+  }
+
+  .outstanding-table-wrapper {
+    max-height: calc(100vh - 280px);
   }
 }
 

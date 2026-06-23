@@ -300,6 +300,7 @@ const OutStandingTable = () => {
          
 
           {isLoading ? <Loader /> : (
+            <div className="outstanding-table-wrapper">
             <table>
               <thead>
   <tr>
@@ -364,6 +365,7 @@ const OutStandingTable = () => {
 
 
             </table>
+            </div>
           )}
         </div>
 
