@@ -139,6 +139,11 @@ tbody tr:hover {
   color: #fff;
 }
 
+.canceled-row td {
+  background: #b71c1c !important;
+  color: #fff !important;
+}
+
 .not-paid {
   background: #ff7043 !important;
   color: #fff;

@@ -122,9 +122,15 @@ const OutStandingTable = () => {
 
   const formatNumbers = x => (typeof x === 'number' ? x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : x);
 
-  const getPaymentStatusClass = (lastOutstanding) => {
+  const getPaymentStatusClass = (lastOutstanding, isCanceled) => {
+    if (isCanceled) return '';
     if (lastOutstanding === 'Paid') return 'paid';
     return 'not-paid';
+  };
+
+  const getOutstandingDisplay = (lastOutstanding, invoiceTotal) => {
+    if (lastOutstanding === 'Not Paid') return formatNumbers(invoiceTotal);
+    return formatNumbers(lastOutstanding);
   };
 
   const calculateTotal = invoice => {
@@ -340,8 +346,10 @@ const OutStandingTable = () => {
       outstandingAfterCheque = i.lastOutstanding - chequeTotal;
     }
 
+    const isCanceled = i.GatePassNo === 'Canceled';
+
     return (
-      <tr key={i._id} className={i.GatePassNo === 'Canceled' ? 'canceled-row' : ''}>
+      <tr key={i._id} className={isCanceled ? 'canceled-row' : ''}>
         <td>{i.invoiceNumber}</td>
         <td>{i.customer}</td>
         <td>{i.ModeofPayment}</td>
@@ -350,16 +358,16 @@ const OutStandingTable = () => {
         <td>{i.Duedate}</td>
         <td>{i.TaxNo}</td>
         <td>{i.exe}</td>
-        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding)}`}>
-          {formatNumbers(i.lastOutstanding)}
+        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding, isCanceled)}`}>
+          {getOutstandingDisplay(i.lastOutstanding, invoiceTotal)}
         </td>
-        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding)}`}>
+        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding, isCanceled)}`}>
           {formatNumbers(invoiceTotal)}
         </td>
         <td>{chequeTotal ? formatNumbers(chequeTotal) : '-'}</td>
         
         {/* ✅ New column: Outstanding after Cheque */}
-        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding)}`}>
+        <td className={`td-invoice ${getPaymentStatusClass(i.lastOutstanding, isCanceled)}`}>
           {formatNumbers(outstandingAfterCheque)}
         </td>
 
