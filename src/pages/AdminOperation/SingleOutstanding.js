@@ -152,9 +152,9 @@ const SingleOutstanding = () => {
                     </tbody>
                 </table>
 
-                <div className="info-item-td text-end text-bold1">SubTotal: RS/={calculateTotal()}</div>
+                <div className="info-item-td text-end text-bold1">SubTotal: RS/= {formatNumbers(calculateTotal())}</div>
                 <div className="info-item-td text-end text-bold2">Tax: %{invoice.Tax}</div>
-                <div className="info-item-td text-end text-bold3">Total: RS/={calculateTotal()}</div>
+                <div className="info-item-td text-end text-bold3">Total: RS/= {formatNumbers(calculateTotal())}</div>
 
                 <br /><hr /><br />
 
