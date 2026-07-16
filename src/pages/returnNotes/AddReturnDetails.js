@@ -22,7 +22,20 @@ const initialMeta = {
     reason: '',
     date: '',
     remarks: '',
+    stockType: 'MS',
+    stockName: '',
 };
+
+const stockOptions = [
+    { value: '', label: '-- Select Stock --' },
+    { value: 'MS', label: 'MS' },
+    { value: 'Mr.Arshad', label: 'Mr.Arshad' },
+    { value: 'Mr.Safrath', label: 'Mr.Safrath' },
+    { value: 'SOUTH', label: 'SOUTH' },
+    { value: 'Mr.Buddika', label: 'Mr.Buddika' },
+    { value: 'UpCountry', label: 'UpCountry' },
+    { value: 'Miss.Mubashshahira', label: 'Miss.Mubashshahira' },
+];
 
 const AddReturnDetails = () => {
     const [meta, setMeta] = useState(initialMeta);
@@ -35,7 +48,15 @@ const AddReturnDetails = () => {
 
     const handleMetaChange = (e) => {
         const { name, value } = e.target;
-        setMeta((prev) => ({ ...prev, [name]: value }));
+        setMeta((prev) => {
+            const nextMeta = { ...prev, [name]: value };
+
+            if (name === 'stockType') {
+                nextMeta.stockName = value === 'MS' ? '' : value;
+            }
+
+            return nextMeta;
+        });
 
         if (name === 'invoiceNumber') {
             setInvoiceProducts([]);
@@ -70,10 +91,15 @@ const AddReturnDetails = () => {
             );
             const invoice = response.data;
 
+            const stockName = invoice.StockName ? String(invoice.StockName).trim() : '';
+            const selectedStock = stockName || 'MS';
+
             setMeta((prev) => ({
                 ...prev,
                 invoiceNumber: invoice.invoiceNumber || invoiceNumber,
                 customer: invoice.customer || prev.customer,
+                stockType: selectedStock,
+                stockName: selectedStock === 'MS' ? '' : selectedStock,
             }));
 
             setInvoiceInfo({
@@ -191,6 +217,8 @@ const AddReturnDetails = () => {
             const payload = {
                 ...meta,
                 products: returnProducts,
+                stockType: meta.stockType === 'MS' ? 'MS' : 'AREA',
+                stockName: meta.stockType === 'MS' ? '' : (meta.stockName || '').trim(),
             };
             await axios.post(`${API_BASE}/addreturndetails`, payload);
             toast.success('Return details added successfully');
@@ -387,6 +415,22 @@ const AddReturnDetails = () => {
                     <section className="add-return-card">
                         <h2>Return Information</h2>
                         <div className="add-return-meta-grid">
+                            <div className="form-group">
+                                <label htmlFor="stockType">Stock</label>
+                                <select
+                                    id="stockType"
+                                    name="stockType"
+                                    value={meta.stockType || ''}
+                                    onChange={handleMetaChange}
+                                    required
+                                >
+                                    {stockOptions.map((option) => (
+                                        <option key={option.value || 'select'} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                             <div className="form-group">
                                 <label htmlFor="customer">Customer</label>
                                 <input
