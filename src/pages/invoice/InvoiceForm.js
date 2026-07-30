@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -57,6 +57,9 @@ const InvoiceForm = () => {
     unitPrice: 0,
     invoiceTotal: 0,
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittingRef = useRef(false);
 
   const handleChange = async (e, index) => {
     const { name, value } = e.target;
@@ -183,6 +186,14 @@ const InvoiceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (submittingRef.current) {
+      return;
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+
     // Frontend validation: ensure each product has a code and quantity > 0
     const hasInvalidProduct = formData.products.some((p) => {
       const qty = Number(p.quantity);
@@ -194,13 +205,15 @@ const InvoiceForm = () => {
         position: 'top-right',
         autoClose: 3000,
       });
+      submittingRef.current = false;
+      setIsSubmitting(false);
       return;
     }
 
     try {
-              const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
+      const orderCheckResponse = await axios.get(`https://nihon-inventory.onrender.com/api/check/${formData.orderNumber}`);
       const orderExists = orderCheckResponse.data.exists;
-  
+
       if (orderExists) {
         toast.error('Order number already exists', {
           position: 'top-right',
@@ -211,18 +224,18 @@ const InvoiceForm = () => {
           draggable: true,
           progress: undefined,
         });
+        submittingRef.current = false;
+        setIsSubmitting(false);
         return;
       }
-  
-      
+
       const updatedFormData = {
         ...formData,
-        // taxtotal: finalValue.toFixed(2),
       };
-  
-              const response = await axios.post(`https://nihon-inventory.onrender.com/api/add-invoice`, updatedFormData);
+
+      const response = await axios.post(`https://nihon-inventory.onrender.com/api/add-invoice`, updatedFormData);
       console.log('Invoice added successfully', response.data);
-  
+
       toast.success('Invoice added successfully', {
         position: 'top-right',
         autoClose: 3000,
@@ -232,7 +245,7 @@ const InvoiceForm = () => {
         draggable: true,
         progress: undefined,
       });
-  
+
       navigate("/all-invoices");
     } catch (error) {
       const serverMsg = (error && error.response && (error.response.data && (error.response.data.error || error.response.data.message))) || error.message || 'Failed to add invoice';
@@ -247,11 +260,11 @@ const InvoiceForm = () => {
         draggable: true,
         progress: undefined,
       });
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
-  
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleGetDetails = async (e) => {
     e.preventDefault();
@@ -755,7 +768,9 @@ const InvoiceForm = () => {
             </div>
           ))}
          
-          <button type="submit">Create Invoice</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating Invoice...' : 'Create Invoice'}
+          </button>
         </form>
         <ToastContainer />
       </div>
