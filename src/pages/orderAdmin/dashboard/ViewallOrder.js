@@ -26,17 +26,26 @@ const ViewallOrder = () => {
 
   const fetchOrders = async () => {
     try {
-      setIsLoading(true); 
+      setIsLoading(true);
       const queryParams = new URLSearchParams();
       if (selectedPeriod) queryParams.append('period', selectedPeriod);
       if (selectedStatus) queryParams.append('status', selectedStatus);
       if (selectedExe) queryParams.append('exe', selectedExe);
-      const response = await fetch(`https://nihon-inventory.onrender.com/api/allor?${queryParams}`); 
+      const response = await fetch(`https://nihon-inventory.onrender.com/api/allor?${queryParams}`, {
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch orders: ${response.status} ${errorText}`);
+      }
+
       const data = await response.json();
       setOrders(data);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching orders:', error);
+      setOrders([]);
       setIsLoading(false);
     }
   };
