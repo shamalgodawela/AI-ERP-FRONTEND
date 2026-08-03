@@ -151,6 +151,28 @@ const BankAcc = () => {
             display: none !important;
           }
 
+          /* FIX: hide EVERYTHING on the page first (this rules out any
+             parent sidebar/dashboard shell squeezing the print width) */
+          body * {
+            visibility: hidden;
+          }
+
+          /* then show only the printable table and its children */
+          #printable-bank-statements,
+          #printable-bank-statements * {
+            visibility: visible;
+          }
+
+          /* pull the printable area out of the normal page flow so it
+             ignores any parent width/flex/margin constraints entirely */
+          #printable-bank-statements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            overflow: visible;
+          }
+
           .bank-statement-container {
             padding: 0;
             width: 100%;
@@ -158,27 +180,61 @@ const BankAcc = () => {
 
           .print-table-wrapper {
             overflow: visible;
+            width: 100%;
           }
 
           .bank-statement-table {
             width: 100%;
-            min-width: 100%;
+            min-width: 0;       /* FIX: the screen-mode 900px min-width was forcing
+                                   the table wider than a Portrait page can hold,
+                                   pushing the last columns onto a page 2 that
+                                   never got noticed/printed */
+            max-width: 100%;
             border-collapse: collapse;
-            font-size: 9px;
-            table-layout: auto;
+            font-size: 7.5px;   /* smaller so 5 columns comfortably fit even
+                                   in Portrait, not just Landscape */
+            table-layout: fixed;
           }
 
           .bank-statement-table th,
           .bank-statement-table td {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 3px 2px;
             white-space: normal;
             word-break: break-word;
+            overflow-wrap: break-word;
+          }
+
+          /* explicit column widths (sum = 100%) so all 5 columns always fit
+             on the printed page, whether the user prints Portrait or Landscape */
+          .bank-statement-table th:nth-child(1),
+          .bank-statement-table td:nth-child(1) {
+            width: 16%; /* Invoice Number */
+          }
+
+          .bank-statement-table th:nth-child(2),
+          .bank-statement-table td:nth-child(2) {
+            width: 14%; /* Date */
+          }
+
+          .bank-statement-table th:nth-child(3),
+          .bank-statement-table td:nth-child(3) {
+            width: 18%; /* Bank Name */
+          }
+
+          .bank-statement-table th:nth-child(4),
+          .bank-statement-table td:nth-child(4) {
+            width: 30%; /* Cheque Number/reference No */
+          }
+
+          .bank-statement-table th:nth-child(5),
+          .bank-statement-table td:nth-child(5) {
+            width: 22%; /* Amount (LKR) */
           }
 
           @page {
-            size: A4 landscape;
-            margin: 10mm;
+            size: A4 landscape; /* still a hint for browsers that respect it */
+            margin: 8mm;
           }
         }
       `}</style>
