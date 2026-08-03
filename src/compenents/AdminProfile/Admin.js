@@ -79,7 +79,7 @@ const actions = [
     {
       label: 'System Registered Users',
       icon: <FaCubes size={32} />,
-      route: '',
+      route: '/view-all-users',
     },
     
   ];

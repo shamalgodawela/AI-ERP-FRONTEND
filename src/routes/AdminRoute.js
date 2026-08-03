@@ -26,6 +26,7 @@ import Getallreturnadmin from "../pages/returnNotes/gettall/Getallreturnadmin";
 import Allcustomers from "../pages/ViewDealerHitory/Allcustomer";
 import DealerPastHistory from "../pages/ViewDealerHitory/DealerPastHistory";
 import ProtectedRoute from "../services/ProtectedRoute";
+import ViewAllusers from "../pages/UsersManagement/ViewAllusers/ViewAllusers";
 
 export default function AdminRoute() {
   return (
@@ -58,6 +59,7 @@ export default function AdminRoute() {
         <Route path="getall-cheques" element={<Getallcheque />} />
         <Route path="Admin-invoice" element={<AdminInvoice />} />
         <Route path="Admin-invoice-return" element={<Getallreturnadmin />} />
+        <Route path="view-all-users" element={<ViewAllusers />} />
       </Route>
     </>
   );
