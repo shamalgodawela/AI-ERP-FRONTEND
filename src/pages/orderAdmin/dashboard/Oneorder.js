@@ -322,7 +322,7 @@ const Oneorder = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label className="order-details-label">Black Magic Umbrella Quantity:</label>
+                  <label className="order-details-label">Note:</label>
                   <input
                     type="text"
                     name="FreeissuedStatus"

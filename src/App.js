@@ -107,6 +107,7 @@ import StockSnapshot from "./pages/StockSnapsot/StockSnap";
 import FinancialReportEditor from "./pages/Accountdepartment/FinancialReport/Financereport";
 import InventoryByDescription from "./pages/dashboard/AdminDASH/Dashboard";
 import Getallreturnadmin from "./pages/returnNotes/gettall/Getallreturnadmin";
+import AdminRoute from "./routes/AdminRoute";
 
 
 
@@ -144,7 +145,8 @@ function App() {
 
 {/* ---------------------------------Admin Pages--------------------------------- */}
 
-    <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+<AdminRoute/>
+    {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
       
       <Route path="/adminorder/:id" element={<Oneorder/>} />
       <Route path="/Exe-product-wise-sales" element={<SalesByExe/>} />
@@ -177,16 +179,7 @@ function App() {
     <Route path="/getall-cheques" element={<Getallcheque/>} />
     <Route path="/Admin-invoice" element={<AdminInvoice/>} />
     <Route path="/Admin-invoice-return" element={<Getallreturnadmin/>} />
-
-
-
-
-  
-   
-
-
-
-    </Route>
+    </Route> */}
 
 {/* ----------------------------------------------------------------------------- */}
 

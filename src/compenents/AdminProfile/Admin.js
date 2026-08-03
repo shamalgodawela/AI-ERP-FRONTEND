@@ -76,6 +76,11 @@ const actions = [
       icon: <FaCubes size={32} />,
       route: '/Admin-invoice-return',
     },
+    {
+      label: 'System Registered Users',
+      icon: <FaCubes size={32} />,
+      route: '',
+    },
     
   ];
   

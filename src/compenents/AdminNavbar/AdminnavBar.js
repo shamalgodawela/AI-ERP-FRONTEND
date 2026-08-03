@@ -1,18 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { FiBarChart2, FiDroplet, FiPackage, FiFileText, FiLayers, FiClipboard, FiArchive, FiBriefcase, FiGrid, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import "./AdminnavBar.css";
+
+const navSections = [
+  {
+    title: "Inventory",
+    links: [
+      { to: "/dashboard", label: "Dashboard", icon: <FiGrid /> },
+      { to: "/inventory/liquid-chemical", label: "Liquid Chemical", icon: <FiDroplet /> },
+      { to: "/inventory/liquid", label: "Liquid", icon: <FiDroplet /> },
+      { to: "/inventory/fertilizer", label: "Fertilizer", icon: <FiPackage /> },
+    ],
+  },
+  {
+    title: "Operations",
+    links: [
+      { to: "/Admin-invoice", label: "Invoice Details", icon: <FiFileText /> },
+      { to: "/dateproductDetails", label: "Packing Summary", icon: <FiClipboard /> },
+      { to: "/view-current-bulk", label: "Bulk Products", icon: <FiArchive /> },
+      { to: "/Allexetable", label: "Executives Inventory", icon: <FiBriefcase /> },
+      { to: "/view-all-bulk", label: "Imported Products", icon: <FiLayers /> },
+    ],
+  },
+];
 
 const AdminnavBar = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    const width = collapsed ? 72 : 260;
-
-    // Offset main content so it doesn't sit under the fixed sidebar.
+    const width = collapsed ? 80 : 280;
     Array.from(document.body.children).forEach((el) => {
       if (!el.classList.contains("admin-sidebar")) {
         el.style.marginLeft = `${width}px`;
-        el.style.transition = "0.25s cubic-bezier(0.4, 0, 0.2, 1)";
+        el.style.transition = "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)";
         el.style.boxSizing = "border-box";
       }
     });
@@ -75,61 +96,61 @@ const AdminnavBar = () => {
 
       <ul className="admin-sidebar__links">
         <li>
-          <Link to="/dashboard" className="admin-nav-link active">
+          <NavLink to="/dashboard" className="admin-nav-link active">
             <span className="admin-nav-link__icon">I</span>
             {!collapsed && <span className="admin-nav-link__text">Inventory</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/inventory/liquid-chemical" className="admin-nav-link">
+          <NavLink to="/inventory/liquid-chemical" className="admin-nav-link">
             <span className="admin-nav-link__icon">LC</span>
             {!collapsed && <span className="admin-nav-link__text">Liquid chemical</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/inventory/liquid" className="admin-nav-link">
+          <NavLink to="/inventory/liquid" className="admin-nav-link">
             <span className="admin-nav-link__icon">L</span>
             {!collapsed && <span className="admin-nav-link__text">Liquid</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/inventory/fertilizer" className="admin-nav-link">
+          <NavLink to="/inventory/fertilizer" className="admin-nav-link">
             <span className="admin-nav-link__icon">F</span>
             {!collapsed && <span className="admin-nav-link__text">Fertilizer</span>}
-          </Link>
+          </NavLink>
         </li>
 
         <li className="admin-sidebar__divider" />
 
         <li>
-          <Link to="/Admin-invoice" className="admin-nav-link">
+          <NavLink to="/Admin-invoice" className="admin-nav-link">
             <span className="admin-nav-link__icon">IN</span>
             {!collapsed && <span className="admin-nav-link__text">Invoice details</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/dateproductDetails" className="admin-nav-link">
+          <NavLink to="/dateproductDetails" className="admin-nav-link">
             <span className="admin-nav-link__icon">PK</span>
             {!collapsed && <span className="admin-nav-link__text">Packing Summary</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/view-current-bulk" className="admin-nav-link">
+          <NavLink to="/view-current-bulk" className="admin-nav-link">
             <span className="admin-nav-link__icon">BV</span>
             {!collapsed && <span className="admin-nav-link__text">View Bulk Product</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/Allexetable" className="admin-nav-link">
+          <NavLink to="/Allexetable" className="admin-nav-link">
             <span className="admin-nav-link__icon">EX</span>
             {!collapsed && <span className="admin-nav-link__text">Executives Inventory</span>}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/view-all-bulk" className="admin-nav-link">
+          <NavLink to="/view-all-bulk" className="admin-nav-link">
             <span className="admin-nav-link__icon">IM</span>
             {!collapsed && <span className="admin-nav-link__text">Imported Product details</span>}
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </aside>
