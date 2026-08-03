@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Admin from "../compenents/AdminProfile/Admin";
 import BankStatement from "../compenents/BankStatements/BankStatement";
 import AllProducts from "../compenents/bulkproduct/Allproduct/AllProducts";
@@ -29,6 +29,12 @@ import ProtectedRoute from "../services/ProtectedRoute";
 
 export default function AdminRoute(){
     return (
+
+<BrowserRouter>
+
+ <Routes>
+
+
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
       
       <Route path="/adminorder/:id" element={<Oneorder/>} />
@@ -63,5 +69,10 @@ export default function AdminRoute(){
     <Route path="/Admin-invoice" element={<AdminInvoice/>} />
     <Route path="/Admin-invoice-return" element={<Getallreturnadmin/>} />
     </Route>
+
+
+    </Routes>
+
+    </BrowserRouter>
     );
 }
