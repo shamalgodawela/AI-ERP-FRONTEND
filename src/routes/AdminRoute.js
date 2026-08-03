@@ -1,3 +1,4 @@
+import { Route } from "react-router-dom";
 import Admin from "../compenents/AdminProfile/Admin";
 import BankStatement from "../compenents/BankStatements/BankStatement";
 import AllProducts from "../compenents/bulkproduct/Allproduct/AllProducts";
@@ -24,6 +25,7 @@ import ProductdateDetails from "../pages/products/productDetails/ProductdateDeta
 import Getallreturnadmin from "../pages/returnNotes/gettall/Getallreturnadmin";
 import Allcustomers from "../pages/ViewDealerHitory/Allcustomer";
 import DealerPastHistory from "../pages/ViewDealerHitory/DealerPastHistory";
+import ProtectedRoute from "../services/ProtectedRoute";
 
 export default function AdminRoute(){
     return (
