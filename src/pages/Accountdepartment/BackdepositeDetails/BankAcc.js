@@ -3,6 +3,8 @@ import axios from 'axios';
 import Loader from '../../../compenents/loader/Loader';
 import { useNavigate } from 'react-router-dom';
 import debounce from 'lodash.debounce';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const BankAcc = () => {
   const [statements, setStatements] = useState([]);
@@ -93,6 +95,62 @@ const BankAcc = () => {
     return date.toLocaleDateString('en-GB');
   };
 
+  // NEW: builds the PDF directly in JS instead of relying on the browser's
+  // print dialog. This guarantees every column always appears, because
+  // jspdf-autotable calculates column widths itself to fit the page —
+  // it never depends on print orientation, scale settings, or @media print
+  // support, which is what was causing columns to go missing before.
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+    doc.setFontSize(14);
+    doc.text('Payment Summary', 14, 12);
+
+    const tableColumn = [
+      'Invoice Number',
+      'Date',
+      'Bank Name',
+      'Cheque Number/Reference No',
+      'Amount (LKR)',
+    ];
+
+    const tableRows = filteredStatements.map((entry) => [
+      entry.invoiceNumber ?? '-',
+      formatDate(entry.date),
+      entry.backName ?? '-',
+      entry.CHnumber || '-',
+      formatCurrency(entry.amount),
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 18,
+      theme: 'grid',
+      styles: {
+        fontSize: 8,
+        cellPadding: 2,
+        overflow: 'linebreak', // wraps long text instead of clipping it
+      },
+      headStyles: {
+        fillColor: [13, 110, 253],
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+      },
+      // explicit widths (mm) so all 5 columns are guaranteed to fit on
+      // an A4 landscape page (usable width ~277mm with default margins)
+      columnStyles: {
+        0: { cellWidth: 45 }, // Invoice Number
+        1: { cellWidth: 30 }, // Date
+        2: { cellWidth: 45 }, // Bank Name
+        3: { cellWidth: 90 }, // Cheque Number/Reference No
+        4: { cellWidth: 45, halign: 'right' }, // Amount (LKR)
+      },
+    });
+
+    doc.save('bank-statements.pdf');
+  };
+
   return (
     <div className="bank-statement-container">
       <style>{`
@@ -140,102 +198,6 @@ const BankAcc = () => {
           padding: 8px;
           text-align: left;
           white-space: nowrap;
-        }
-
-        @media print {
-          body {
-            background: #fff;
-          }
-
-          .no-print {
-            display: none !important;
-          }
-
-          /* FIX: hide EVERYTHING on the page first (this rules out any
-             parent sidebar/dashboard shell squeezing the print width) */
-          body * {
-            visibility: hidden;
-          }
-
-          /* then show only the printable table and its children */
-          #printable-bank-statements,
-          #printable-bank-statements * {
-            visibility: visible;
-          }
-
-          /* pull the printable area out of the normal page flow so it
-             ignores any parent width/flex/margin constraints entirely */
-          #printable-bank-statements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            overflow: visible;
-          }
-
-          .bank-statement-container {
-            padding: 0;
-            width: 100%;
-          }
-
-          .print-table-wrapper {
-            overflow: visible;
-            width: 100%;
-          }
-
-          .bank-statement-table {
-            width: 100%;
-            min-width: 0;       /* FIX: the screen-mode 900px min-width was forcing
-                                   the table wider than a Portrait page can hold,
-                                   pushing the last columns onto a page 2 that
-                                   never got noticed/printed */
-            max-width: 100%;
-            border-collapse: collapse;
-            font-size: 7.5px;   /* smaller so 5 columns comfortably fit even
-                                   in Portrait, not just Landscape */
-            table-layout: fixed;
-          }
-
-          .bank-statement-table th,
-          .bank-statement-table td {
-            border: 1px solid #000;
-            padding: 3px 2px;
-            white-space: normal;
-            word-break: break-word;
-            overflow-wrap: break-word;
-          }
-
-          /* explicit column widths (sum = 100%) so all 5 columns always fit
-             on the printed page, whether the user prints Portrait or Landscape */
-          .bank-statement-table th:nth-child(1),
-          .bank-statement-table td:nth-child(1) {
-            width: 16%; /* Invoice Number */
-          }
-
-          .bank-statement-table th:nth-child(2),
-          .bank-statement-table td:nth-child(2) {
-            width: 14%; /* Date */
-          }
-
-          .bank-statement-table th:nth-child(3),
-          .bank-statement-table td:nth-child(3) {
-            width: 18%; /* Bank Name */
-          }
-
-          .bank-statement-table th:nth-child(4),
-          .bank-statement-table td:nth-child(4) {
-            width: 30%; /* Cheque Number/reference No */
-          }
-
-          .bank-statement-table th:nth-child(5),
-          .bank-statement-table td:nth-child(5) {
-            width: 22%; /* Amount (LKR) */
-          }
-
-          @page {
-            size: A4 landscape; /* still a hint for browsers that respect it */
-            margin: 8mm;
-          }
         }
       `}</style>
 
@@ -294,8 +256,8 @@ const BankAcc = () => {
           style={{ marginLeft: '10px', padding: '5px' }}
         />
 
-        <button type="button" className="print-btn" onClick={() => window.print()}>
-          Print as PDF
+        <button type="button" className="print-btn" onClick={handleDownloadPDF}>
+          Download PDF
         </button>
       </div>
 
