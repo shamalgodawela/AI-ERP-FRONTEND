@@ -1,33 +1,177 @@
 .bank-statement-container {
-    padding: 20px;
-    background-color: #f7f7f7;
+    padding: 24px;
+    background: #f3f6fb;
+    border-radius: 14px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
-  
-  .bank-statement-container h2 {
-    margin-bottom: 15px;
-    text-align: center;
-    color: #333;
+
+  .bank-statement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    margin-bottom: 20px;
   }
-  
+
+  .bank-statement-brand h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #0d6efd;
+  }
+
+  .bank-statement-brand p {
+    margin: 8px 0 0;
+    color: #475569;
+    font-size: 15px;
+  }
+
+  .bank-statement-details {
+    display: grid;
+    gap: 10px;
+    text-align: right;
+    color: #334155;
+    font-size: 14px;
+    min-width: 220px;
+  }
+
+  .bank-statement-details div {
+    line-height: 1.5;
+  }
+
+  .bank-statement-details strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #0f172a;
+  }
+
+  .bank-statement-details span {
+    color: #475569;
+  }
+
+  .bank-statement-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .bank-statement-summary div {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    color: #334155;
+  }
+
+  .bank-statement-summary span {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .bank-statement-summary p {
+    margin: 0;
+    color: #101828;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .bank-statement-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .bank-statement-filters select,
+  .bank-statement-filters input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 14px;
+  }
+
   .bank-statement-table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
+    margin-bottom: 20px;
   }
-  
+
   .bank-statement-table th,
   .bank-statement-table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: center;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
   }
-  
+
   .bank-statement-table th {
-    background-color: #eee;
+    background-color: #e9eef6;
+    color: #0d3a80;
+    font-weight: 700;
   }
-  
+
+  .print-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .print-btn,
+  .home-btn {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+  }
+
+  .print-btn {
+    background: #0d6efd;
+    color: #ffffff;
+  }
+
+  .print-btn:hover {
+    background: #0b5ed7;
+  }
+
+  .home-btn {
+    background: #6c757d;
+    color: #ffffff;
+  }
+
+  .home-btn:hover {
+    background: #5a6268;
+  }
+
   .error-text {
     color: red;
     text-align: center;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 768px) {
+    .bank-statement-header {
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .bank-statement-details {
+      text-align: left;
+      min-width: auto;
+    }
   }
   

@@ -95,6 +95,13 @@ const BankAcc = () => {
     return date.toLocaleDateString('en-GB');
   };
 
+  const totalAmount = filteredStatements.reduce((sum, entry) => {
+    const value = Number(entry.amount) || 0;
+    return sum + value;
+  }, 0);
+
+  const formattedTotal = formatCurrency(totalAmount);
+
   // NEW: builds the PDF directly in JS instead of relying on the browser's
   // print dialog. This guarantees every column always appears, because
   // jspdf-autotable calculates column widths itself to fit the page —
@@ -103,8 +110,33 @@ const BankAcc = () => {
   const handleDownloadPDF = () => {
     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
+    const monthNames = {
+      '01': 'January',
+      '02': 'February',
+      '03': 'March',
+      '04': 'April',
+      '05': 'May',
+      '06': 'June',
+      '07': 'July',
+      '08': 'August',
+      '09': 'September',
+      '10': 'October',
+      '11': 'November',
+      '12': 'December',
+    };
+
+    const monthLabel = selectedMonth ? monthNames[selectedMonth] : 'All Months';
+    const yearLabel = selectedYear ? ` ${selectedYear}` : '';
+    const bankLabel = selectbank || 'All Banks';
+    const periodLabel = `${monthLabel}${yearLabel}`;
+    const pdfFilename = `BankStatement_${monthLabel.replace(/\s+/g, '-')}${selectedYear ? `-${selectedYear}` : ''}_${bankLabel.replace(/\s+/g, '-')}.pdf`;
+
     doc.setFontSize(14);
     doc.text('Payment Summary', 14, 12);
+    doc.setFontSize(11);
+    doc.text(`Bank: ${bankLabel}`, 14, 20);
+    doc.text(`Period: ${periodLabel}`, 14, 26);
+    doc.text(`Total Amount: LKR ${formattedTotal}`, 14, 32);
 
     const tableColumn = [
       'Invoice Number',
@@ -125,7 +157,7 @@ const BankAcc = () => {
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 18,
+      startY: 38,
       theme: 'grid',
       styles: {
         fontSize: 8,
@@ -137,8 +169,6 @@ const BankAcc = () => {
         textColor: [255, 255, 255],
         fontStyle: 'bold',
       },
-      // explicit widths (mm) so all 5 columns are guaranteed to fit on
-      // an A4 landscape page (usable width ~277mm with default margins)
       columnStyles: {
         0: { cellWidth: 45 }, // Invoice Number
         1: { cellWidth: 30 }, // Date
@@ -148,7 +178,7 @@ const BankAcc = () => {
       },
     });
 
-    doc.save('bank-statements.pdf');
+    doc.save(pdfFilename);
   };
 
   return (
