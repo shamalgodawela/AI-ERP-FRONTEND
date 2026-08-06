@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify'; 
 import Footer from "../../compenents/footer/Footer";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import html2pdf from 'html2pdf.js';
 
 const SingleOutstanding = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const SingleOutstanding = () => {
     const [depositedate, setDepositedate] = useState('');
     const [CHnumber, setCHnumber] = useState('');
     const [savedDetails, setSavedDetails] = useState(null); 
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
     const backoption = ['BOC', 'Commercial', 'HNB'];
 
@@ -107,10 +109,39 @@ const SingleOutstanding = () => {
 
     const formatNumbers = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+    const handleDownloadPDF = async () => {
+        if (!containerRef.current) return;
+
+        setIsGeneratingPdf(true);
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        const sanitizedCustomer = invoice.customer
+            ? invoice.customer.replace(/[^a-z0-9]/gi, '_').substring(0, 50)
+            : 'customer';
+        const filename = `Outstanding_${sanitizedCustomer}.pdf`;
+
+        const options = {
+            margin:       0.4,
+            filename,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' },
+            pagebreak:    { mode: ['css', 'legacy'] }
+        };
+
+        await html2pdf()
+            .set(options)
+            .from(containerRef.current)
+            .save();
+
+        setIsGeneratingPdf(false);
+    };
+
     if (!invoice) return <div>Loading...</div>;
 
     return (
-        <div ref={containerRef}>
+        <div>
+            <div ref={containerRef}>
             <Link to="#" onClick={goback} className="Back-Icon" style={{ color: 'black' }}>
                 Go Back <IoMdArrowRoundBack size={23} />
             </Link>
@@ -222,7 +253,24 @@ const SingleOutstanding = () => {
                         <br />
                     </div>
                 )}
-                <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
+
+                <div className="signature-section" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px', width: '100%' }}>
+                    <div style={{ width: '48%', textAlign: 'center' }}>
+                        <div style={{ borderTop: '1px solid #000', paddingTop: '8px', minHeight: '40px' }} />
+                        <div style={{ marginTop: '8px', fontWeight: '600' }}>System Verified Signature</div>
+                    </div>
+                    <div style={{ width: '48%', textAlign: 'center' }}>
+                        <div style={{ borderTop: '1px solid #000', paddingTop: '8px', minHeight: '40px' }} />
+                        <div style={{ marginTop: '8px', fontWeight: '600' }}>Approved By Signature</div>
+                    </div>
+                </div>
+
+                {!isGeneratingPdf && (
+                  <>
+                    <button className="fetch-button" onClick={handleFetchAllOutstandingDetails}>Fetch All Outstanding Details</button>
+                    <button className="fetch-button" style={{ marginLeft: '12px' }} onClick={handleDownloadPDF}>Download PDF</button>
+                  </>
+                )}
 
             </div>
             {/* <div className="add-outstanding-container">
@@ -261,6 +309,7 @@ const SingleOutstanding = () => {
                     
                 </div> */}
 
+            </div>
             <Footer />
         </div>
     );
