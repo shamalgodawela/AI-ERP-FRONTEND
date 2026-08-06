@@ -14,6 +14,8 @@ const BankStatement = () => {
   const [error, setError] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
   const [selectbank,setbankname]=useState('');
   const navigate = useNavigate();
 
@@ -53,6 +55,17 @@ const BankStatement = () => {
           return String(date.getFullYear()) === selectedYear;
         });
       }
+
+      if (fromDate) {
+        const from = new Date(fromDate);
+        filtered = filtered.filter((entry) => new Date(entry.date) >= from);
+      }
+
+      if (toDate) {
+        const to = new Date(toDate);
+        filtered = filtered.filter((entry) => new Date(entry.date) <= to);
+      }
+
       if (selectbank) {
         filtered = filtered.filter((entry) =>
           entry.backName?.toLowerCase().includes(selectbank.toLowerCase())
@@ -64,12 +77,12 @@ const BankStatement = () => {
 
       setFilteredStatements(filtered);
     }, 300),
-    [statements, selectedMonth, selectedYear,selectbank]
+    [statements, selectedMonth, selectedYear, fromDate, toDate, selectbank]
   );
 
   useEffect(() => {
     debounceFilter();
-  }, [selectedMonth, selectedYear,selectbank, debounceFilter]);
+  }, [selectedMonth, selectedYear, fromDate, toDate, selectbank, debounceFilter]);
 
   const formatCurrency = (amount) =>
     typeof amount === 'number'
@@ -186,7 +199,9 @@ const BankStatement = () => {
         <div>
           <span>Selected Period</span>
           <p>
-            {selectedMonth || selectedYear
+            {fromDate || toDate
+              ? `${fromDate || 'Any'} → ${toDate || 'Any'}`
+              : selectedMonth || selectedYear
               ? `${selectedMonth || 'All Months'} / ${selectedYear || 'All Years'}`
               : 'All Periods'}
           </p>
@@ -202,6 +217,24 @@ const BankStatement = () => {
       </div>
 
       <div className="bank-statement-filters no-print">
+        <label>
+          From
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+        </label>
+
+        <label>
+          To
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+          />
+        </label>
+
         <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
           <option value="">All Months</option>
           <option value="01">January</option>
@@ -237,7 +270,6 @@ const BankStatement = () => {
           <option value="Other">Other</option>
           <option value="DFCC">DFCC</option>
           <option value="People's">People's</option>
-
         </select>
       </div>
 

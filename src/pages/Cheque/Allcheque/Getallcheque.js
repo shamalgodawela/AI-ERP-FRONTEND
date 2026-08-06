@@ -10,6 +10,7 @@ const Getallcheque = () => {
   const [singleDate, setSingleDate] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [chequeSearch, setChequeSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [exeFilter, setExeFilter] = useState(""); // ⭐ NEW EXE FILTER
 
@@ -64,7 +65,11 @@ const Getallcheque = () => {
     const exeMatch =
       exeFilter === "" || c.exe === exeFilter;
 
-    return dateMatch && statusMatch && exeMatch;
+    const chequeMatch =
+      chequeSearch === "" ||
+      c.chequeNo?.toString().toLowerCase().includes(chequeSearch.toLowerCase());
+
+    return dateMatch && statusMatch && exeMatch && chequeMatch;
   });
 
   const totalFilteredAmount = filteredCheques.reduce(
@@ -114,6 +119,16 @@ const Getallcheque = () => {
               setToDate(e.target.value);
               setSingleDate("");
             }}
+          />
+        </div>
+
+        <div className="search-group">
+          <label>Cheque No</label>
+          <input
+            type="text"
+            placeholder="Search by cheque number"
+            value={chequeSearch}
+            onChange={(e) => setChequeSearch(e.target.value)}
           />
         </div>
 
