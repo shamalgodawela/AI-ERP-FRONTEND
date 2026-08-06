@@ -271,11 +271,15 @@ const BankAcc = () => {
         >
           <option value="">Bank Name</option>
           <option value="HNB">HNB</option>
+          <option value="Commercial">Commercial</option>
           <option value="Sampath">Sampath</option>
           <option value="NDB">NDB</option>
           <option value="NBE">NBE</option>
           <option value="NSB">NSB</option>
           <option value="BOC">BOC</option>
+          <option value="Other">Other</option>
+          <option value="DFCC">DFCC</option>
+          <option value="People's">People's</option>
         </select>
 
         <input

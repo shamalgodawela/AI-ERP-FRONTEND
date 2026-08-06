@@ -234,6 +234,10 @@ const BankStatement = () => {
           <option value="NBE">NBE</option>
           <option value="NSB">NSB</option>
           <option value="BOC">BOC</option>
+          <option value="Other">Other</option>
+          <option value="DFCC">DFCC</option>
+          <option value="People's">People's</option>
+
         </select>
       </div>
 

@@ -22,7 +22,7 @@ const SingleIndetails = () => {
   const [updatingAmountId, setUpdatingAmountId] = useState(null);
   const [depositedate, setDepositedate] = useState('');
 
-  const backoption = ["BOC", "Commercial", "HNB","People's","Sampath","NSB","DFCC","AMANA"];
+  const backoption = ["BOC", "Commercial", "HNB","People's","Sampath","NSB","DFCC","AMANA","NDB","NBE","Other"];
 
   // ---------------- SET TODAY'S DATE ----------------
   useEffect(() => {
