@@ -2,9 +2,11 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { AiOutlineEye } from 'react-icons/ai';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faPrint } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import debounce from 'lodash.debounce';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import './allInvoice.css';
 import Loader from '../loader/Loader';
 
@@ -27,6 +29,47 @@ const OutStandingTable = () => {
   const location = useLocation();
   const { state } = location;
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const getInvoicesMatchingFilters = () => {
+    let filtered = invoices;
+
+    if (selectedExe) filtered = filtered.filter(i => i.exe === selectedExe);
+    if (selectedCustomer) filtered = filtered.filter(i => i.customer.toLowerCase().includes(selectedCustomer.toLowerCase()));
+    if (exeNameSearch) filtered = filtered.filter(i => i.exe.toLowerCase().includes(exeNameSearch.toLowerCase()));
+    if (selectedMonth) filtered = filtered.filter(i => (new Date(i.invoiceDate).getMonth() + 1).toString().padStart(2, '0') === selectedMonth);
+    if (selectedYear) filtered = filtered.filter(i => new Date(i.invoiceDate).getFullYear().toString() === selectedYear);
+
+    if (outstandingSearch) {
+      filtered = filtered.filter(i => {
+        const status = String(i.lastOutstanding).toLowerCase();
+        const term = outstandingSearch.toLowerCase();
+        if (term === 'paid') return status === 'paid';
+        if (term === 'not paid' || term === 'notpaid') {
+          return status === 'not paid' || (!isNaN(i.lastOutstanding) && i.lastOutstanding > 0);
+        }
+        return status.includes(term);
+      });
+    }
+
+    if (selectedPaymentMode) {
+      filtered = filtered.filter(i =>
+        i.ModeofPayment && i.ModeofPayment.toLowerCase() === selectedPaymentMode.toLowerCase()
+      );
+    }
+
+    if (startDate || endDate) {
+      filtered = filtered.filter(i => {
+        const invoiceDate = new Date(i.invoiceDate);
+        const start = startDate ? new Date(startDate) : null;
+        const end = endDate ? new Date(endDate) : null;
+        if (start && invoiceDate < start) return false;
+        if (end && invoiceDate > end) return false;
+        return true;
+      });
+    }
+
+    return filtered;
+  };
 
   useEffect(() => {
     const customerFromState = state?.customer || searchParams.get("customer") || '';
@@ -69,42 +112,7 @@ const OutStandingTable = () => {
 
   const debounceFilter = useCallback(
     debounce(() => {
-      let filtered = invoices;
-
-      if (selectedExe) filtered = filtered.filter(i => i.exe === selectedExe);
-      if (selectedCustomer) filtered = filtered.filter(i => i.customer.toLowerCase().includes(selectedCustomer.toLowerCase()));
-      if (exeNameSearch) filtered = filtered.filter(i => i.exe.toLowerCase().includes(exeNameSearch.toLowerCase()));
-      if (selectedMonth) filtered = filtered.filter(i => (new Date(i.invoiceDate).getMonth() + 1).toString().padStart(2,'0') === selectedMonth);
-      if (selectedYear) filtered = filtered.filter(i => new Date(i.invoiceDate).getFullYear().toString() === selectedYear);
-
-      if (outstandingSearch) {
-        filtered = filtered.filter(i => {
-          const status = String(i.lastOutstanding).toLowerCase();
-          const term = outstandingSearch.toLowerCase();
-          if (term === 'paid') return status === 'paid';
-          if (term === 'not paid' || term === 'notpaid') return status === 'not paid' || (!isNaN(i.lastOutstanding) && i.lastOutstanding > 0);
-          return status.includes(term);
-        });
-      }
-
-      if (selectedPaymentMode) {
-        filtered = filtered.filter(i =>
-          i.ModeofPayment && i.ModeofPayment.toLowerCase() === selectedPaymentMode.toLowerCase()
-        );
-      }
-
-      if (startDate || endDate) {
-        filtered = filtered.filter(i => {
-          const invoiceDate = new Date(i.invoiceDate);
-          const start = startDate ? new Date(startDate) : null;
-          const end = endDate ? new Date(endDate) : null;
-          if (start && invoiceDate < start) return false;
-          if (end && invoiceDate > end) return false;
-          return true;
-        });
-      }
-
-      setFilteredInvoices(filtered);
+      setFilteredInvoices(getInvoicesMatchingFilters());
     }, 300),
     [invoices, selectedExe, selectedCustomer, exeNameSearch, selectedMonth, selectedYear, outstandingSearch, selectedPaymentMode, startDate, endDate]
   );
@@ -145,9 +153,9 @@ const OutStandingTable = () => {
     return 0;
   };
 
-  const calculateTotalOutstanding = () => {
+  const calculateTotalOutstanding = (invoiceList = filteredInvoices) => {
     let total = 0;
-    filteredInvoices.forEach(i => {
+    invoiceList.forEach(i => {
       if (i.GatePassNo === 'Printed') {
         if (i.lastOutstanding === "Not Paid") total += calculateTotal(i);
         else if (typeof i.lastOutstanding === 'number' && i.lastOutstanding > 0)
@@ -157,9 +165,9 @@ const OutStandingTable = () => {
     return total;
   };
 
-  const calculateTotalCheque = () => {
+  const calculateTotalCheque = (invoiceList = filteredInvoices) => {
     let total = 0;
-    filteredInvoices.forEach(i => {
+    invoiceList.forEach(i => {
       if (i.GatePassNo === 'Printed') {
         const chequeTotal = typeof i.chequeValues === 'number' ? i.chequeValues : 0;
         total += chequeTotal;
@@ -168,13 +176,11 @@ const OutStandingTable = () => {
     return total;
   };
 
-  const calculateAmountToBeCollected = () => {
-    const totalOutstanding = calculateTotalOutstanding();
-    const totalCheque = calculateTotalCheque();
+  const calculateAmountToBeCollected = (invoiceList = filteredInvoices) => {
+    const totalOutstanding = calculateTotalOutstanding(invoiceList);
+    const totalCheque = calculateTotalCheque(invoiceList);
     return totalOutstanding - totalCheque;
   };
-
-  const handlePrint = () => window.print();
 
   const getPrintHeader = () => {
     let header = "Outstanding Details";
@@ -192,6 +198,66 @@ const OutStandingTable = () => {
     if (selectedYear) filters.push(`Year: ${selectedYear}`);
     if (filters.length > 0) header += ` - ${filters.join(", ")}`;
     return header;
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    const invoicesToDownload = getInvoicesMatchingFilters();
+    const reportTitle = getPrintHeader();
+    const filenamePart = (selectedCustomer || selectedExe || 'All').replace(/[^a-z0-9]+/gi, '-');
+
+    doc.setFontSize(14);
+    doc.text(reportTitle, 14, 12);
+    doc.setFontSize(10);
+    doc.text(`Outstanding: Rs. ${formatNumbers(calculateTotalOutstanding(invoicesToDownload))}`, 14, 20);
+    doc.text(`Cheque Pending: Rs. ${formatNumbers(calculateTotalCheque(invoicesToDownload))}`, 85, 20);
+    doc.text(`To Collect: Rs. ${formatNumbers(calculateAmountToBeCollected(invoicesToDownload))}`, 165, 20);
+
+    const tableRows = invoicesToDownload.map(invoice => {
+      const invoiceTotal = calculateTotal(invoice);
+      const chequeTotal = typeof invoice.chequeValues === 'number' ? invoice.chequeValues : 0;
+      let outstandingAfterCheque = 0;
+
+      if (invoice.lastOutstanding === 'Not Paid') outstandingAfterCheque = invoiceTotal - chequeTotal;
+      else if (typeof invoice.lastOutstanding === 'number') outstandingAfterCheque = invoice.lastOutstanding - chequeTotal;
+
+      return [
+        invoice.invoiceNumber || '-',
+        invoice.customer || '-',
+        invoice.ModeofPayment || '-',
+        invoice.GatePassNo || '-',
+        invoice.invoiceDate || '-',
+        invoice.Duedate || '-',
+        invoice.TaxNo || '-',
+        invoice.exe || '-',
+        getOutstandingDisplay(invoice.lastOutstanding, invoiceTotal),
+        formatNumbers(invoiceTotal),
+        chequeTotal ? formatNumbers(chequeTotal) : '-',
+        formatNumbers(outstandingAfterCheque),
+      ];
+    });
+
+    autoTable(doc, {
+      head: [[
+        'Invoice Number', 'Customer', 'Cheque/Cash', 'Status', 'Invoice Date', 'Due Date',
+        'Tax Number', 'Exe', 'Outstanding', 'Invoice Total', 'Cheque Pending', 'Outstanding After Cheque',
+      ]],
+      body: tableRows,
+      startY: 26,
+      theme: 'grid',
+      styles: { fontSize: 7, cellPadding: 1.5, overflow: 'linebreak' },
+      headStyles: { fillColor: [0, 87, 4], textColor: [255, 255, 255], fontStyle: 'bold' },
+      columnStyles: {
+        0: { cellWidth: 25 },
+        1: { cellWidth: 34 },
+        8: { halign: 'right' },
+        9: { halign: 'right' },
+        10: { halign: 'right' },
+        11: { halign: 'right' },
+      },
+    });
+
+    doc.save(`Outstanding_${filenamePart}.pdf`);
   };
 
   return (
@@ -254,8 +320,8 @@ const OutStandingTable = () => {
           <p>To</p>
           <input type="date" value={endDate} onChange={e => handleFilterChange('endDate', e.target.value, setEndDate)} />
 
-          <button onClick={handlePrint} className="print-button">
-            <FontAwesomeIcon icon={faPrint} /> Print
+          <button onClick={handleDownloadPDF} className="print-button" type="button">
+            <FontAwesomeIcon icon={faFilePdf} /> Download PDF
           </button>
         </div>
 
