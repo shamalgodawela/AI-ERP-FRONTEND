@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
-import './Collectionbyexe.css'; // Import the CSS file
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FiCalendar, FiDatabase, FiTrendingUp } from "react-icons/fi";
 import { Link, useNavigate } from 'react-router-dom';
 
-const Collectionbyexe = () => {
+const Collectionopdash = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -176,4 +175,4 @@ const Collectionbyexe = () => {
     );
 };
 
-export default Collectionbyexe;
+export default Collectionopdash;

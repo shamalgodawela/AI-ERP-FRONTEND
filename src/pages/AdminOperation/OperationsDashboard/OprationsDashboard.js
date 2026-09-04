@@ -28,7 +28,7 @@ const actions = [
   {
     label: 'Sales & Collection Details',
     icon: <FaChartLine size={32} />, 
-    route: '',
+    route: '/collection-dashop',
   },
   {
     label: 'Payment Breakdown Monthly',

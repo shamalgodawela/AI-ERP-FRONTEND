@@ -11,6 +11,7 @@ import BackStatmentop from "../compenents/BankStatements/BackStatmentop";
 import GetallchequeOp from "../pages/Cheque/Allcheque/GetallchequeOp";
 import Getallreturnop from "../pages/returnNotes/gettall/Getallreturnop";
 import Productquantityop from "../pages/invoice/GetProductQuanitityEach area/Productquantityop";
+import Collectionopdash from "../pages/AdminOperation/Collectionopdash";
 
 export default function OperationRoute() {
     return(
@@ -28,6 +29,8 @@ export default function OperationRoute() {
     <Route path="/Getallcheque-op" element={<GetallchequeOp/>} />
     <Route path="/Getallreturn-op" element={<Getallreturnop/>} />
     <Route path="/productquantity-op" element={<Productquantityop/>} />
+    <Route path="/collection-dashop" element={<Collectionopdash/>} />
+
 
 </Route>
         </>
