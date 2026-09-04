@@ -24,7 +24,7 @@ export default function OperationRoute() {
     <Route path="/admin-operation-incentive" element={<ViewAllincentive/>} />
     <Route path="/allcusoperation" element={<Operationallcustomers/>} />
     <Route path="/opdealerhistory" element={<Opdealerhistory/>} />
-    <Route path="/bankstatement" element={<BackStatmentop/>} />
+    <Route path="/bankstatement-operations" element={<BackStatmentop/>} />
     <Route path="/Getallcheque-op" element={<GetallchequeOp/>} />
     <Route path="/Getallreturn-op" element={<Getallreturnop/>} />
     <Route path="/productquantity-op" element={<Productquantityop/>} />
