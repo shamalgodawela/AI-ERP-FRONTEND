@@ -47,7 +47,7 @@ import AllInventories from "../pages/InventoryAreas/AllInventories";
 import AddbulkProduct from "../compenents/bulkproduct/addproduct/AddbulkProduct";
 import ProductQuantity from "../pages/invoice/GetProductQuanitityEach area/ProductQuantity";
 import UserOneorder from "../compenents/HandleOrder/allorder/UserOneorder";
-import StockSnapshot from "../pages/StockSnapsot/StockSnap";
+import StockSnap from "../pages/StockSnapsot/StockSnap";
 import GetCustomer from "../pages/customer/getallCus/GetCustomer";
 import ViewSingleTax from "../pages/TaxInvoices/ViewSingletax/ViewSingleTax";
 
@@ -106,7 +106,7 @@ export default  function UserRoute(){
             <Route path="/Register-bulk" element={<AddbulkProduct/>} />
             <Route path="/product-quantity-by-code" element={<ProductQuantity/>} />
             <Route path="/userorder/:id" element={<UserOneorder/>} />
-            <Route path="/stockSnap" element={<StockSnapshot/>} />
+            <Route path="/stockSnap" element={<StockSnap/>} />
       
              </Route>
         </>

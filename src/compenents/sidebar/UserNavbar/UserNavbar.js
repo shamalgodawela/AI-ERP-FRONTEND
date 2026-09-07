@@ -43,16 +43,16 @@ const NAV_ITEMS = [
       { label: 'Add Invoices', href: '/add-invoice' },
     ],
   },
-  {
-    label: 'Payments',
-    icon: '💳',
-    children: [
-      { label: 'Outstanding', href: '/user-check-outstanding' },
-      { label: 'Add Cheque Details', href: '/Add-Cheque' },
-      { label: 'View Cheques', href: '/user-cheque' },
-      { label: 'Area Wise Product Qty', href: '/product-quantity-by-code' },
-    ],
-  },
+  // {
+  //   label: 'Payments',
+  //   icon: '💳',
+  //   children: [
+  //     { label: 'Outstanding', href: '/user-check-outstanding' },
+  //     { label: 'Add Cheque Details', href: '/Add-Cheque' },
+  //     { label: 'View Cheques', href: '/user-cheque' },
+  //     { label: 'Area Wise Product Qty', href: '/product-quantity-by-code' },
+  //   ],
+  // },
   {
     label: 'Inventory',
     icon: '🏭',
