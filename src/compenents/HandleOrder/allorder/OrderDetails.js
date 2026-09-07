@@ -25,12 +25,18 @@ const OrderDetails = () => {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`https://nihon-inventory.onrender.com/api/allor`);
+      const response = await fetch(`https://nihon-inventory.onrender.com/api/allor`, {
+        credentials: 'include',
+      });
       const data = await response.json();
-      setAllOrders(data);
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Failed to fetch orders');
+      }
+      setAllOrders(Array.isArray(data) ? data : []);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching orders:', error);
+      setAllOrders([]);
       setIsLoading(false);
     }
   };
